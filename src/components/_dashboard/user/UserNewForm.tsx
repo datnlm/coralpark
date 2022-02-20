@@ -196,15 +196,15 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     fullWidth
                     label="Full Name"
                     {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
                     label="Scientific Name"
                     {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
+                    // error={Boolean(touched.email && errors.email)}
+                    // helperText={touched.email && errors.email}
                   />
                 </Stack>
 
@@ -213,8 +213,8 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     fullWidth
                     label="Longevity"
                     {...getFieldProps('phoneNumber')}
-                    error={Boolean(touched.phoneNumber && errors.phoneNumber)}
-                    helperText={touched.phoneNumber && errors.phoneNumber}
+                    // error={Boolean(touched.phoneNumber && errors.phoneNumber)}
+                    // helperText={touched.phoneNumber && errors.phoneNumber}
                   />
                   <Autocomplete
                     id="country-select-demo"
@@ -298,15 +298,15 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     fullWidth
                     label="Exhibit Social"
                     {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    // error={Boolean(touched.company && errors.company)}
+                    // helperText={touched.company && errors.company}
                   />
                   <TextField
                     fullWidth
                     label="Sexual Behaviors"
                     {...getFieldProps('role')}
-                    error={Boolean(touched.role && errors.role)}
-                    helperText={touched.role && errors.role}
+                    // error={Boolean(touched.role && errors.role)}
+                    // helperText={touched.role && errors.role}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -316,16 +316,16 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     label="Nutrition"
                     // {...getFieldProps('company')}
                     {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    // error={Boolean(touched.company && errors.company)}
+                    // helperText={touched.company && errors.company}
                   />
                   <TextField
                     fullWidth
                     // label="Role"
                     label="Colour"
                     {...getFieldProps('role')}
-                    error={Boolean(touched.role && errors.role)}
-                    helperText={touched.role && errors.role}
+                    // error={Boolean(touched.role && errors.role)}
+                    // helperText={touched.role && errors.role}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -336,8 +336,8 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     placeholder="Country"
                     {...getFieldProps('country')}
                     SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
+                    // error={Boolean(touched.country && errors.country)}
+                    // helperText={touched.country && errors.country}
                   >
                     <option value="" />
                     {countries.map((option) => (
@@ -353,8 +353,8 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     placeholder="Country"
                     {...getFieldProps('country')}
                     SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
+                    // error={Boolean(touched.country && errors.country)}
+                    // helperText={touched.country && errors.country}
                   >
                     <option value="" />
                     {countries.map((option) => (
@@ -368,12 +368,60 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                   <TextField
                     fullWidth
                     // label="Company"
+                    label="Bathymetry"
+                    // {...getFieldProps('company')}
+                    {...getFieldProps('company')}
+                    // error={Boolean(touched.company && errors.company)}
+                    // helperText={touched.company && errors.company}
+                  />
+                  <TextField
+                    fullWidth
+                    // label="Role"
+                    label="Temperature"
+                    {...getFieldProps('role')}
+                    // error={Boolean(touched.role && errors.role)}
+                    // helperText={touched.role && errors.role}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    // label="Company"
+                    label="Brightness"
+                    // {...getFieldProps('company')}
+                    {...getFieldProps('company')}
+                    // error={Boolean(touched.company && errors.company)}
+                    // helperText={touched.company && errors.company}
+                  />
+                  <TextField
+                    fullWidth
+                    // label="Role"
+                    label="Tides"
+                    {...getFieldProps('role')}
+                    // error={Boolean(touched.role && errors.role)}
+                    // helperText={touched.role && errors.role}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    // label="Role"
+                    label="Current"
+                    {...getFieldProps('role')}
+                    // error={Boolean(touched.role && errors.role)}
+                    // helperText={touched.role && errors.role}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    // label="Company"
                     label="Description"
                     multiline
                     rows={2}
                     {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    // error={Boolean(touched.company && errors.company)}
+                    // helperText={touched.company && errors.company}
                   />
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
