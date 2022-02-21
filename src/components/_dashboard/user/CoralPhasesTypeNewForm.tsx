@@ -31,12 +31,12 @@ import countries from './countries';
 
 // ----------------------------------------------------------------------
 
-type CoralPhasesTypeNewFormProps = {
+type CoralPhasesTypeNewProps = {
   isEdit: boolean;
   currentUser?: UserManager;
 };
 
-export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPhasesTypeNewFormProps) {
+export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPhasesTypeNewProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -106,7 +106,7 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          {/* <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4}>
             <Card sx={{ py: 10, px: 3 }}>
               {isEdit && (
                 <Label
@@ -116,7 +116,6 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
                   {values.status}
                 </Label>
               )}
-
               <Box sx={{ mb: 5 }}>
                 <UploadAvatar
                   accept="image/*"
@@ -144,56 +143,61 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
                   {touched.avatarUrl && errors.avatarUrl}
                 </FormHelperText>
               </Box>
-            </Card>
-          </Grid> */}
 
-          <Grid item xs={12} md={12}>
+              {/* {isEdit && (
+                <FormControlLabel
+                  labelPlacement="start"
+                  control={
+                    <Switch
+                      onChange={(event) =>
+                        setFieldValue('status', event.target.checked ? 'banned' : 'active')
+                      }
+                      checked={values.status !== 'active'}
+                    />
+                  }
+                  label={
+                    <>
+                      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+                        Banned
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        Apply disable account
+                      </Typography>
+                    </>
+                  }
+                  sx={{ mx: 0, mb: 3, width: 1, justifyContent: 'space-between' }}
+                />
+              )} */}
+
+              {/* <FormControlLabel
+                labelPlacement="start"
+                control={<Switch {...getFieldProps('isVerified')} checked={values.isVerified} />}
+                label={
+                  <>
+                    <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+                      Email Verified
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      Disabling this will automatically send the user a verification email
+                    </Typography>
+                  </>
+                }
+                sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
+              /> */}
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Name type"
+                    label="Phases name"
                     {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
                   />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Parent"
-                    placeholder="Level type"
-                    {...getFieldProps('country')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
-                  >
-                    <option value="" />
-                    {countries.map((option) => (
-                      <option key={option.code} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Level type"
-                    placeholder="Level type"
-                    {...getFieldProps('country')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
-                  >
-                    <option value="" />
-                    {countries.map((option) => (
-                      <option key={option.code} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
@@ -203,13 +207,13 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
                     multiline
                     rows={2}
                     {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    // error={Boolean(touched.company && errors.company)}
+                    // helperText={touched.company && errors.company}
                   />
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create type' : 'Save Changes'}
+                    {!isEdit ? 'Create Coral' : 'Save Changes'}
                   </LoadingButton>
                 </Box>
               </Stack>

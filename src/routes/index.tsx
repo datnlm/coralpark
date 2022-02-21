@@ -11,6 +11,7 @@ import AuthGuard from '../guards/AuthGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 import PhasesCreate from '../pages/dashboard/CoralPhases';
+import PhasesPhasesTypeCreate from '../pages/dashboard/CoralPhasesType';
 
 // ----------------------------------------------------------------------
 
@@ -107,7 +108,8 @@ export default function Router() {
             { path: 'new', element: <UserCreate /> },
             { path: '/:name/edit', element: <UserCreate /> },
             { path: 'account', element: <UserAccount /> },
-            { path: 'phases', element: <PhasesCreate /> }
+            { path: 'phases', element: <PhasesCreate /> },
+            { path: 'phases type', element: <PhasesPhasesTypeCreate /> }
           ]
         },
         {

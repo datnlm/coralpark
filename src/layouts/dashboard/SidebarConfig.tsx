@@ -56,7 +56,8 @@ const sidebarConfig = [
           { title: 'create', path: PATH_DASHBOARD.user.newUser },
           { title: 'type', path: PATH_DASHBOARD.user.account },
           // { title: 'edit', path: PATH_DASHBOARD.user.editById }
-          { title: 'phases', path: PATH_DASHBOARD.user.phases }
+          { title: 'phases', path: PATH_DASHBOARD.user.phases },
+          { title: 'phases type', path: PATH_DASHBOARD.user.phasesType }
         ]
       }
       // }
