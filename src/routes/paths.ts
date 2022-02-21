@@ -57,7 +57,9 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/user/list'),
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
     editById: path(ROOTS_DASHBOARD, '/user/ada-lindgren/edit'),
-    account: path(ROOTS_DASHBOARD, '/user/account')
+    account: path(ROOTS_DASHBOARD, '/user/account'),
+    phases: path(ROOTS_DASHBOARD, '/user/phases'),
+    phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
   },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),

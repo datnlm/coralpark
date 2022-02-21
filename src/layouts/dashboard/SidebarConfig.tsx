@@ -53,9 +53,10 @@ const sidebarConfig = [
           // { title: 'profile', path: PATH_DASHBOARD.user.profile },
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.user.list },
-          { title: 'create', path: PATH_DASHBOARD.user.newUser }
-          // { title: 'edit', path: PATH_DASHBOARD.user.editById },
-          // { title: 'account', path: PATH_DASHBOARD.user.account }
+          { title: 'create', path: PATH_DASHBOARD.user.newUser },
+          { title: 'type', path: PATH_DASHBOARD.user.account },
+          // { title: 'edit', path: PATH_DASHBOARD.user.editById }
+          { title: 'phases', path: PATH_DASHBOARD.user.phases }
         ]
       }
       // }

@@ -10,6 +10,7 @@ import AuthGuard from '../guards/AuthGuard';
 // import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
+import PhasesCreate from '../pages/dashboard/CoralPhases';
 
 // ----------------------------------------------------------------------
 
@@ -104,8 +105,9 @@ export default function Router() {
             // { path: 'cards', element: <UserCards /> },
             { path: 'list', element: <UserList /> },
             { path: 'new', element: <UserCreate /> },
-            { path: '/:name/edit', element: <UserCreate /> }
-            // { path: 'account', element: <UserAccount /> }
+            { path: '/:name/edit', element: <UserCreate /> },
+            { path: 'account', element: <UserAccount /> },
+            { path: 'phases', element: <PhasesCreate /> }
           ]
         },
         {
