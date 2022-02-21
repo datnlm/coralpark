@@ -17,7 +17,7 @@ import CoralPhasesTypeNewForm from '../../components/_dashboard/user/CoralPhases
 
 // ----------------------------------------------------------------------
 
-export default function PhasesCreate() {
+export default function PhasesTypeCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
