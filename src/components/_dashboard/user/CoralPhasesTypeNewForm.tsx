@@ -193,7 +193,62 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Phases name"
+                    label="Min Weight"
+                    {...getFieldProps('name')}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Max Weight"
+                    {...getFieldProps('name')}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    label="Min High"
+                    {...getFieldProps('name')}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Max High"
+                    {...getFieldProps('name')}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    label="Time From"
+                    {...getFieldProps('name')}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Time To"
+                    {...getFieldProps('name')}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    label="Colour"
+                    {...getFieldProps('name')}
+                    // error={Boolean(touched.name && errors.name)}
+                    // helperText={touched.name && errors.name}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Coral"
                     {...getFieldProps('name')}
                     // error={Boolean(touched.name && errors.name)}
                     // helperText={touched.name && errors.name}
@@ -203,7 +258,7 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
                   <TextField
                     fullWidth
                     // label="Company"
-                    label="Description"
+                    label="Coral Phase"
                     multiline
                     rows={2}
                     {...getFieldProps('company')}

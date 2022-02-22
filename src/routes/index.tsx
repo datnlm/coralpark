@@ -109,7 +109,7 @@ export default function Router() {
             { path: '/:name/edit', element: <UserCreate /> },
             { path: 'account', element: <UserAccount /> },
             { path: 'phases', element: <PhasesCreate /> },
-            { path: 'phases type', element: <PhasesPhasesTypeCreate /> }
+            { path: 'phasestype', element: <PhasesPhasesTypeCreate /> }
           ]
         },
         {

@@ -45,10 +45,10 @@ import {
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Product', alignRight: false },
-  { id: 'createdAt', label: 'Create at', alignRight: false },
+  { id: 'name', label: 'Province', alignRight: false },
+  { id: 'createdAt', label: 'Location', alignRight: false },
   { id: 'inventoryType', label: 'Status', alignRight: false },
-  { id: 'price', label: 'Price', alignRight: true },
+  { id: 'price', label: 'Address', alignRight: true },
   { id: '' }
 ];
 
@@ -166,17 +166,17 @@ export default function EcommerceProductList() {
   const isProductNotFound = filteredProducts.length === 0;
 
   return (
-    <Page title="Ecommerce: Product List | Minimal-UI">
+    <Page title="Area: Area List | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Product List"
+          heading="Area List"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
+              name: 'Area',
               href: PATH_DASHBOARD.eCommerce.root
             },
-            { name: 'Product List' }
+            { name: 'Area List' }
           ]}
         />
 
@@ -247,7 +247,8 @@ export default function EcommerceProductList() {
                               {inventoryType ? sentenceCase(inventoryType) : ''}
                             </Label>
                           </TableCell>
-                          <TableCell align="right">{fCurrency(price)}</TableCell>
+                          {/* <TableCell align="right">{fCurrency(price)}</TableCell> */}
+                          <TableCell align="right">{price}</TableCell>
                           <TableCell align="right">
                             <IconButton>
                               <Icon icon={moreVerticalFill} width={20} height={20} />

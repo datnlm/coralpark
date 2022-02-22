@@ -55,28 +55,29 @@ const sidebarConfig = [
           { title: 'list', path: PATH_DASHBOARD.user.list },
           { title: 'create', path: PATH_DASHBOARD.user.newUser },
           { title: 'type', path: PATH_DASHBOARD.user.account },
-          // { title: 'edit', path: PATH_DASHBOARD.user.editById }
-          { title: 'phases', path: PATH_DASHBOARD.user.phases },
-          { title: 'phases type', path: PATH_DASHBOARD.user.phasesType }
+          // { title: 'edit', path: PATH_DASHBOARD.user.editById },
+          { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
+          { title: 'phases', path: PATH_DASHBOARD.user.phases }
         ]
-      }
+      },
       // }
 
       // MANAGEMENT : E-COMMERCE
-      // {
-      //   title: 'e-commerce',
-      //   path: PATH_DASHBOARD.eCommerce.root,
-      //   icon: ICONS.cart,
-      //   children: [
-      //     { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-      //     { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
-      //     { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
-      //     { title: 'create', path: PATH_DASHBOARD.eCommerce.newProduct },
-      //     { title: 'edit', path: PATH_DASHBOARD.eCommerce.editById },
-      //     { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
-      //     { title: 'invoice', path: PATH_DASHBOARD.eCommerce.invoice }
-      //   ]
-      // },
+      {
+        title: 'Area',
+        path: PATH_DASHBOARD.eCommerce.root,
+        icon: ICONS.cart,
+        children: [
+          // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
+          // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
+          { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
+          { title: 'create', path: PATH_DASHBOARD.eCommerce.newProduct },
+          { title: 'province', path: PATH_DASHBOARD.eCommerce.newProduct }
+          // { title: 'edit', path: PATH_DASHBOARD.eCommerce.editById },
+          // { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
+          // { title: 'invoice', path: PATH_DASHBOARD.eCommerce.invoice }
+        ]
+      }
 
       // MANAGEMENT : BLOG
       // {

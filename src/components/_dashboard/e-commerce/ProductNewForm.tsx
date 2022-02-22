@@ -39,9 +39,7 @@ import { UploadMultiFile } from '../../upload';
 const GENDER_OPTION = ['Men', 'Women', 'Kids'];
 
 const CATEGORY_OPTION = [
-  { group: 'Clothing', classify: ['Shirts', 'T-shirts', 'Jeans', 'Leather'] },
-  { group: 'Tailored', classify: ['Suits', 'Blazers', 'Trousers', 'Waistcoats'] },
-  { group: 'Accessories', classify: ['Shoes', 'Backpacks and bags', 'Bracelets', 'Face masks'] }
+  { group: 'Province', classify: ['Vĩnh Long', 'Kiên Giang', 'Phan Thiết', 'Nha Trang'] }
 ];
 
 const TAGS_OPTION = [
@@ -111,7 +109,7 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
       } catch (error) {
         console.error(error);
         setSubmitting(false);
-        setErrors(error);
+        // setErrors(error);
       }
     }
   });
@@ -151,13 +149,20 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
               <Stack spacing={3}>
                 <TextField
                   fullWidth
-                  label="Product Name"
+                  label="Location"
+                  {...getFieldProps('name')}
+                  error={Boolean(touched.name && errors.name)}
+                  helperText={touched.name && errors.name}
+                />
+                <TextField
+                  fullWidth
+                  label="Address"
                   {...getFieldProps('name')}
                   error={Boolean(touched.name && errors.name)}
                   helperText={touched.name && errors.name}
                 />
 
-                <div>
+                {/* <div>
                   <LabelStyle>Description</LabelStyle>
                   <QuillEditor
                     simple
@@ -171,9 +176,28 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
                       {touched.description && errors.description}
                     </FormHelperText>
                   )}
-                </div>
+                </div> */}
+                <FormControl fullWidth>
+                  <InputLabel>Province</InputLabel>
+                  <Select
+                    label="Category"
+                    native
+                    {...getFieldProps('category')}
+                    value={values.category}
+                  >
+                    {CATEGORY_OPTION.map((category) => (
+                      <optgroup key={category.group} label={category.group}>
+                        {category.classify.map((classify) => (
+                          <option key={classify} value={classify}>
+                            {classify}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </Select>
+                </FormControl>
 
-                <div>
+                {/* <div>
                   <LabelStyle>Add Images</LabelStyle>
                   <UploadMultiFile
                     showPreview
@@ -190,12 +214,21 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
                       {touched.images && errors.images}
                     </FormHelperText>
                   )}
-                </div>
+                </div> */}
+                <LoadingButton
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  size="large"
+                  loading={isSubmitting}
+                >
+                  {!isEdit ? 'Create Area' : 'Save Changes'}
+                </LoadingButton>
               </Stack>
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          {/* <Grid item xs={12} md={4}>
             <Stack spacing={3}>
               <Card sx={{ p: 3 }}>
                 <FormControlLabel
@@ -306,7 +339,7 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
                 {!isEdit ? 'Create Product' : 'Save Changes'}
               </LoadingButton>
             </Stack>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Form>
     </FormikProvider>

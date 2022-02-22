@@ -61,7 +61,7 @@ export default function CheckoutCart() {
         handleNextStep();
       } catch (error) {
         console.error(error);
-        setErrors(error.message);
+        // setErrors(error.message);
       }
     }
   });
