@@ -32,17 +32,17 @@ export default function EcommerceProductCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Ecommerce: Create a new product | Minimal-UI">
+    <Page title="Ecommerce: Create a new area | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new product' : 'Edit product'}
+          heading={!isEdit ? 'Create a new area' : 'Edit area'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
+              name: 'Area',
               href: PATH_DASHBOARD.eCommerce.root
             },
-            { name: !isEdit ? 'New product' : name }
+            { name: !isEdit ? 'New area' : name }
           ]}
         />
 

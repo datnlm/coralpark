@@ -3,12 +3,14 @@ import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
+import { Link as RouterLink } from 'react-router-dom';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
 import {
   Box,
   Card,
   Table,
+  Button,
   TableRow,
   Checkbox,
   TableBody,
@@ -19,6 +21,8 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+
+import plusFill from '@iconify/icons-eva/plus-fill';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProducts } from '../../redux/slices/product';
@@ -178,6 +182,16 @@ export default function EcommerceProductList() {
             },
             { name: 'Area List' }
           ]}
+          action={
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={PATH_DASHBOARD.eCommerce.newProduct}
+              startIcon={<Icon icon={plusFill} />}
+            >
+              New Area
+            </Button>
+          }
         />
 
         <Card>
