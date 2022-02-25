@@ -50,17 +50,28 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,
         children: [
-          // { title: 'profile', path: PATH_DASHBOARD.user.profile },
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.user.list },
-          { title: 'create', path: PATH_DASHBOARD.user.newUser },
+          // { title: 'create', path: PATH_DASHBOARD.user.newUser },
           { title: 'type', path: PATH_DASHBOARD.user.account },
+          { title: 'coral Area', path: PATH_DASHBOARD.user.profile }
           // { title: 'edit', path: PATH_DASHBOARD.user.editById },
+          // { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
+          // { title: 'phases', path: PATH_DASHBOARD.user.phases }
+        ]
+      },
+      // }
+
+      // MANAGEMENT : Phases
+      {
+        title: 'phases',
+        path: PATH_DASHBOARD.user.root,
+        icon: ICONS.user,
+        children: [
           { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
           { title: 'phases', path: PATH_DASHBOARD.user.phases }
         ]
       },
-      // }
 
       // MANAGEMENT : E-COMMERCE
       {
@@ -71,7 +82,7 @@ const sidebarConfig = [
           // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
           // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
           { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
-          { title: 'create', path: PATH_DASHBOARD.eCommerce.newProduct },
+          // { title: 'create', path: PATH_DASHBOARD.eCommerce.newProduct },
           { title: 'province', path: PATH_DASHBOARD.eCommerce.newProduct }
           // { title: 'edit', path: PATH_DASHBOARD.eCommerce.editById },
           // { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
