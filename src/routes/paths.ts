@@ -57,7 +57,14 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/user/list'),
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
     editById: path(ROOTS_DASHBOARD, '/user/ada-lindgren/edit'),
-    account: path(ROOTS_DASHBOARD, '/user/account')
+    account: path(ROOTS_DASHBOARD, '/user/account'),
+    phases: path(ROOTS_DASHBOARD, '/user/phases'),
+    phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
+  },
+  phases: {
+    root: path(ROOTS_DASHBOARD, '/user'),
+    phases: path(ROOTS_DASHBOARD, '/user/phases'),
+    phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
   },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),
@@ -66,6 +73,7 @@ export const PATH_DASHBOARD = {
     productById: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
     list: path(ROOTS_DASHBOARD, '/e-commerce/list'),
     newProduct: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
+    newProvince: path(ROOTS_DASHBOARD, '/e-commerce/product/province'),
     editById: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
     checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
     invoice: path(ROOTS_DASHBOARD, '/e-commerce/invoice')

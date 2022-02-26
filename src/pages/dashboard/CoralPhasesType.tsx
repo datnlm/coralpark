@@ -4,49 +4,45 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts } from '../../redux/slices/product';
+import { useDispatch, useSelector, RootState } from '../../redux/store';
+import { getUserList } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
-// @types
-import { ProductState } from '../../@types/products';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import ProductNewForm from '../../components/_dashboard/e-commerce/ProductNewForm';
+import CoralPhasesTypeNewForm from '../../components/_dashboard/user/CoralPhasesTypeNewForm';
+
 // ----------------------------------------------------------------------
 
-export default function EcommerceProductCreate() {
+export default function PhasesTypeCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { name } = useParams();
-  const { products } = useSelector((state: { product: ProductState }) => state.product);
+  const { userList } = useSelector((state: RootState) => state.user);
   const isEdit = pathname.includes('edit');
-  const currentProduct = products.find((product) => paramCase(product.name) === name);
+  const currentUser = userList.find((user) => paramCase(user.name) === name);
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getUserList());
   }, [dispatch]);
 
   return (
-    <Page title="Ecommerce: Create a new area | Minimal-UI">
+    <Page title="Coral: Create a new list | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new area' : 'Edit area'}
+          heading={!isEdit ? 'Create a new phases' : 'Edit coral phases'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            {
-              name: 'Area',
-              href: PATH_DASHBOARD.eCommerce.root
-            },
-            { name: !isEdit ? 'New area' : name }
+            { name: 'Phases', href: PATH_DASHBOARD.user.root },
+            { name: !isEdit ? 'New phases' : name }
           ]}
         />
 
-        <ProductNewForm isEdit={isEdit} currentProduct={currentProduct} />
+        <CoralPhasesTypeNewForm isEdit={isEdit} currentUser={currentUser} />
       </Container>
     </Page>
   );
