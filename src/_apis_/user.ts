@@ -14,7 +14,8 @@ import {
   UserManager,
   UserAddressBook,
   CreditCard,
-  UserInvoice
+  UserInvoice,
+  AreaProvice
 } from '../@types/user';
 
 // ----------------------------------------------------------------------
@@ -310,3 +311,16 @@ mock.onGet('/api/user/posts').reply(() => {
 
   return [200, { posts }];
 });
+
+// ----------------------------------------------------------------------
+
+// mock.onGet('/api/user/manage-area-provice').reply(() => {
+//   const provice: AreaProvice[] = [
+//     {
+//       id: 1,
+//       name: 'son',
+//       country: 'hello'
+//     }
+//   ];
+//   return [200, { provice }];
+// });

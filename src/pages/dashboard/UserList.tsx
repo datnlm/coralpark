@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
@@ -21,9 +22,10 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import { manageCoral } from '_apis_/Coral';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser } from '../../redux/slices/user';
+import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -90,8 +92,9 @@ export default function UserList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
-
   const { userList } = useSelector((state: RootState) => state.user);
+  const userLogin = useSelector((state: RootState) => state.user.coralList);
+  const AreaProvice = useSelector((state: RootState) => state.user.proviceList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -101,6 +104,8 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getUserList());
+    dispatch(getAreaProvice());
+    dispatch(getListCoral());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -154,12 +159,24 @@ export default function UserList() {
   const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
+  // if (companiesList !== null) {
+  //   companiesList.map((item, index) => {
+  //     return (
+  //       <div key={index}>
+  //         <h1>{item[index]}</h1>
+  //       </div>
+  //     );
+  //   });
+  // }
 
+  userLogin.map((item, index) => {
+    console.log(item.name);
+  });
   return (
     <Page title="Coral: List | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral List"
+          heading="Coral list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Coral', href: PATH_DASHBOARD.user.root },
@@ -176,7 +193,6 @@ export default function UserList() {
             </Button>
           }
         />
-
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -202,7 +218,7 @@ export default function UserList() {
                     .map((row) => {
                       const { id, name, role, status, company, avatarUrl, isVerified } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
+                      console.log(AreaProvice);
                       return (
                         <TableRow
                           hover

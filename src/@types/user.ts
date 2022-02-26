@@ -1,6 +1,9 @@
 // ----------------------------------------------------------------------
 
 import { FormikProps } from 'formik';
+import { type } from 'os';
+import internal from 'stream';
+import { StringLocale } from 'yup/lib/locale';
 
 export type UserInvoice = {
   id: string;
@@ -135,3 +138,29 @@ export type AccountBillingFormikProps = FormikProps<{
   cardExpired: string;
   cardCvv: string;
 }>;
+
+//Coral park
+
+export type AreaProvice = {
+  id: number;
+  name: string;
+  country: string;
+};
+
+//Coral type
+export type Coral = {
+  id: number;
+  name: string;
+  imageUrl: string;
+  scientificName: string;
+  longevity: number;
+  exhibitSocial: string;
+  sexualBehaviors: string;
+  nutrition: string;
+  colour: string;
+  description: string;
+  coralTypeId: number;
+  status: number;
+  statusEnum: string;
+  speciesName: string;
+};
