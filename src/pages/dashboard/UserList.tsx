@@ -169,9 +169,6 @@ export default function UserList() {
   //   });
   // }
 
-  userLogin.map((item, index) => {
-    console.log(item.name);
-  });
   return (
     <Page title="Coral: List | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
