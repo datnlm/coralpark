@@ -1,3 +1,4 @@
+import { manageCoral } from '_apis_/Coral';
 import { map, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
@@ -14,7 +15,9 @@ import {
   UserInvoice,
   UserManager,
   UserAddressBook,
-  NotificationSettings
+  NotificationSettings,
+  AreaProvice,
+  Coral
 } from '../../@types/user';
 
 // ----------------------------------------------------------------------
@@ -33,6 +36,8 @@ type UserState = {
   addressBook: UserAddressBook[];
   invoices: UserInvoice[];
   notifications: NotificationSettings | null;
+  proviceList: AreaProvice[];
+  coralList: Coral[];
 };
 
 const initialState: UserState = {
@@ -48,7 +53,9 @@ const initialState: UserState = {
   cards: null,
   addressBook: [],
   invoices: [],
-  notifications: null
+  notifications: null,
+  proviceList: [],
+  coralList: []
 };
 
 const slice = createSlice({
@@ -153,6 +160,18 @@ const slice = createSlice({
     getNotificationsSuccess(state, action) {
       state.isLoading = false;
       state.notifications = action.payload;
+    },
+
+    // GET PROVICE
+    getAreaProvice(state, action) {
+      state.isLoading = false;
+      state.proviceList = action.payload;
+    },
+
+    // GET LISTCORAL
+    getListCoral(state, action) {
+      state.isLoading = false;
+      state.coralList = action.payload;
     }
   }
 });
@@ -247,8 +266,6 @@ export function getUserList() {
   };
 }
 
-// ----------------------------------------------------------------------
-
 export function getCards() {
   return async () => {
     dispatch(slice.actions.startLoading());
@@ -311,6 +328,37 @@ export function getUsers() {
     try {
       const response = await axios.get('/api/user/all');
       dispatch(slice.actions.getUsersSuccess(response.data.users));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// CoralPark
+// ----------------------------------------------------------------------
+
+export function getAreaProvice() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.get('/api/user/manage-area-provice');
+      dispatch(slice.actions.getAreaProvice(response.data.provice));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// get Coral
+
+export function getListCoral() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      manageCoral.getListCoral().then((response) => {
+        dispatch(slice.actions.getListCoral(response.data.items));
+        // console.log(response!.data!.items);
+      });
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
@@ -21,15 +22,16 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser } from '../../redux/slices/user';
+import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { UserManager } from '../../@types/user';
+import { UserManager, Coral } from '../../@types/user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -44,7 +46,8 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'company', label: 'Scientific Name', alignRight: false },
   { id: 'role', label: 'Type', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'isVerified', label: 'Color', alignRight: false },
+  { id: 'statusss', label: 'longevity', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -86,12 +89,30 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
+function applySortFilterCoral(
+  array: Coral[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
+  const stabilizedThis = array.map((el, index) => [el, index] as const);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(array, (_coral) => _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+  }
+  return stabilizedThis.map((el) => el[0]);
+}
+
 export default function UserList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
-
   const { userList } = useSelector((state: RootState) => state.user);
+  const coralList = useSelector((state: RootState) => state.user.coralList);
+  const AreaProvice = useSelector((state: RootState) => state.user.proviceList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -101,6 +122,8 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getUserList());
+    dispatch(getAreaProvice());
+    dispatch(getListCoral());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -152,14 +175,24 @@ export default function UserList() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
 
   const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredCorals = applySortFilterCoral(coralList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
+  // if (companiesList !== null) {
+  //   companiesList.map((item, index) => {
+  //     return (
+  //       <div key={index}>
+  //         <h1>{item[index]}</h1>
+  //       </div>
+  //     );
+  //   });
+  // }
 
   return (
     <Page title="Coral: List | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral List"
+          heading="Coral list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Coral', href: PATH_DASHBOARD.user.root },
@@ -176,7 +209,6 @@ export default function UserList() {
             </Button>
           }
         />
-
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -197,12 +229,21 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
+                  {filteredCorals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                      const {
+                        id,
+                        name,
+                        speciesName,
+                        status,
+                        statusEnum,
+                        colour,
+                        imageUrl,
+                        longevity
+                      } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
+                      console.log(AreaProvice);
                       return (
                         <TableRow
                           hover
@@ -217,26 +258,30 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                          <TableCell align="left">{speciesName}</TableCell>
+                          <TableCell align="left">{statusEnum}</TableCell>
+                          <TableCell align="left">{colour}</TableCell>
+                          <TableCell align="left">{longevity}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status === 'banned' && 'error') || 'success'}
+                              color={(status === 0 && 'error') || 'success'}
                             >
-                              {sentenceCase(status)}
+                              {status == 1 ? 'Available' : 'deleted'}
                             </Label>
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu onDelete={() => handleDeleteUser(id)} userName={name} />
+                            <UserMoreMenu
+                              onDelete={() => handleDeleteUser(id.toString())}
+                              userName={name}
+                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -263,7 +308,7 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={userList.length}
+            count={coralList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

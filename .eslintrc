@@ -1,13 +1,6 @@
 {
-  "plugins": [
-    "prettier",
-    "@typescript-eslint"
-  ],
-  "extends": [
-    "airbnb-typescript",
-    "react-app",
-    "prettier"
-  ],
+  "plugins": ["prettier", "@typescript-eslint"],
+  "extends": ["airbnb-typescript", "react-app", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -20,6 +13,9 @@
     }
   },
   "rules": {
+    "arrow-body-style": 0,
+    "no-use-before-define": ["off"],
+    "max-lines-per-function": ["off"],
     "max-len": 0,
     "no-alert": 0,
     "no-shadow": 0,
@@ -49,10 +45,8 @@
     "@typescript-eslint/naming-convention": 0,
     "jsx-a11y/control-has-associated-label": 0,
     "import/no-extraneous-dependencies": 0,
-    "object-curly-spacing": [
-      1,
-      "always"
-    ],
+
+    "object-curly-spacing": [1, "always"],
     "@typescript-eslint/no-unused-vars": [
       1,
       {
@@ -61,12 +55,9 @@
       }
     ],
     "prettier/prettier": [
-      2,
+      "error",
       {
-        "printWidth": 100,
-        "singleQuote": true,
-        "trailingComma": "none",
-        "tabWidth": 2
+        "endOfLine": "auto"
       }
     ]
   }
