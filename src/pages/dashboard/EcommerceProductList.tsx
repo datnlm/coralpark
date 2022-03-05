@@ -242,7 +242,7 @@ export default function EcommerceProductList() {
                                 alignItems: 'center'
                               }}
                             >
-                              <ThumbImgStyle alt={name} src={cover} />
+                              {/* <ThumbImgStyle alt={name} src={cover} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>

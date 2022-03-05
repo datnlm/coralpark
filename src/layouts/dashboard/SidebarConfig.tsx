@@ -15,6 +15,9 @@ const ICONS = {
   cart: getIcon('ic_cart'),
   chat: getIcon('ic_chat'),
   mail: getIcon('ic_mail'),
+  coral: getIcon('ic_coral'),
+  area: getIcon('ic_area'),
+  phases: getIcon('ic_phases'),
   user: getIcon('ic_user'),
   calendar: getIcon('ic_calendar'),
   ecommerce: getIcon('ic_ecommerce'),
@@ -48,7 +51,7 @@ const sidebarConfig = [
       {
         title: 'coral',
         path: PATH_DASHBOARD.user.root,
-        icon: ICONS.user,
+        icon: ICONS.coral,
         children: [
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.user.list },
@@ -66,7 +69,7 @@ const sidebarConfig = [
       {
         title: 'phases',
         path: PATH_DASHBOARD.user.root,
-        icon: ICONS.user,
+        icon: ICONS.phases,
         children: [
           { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
           { title: 'phases', path: PATH_DASHBOARD.user.phases }
@@ -77,7 +80,7 @@ const sidebarConfig = [
       {
         title: 'Area',
         path: PATH_DASHBOARD.eCommerce.root,
-        icon: ICONS.cart,
+        icon: ICONS.area,
         children: [
           // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
           // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
