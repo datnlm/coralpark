@@ -29,18 +29,18 @@ const ICONS = {
 const sidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
-  {
-    subheader: 'general',
-    items: [
-      {
-        title: 'app',
-        path: PATH_DASHBOARD.general.app,
-        icon: ICONS.dashboard
-      },
-      { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-      { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics }
-    ]
-  },
+  // {
+  //   subheader: 'general',
+  //   items: [
+  //     {
+  //       title: 'app',
+  //       path: PATH_DASHBOARD.general.app,
+  //       icon: ICONS.dashboard
+  //     },
+  //     { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+  //     { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics }
+  //   ]
+  // },
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
