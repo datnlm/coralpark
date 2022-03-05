@@ -189,7 +189,7 @@ export default function UserList() {
   // }
 
   return (
-    <Page title="Coral: List | Minimal-UI">
+    <Page title="Coral: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Coral list"
