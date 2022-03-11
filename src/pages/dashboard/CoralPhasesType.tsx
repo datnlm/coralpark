@@ -31,7 +31,7 @@ export default function PhasesTypeCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Coral: Create a new list | Minimal-UI">
+    <Page title="Coral: Create a new list">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new phases' : 'Edit coral phases'}

@@ -1179,6 +1179,13 @@
   dependencies:
     "regenerator-runtime" "^0.13.4"
 
+"@babel/runtime@^7.16.4":
+  "integrity" "sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw=="
+  "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.17.2.tgz"
+  "version" "7.17.2"
+  dependencies:
+    "regenerator-runtime" "^0.13.4"
+
 "@babel/runtime@7.12.1":
   "integrity" "sha512-J5AIf3vPj3UwXaAzb5j1xM4WAQDX3EMgemF8rjCP3SoW09LfRKAXQKt6CoVYl230P6iWdRcBbnLDDdnqWxZSCA=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.12.1.tgz"
@@ -2630,13 +2637,14 @@
   "version" "1.1.0"
 
 "@react-pdf/font@^2.0.10":
-  "integrity" "sha512-viblR5tbZrZ5a3lOK5N7TSN7Qy6mhTrfypiL9NffF2Yi1vCFg7NyrpYXf6n/IKNZzwEa5ScpBnWSU/k5l3r2vQ=="
-  "resolved" "https://registry.npmjs.org/@react-pdf/font/-/font-2.0.10.tgz"
-  "version" "2.0.10"
+  "integrity" "sha512-4XwdD4S9HoiuhUQZvCGTFz+baYqowUcq7+HknRlMEk0HQOL3Rnnqe7Sxlv8ap208bHUsdsQFMjxlW8D0BS6C0w=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/font/-/font-2.1.1.tgz"
+  "version" "2.1.1"
   dependencies:
-    "@react-pdf/fontkit" "^2.0.6"
-    "@react-pdf/types" "^2.0.3"
-    "cross-fetch" "^3.0.4"
+    "@babel/runtime" "^7.16.4"
+    "@react-pdf/fontkit" "^2.1.0"
+    "@react-pdf/types" "^2.0.8"
+    "cross-fetch" "^3.1.5"
     "is-url" "^1.2.4"
 
 "@react-pdf/fontkit@^2.0.6":
@@ -2653,28 +2661,44 @@
     "tiny-inflate" "^1.0.2"
     "unicode-trie" "^0.3.0"
 
-"@react-pdf/image@^2.0.3":
-  "integrity" "sha512-7PbId4yS1VCOj3rkeLsA8OmPiah2nkLXbBIxBpq/pyU+vcc0EqBhzSy/9Wkhw23uV5AZxE26V+ngMNhWdcgctw=="
-  "resolved" "https://registry.npmjs.org/@react-pdf/image/-/image-2.0.3.tgz"
-  "version" "2.0.3"
+"@react-pdf/fontkit@^2.1.0":
+  "integrity" "sha512-/t7nOtH0XAgN7kPJtVfXQL78YmfUanhPc0HEIVgS0YdMTAtZJT0aIQ2HoBWyyYmlsDlsWyGkb78Hf4b1y5QaPQ=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/fontkit/-/fontkit-2.1.0.tgz"
+  "version" "2.1.0"
   dependencies:
-    "@react-pdf/png-js" "^2.0.2"
-    "cross-fetch" "^3.0.4"
+    "@babel/runtime" "^7.16.4"
+    "@react-pdf/unicode-properties" "^2.5.0"
+    "brotli" "^1.2.0"
+    "clone" "^1.0.4"
+    "deep-equal" "^1.0.0"
+    "dfa" "^1.2.0"
+    "restructure" "^0.5.3"
+    "tiny-inflate" "^1.0.2"
+    "unicode-trie" "^0.3.0"
+
+"@react-pdf/image@^2.1.1":
+  "integrity" "sha512-Uh9N1HBU5QGP1QxuIhpVES8FAQsSy2/IGrCHoCCzUUuvbUKf+Mezl3+gvaS4fkWbENPpZ9q6u2C3yL5IqRirsw=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/image/-/image-2.1.1.tgz"
+  "version" "2.1.1"
+  dependencies:
+    "@babel/runtime" "^7.16.4"
+    "@react-pdf/png-js" "^2.1.0"
+    "cross-fetch" "^3.1.5"
 
 "@react-pdf/layout@^2.0.16":
-  "integrity" "sha512-MTFLmnVF8we2UP1rNHW2gtxBOA/CAzJ+YOQx9FBwGR2r0hMG3pcduoAZdEcpeCHc0KuYcGTjB3vuML+LZT1VjQ=="
-  "resolved" "https://registry.npmjs.org/@react-pdf/layout/-/layout-2.0.16.tgz"
-  "version" "2.0.16"
+  "integrity" "sha512-ddpXNRAU1JNHL+AUQEFO2RFolDrtqs/Z0Gb8fjicCcWinthpqkeLdNMWYA5bQuUIzuJXONAQDGd6JLomv2Wayg=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/layout/-/layout-2.1.1.tgz"
+  "version" "2.1.1"
   dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-pdf/image" "^2.0.3"
-    "@react-pdf/pdfkit" "^2.0.11"
-    "@react-pdf/primitives" "^2.0.0"
-    "@react-pdf/stylesheet" "^2.0.8"
-    "@react-pdf/textkit" "^2.0.5"
-    "@react-pdf/types" "^2.0.3"
-    "@react-pdf/yoga" "^2.0.2"
-    "cross-fetch" "^3.0.4"
+    "@babel/runtime" "^7.16.4"
+    "@react-pdf/image" "^2.1.1"
+    "@react-pdf/pdfkit" "^2.1.0"
+    "@react-pdf/primitives" "^2.0.2"
+    "@react-pdf/stylesheet" "^2.1.0"
+    "@react-pdf/textkit" "^2.1.0"
+    "@react-pdf/types" "^2.0.8"
+    "@react-pdf/yoga" "^2.0.4"
+    "cross-fetch" "^3.1.5"
     "emoji-regex" "^8.0.0"
     "queue" "^6.0.1"
     "ramda" "^0.26.1"
@@ -2688,15 +2712,35 @@
     "@react-pdf/png-js" "^2.0.2"
     "crypto-js" "^4.0.0"
 
+"@react-pdf/pdfkit@^2.1.0":
+  "integrity" "sha512-XS/mBgQadBEyz5b79L1rGOiPiX+9oZL8TlOV9PG9mGHS9VyrK7rieysay4azI/67a1nlRs2XyRETELPlqHYsHA=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/pdfkit/-/pdfkit-2.1.0.tgz"
+  "version" "2.1.0"
+  dependencies:
+    "@babel/runtime" "^7.16.4"
+    "@react-pdf/fontkit" "^2.1.0"
+    "@react-pdf/png-js" "^2.1.0"
+    "crypto-js" "^4.0.0"
+
 "@react-pdf/png-js@^2.0.2":
   "integrity" "sha512-hdOxW8JiWKy1JtocfMG6RhNFRLJeJIHOdAPg9CNpg4Az7PrDdtPoEZfQ1rXSuPhX2iHH5Brfb3Epv+VvUl7BKg=="
   "resolved" "https://registry.npmjs.org/@react-pdf/png-js/-/png-js-2.0.2.tgz"
   "version" "2.0.2"
 
+"@react-pdf/png-js@^2.1.0":
+  "integrity" "sha512-S5T5qGOlDK6VUJBVGkltNcPFEOWJW5FAD5IWkp9ATYPehC7L1d0CwuFlkFDaHh9ySmm46fKRHfn4YNQguq9gmw=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/png-js/-/png-js-2.1.0.tgz"
+  "version" "2.1.0"
+
 "@react-pdf/primitives@^2.0.0":
   "integrity" "sha512-Yh8TEjzyObnalM271znZVJsy6BiY+s6uTOCjLJL8jSvU1rGA1p45VjK7AnNpgH+n+JzpddXQweT2oE2HWGuYFA=="
   "resolved" "https://registry.npmjs.org/@react-pdf/primitives/-/primitives-2.0.0.tgz"
   "version" "2.0.0"
+
+"@react-pdf/primitives@^2.0.2":
+  "integrity" "sha512-NkbOje/Sd/ziqfp9eYFc0ACeytmZB9MIrhx0j1rDT3gIhrjo19sS7R6Iap50gNgSphgx4Nh7GxWu/usBiuTmnw=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/primitives/-/primitives-2.0.2.tgz"
+  "version" "2.0.2"
 
 "@react-pdf/render@^2.0.10":
   "integrity" "sha512-nAKJDkRlvI0Jvo7sJWBxtb4EGG4GpyZKXAA0XlJQ4dGktZBRcJn5lquBdM3yHWbipLUACRT7rvnufae7alg8fw=="
@@ -2731,15 +2775,17 @@
     "react-reconciler" "^0.23.0"
     "scheduler" "^0.15.0"
 
-"@react-pdf/stylesheet@^2.0.8":
-  "integrity" "sha512-4h2BbZv9dSqiZBlI3FySvjUAXFwydXLB+1MycvdNHI+6FUKtMN6FEaOhb6DpuqRl268D/yhKtENckdzIw5xhoQ=="
-  "resolved" "https://registry.npmjs.org/@react-pdf/stylesheet/-/stylesheet-2.0.8.tgz"
-  "version" "2.0.8"
+"@react-pdf/stylesheet@^2.1.0":
+  "integrity" "sha512-F9v++z1QhlnCONkwdUJm1C/FNM9WkTiTRp+OCe6za2iZvrs9sGhSnTHFMOb5HOZYHsAXx+pLgHqE4WP+60SunQ=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/stylesheet/-/stylesheet-2.1.0.tgz"
+  "version" "2.1.0"
   dependencies:
-    "@react-pdf/types" "^2.0.3"
+    "@babel/runtime" "^7.16.4"
+    "@react-pdf/types" "^2.0.8"
     "color-string" "^1.5.3"
     "hsl-to-hex" "^1.0.0"
     "media-engine" "^1.0.3"
+    "postcss-value-parser" "^4.1.0"
     "ramda" "^0.26.1"
 
 "@react-pdf/textkit@^2.0.5":
@@ -2752,10 +2798,25 @@
     "hyphen" "^1.6.4"
     "ramda" "^0.26.1"
 
+"@react-pdf/textkit@^2.1.0":
+  "integrity" "sha512-caFluGk2aHgPjeGxqcYvH3rake/01K5zQfjQ7RVtjye5ZvlSgEFSuorRynwFPs92Vw7tA9TjvVnNc3GDsWghgQ=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/textkit/-/textkit-2.1.0.tgz"
+  "version" "2.1.0"
+  dependencies:
+    "@babel/runtime" "^7.16.4"
+    "@react-pdf/unicode-properties" "^2.5.0"
+    "hyphen" "^1.6.4"
+    "ramda" "^0.26.1"
+
 "@react-pdf/types@^2.0.3":
   "integrity" "sha512-yrcq/hkDU7+hcZKf3+NN4sa3gYcOfdPBaJPsaCq7aNI/Wk4FNG+R5qimo5PSiOiaowkkXFZtFadVq0RlbrWXeg=="
   "resolved" "https://registry.npmjs.org/@react-pdf/types/-/types-2.0.3.tgz"
   "version" "2.0.3"
+
+"@react-pdf/types@^2.0.8":
+  "integrity" "sha512-/LngaZV8Z7+XEvbT2IVPbSxmU7pPYqCgdrrAkjGtdHsuGHRJegJMTBUEOellOY5Pqaqy3yvNTz/kZ9URrv+McQ=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/types/-/types-2.0.8.tgz"
+  "version" "2.0.8"
 
 "@react-pdf/unicode-properties@^2.4.1":
   "integrity" "sha512-B6jnyp7KaTcQeWbkk5wlBEWrGrsGAMtcWVHIyUArBK2HXo3CDkCyx3/AiRsZYgBLBJzjmD7Qv6nPK9ksXNQD/Q=="
@@ -2764,10 +2825,17 @@
   dependencies:
     "unicode-trie" "^0.3.0"
 
-"@react-pdf/yoga@^2.0.2":
-  "integrity" "sha512-BKEbxIw1XHy3BDYAaOOjrJRLQZUmh+DIv+WIYO6MbwPXP7WLhbggqhC1MOLS3ZyNyBC12VInsYEdpF1l5ia3ng=="
-  "resolved" "https://registry.npmjs.org/@react-pdf/yoga/-/yoga-2.0.2.tgz"
-  "version" "2.0.2"
+"@react-pdf/unicode-properties@^2.5.0":
+  "integrity" "sha512-L311rb7e2LInUcGpujxBjNQSU8C+4DHk83j7Q93mJwmsapCzwQmas2LxAJElGGQie90db21/X8sUniSLjrlceA=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/unicode-properties/-/unicode-properties-2.5.0.tgz"
+  "version" "2.5.0"
+  dependencies:
+    "unicode-trie" "^0.3.0"
+
+"@react-pdf/yoga@^2.0.4":
+  "integrity" "sha512-bsU48GQ8E4LEQ38AtyQPQZ9oEATMpolGPFewgI4sBXOZBNH2miLtoBTbyB/xEOMuBcyqtvJQwSNg2czSZjrlyQ=="
+  "resolved" "https://registry.npmjs.org/@react-pdf/yoga/-/yoga-2.0.4.tgz"
+  "version" "2.0.4"
   dependencies:
     "@types/yoga-layout" "^1.9.3"
 
@@ -3969,9 +4037,9 @@
   "version" "4.1.0"
 
 "ansi-regex@^5.0.0":
-  "integrity" "sha512-bY6fj56OUQ0hU1KjFNDQuJFezqKdrAyFdIevADiqrWHwSlbmBNMHp5ak2f40Pm8JTFyM2mqxkG6ngkHO11f/lg=="
-  "resolved" "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.0.tgz"
-  "version" "5.0.0"
+  "integrity" "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ=="
+  "resolved" "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz"
+  "version" "5.0.1"
 
 "ansi-styles@^3.2.0", "ansi-styles@^3.2.1":
   "integrity" "sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA=="
@@ -4249,12 +4317,12 @@
     "fast-deep-equal" "^3.1.3"
     "is-buffer" "^2.0.3"
 
-"axios@^0.21.1", "axios@>= 0.9.0":
-  "integrity" "sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA=="
-  "resolved" "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz"
-  "version" "0.21.1"
+"axios@^0.21.4", "axios@>= 0.9.0":
+  "integrity" "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz"
+  "version" "0.21.4"
   dependencies:
-    "follow-redirects" "^1.10.0"
+    "follow-redirects" "^1.14.0"
 
 "axobject-query@^2.2.0":
   "integrity" "sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA=="
@@ -5534,6 +5602,13 @@
   dependencies:
     "node-fetch" "2.6.1"
 
+"cross-fetch@^3.1.5":
+  "integrity" "sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw=="
+  "resolved" "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.5.tgz"
+  "version" "3.1.5"
+  dependencies:
+    "node-fetch" "2.6.7"
+
 "cross-spawn@^6.0.0":
   "integrity" "sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ=="
   "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-6.0.5.tgz"
@@ -6208,6 +6283,11 @@
   dependencies:
     "address" "^1.0.1"
     "debug" "^2.6.0"
+
+"dfa@^1.2.0":
+  "integrity" "sha512-ED3jP8saaweFTjeGX8HQPjeC1YYyZs98jGNZx6IiBvxW7JG5v492kamAQB3m2wop07CvU/RQmzcKr6bgcC5D/Q=="
+  "resolved" "https://registry.npmjs.org/dfa/-/dfa-1.2.0.tgz"
+  "version" "1.2.0"
 
 "dfa@1.1.0":
   "integrity" "sha1-0wIYvRDQMPpCHfPrvIIoVGOjF4E="
@@ -7497,10 +7577,10 @@
     "inherits" "^2.0.3"
     "readable-stream" "^2.3.6"
 
-"follow-redirects@^1.0.0", "follow-redirects@^1.10.0":
-  "integrity" "sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg=="
-  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.1.tgz"
-  "version" "1.14.1"
+"follow-redirects@^1.0.0", "follow-redirects@^1.14.0":
+  "integrity" "sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.9.tgz"
+  "version" "1.14.9"
 
 "for-in@^1.0.2":
   "integrity" "sha1-gQaNKVqBQuwKxybG4iAMMPttXoA="
@@ -8349,9 +8429,9 @@
   "version" "5.1.8"
 
 "immer@^9.0.1":
-  "integrity" "sha512-2WuIehr2y4lmYz9gaQzetPR2ECniCifk4ORaQbU3g5EalLt+0IVTosEPJ5BoYl/75ky2mivzdRzV8wWgQGOSYQ=="
-  "resolved" "https://registry.npmjs.org/immer/-/immer-9.0.5.tgz"
-  "version" "9.0.5"
+  "integrity" "sha512-lk7UNmSbAukB5B6dh9fnh5D0bJTOFKxVg2cyJWTYrWRfhLrLMBquONcUs3aFq507hNoIZEDDh8lb8UtOizSMhA=="
+  "resolved" "https://registry.npmjs.org/immer/-/immer-9.0.12.tgz"
+  "version" "9.0.12"
 
 "immer@8.0.1":
   "integrity" "sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA=="
@@ -10513,7 +10593,14 @@
     "lower-case" "^2.0.2"
     "tslib" "^2.0.3"
 
-"node-fetch@^2.6.1", "node-fetch@2.6.1":
+"node-fetch@^2.6.1", "node-fetch@2.6.7":
+  "integrity" "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ=="
+  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
+  "version" "2.6.7"
+  dependencies:
+    "whatwg-url" "^5.0.0"
+
+"node-fetch@2.6.1":
   "integrity" "sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw=="
   "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.1.tgz"
   "version" "2.6.1"
@@ -10663,9 +10750,9 @@
     "boolbase" "~1.0.0"
 
 "nth-check@^2.0.0":
-  "integrity" "sha512-i4sc/Kj8htBrAiH1viZ0TgU8Y5XqCaV/FziYK6TBczxmeKm3AEFWqqF3195yKudrarqy7Zu80Ra5dobFjn9X/Q=="
-  "resolved" "https://registry.npmjs.org/nth-check/-/nth-check-2.0.0.tgz"
-  "version" "2.0.0"
+  "integrity" "sha512-it1vE95zF6dTT9lBsYbxvqh0Soy4SPowchj0UBGj/V6cTPnXXtQOPUbhZ6CmGzAD/rW22LQK6E96pcdJXk4A4w=="
+  "resolved" "https://registry.npmjs.org/nth-check/-/nth-check-2.0.1.tgz"
+  "version" "2.0.1"
   dependencies:
     "boolbase" "^1.0.0"
 
@@ -14299,9 +14386,9 @@
   "version" "1.1.3"
 
 "tar@^6.0.2":
-  "integrity" "sha512-DUCttfhsnLCjwoDoFcI+B2iJgYa93vBnDUATYEeRx6sntCTdN01VnqsIuTlALXla/LWooNg0yEGeB+Y8WdFxGA=="
-  "resolved" "https://registry.npmjs.org/tar/-/tar-6.1.0.tgz"
-  "version" "6.1.0"
+  "integrity" "sha512-an/KZQzQUkZCkuoAA64hM92X0Urb6VpRhAFllDzz44U2mcD5scmT3zBc4VgVpkugF580+DQn8eAFSyoQt0tznA=="
+  "resolved" "https://registry.npmjs.org/tar/-/tar-6.1.11.tgz"
+  "version" "6.1.11"
   dependencies:
     "chownr" "^2.0.0"
     "fs-minipass" "^2.0.0"
@@ -14455,9 +14542,9 @@
   "version" "2.0.3"
 
 "tmpl@1.0.x":
-  "integrity" "sha1-I2QN17QtAEM5ERQIIOXPRA5SHdE="
-  "resolved" "https://registry.npmjs.org/tmpl/-/tmpl-1.0.4.tgz"
-  "version" "1.0.4"
+  "integrity" "sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw=="
+  "resolved" "https://registry.npmjs.org/tmpl/-/tmpl-1.0.5.tgz"
+  "version" "1.0.5"
 
 "to-arraybuffer@^1.0.0":
   "integrity" "sha1-fSKbH8xjfkZsoIEYCDanqr/4P0M="
@@ -14531,6 +14618,11 @@
   "version" "2.1.0"
   dependencies:
     "punycode" "^2.1.1"
+
+"tr46@~0.0.3":
+  "integrity" "sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o="
+  "resolved" "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
+  "version" "0.0.3"
 
 "trough@^1.0.0":
   "integrity" "sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA=="
@@ -14891,9 +14983,9 @@
     "schema-utils" "^3.0.0"
 
 "url-parse@^1.4.3":
-  "integrity" "sha512-HOfCOUJt7iSYzEx/UqgtwKRMC6EU91NFhsCHMv9oM03VJcVo2Qrp8T8kI9D7amFf1cu+/3CEhgb3rF9zL7k85Q=="
-  "resolved" "https://registry.npmjs.org/url-parse/-/url-parse-1.5.1.tgz"
-  "version" "1.5.1"
+  "integrity" "sha512-HpOvhKBvre8wYez+QhHcYiVvVmeF6DVnuSOOPhe3cTum3BnqHhvKaZm8FU5yTiOu/Jut2ZpB2rA/SbBA1JIGlQ=="
+  "resolved" "https://registry.npmjs.org/url-parse/-/url-parse-1.5.9.tgz"
+  "version" "1.5.9"
   dependencies:
     "querystringify" "^2.1.1"
     "requires-port" "^1.0.0"
@@ -15112,6 +15204,11 @@
   "resolved" "https://registry.npmjs.org/web-vitals/-/web-vitals-2.1.0.tgz"
   "version" "2.1.0"
 
+"webidl-conversions@^3.0.0":
+  "integrity" "sha1-JFNCdeKnvGvnvIZhHMFq4KVlSHE="
+  "resolved" "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"
+  "version" "3.0.1"
+
 "webidl-conversions@^5.0.0":
   "integrity" "sha512-VlZwKPCkYKxQgeSbH5EyngOmRp7Ww7I9rQLERETtf5ofd9pGeswWiOtogpEO850jziPRarreGxn5QIiTqpb2wA=="
   "resolved" "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-5.0.0.tgz"
@@ -15269,6 +15366,14 @@
   "integrity" "sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g=="
   "resolved" "https://registry.npmjs.org/whatwg-mimetype/-/whatwg-mimetype-2.3.0.tgz"
   "version" "2.3.0"
+
+"whatwg-url@^5.0.0":
+  "integrity" "sha1-lmRU6HZUYuN2RNNib2dCzotwll0="
+  "resolved" "https://registry.npmjs.org/whatwg-url/-/whatwg-url-5.0.0.tgz"
+  "version" "5.0.0"
+  dependencies:
+    "tr46" "~0.0.3"
+    "webidl-conversions" "^3.0.0"
 
 "whatwg-url@^8.0.0", "whatwg-url@^8.5.0":
   "integrity" "sha512-gAojqb/m9Q8a5IV96E3fHJM70AzCkgt4uXYX2O7EmuyOnLrViCQlsEBmF9UQIu3/aeAIp2U17rtbpZWNntQqdg=="

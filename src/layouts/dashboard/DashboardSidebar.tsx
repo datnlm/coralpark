@@ -179,7 +179,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isCollapse && (
+      {/* {!isCollapse && (
         <Box sx={{ px: 2.5, pb: 3, mt: 10, width: 1 }}>
           <DocStyle>
             <DocIcon sx={{ width: 36, height: 36, mb: 2 }} />
@@ -195,7 +195,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             </Button>
           </DocStyle>
         </Box>
-      )}
+      )} */}
     </Scrollbar>
   );
 

@@ -170,7 +170,7 @@ export default function EcommerceProductList() {
   const isProductNotFound = filteredProducts.length === 0;
 
   return (
-    <Page title="Area: Area List | Minimal-UI">
+    <Page title="Area: Area List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Area List"
@@ -242,7 +242,7 @@ export default function EcommerceProductList() {
                                 alignItems: 'center'
                               }}
                             >
-                              <ThumbImgStyle alt={name} src={cover} />
+                              {/* <ThumbImgStyle alt={name} src={cover} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
