@@ -62,12 +62,12 @@ const menuConfig = [
         items: [{ title: 'Dashboard', path: PATH_DASHBOARD.root }]
       }
     ]
-  },
-  {
-    title: 'Documentation',
-    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
-    path: PATH_DOCS
   }
+  // {
+  //   title: 'Documentation',
+  //   icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+  //   path: PATH_DOCS
+  // }
 ];
 
 export default menuConfig;

@@ -364,3 +364,22 @@ export function getListCoral() {
     }
   };
 }
+
+// Delete Coral
+
+// export function deleteCoral(id: number) {
+//   alert('Deleted 371');
+//   return async () => {
+//     dispatch(slice.actions.startLoading());
+//     try {
+//       manageCoral.deleteCoral(id).then((response) => {
+//         alert(response.status);
+//         if (response.status === 200) {
+//           alert(response.status);
+//         }
+//       });
+//     } catch (error) {
+//       dispatch(slice.actions.hasError(error));
+//     }
+//   };
+// }
