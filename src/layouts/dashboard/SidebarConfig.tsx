@@ -69,7 +69,7 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.blog.root,
         icon: ICONS.blog,
         children: [
-          { title: 'posts', path: PATH_DASHBOARD.blog.posts },
+          { title: 'list', path: PATH_DASHBOARD.blog.posts },
           { title: 'coral Area', path: PATH_DASHBOARD.user.profile }
         ]
       },
