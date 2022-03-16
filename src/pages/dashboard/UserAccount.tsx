@@ -157,7 +157,7 @@ export default function UserCreate() {
   const { name } = useParams();
   const { userList } = useSelector((state: RootState) => state.user);
   const isEdit = pathname.includes('edit');
-  const currentUser = userList.find((user) => paramCase(user.name) === name);
+  // const currentUser = userList.find((user) => paramCase(user.name) === name);
 
   useEffect(() => {
     dispatch(getUserList());
@@ -174,7 +174,8 @@ export default function UserCreate() {
             { name: !isEdit ? 'New coral type' : name }
           ]}
         />
-        <CoralTypeNewForm isEdit={isEdit} currentUser={currentUser} />
+        <CoralTypeNewForm isEdit={isEdit} />
+        {/* <CoralTypeNewForm isEdit={isEdit} currentUser={currentUser} /> */}
       </Container>
     </Page>
   );

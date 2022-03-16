@@ -45,8 +45,7 @@ export default function EcommerceProductCreate() {
             { name: !isEdit ? 'New area' : name }
           ]}
         />
-
-        <ProductNewForm isEdit={isEdit} currentProduct={currentProduct} />
+        <ProductNewForm isEdit={isEdit} />
       </Container>
     </Page>
   );

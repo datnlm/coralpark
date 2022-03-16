@@ -42,7 +42,7 @@ export default function PhasesCreate() {
           ]}
         />
 
-        <CoralPhasesNewForm isEdit={isEdit} currentUser={currentUser} />
+        <CoralPhasesNewForm isEdit={isEdit} />
       </Container>
     </Page>
   );

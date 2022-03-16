@@ -63,19 +63,30 @@ export type Profile = {
 
 export type UserManager = {
   id: string;
-  avatarUrl: string;
   name: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
+  scientific: string;
+  logevity: string;
   country: string;
-  state: string;
-  city: string;
-  zipCode: string;
-  company: string;
-  isVerified: boolean;
-  status: string;
-  role: string;
+  exhibit: string;
+  current: string;
+  sexual: string;
+  nutrition: string;
+  colour: string;
+  type: string;
+  habital: string;
+  bathymetry: string;
+  temperature: string;
+  brightness: string;
+  tides: string;
+  images: string[];
+  description: string;
+};
+
+export type CoralType = {
+  name: string;
+  parent: string;
+  level: string;
+  description: string;
 };
 
 export type UserData = {
@@ -140,7 +151,10 @@ export type AccountBillingFormikProps = FormikProps<{
 }>;
 
 //Coral park
-
+export type CoralArea = {
+  coralId: string;
+  areanID: string;
+};
 export type AreaProvice = {
   id: number;
   name: string;
@@ -163,4 +177,24 @@ export type Coral = {
   status: number;
   statusEnum: string;
   speciesName: string;
+};
+export type PhasesType = {
+  minWeight: string;
+  maxWeight: string;
+  minHigh: string;
+  maxHigh: string;
+  timeForm: string;
+  timeTo: string;
+  coulour: string;
+  coralID: string;
+  phaseID: string;
+};
+export type Phases = {
+  name: string;
+  description: string;
+};
+export type Province = {
+  location: string;
+  adress: string;
+  province: string;
 };

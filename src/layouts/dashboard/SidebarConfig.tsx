@@ -56,15 +56,23 @@ const sidebarConfig = [
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.user.list },
           // { title: 'create', path: PATH_DASHBOARD.user.newUser },
-          { title: 'type', path: PATH_DASHBOARD.user.account },
-          { title: 'coral Area', path: PATH_DASHBOARD.user.profile }
+          { title: 'type', path: PATH_DASHBOARD.user.account }
           // { title: 'edit', path: PATH_DASHBOARD.user.editById },
           // { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
           // { title: 'phases', path: PATH_DASHBOARD.user.phases }
         ]
       },
       // }
-
+      // MANAGEMENT : BLOG
+      {
+        title: 'Coral Area',
+        path: PATH_DASHBOARD.blog.root,
+        icon: ICONS.blog,
+        children: [
+          { title: 'posts', path: PATH_DASHBOARD.blog.posts },
+          { title: 'coral Area', path: PATH_DASHBOARD.user.profile }
+        ]
+      },
       // MANAGEMENT : Phases
       {
         title: 'phases',

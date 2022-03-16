@@ -12,7 +12,7 @@ import MainNavbar from './MainNavbar';
 
 export default function MainLayout() {
   const { pathname } = useLocation();
-  const isHome = pathname === '/login';
+  const isHome = pathname === '/';
 
   return (
     <>

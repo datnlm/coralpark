@@ -13,7 +13,6 @@ import GoogleAnalytics from './components/GoogleAnalytics';
 import NotistackProvider from './components/NotistackProvider';
 import ThemePrimaryColor from './components/ThemePrimaryColor';
 import ThemeLocalization from './components/ThemeLocalization';
-import DashboardLayout from './layouts/dashboard';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +28,7 @@ export default function App() {
               <Settings />
               <ScrollToTop />
               <GoogleAnalytics />
-              {isInitialized ? <Router /> : <DashboardLayout />}
+              {isInitialized ? <Router /> : <LoadingScreen />}
             </NotistackProvider>
           </RtlLayout>
         </ThemeLocalization>

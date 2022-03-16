@@ -17,58 +17,32 @@ import {
   FormControlLabel,
   Autocomplete
 } from '@material-ui/core';
-// utils
-import { fData } from '../../../utils/formatNumber';
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { UserManager } from '../../../@types/user';
-//
-import Label from '../../Label';
-import { UploadAvatar } from '../../upload';
-import countries from './countries';
-
+import { Phases } from '../../../@types/user';
 // ----------------------------------------------------------------------
 
 type CoralPhasesNewFormProps = {
   isEdit: boolean;
-  currentUser?: UserManager;
+  currentPhases?: Phases;
 };
 
-export default function CoralPhasesNewForm({ isEdit, currentUser }: CoralPhasesNewFormProps) {
+export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhasesNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email(),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    address: Yup.string().required('Address is required'),
-    country: Yup.string().required('country is required'),
-    company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    role: Yup.string().required('Role Number is required'),
-    avatarUrl: Yup.mixed().required('Avatar is required')
+    description: Yup.string().required('Description is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
-      address: currentUser?.address || '',
-      country: currentUser?.country || '',
-      state: currentUser?.state || '',
-      city: currentUser?.city || '',
-      zipCode: currentUser?.zipCode || '',
-      avatarUrl: currentUser?.avatarUrl || null,
-      isVerified: currentUser?.isVerified || true,
-      status: currentUser?.status,
-      company: currentUser?.company || '',
-      role: currentUser?.role || ''
+      name: currentPhases?.name || '',
+      description: currentPhases?.description || ''
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -106,87 +80,6 @@ export default function CoralPhasesNewForm({ isEdit, currentUser }: CoralPhasesN
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <Card sx={{ py: 10, px: 3 }}>
-              {isEdit && (
-                <Label
-                  color={values.status !== 'active' ? 'error' : 'success'}
-                  sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
-                >
-                  {values.status}
-                </Label>
-              )}
-              <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.avatarUrl}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.avatarUrl && errors.avatarUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
-                      <br /> max size of {fData(3145728)}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.avatarUrl && errors.avatarUrl}
-                </FormHelperText>
-              </Box>
-
-              {/* {isEdit && (
-                <FormControlLabel
-                  labelPlacement="start"
-                  control={
-                    <Switch
-                      onChange={(event) =>
-                        setFieldValue('status', event.target.checked ? 'banned' : 'active')
-                      }
-                      checked={values.status !== 'active'}
-                    />
-                  }
-                  label={
-                    <>
-                      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                        Banned
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Apply disable account
-                      </Typography>
-                    </>
-                  }
-                  sx={{ mx: 0, mb: 3, width: 1, justifyContent: 'space-between' }}
-                />
-              )} */}
-
-              {/* <FormControlLabel
-                labelPlacement="start"
-                control={<Switch {...getFieldProps('isVerified')} checked={values.isVerified} />}
-                label={
-                  <>
-                    <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                      Email Verified
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      Disabling this will automatically send the user a verification email
-                    </Typography>
-                  </>
-                }
-                sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
-              /> */}
-            </Card>
-          </Grid>
-
           <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
@@ -195,20 +88,19 @@ export default function CoralPhasesNewForm({ isEdit, currentUser }: CoralPhasesN
                     fullWidth
                     label="Phases name"
                     {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    error={Boolean(touched.name && errors.name)}
+                    helperText={touched.name && errors.name}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    // label="Company"
                     label="Description"
                     multiline
                     rows={2}
-                    {...getFieldProps('company')}
-                    // error={Boolean(touched.company && errors.company)}
-                    // helperText={touched.company && errors.company}
+                    {...getFieldProps('description')}
+                    error={Boolean(touched.description && errors.description)}
+                    helperText={touched.description && errors.description}
                   />
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

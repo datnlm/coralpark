@@ -1,42 +1,68 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
+import { LoadingButton } from '@material-ui/lab';
 import {
-  Box,
   Card,
+  Box,
+  Chip,
   Grid,
   Stack,
+  Radio,
   Switch,
+  Select,
   TextField,
+  InputLabel,
   Typography,
+  RadioGroup,
+  FormControl,
+  Autocomplete,
+  InputAdornment,
   FormHelperText,
-  FormControlLabel,
-  Autocomplete
+  FormControlLabel
 } from '@material-ui/core';
-import { QuillEditor } from '../../editor';
 // utils
-import { fData } from '../../../utils/formatNumber';
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
 import { UserManager } from '../../../@types/user';
 //
-import Label from '../../Label';
-import { UploadAvatar } from '../../upload';
-import countries from './countries';
+import { QuillEditor } from '../../editor';
+import { UploadMultiFile } from '../../upload';
 
 // ----------------------------------------------------------------------
+import countries from './countries';
+
+const GENDER_OPTION = ['Men', 'Women', 'Kids'];
+
+const TAGS_OPTION = [
+  'Toy Story 3',
+  'Logan',
+  'Full Metal Jacket',
+  'Dangal',
+  'The Sting',
+  '2001: A Space Odyssey',
+  "Singin' in the Rain",
+  'Toy Story',
+  'Bicycle Thieves',
+  'The Kid',
+  'Inglourious Basterds',
+  'Snatch',
+  '3 Idiots'
+];
+
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
   marginBottom: theme.spacing(1)
 }));
+
+// ----------------------------------------------------------------------
 
 type UserNewFormProps = {
   isEdit: boolean;
@@ -47,48 +73,57 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const NewUserSchema = Yup.object().shape({
+  const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email(),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    address: Yup.string().required('Address is required'),
-    country: Yup.string().required('country is required'),
-    company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    role: Yup.string().required('Role Number is required'),
-    avatarUrl: Yup.mixed().required('Avatar is required')
+    scientific: Yup.string().required('Scientific is required'),
+    logevity: Yup.string().required('Logevity is required'),
+    country: Yup.string().required('Country is required'),
+    exhibit: Yup.string().required('Exhibit is required'),
+    sexual: Yup.string().required('Sexual is required'),
+    nutrition: Yup.string().required('Nutrition is required'),
+    colour: Yup.string().required('Colour is required'),
+    habital: Yup.string().required('Habital is required'),
+    current: Yup.string().required('Current is required'),
+    bathymetry: Yup.string().required('Bathymetry is required'),
+    temperature: Yup.string().required('Temperature is required'),
+    brightness: Yup.string().required('Brightness is required'),
+    tides: Yup.string().required('Tides is required'),
+    description: Yup.string().required('Description is required'),
+    images: Yup.array().min(1, 'Images is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
-      address: currentUser?.address || '',
+      scientific: currentUser?.scientific || '',
+      logevity: currentUser?.logevity || '',
       country: currentUser?.country || '',
-      state: currentUser?.state || '',
-      city: currentUser?.city || '',
-      zipCode: currentUser?.zipCode || '',
-      avatarUrl: currentUser?.avatarUrl || null,
-      isVerified: currentUser?.isVerified || true,
-      status: currentUser?.status,
-      company: currentUser?.company || '',
-      role: currentUser?.role || ''
+      exhibit: currentUser?.exhibit || '',
+      sexual: currentUser?.sexual || '',
+      nutrition: currentUser?.nutrition || '',
+      colour: currentUser?.colour || '',
+      type: currentUser?.type || '',
+      habital: currentUser?.habital || '',
+      current: currentUser?.current || '',
+      bathymetry: currentUser?.bathymetry || '',
+      temperature: currentUser?.temperature || '',
+      brightness: currentUser?.brightness || '',
+      tides: currentUser?.tides || '',
+      description: currentUser?.description || '',
+      images: currentUser?.images || []
     },
-    validationSchema: NewUserSchema,
+    validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         await fakeRequest(500);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.user.list);
+        navigate(PATH_DASHBOARD.eCommerce.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);
-        // setErrors(error);
       }
     }
   });
@@ -98,103 +133,31 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
+      setFieldValue(
+        'images',
+        acceptedFiles.map((file: File | string) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        )
+      );
     },
     [setFieldValue]
   );
+
+  const handleRemoveAll = () => {
+    setFieldValue('images', []);
+  };
+
+  const handleRemove = (file: File | string) => {
+    const filteredItems = values.images.filter((_file: string | File) => _file !== file);
+    setFieldValue('images', filteredItems);
+  };
 
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <Card sx={{ py: 10, px: 3 }}>
-              {isEdit && (
-                <Label
-                  color={values.status !== 'active' ? 'error' : 'success'}
-                  sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
-                >
-                  {values.status}
-                </Label>
-              )}
-
-              <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.avatarUrl}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.avatarUrl && errors.avatarUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
-                      <br /> max size of {fData(3145728)}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.avatarUrl && errors.avatarUrl}
-                </FormHelperText>
-              </Box>
-
-              {/* {isEdit && (
-                <FormControlLabel
-                  labelPlacement="start"
-                  control={
-                    <Switch
-                      onChange={(event) =>
-                        setFieldValue('status', event.target.checked ? 'banned' : 'active')
-                      }
-                      checked={values.status !== 'active'}
-                    />
-                  }
-                  label={
-                    <>
-                      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                        Banned
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Apply disable account
-                      </Typography>
-                    </>
-                  }
-                  sx={{ mx: 0, mb: 3, width: 1, justifyContent: 'space-between' }}
-                />
-              )} */}
-
-              {/* <FormControlLabel
-                labelPlacement="start"
-                control={<Switch {...getFieldProps('isVerified')} checked={values.isVerified} />}
-                label={
-                  <>
-                    <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                      Email Verified
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      Disabling this will automatically send the user a verification email
-                    </Typography>
-                  </>
-                }
-                sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
-              /> */}
-            </Card>
-          </Grid>
-
           <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
@@ -209,9 +172,9 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                   <TextField
                     fullWidth
                     label="Scientific Name"
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
+                    {...getFieldProps('scientific')}
+                    error={Boolean(touched.scientific && errors.scientific)}
+                    helperText={touched.scientific && errors.scientific}
                   />
                 </Stack>
 
@@ -219,14 +182,13 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                   <TextField
                     fullWidth
                     label="Longevity"
-                    {...getFieldProps('phoneNumber')}
-                    error={Boolean(touched.phoneNumber && errors.phoneNumber)}
-                    helperText={touched.phoneNumber && errors.phoneNumber}
+                    {...getFieldProps('logevity')}
+                    error={Boolean(touched.logevity && errors.logevity)}
+                    helperText={touched.logevity && errors.logevity}
                   />
                   <Autocomplete
                     id="country-select-demo"
                     fullWidth
-                    // sx={{ width: 550 }}
                     options={countries}
                     autoHighlight
                     getOptionLabel={(option) => option.label}
@@ -253,86 +215,38 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                       />
                     )}
                   />
-                  {/* <TextField
-                    select
-                    fullWidth
-                    label="Country"
-                    placeholder="Country"
-                    {...getFieldProps('country')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
-                  >
-                    <option value="" />
-                    {countries.map((option) => (
-                      <option key={option.code} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField> */}
                 </Stack>
-
-                {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="State/Region"
-                    {...getFieldProps('state')}
-                    error={Boolean(touched.state && errors.state)}
-                    helperText={touched.state && errors.state}
-                  />
-                  <TextField
-                    fullWidth
-                    label="City"
-                    {...getFieldProps('city')}
-                    error={Boolean(touched.city && errors.city)}
-                    helperText={touched.city && errors.city}
-                  />
-                </Stack> */}
-
-                {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Address"
-                    {...getFieldProps('address')}
-                    error={Boolean(touched.address && errors.address)}
-                    helperText={touched.address && errors.address}
-                  />
-                  <TextField fullWidth label="Zip/Code" {...getFieldProps('zipCode')} />
-                </Stack> */}
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Exhibit Social"
-                    {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    {...getFieldProps('exhibit')}
+                    error={Boolean(touched.exhibit && errors.exhibit)}
+                    helperText={touched.exhibit && errors.exhibit}
                   />
                   <TextField
                     fullWidth
                     label="Sexual Behaviors"
-                    {...getFieldProps('role')}
-                    error={Boolean(touched.role && errors.role)}
-                    helperText={touched.role && errors.role}
+                    {...getFieldProps('sexual')}
+                    error={Boolean(touched.sexual && errors.sexual)}
+                    helperText={touched.sexual && errors.sexual}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    // label="Company"
                     label="Nutrition"
-                    // {...getFieldProps('company')}
-                    {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    {...getFieldProps('nutrition')}
+                    error={Boolean(touched.nutrition && errors.nutrition)}
+                    helperText={touched.nutrition && errors.nutrition}
                   />
                   <TextField
                     fullWidth
-                    // label="Role"
                     label="Colour"
-                    {...getFieldProps('role')}
-                    error={Boolean(touched.role && errors.role)}
-                    helperText={touched.role && errors.role}
+                    {...getFieldProps('colour')}
+                    error={Boolean(touched.colour && errors.colour)}
+                    helperText={touched.colour && errors.colour}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -353,15 +267,15 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                       </option>
                     ))}
                   </TextField>
-                  <TextField
+                  {/* <TextField
                     select
                     fullWidth
                     label="Habital"
-                    placeholder="Country"
-                    {...getFieldProps('country')}
+                    placeholder="Habital"
+                    {...getFieldProps('habital')}
                     SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
+                    error={Boolean(touched.habital && errors.habital)}
+                    helperText={touched.habital && errors.habital}
                   >
                     <option value="" />
                     {countries.map((option) => (
@@ -369,54 +283,46 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                         {option.label}
                       </option>
                     ))}
-                  </TextField>
+                  </TextField> */}
+                  <TextField
+                    fullWidth
+                    label="Current"
+                    {...getFieldProps('current')}
+                    error={Boolean(touched.current && errors.current)}
+                    helperText={touched.current && errors.current}
+                  />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    // label="Company"
                     label="Bathymetry"
-                    // {...getFieldProps('company')}
-                    {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    {...getFieldProps('bathymetry')}
+                    error={Boolean(touched.bathymetry && errors.bathymetry)}
+                    helperText={touched.bathymetry && errors.bathymetry}
                   />
                   <TextField
                     fullWidth
-                    // label="Role"
                     label="Temperature"
-                    {...getFieldProps('role')}
-                    error={Boolean(touched.role && errors.role)}
-                    helperText={touched.role && errors.role}
+                    {...getFieldProps('temperature')}
+                    error={Boolean(touched.temperature && errors.temperature)}
+                    helperText={touched.temperature && errors.temperature}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    // label="Company"
                     label="Brightness"
-                    // {...getFieldProps('company')}
-                    {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
+                    {...getFieldProps('brightness')}
+                    error={Boolean(touched.brightness && errors.brightness)}
+                    helperText={touched.brightness && errors.brightness}
                   />
                   <TextField
                     fullWidth
                     // label="Role"
                     label="Tides"
-                    {...getFieldProps('role')}
-                    error={Boolean(touched.role && errors.role)}
-                    helperText={touched.role && errors.role}
-                  />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    // label="Role"
-                    label="Current"
-                    {...getFieldProps('role')}
-                    error={Boolean(touched.role && errors.role)}
-                    helperText={touched.role && errors.role}
+                    {...getFieldProps('tides')}
+                    error={Boolean(touched.tides && errors.tides)}
+                    helperText={touched.tides && errors.tides}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -425,15 +331,35 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     <QuillEditor
                       simple
                       id="product-description"
-                      value={values.status}
+                      value={values.description}
                       onChange={(val) => setFieldValue('description', val)}
-                      error={Boolean(touched.status && errors.status)}
+                      error={Boolean(touched.description && errors.description)}
                     />
-                    {/* {touched.description && errors.description && (
+                    {touched.description && errors.description && (
                       <FormHelperText error sx={{ px: 2 }}>
                         {touched.description && errors.description}
                       </FormHelperText>
-                    )} */}
+                    )}
+                  </div>
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <div>
+                    <LabelStyle>Add Images</LabelStyle>
+                    <UploadMultiFile
+                      showPreview
+                      maxSize={3145728}
+                      accept="image/*"
+                      files={values.images}
+                      onDrop={handleDrop}
+                      onRemove={handleRemove}
+                      onRemoveAll={handleRemoveAll}
+                      error={Boolean(touched.images && errors.images)}
+                    />
+                    {touched.images && errors.images && (
+                      <FormHelperText error sx={{ px: 2 }}>
+                        {touched.images && errors.images}
+                      </FormHelperText>
+                    )}
                   </div>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

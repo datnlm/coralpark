@@ -5,70 +5,52 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { LoadingButton } from '@material-ui/lab';
-import {
-  Box,
-  Card,
-  Grid,
-  Stack,
-  Switch,
-  TextField,
-  Typography,
-  FormHelperText,
-  FormControlLabel,
-  Autocomplete
-} from '@material-ui/core';
+import { Box, Card, Grid, Stack, TextField } from '@material-ui/core';
 // utils
-import { fData } from '../../../utils/formatNumber';
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { UserManager } from '../../../@types/user';
-//
-import Label from '../../Label';
-import { UploadAvatar } from '../../upload';
-import countries from './countries';
+import { PhasesType } from '../../../@types/user';
 
 // ----------------------------------------------------------------------
 
-type CoralPhasesTypeNewProps = {
+type CoralPhasesTypeNewFormProps = {
   isEdit: boolean;
-  currentUser?: UserManager;
+  currentPhasesType?: PhasesType;
 };
 
-export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPhasesTypeNewProps) {
+export default function CoralPhasesTypeNewForm({
+  isEdit,
+  currentPhasesType
+}: CoralPhasesTypeNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email(),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    address: Yup.string().required('Address is required'),
-    country: Yup.string().required('country is required'),
-    company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    role: Yup.string().required('Role Number is required'),
-    avatarUrl: Yup.mixed().required('Avatar is required')
+    minWeight: Yup.string().required('MinWeight is required'),
+    maxWeight: Yup.string().required('MaxWeight is required'),
+    minHigh: Yup.string().required('MinHigh is required'),
+    maxHigh: Yup.string().required('MaxHigh is required'),
+    timeForm: Yup.string().required('TimeForm is required'),
+    timeTo: Yup.string().required('TimeTo is required'),
+    coulour: Yup.string().required('Coulour is required'),
+    coralID: Yup.string().required('CoralID is required'),
+    phaseID: Yup.string().required('PhaseID is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
-      address: currentUser?.address || '',
-      country: currentUser?.country || '',
-      state: currentUser?.state || '',
-      city: currentUser?.city || '',
-      zipCode: currentUser?.zipCode || '',
-      avatarUrl: currentUser?.avatarUrl || null,
-      isVerified: currentUser?.isVerified || true,
-      status: currentUser?.status,
-      company: currentUser?.company || '',
-      role: currentUser?.role || ''
+      minWeight: currentPhasesType?.minWeight || '',
+      maxWeight: currentPhasesType?.maxWeight || '',
+      minHigh: currentPhasesType?.minHigh || '',
+      maxHigh: currentPhasesType?.maxHigh || '',
+      timeForm: currentPhasesType?.timeForm || '',
+      timeTo: currentPhasesType?.timeTo || '',
+      coulour: currentPhasesType?.coulour || '',
+      coralID: currentPhasesType?.coralID || '',
+      phaseID: currentPhasesType?.phaseID || ''
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -106,87 +88,6 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <Card sx={{ py: 10, px: 3 }}>
-              {isEdit && (
-                <Label
-                  color={values.status !== 'active' ? 'error' : 'success'}
-                  sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
-                >
-                  {values.status}
-                </Label>
-              )}
-              <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.avatarUrl}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.avatarUrl && errors.avatarUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
-                      <br /> max size of {fData(3145728)}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.avatarUrl && errors.avatarUrl}
-                </FormHelperText>
-              </Box>
-
-              {/* {isEdit && (
-                <FormControlLabel
-                  labelPlacement="start"
-                  control={
-                    <Switch
-                      onChange={(event) =>
-                        setFieldValue('status', event.target.checked ? 'banned' : 'active')
-                      }
-                      checked={values.status !== 'active'}
-                    />
-                  }
-                  label={
-                    <>
-                      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                        Banned
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Apply disable account
-                      </Typography>
-                    </>
-                  }
-                  sx={{ mx: 0, mb: 3, width: 1, justifyContent: 'space-between' }}
-                />
-              )} */}
-
-              {/* <FormControlLabel
-                labelPlacement="start"
-                control={<Switch {...getFieldProps('isVerified')} checked={values.isVerified} />}
-                label={
-                  <>
-                    <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                      Email Verified
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      Disabling this will automatically send the user a verification email
-                    </Typography>
-                  </>
-                }
-                sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
-              /> */}
-            </Card>
-          </Grid>
-
           <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
@@ -194,76 +95,75 @@ export default function CoralPhasesTypeNewForm({ isEdit, currentUser }: CoralPha
                   <TextField
                     fullWidth
                     label="Min Weight"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('minWeight')}
+                    error={Boolean(touched.minWeight && errors.minWeight)}
+                    helperText={touched.minWeight && errors.minWeight}
                   />
                   <TextField
                     fullWidth
                     label="Max Weight"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('maxWeight')}
+                    error={Boolean(touched.maxWeight && errors.maxWeight)}
+                    helperText={touched.maxWeight && errors.maxWeight}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Min High"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('minHigh')}
+                    error={Boolean(touched.minHigh && errors.minHigh)}
+                    helperText={touched.minHigh && errors.minHigh}
                   />
                   <TextField
                     fullWidth
                     label="Max High"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('maxHigh')}
+                    error={Boolean(touched.maxHigh && errors.maxHigh)}
+                    helperText={touched.maxHigh && errors.maxHigh}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Time From"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('timeForm')}
+                    error={Boolean(touched.timeForm && errors.timeForm)}
+                    helperText={touched.timeForm && errors.timeForm}
                   />
                   <TextField
                     fullWidth
                     label="Time To"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('timeTo')}
+                    error={Boolean(touched.timeTo && errors.timeTo)}
+                    helperText={touched.timeTo && errors.timeTo}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Colour"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('coulour')}
+                    error={Boolean(touched.coulour && errors.coulour)}
+                    helperText={touched.coulour && errors.coulour}
                   />
                   <TextField
                     fullWidth
                     label="Coral"
-                    {...getFieldProps('name')}
-                    // error={Boolean(touched.name && errors.name)}
-                    // helperText={touched.name && errors.name}
+                    {...getFieldProps('coralID')}
+                    error={Boolean(touched.coralID && errors.coralID)}
+                    helperText={touched.coralID && errors.coralID}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    // label="Company"
                     label="Coral Phase"
                     multiline
                     rows={2}
-                    {...getFieldProps('company')}
-                    // error={Boolean(touched.company && errors.company)}
-                    // helperText={touched.company && errors.company}
+                    {...getFieldProps('phaseID')}
+                    error={Boolean(touched.phaseID && errors.phaseID)}
+                    helperText={touched.phaseID && errors.phaseID}
                   />
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

@@ -108,41 +108,41 @@ const NAME = [
   'Deanna Gerlach'
 ];
 
-mock.onGet('/api/user/manage-users').reply(() => {
-  const users: UserManager[] = [...Array(24)].map((_, index) => {
-    const setIndex = index + 1;
-    return {
-      id: createId(setIndex),
-      avatarUrl: mockImgAvatar(setIndex),
-      name: NAME[index],
-      email: faker.internet.email(),
-      phoneNumber: faker.phone.phoneNumber(),
-      address: faker.address.streetAddress(),
-      country: faker.address.country(),
-      state: faker.address.state(),
-      city: faker.address.city(),
-      zipCode: faker.address.zipCode(),
-      company: faker.company.companyName(),
-      isVerified: faker.datatype.boolean(),
-      status: sample(['active', 'banned']) || 'active',
-      role:
-        sample([
-          'Leader',
-          'Hr Manager',
-          'UI Designer',
-          'UX Designer',
-          'UI/UX Designer',
-          'Project Manager',
-          'Backend Developer',
-          'Full Stack Designer',
-          'Front End Developer',
-          'Full Stack Developer'
-        ]) || 'Leader'
-    };
-  });
+// mock.onGet('/api/user/manage-users').reply(() => {
+//   const users: UserManager[] = [...Array(24)].map((_, index) => {
+//     const setIndex = index + 1;
+//     return {
+//       id: createId(setIndex),
+//       avatarUrl: mockImgAvatar(setIndex),
+//       name: NAME[index],
+//       email: faker.internet.email(),
+//       phoneNumber: faker.phone.phoneNumber(),
+//       address: faker.address.streetAddress(),
+//       country: faker.address.country(),
+//       state: faker.address.state(),
+//       city: faker.address.city(),
+//       zipCode: faker.address.zipCode(),
+//       company: faker.company.companyName(),
+//       isVerified: faker.datatype.boolean(),
+//       status: sample(['active', 'banned']) || 'active',
+//       role:
+//         sample([
+//           'Leader',
+//           'Hr Manager',
+//           'UI Designer',
+//           'UX Designer',
+//           'UI/UX Designer',
+//           'Project Manager',
+//           'Backend Developer',
+//           'Full Stack Designer',
+//           'Front End Developer',
+//           'Full Stack Developer'
+//         ]) || 'Leader'
+//     };
+//   });
 
-  return [200, { users }];
-});
+//   return [200, { users }];
+// });
 
 // ----------------------------------------------------------------------
 

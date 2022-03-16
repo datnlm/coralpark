@@ -28,7 +28,7 @@ import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { UserManager } from '../../../@types/user';
+import { CoralArea } from '../../../@types/user';
 //
 import Label from '../../Label';
 import { UploadAvatar } from '../../upload';
@@ -49,42 +49,22 @@ const CATEGORY_CORAL = [
 ];
 type CoralAreaNewFormProps = {
   isEdit: boolean;
-  currentUser?: UserManager;
+  currentCoralArea?: CoralArea;
 };
 
-export default function CoralAreaNewForm({ isEdit, currentUser }: CoralAreaNewFormProps) {
+export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralAreaNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email(),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    address: Yup.string().required('Address is required'),
-    country: Yup.string().required('country is required'),
-    company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    role: Yup.string().required('Role Number is required'),
-    avatarUrl: Yup.mixed().required('Avatar is required')
+    name: Yup.string().required('Name is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
-      address: currentUser?.address || '',
-      country: currentUser?.country || '',
-      state: currentUser?.state || '',
-      city: currentUser?.city || '',
-      zipCode: currentUser?.zipCode || '',
-      avatarUrl: currentUser?.avatarUrl || null,
-      isVerified: currentUser?.isVerified || true,
-      company: currentUser?.company || '',
-      role: currentUser?.role || '',
-      category: currentUser?.status || CATEGORY_OPTION[0].classify[1]
+      area: currentCoralArea?.coralId || CATEGORY_OPTION[0].classify[0],
+      coralID: currentCoralArea?.areanID || CATEGORY_CORAL[0].classify[0]
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -97,7 +77,6 @@ export default function CoralAreaNewForm({ isEdit, currentUser }: CoralAreaNewFo
       } catch (error) {
         console.error(error);
         setSubmitting(false);
-        // setErrors(error);
       }
     }
   });
@@ -131,8 +110,8 @@ export default function CoralAreaNewForm({ isEdit, currentUser }: CoralAreaNewFo
                     <Select
                       label="Coral"
                       native
-                      {...getFieldProps('category')}
-                      value={values.category}
+                      {...getFieldProps('coralID')}
+                      value={values.coralID}
                     >
                       {CATEGORY_CORAL.map((category) => (
                         <optgroup key={category.group} label={category.group}>
@@ -147,13 +126,8 @@ export default function CoralAreaNewForm({ isEdit, currentUser }: CoralAreaNewFo
                   </FormControl>
                   <FormControl fullWidth>
                     <InputLabel>Area</InputLabel>
-                    <Select
-                      label="Area"
-                      native
-                      {...getFieldProps('category')}
-                      value={values.category}
-                    >
-                      {CATEGORY_OPTION.map((category) => (
+                    <Select label="Area" native {...getFieldProps('area')} value={values.area}>
+                      {CATEGORY_CORAL.map((category) => (
                         <optgroup key={category.group} label={category.group}>
                           {category.classify.map((classify) => (
                             <option key={classify} value={classify}>
