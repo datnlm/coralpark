@@ -8,3 +8,4 @@ export { default as BlogPostRecent } from './BlogPostRecent';
 export { default as BlogPostsSearch } from './BlogPostsSearch';
 export { default as BlogPostsSort } from './BlogPostsSort';
 export { default as BlogPostTags } from './BlogPostTags';
+export { default as CoralAreaNewForm } from './CoralAreaNewForm';

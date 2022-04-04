@@ -243,7 +243,7 @@ export default function CollapsibleTable() {
               to={PATH_DASHBOARD.user.profile}
               startIcon={<Icon icon={plusFill} />}
             >
-              New CoralArea
+              New Coral Area
             </Button>
           }
         />
