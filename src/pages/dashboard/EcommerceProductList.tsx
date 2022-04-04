@@ -170,7 +170,7 @@ export default function EcommerceProductList() {
   const isProductNotFound = filteredProducts.length === 0;
 
   return (
-    <Page title="Area: Area List">
+    <Page title="Area: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Area List"
@@ -180,7 +180,7 @@ export default function EcommerceProductList() {
               name: 'Area',
               href: PATH_DASHBOARD.eCommerce.root
             },
-            { name: 'Area List' }
+            { name: 'List' }
           ]}
           action={
             <Button
