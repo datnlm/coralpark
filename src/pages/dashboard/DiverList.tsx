@@ -38,7 +38,11 @@ import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_dashboard/user/list';
+import {
+  DiverListHead,
+  DiverListToolbar,
+  DiverMoreMenu
+} from '../../components/_dashboard/diver/list';
 
 // ----------------------------------------------------------------------
 
@@ -205,12 +209,12 @@ export default function UserList() {
               to={PATH_DASHBOARD.user.newUser}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Garden
+              New Diver
             </Button>
           }
         />
         <Card>
-          <UserListToolbar
+          <DiverListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -219,7 +223,7 @@ export default function UserList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <DiverListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -278,7 +282,7 @@ export default function UserList() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu
+                            <DiverMoreMenu
                               onDelete={() => handleDeleteUser(id.toString())}
                               userName={name}
                             />

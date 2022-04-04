@@ -38,7 +38,11 @@ import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_dashboard/user/list';
+import {
+  GardenListHead,
+  GardenListToolbar,
+  GardenMoreMenu
+} from '../../components/_dashboard/garden/list';
 
 // ----------------------------------------------------------------------
 
@@ -189,10 +193,10 @@ export default function UserList() {
   // }
 
   return (
-    <Page title="Coral: List">
+    <Page title="Garden: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral list"
+          heading="Garden list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Garden', href: PATH_DASHBOARD.garden.root },
@@ -210,7 +214,7 @@ export default function UserList() {
           }
         />
         <Card>
-          <UserListToolbar
+          <GardenListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -219,7 +223,7 @@ export default function UserList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <GardenListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -278,7 +282,7 @@ export default function UserList() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu
+                            <GardenMoreMenu
                               onDelete={() => handleDeleteUser(id.toString())}
                               userName={name}
                             />
