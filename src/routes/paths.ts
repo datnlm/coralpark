@@ -61,11 +61,6 @@ export const PATH_DASHBOARD = {
     phases: path(ROOTS_DASHBOARD, '/user/phases'),
     phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
   },
-  phases: {
-    root: path(ROOTS_DASHBOARD, '/user'),
-    phases: path(ROOTS_DASHBOARD, '/user/phases'),
-    phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
-  },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),
     shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),
@@ -84,6 +79,19 @@ export const PATH_DASHBOARD = {
     post: path(ROOTS_DASHBOARD, '/blog/post/:title'),
     postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
     newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
+  },
+  phases: {
+    root: path(ROOTS_DASHBOARD, '/user'),
+    phases: path(ROOTS_DASHBOARD, '/user/phases'),
+    phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
+  },
+  garden: {
+    root: path(ROOTS_DASHBOARD, '/garden'),
+    list: path(ROOTS_DASHBOARD, '/garden/list')
+  },
+  diver: {
+    root: path(ROOTS_DASHBOARD, '/diver'),
+    list: path(ROOTS_DASHBOARD, '/diver/list')
   }
 };
 

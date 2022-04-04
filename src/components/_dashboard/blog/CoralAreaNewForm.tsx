@@ -30,9 +30,6 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
 import { CoralArea } from '../../../@types/user';
 //
-import Label from '../../Label';
-import { UploadAvatar } from '../../upload';
-import countries from './countries';
 
 // ----------------------------------------------------------------------
 const LabelStyle = styled(Typography)(({ theme }) => ({

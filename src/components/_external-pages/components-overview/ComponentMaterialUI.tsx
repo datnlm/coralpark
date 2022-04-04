@@ -11,7 +11,7 @@ export default function ComponentMaterialUI() {
     <Grid container spacing={3} sx={{ mb: 10 }}>
       <Grid item xs={12} sm={4}>
         <Typography variant="h5" paragraph>
-          Material UI
+          Coral Park Management System
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.secondary' }}>
           Components from Material-UI©

@@ -16,6 +16,8 @@ const ICONS = {
   chat: getIcon('ic_chat'),
   mail: getIcon('ic_mail'),
   coral: getIcon('ic_coral'),
+  garden: getIcon('ic_garden'),
+  diver: getIcon('ic_diver'),
   area: getIcon('ic_area'),
   phases: getIcon('ic_phases'),
   user: getIcon('ic_user'),
@@ -47,6 +49,26 @@ const sidebarConfig = [
   {
     subheader: 'management',
     items: [
+      {
+        title: 'garden',
+        path: PATH_DASHBOARD.garden.root,
+        icon: ICONS.garden,
+        children: [
+          // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
+          // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
+          { title: 'list', path: PATH_DASHBOARD.garden.list }
+        ]
+      },
+      {
+        title: 'diver',
+        path: PATH_DASHBOARD.diver.root,
+        icon: ICONS.diver,
+        children: [
+          // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
+          // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
+          { title: 'list', path: PATH_DASHBOARD.diver.list }
+        ]
+      },
       // MANAGEMENT : USER
       {
         title: 'coral',
@@ -62,17 +84,6 @@ const sidebarConfig = [
           // { title: 'phases', path: PATH_DASHBOARD.user.phases }
         ]
       },
-      // }
-      // MANAGEMENT : BLOG
-      {
-        title: 'Coral Area',
-        path: PATH_DASHBOARD.blog.root,
-        icon: ICONS.blog,
-        children: [
-          { title: 'list', path: PATH_DASHBOARD.blog.posts },
-          { title: 'coral Area', path: PATH_DASHBOARD.user.profile }
-        ]
-      },
       // MANAGEMENT : Phases
       {
         title: 'phases',
@@ -83,10 +94,20 @@ const sidebarConfig = [
           { title: 'phases', path: PATH_DASHBOARD.user.phases }
         ]
       },
-
-      // MANAGEMENT : E-COMMERCE
+      // MANAGEMENT : Coral Area
       {
-        title: 'Area',
+        title: 'coral Area',
+        path: PATH_DASHBOARD.blog.root,
+        icon: ICONS.blog,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.blog.posts },
+          { title: 'coral Area', path: PATH_DASHBOARD.blog.post }
+        ]
+      },
+
+      // MANAGEMENT : Area
+      {
+        title: 'area',
         path: PATH_DASHBOARD.eCommerce.root,
         icon: ICONS.area,
         children: [
@@ -100,7 +121,7 @@ const sidebarConfig = [
           // { title: 'invoice', path: PATH_DASHBOARD.eCommerce.invoice }
         ]
       }
-
+      // MANAGEMENT : E-COMMERCE
       // MANAGEMENT : BLOG
       // {
       //   title: 'blog',

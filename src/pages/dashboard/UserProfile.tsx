@@ -13,7 +13,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralAreaNewForm from '../../components/_dashboard/user/CoralAreaNewForm';
+// import CoralAreaNewForm from '../../components/_dashboard/user/CoralAreaNewForm';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ export default function UserCreate() {
           ]}
         />
 
-        <CoralAreaNewForm isEdit={isEdit} />
+        {/* <CoralAreaNewForm isEdit={isEdit} /> */}
       </Container>
     </Page>
   );
