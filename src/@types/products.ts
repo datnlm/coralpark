@@ -79,10 +79,19 @@ export type BillingAddress = {
   isDefault: boolean;
 };
 
+export type Area = {
+  id: string;
+  location: string;
+  address: string;
+  provinceName: string;
+  provinceId: string;
+};
+
 export type ProductState = {
   isLoading: boolean;
   error: boolean;
   products: Product[];
+  areas: Area[];
   product: Product | null;
   sortBy: string | null;
   filters: {

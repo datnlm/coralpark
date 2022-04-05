@@ -25,16 +25,16 @@ import {
 import plusFill from '@iconify/icons-eva/plus-fill';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts } from '../../redux/slices/product';
+import { getProducts, getAreas } from '../../redux/slices/product';
 // utils
-import { fDate } from '../../utils/formatTime';
+// import { fDate } from '../../utils/formatTime';
 import { fCurrency } from '../../utils/formatNumber';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { Product, ProductState } from '../../@types/products';
+import { Product, ProductState, Area } from '../../@types/products';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -49,9 +49,9 @@ import {
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Province', alignRight: false },
+  { id: 'name', label: 'Provice Name', alignRight: false },
   { id: 'createdAt', label: 'Location', alignRight: false },
-  { id: 'inventoryType', label: 'Status', alignRight: false },
+  // { id: 'inventoryType', label: 'Status', alignRight: false },
   { id: 'price', label: 'Address', alignRight: true },
   { id: '' }
 ];
@@ -84,7 +84,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Product[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -95,7 +95,7 @@ function applySortFilter(array: Product[], comparator: (a: any, b: any) => numbe
   if (query) {
     return filter(
       array,
-      (_product) => _product.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_product) => _product.location.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
 
@@ -110,15 +110,17 @@ export default function EcommerceProductList() {
   const dispatch = useDispatch();
 
   const { products } = useSelector((state: { product: ProductState }) => state.product);
+  const arealist = useSelector((state: { product: ProductState }) => state.product.areas);
+  // const arealist = useSelector((state: ProductState) => state.areas);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('createdAt');
-
   useEffect(() => {
     dispatch(getProducts());
+    dispatch(getAreas());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -165,10 +167,10 @@ export default function EcommerceProductList() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
 
-  const filteredProducts = applySortFilter(products, getComparator(order, orderBy), filterName);
+  const filteredProducts = applySortFilter(arealist, getComparator(order, orderBy), filterName);
 
   const isProductNotFound = filteredProducts.length === 0;
-
+  console.log(arealist);
   return (
     <Page title="Area: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -208,7 +210,7 @@ export default function EcommerceProductList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={products.length}
+                  rowCount={arealist.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -217,9 +219,9 @@ export default function EcommerceProductList() {
                   {filteredProducts
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const { id, name, cover, price, createdAt, inventoryType } = row;
+                      const { id, location, address, provinceId, provinceName } = row;
 
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      const isItemSelected = selected.indexOf(location) !== -1;
 
                       return (
                         <TableRow
@@ -229,40 +231,14 @@ export default function EcommerceProductList() {
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
-                          onClick={() => handleClick(name)}
+                          onClick={() => handleClick(location)}
                         >
                           <TableCell padding="checkbox">
                             <Checkbox checked={isItemSelected} />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Box
-                              sx={{
-                                py: 2,
-                                display: 'flex',
-                                alignItems: 'center'
-                              }}
-                            >
-                              {/* <ThumbImgStyle alt={name} src={cover} /> */}
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell style={{ minWidth: 160 }}>{fDate(createdAt)}</TableCell>
-                          <TableCell style={{ minWidth: 160 }}>
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={
-                                (inventoryType === 'out_of_stock' && 'error') ||
-                                (inventoryType === 'low_stock' && 'warning') ||
-                                'success'
-                              }
-                            >
-                              {inventoryType ? sentenceCase(inventoryType) : ''}
-                            </Label>
-                          </TableCell>
-                          {/* <TableCell align="right">{fCurrency(price)}</TableCell> */}
-                          <TableCell align="right">{price}</TableCell>
+                          <TableCell align="left">{provinceName}</TableCell>
+                          <TableCell align="left">{location}</TableCell>
+                          <TableCell align="right">{address}</TableCell>
                           <TableCell align="right">
                             <IconButton>
                               <Icon icon={moreVerticalFill} width={20} height={20} />

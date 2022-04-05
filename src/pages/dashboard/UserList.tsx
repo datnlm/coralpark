@@ -5,8 +5,10 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { manageCoral } from '_apis_/Coral';
 // material
 import { useTheme } from '@material-ui/core/styles';
+
 import {
   Card,
   Table,
@@ -168,8 +170,20 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = (userId: string) => {
-    dispatch(deleteUser(userId));
+  // const handleDeleteUser = (userId: string) => {
+  //   dispatch(deleteUser(userId));
+  // };
+
+  const handleDeleteUser = async (coralId: number) => {
+    try {
+      await manageCoral.deleteCoral(coralId).then((respone) => {
+        if (respone.status === 200) {
+          dispatch(getListCoral());
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
@@ -279,8 +293,8 @@ export default function UserList() {
 
                           <TableCell align="right">
                             <UserMoreMenu
-                              onDelete={() => handleDeleteUser(id.toString())}
-                              userName={name}
+                              onDelete={() => handleDeleteUser(id)}
+                              coralID={id.toString()}
                             />
                           </TableCell>
                         </TableRow>

@@ -176,6 +176,10 @@ export type Coral = {
   coralTypeId: number;
   status: number;
   statusEnum: string;
+  className: String;
+  orderName: String;
+  familyName: String;
+  genusName: String;
   speciesName: string;
 };
 export type PhasesType = {
