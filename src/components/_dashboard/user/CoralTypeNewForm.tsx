@@ -70,8 +70,8 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
     enableReinitialize: true,
     initialValues: {
       name: currentType?.name || '',
-      parent: currentType?.parent || CATEGORY_OPTION[0].classify[1],
-      level: currentType?.level || '',
+      parent: currentType?.parent || CATEGORY_OPTION[0].classify[0],
+      level: currentType?.level || CATEGORY_OPTION[0].classify[0],
       description: currentType?.description || ''
     },
     validationSchema: NewProductSchema,

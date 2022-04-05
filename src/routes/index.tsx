@@ -140,7 +140,24 @@ export default function Router() {
           ]
         },
         { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> }
+        { path: 'kanban', element: <Kanban /> },
+        {
+          path: 'garden',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
+            { path: 'list', element: <GardenList /> },
+            { path: 'cards', element: <UserCards /> }
+            // { path: 'list', element: <UserList /> }
+          ]
+        },
+        {
+          path: 'diver',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
+            { path: 'list', element: <DiverList /> }
+            // { path: 'new', element: <UserCreate /> }
+          ]
+        }
       ]
     },
 
@@ -228,7 +245,27 @@ export default function Router() {
           ]
         },
         { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> }
+        { path: 'kanban', element: <Kanban /> },
+        {
+          path: 'garden',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/user/list" replace /> },
+            { path: 'list', element: <GardenList /> },
+            { path: 'new', element: <UserCreate /> },
+            { path: '/:name/edit', element: <UserCreate /> },
+            { path: 'account', element: <UserAccount /> },
+            { path: 'phases', element: <PhasesCreate /> },
+            { path: 'phasestype', element: <PhasesPhasesTypeCreate /> }
+          ]
+        },
+        {
+          path: 'diver',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
+            { path: 'list', element: <DiverList /> }
+            // { path: 'new', element: <UserCreate /> }
+          ]
+        }
       ]
     },
 
@@ -329,6 +366,8 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
+const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
+const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));

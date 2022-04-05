@@ -47,7 +47,7 @@ export default function Login() {
   const { method } = useAuth();
 
   return (
-    <RootStyle title="Login | Coral Park">
+    <RootStyle title="Login | Coral Garden">
       <AuthLayout>
         Don’t have an account? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
@@ -69,7 +69,7 @@ export default function Login() {
           <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Sign in to Coral Park
+                Sign in to Coral Garden
               </Typography>
               {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
             </Box>

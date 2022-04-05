@@ -1,108 +1,48 @@
 import { useEffect } from 'react';
-import { sentenceCase } from 'change-case';
-import { useParams } from 'react-router-dom';
+import { paramCase } from 'change-case';
+import { useParams, useLocation } from 'react-router-dom';
 // material
-import { Box, Card, Divider, Skeleton, Container, Typography, Pagination } from '@material-ui/core';
+import { Container } from '@material-ui/core';
+
+import CoralAreaNewForm from 'components/_dashboard/blog/CoralAreaNewForm';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
-import { getPost, getRecentPosts } from '../../redux/slices/blog';
+import { useDispatch, useSelector, RootState } from '../../redux/store';
+import { getUserList } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
-// @types
-import { BlogState } from '../../@types/blog';
 // components
 import Page from '../../components/Page';
-import Markdown from '../../components/Markdown';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import {
-  BlogPostHero,
-  BlogPostTags,
-  BlogPostRecent,
-  BlogPostCommentList,
-  BlogPostCommentForm
-} from '../../components/_dashboard/blog';
 
 // ----------------------------------------------------------------------
 
-const SkeletonLoad = (
-  <>
-    <Skeleton width="100%" height={560} variant="rectangular" sx={{ borderRadius: 2 }} />
-    <Box sx={{ mt: 3, display: 'flex', alignItems: 'center' }}>
-      <Skeleton variant="circular" width={64} height={64} />
-      <Box sx={{ flexGrow: 1, ml: 2 }}>
-        <Skeleton variant="text" height={20} />
-        <Skeleton variant="text" height={20} />
-        <Skeleton variant="text" height={20} />
-      </Box>
-    </Box>
-  </>
-);
-
-export default function BlogPost() {
+export default function UserCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const { title } = useParams();
-  const { post, error, recentPosts } = useSelector((state: { blog: BlogState }) => state.blog);
+  const { pathname } = useLocation();
+  const { name } = useParams();
+  const { userList } = useSelector((state: RootState) => state.user);
+  const isEdit = pathname.includes('edit');
+  // const currentUser = userList.find((user) => paramCase(user.name) === name);
 
   useEffect(() => {
-    dispatch(getPost(title));
-    dispatch(getRecentPosts(title));
-  }, [dispatch, title]);
+    dispatch(getUserList());
+  }, [dispatch]);
 
   return (
-    <Page title="Blog: Post Details | Minimal-UI">
+    <Page title="Coral: Create a new list | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Post Details"
+          heading={!isEdit ? 'Create a new coral type' : 'Edit coral type'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Blog', href: PATH_DASHBOARD.blog.root },
-            { name: sentenceCase(title) }
+            { name: 'Type', href: PATH_DASHBOARD.user.root },
+            { name: !isEdit ? 'New coral type' : name }
           ]}
         />
-
-        {post && (
-          <Card>
-            <BlogPostHero post={post} />
-
-            <Box sx={{ p: { xs: 3, md: 5 } }}>
-              <Typography variant="h6" sx={{ mb: 5 }}>
-                {post.description}
-              </Typography>
-
-              <Markdown children={post.body} />
-
-              <Box sx={{ my: 5 }}>
-                <Divider />
-                <BlogPostTags post={post} />
-                <Divider />
-              </Box>
-
-              <Box sx={{ display: 'flex', mb: 2 }}>
-                <Typography variant="h4">Comments</Typography>
-                <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
-                  ({post.comments.length})
-                </Typography>
-              </Box>
-
-              <BlogPostCommentList post={post} />
-
-              <Box sx={{ mb: 5, mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                <Pagination count={8} color="primary" />
-              </Box>
-
-              <BlogPostCommentForm />
-            </Box>
-          </Card>
-        )}
-
-        {!post && SkeletonLoad}
-
-        {error && <Typography variant="h6">404 Post not found</Typography>}
-
-        {recentPosts.length > 0 && <BlogPostRecent posts={recentPosts} />}
+        <CoralAreaNewForm isEdit={isEdit} />
       </Container>
     </Page>
   );
