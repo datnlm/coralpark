@@ -14,10 +14,10 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 
 type UserMoreMenuProps = {
   onDelete: VoidFunction;
-  userName: string;
+  coralID: String;
 };
 
-export default function UserMoreMenu({ onDelete, userName }: UserMoreMenuProps) {
+export default function UserMoreMenu({ onDelete, coralID }: UserMoreMenuProps) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export default function UserMoreMenu({ onDelete, userName }: UserMoreMenuProps) 
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.user.root}/${userName}/edit/`}
+          to={`${PATH_DASHBOARD.user.root}/${coralID}/edit/`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

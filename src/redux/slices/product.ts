@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sum, map, filter, uniqBy } from 'lodash';
+import { manageArea } from '_apis_/area';
 import { store } from '../store';
 // utils
 import axios from '../../utils/axios';
@@ -28,7 +29,8 @@ const initialState: ProductState = {
     discount: 0,
     shipping: 0,
     billing: null
-  }
+  },
+  areas: []
 };
 
 const slice = createSlice({
@@ -50,6 +52,13 @@ const slice = createSlice({
     getProductsSuccess(state, action) {
       state.isLoading = false;
       state.products = action.payload;
+    },
+
+    // GET AREAS
+    getAreasSuccess(state, action) {
+      state.isLoading = false;
+      state.areas = action.payload;
+      // console.log(state.areas);
     },
 
     // GET PRODUCT
@@ -235,6 +244,21 @@ export function getProduct(name: string) {
       dispatch(slice.actions.getProductSuccess(response.data.product));
     } catch (error) {
       console.error(error);
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getAreas() {
+  return async () => {
+    const { dispatch } = store;
+    dispatch(slice.actions.startLoading());
+    try {
+      manageArea.getArea().then((response) => {
+        dispatch(slice.actions.getAreasSuccess(response.data.items));
+        // console.log(response.data.items);
+      });
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };

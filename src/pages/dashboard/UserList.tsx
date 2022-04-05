@@ -8,6 +8,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { manageCoral } from '_apis_/Coral';
 // material
 import { useTheme } from '@material-ui/core/styles';
+
 import {
   Card,
   Table,
@@ -291,7 +292,10 @@ export default function UserList() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu onDelete={() => handleDeleteUser(id)} userName={name} />
+                            <UserMoreMenu
+                              onDelete={() => handleDeleteUser(id)}
+                              coralID={id.toString()}
+                            />
                           </TableCell>
                         </TableRow>
                       );

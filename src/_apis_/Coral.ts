@@ -9,6 +9,7 @@ export class Coral {
     });
   };
 
+  // delete
   deleteCoral = (id: number) => {
     return axios({
       url: `http://104.45.197.106:8080/api/v1/admin/corals/${id}`,
@@ -17,6 +18,14 @@ export class Coral {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       }
+    });
+  };
+
+  // getCoralbyID
+  getCoralByID = (id: string) => {
+    return axios({
+      url: `http://104.45.197.106:8080/api/v1/admin/corals/${id}`,
+      method: 'GET'
     });
   };
 }

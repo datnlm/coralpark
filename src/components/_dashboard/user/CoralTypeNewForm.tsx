@@ -1,87 +1,90 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
+import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import {
-  Box,
   Card,
+  Box,
+  Chip,
   Grid,
   Stack,
+  Radio,
   Switch,
+  Select,
   TextField,
+  InputLabel,
   Typography,
+  RadioGroup,
+  FormControl,
+  Autocomplete,
+  InputAdornment,
   FormHelperText,
-  FormControlLabel,
-  Autocomplete
+  FormControlLabel
 } from '@material-ui/core';
 // utils
-import { fData } from '../../../utils/formatNumber';
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { UserManager } from '../../../@types/user';
+import { CoralType } from '../../../@types/user';
 //
-import Label from '../../Label';
-import { UploadAvatar } from '../../upload';
+import { QuillEditor } from '../../editor';
+import { UploadMultiFile } from '../../upload';
+
+// ----------------------------------------------------------------------
 import countries from './countries';
+
+const CATEGORY_OPTION = [
+  { group: 'Coral', classify: ['San hô đá', 'San hô mềm', 'San hô xúc tua', 'San hô khô'] }
+];
+
+const LabelStyle = styled(Typography)(({ theme }) => ({
+  ...theme.typography.subtitle2,
+  color: theme.palette.text.secondary,
+  marginBottom: theme.spacing(1)
+}));
 
 // ----------------------------------------------------------------------
 
-type CoralTypeNewFormProps = {
+type CoralTypeNewFromProps = {
   isEdit: boolean;
-  currentUser?: UserManager;
+  currentType?: CoralType;
 };
 
-export default function CoralTypeNewForm({ isEdit, currentUser }: CoralTypeNewFormProps) {
+export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFromProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const NewUserSchema = Yup.object().shape({
+  const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email(),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    address: Yup.string().required('Address is required'),
-    country: Yup.string().required('country is required'),
-    company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    role: Yup.string().required('Role Number is required'),
-    avatarUrl: Yup.mixed().required('Avatar is required')
+    parent: Yup.string().required('Parent is required'),
+    level: Yup.string().required('Level is required'),
+    description: Yup.string().required('Description is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
-      address: currentUser?.address || '',
-      country: currentUser?.country || '',
-      state: currentUser?.state || '',
-      city: currentUser?.city || '',
-      zipCode: currentUser?.zipCode || '',
-      avatarUrl: currentUser?.avatarUrl || null,
-      isVerified: currentUser?.isVerified || true,
-      status: currentUser?.status,
-      company: currentUser?.company || '',
-      role: currentUser?.role || ''
+      name: currentType?.name || '',
+      parent: currentType?.parent || CATEGORY_OPTION[0].classify[1],
+      level: currentType?.level || '',
+      description: currentType?.description || ''
     },
-    validationSchema: NewUserSchema,
+    validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         await fakeRequest(500);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.user.list);
+        navigate(PATH_DASHBOARD.eCommerce.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);
-        // setErrors(error);
       }
     }
   });
@@ -89,127 +92,82 @@ export default function CoralTypeNewForm({ isEdit, currentUser }: CoralTypeNewFo
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
-
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          {/* <Grid item xs={12} md={4}>
-            <Card sx={{ py: 10, px: 3 }}>
-              {isEdit && (
-                <Label
-                  color={values.status !== 'active' ? 'error' : 'success'}
-                  sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
-                >
-                  {values.status}
-                </Label>
-              )}
-
-              <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.avatarUrl}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.avatarUrl && errors.avatarUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
-                      <br /> max size of {fData(3145728)}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.avatarUrl && errors.avatarUrl}
-                </FormHelperText>
-              </Box>
-            </Card>
-          </Grid> */}
-
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Name type"
+                    label="Type Name"
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
+                  <FormControl fullWidth>
+                    <InputLabel>Parent</InputLabel>
+                    <Select
+                      label="Parent"
+                      native
+                      {...getFieldProps('parent')}
+                      value={values.parent}
+                    >
+                      {CATEGORY_OPTION.map((category) => (
+                        <optgroup key={category.group} label={category.group}>
+                          {category.classify.map((classify) => (
+                            <option key={classify} value={classify}>
+                              {classify}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Parent"
-                    placeholder="Level type"
-                    {...getFieldProps('country')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
-                  >
-                    <option value="" />
-                    {countries.map((option) => (
-                      <option key={option.code} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Level type"
-                    placeholder="Level type"
-                    {...getFieldProps('country')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
-                  >
-                    <option value="" />
-                    {countries.map((option) => (
-                      <option key={option.code} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
+                  <FormControl fullWidth>
+                    <InputLabel>Level Type</InputLabel>
+                    <Select
+                      label="Level Type"
+                      native
+                      {...getFieldProps('level')}
+                      value={values.level}
+                    >
+                      {CATEGORY_OPTION.map((category) => (
+                        <optgroup key={category.group} label={category.group}>
+                          {category.classify.map((classify) => (
+                            <option key={classify} value={classify}>
+                              {classify}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    // label="Company"
-                    label="Description"
-                    multiline
-                    rows={2}
-                    {...getFieldProps('company')}
-                    error={Boolean(touched.company && errors.company)}
-                    helperText={touched.company && errors.company}
-                  />
+                  <div>
+                    <LabelStyle>Description</LabelStyle>
+                    <QuillEditor
+                      simple
+                      id="product-description"
+                      value={values.description}
+                      onChange={(val) => setFieldValue('description', val)}
+                      error={Boolean(touched.description && errors.description)}
+                    />
+                    {touched.description && errors.description && (
+                      <FormHelperText error sx={{ px: 2 }}>
+                        {touched.description && errors.description}
+                      </FormHelperText>
+                    )}
+                  </div>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create type' : 'Save Changes'}
+                    {!isEdit ? 'Create Type' : 'Save Changes'}
                   </LoadingButton>
                 </Box>
               </Stack>

@@ -29,7 +29,7 @@ import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { Product } from '../../../@types/products';
+import { Province } from '../../../@types/user';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
@@ -68,35 +68,25 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 type ProductNewFormProps = {
   isEdit: boolean;
-  currentProduct?: Product;
+  currentProvince?: Province;
 };
 
-export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFormProps) {
+export default function ProductNewForm({ isEdit, currentProvince }: ProductNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
-    images: Yup.array().min(1, 'Images is required'),
-    price: Yup.number().required('Price is required')
+    location: Yup.string().required('Location is required'),
+    address: Yup.string().required('Address is required'),
+    province: Yup.string().required('Province is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: currentProduct?.name || '',
-      description: currentProduct?.description || '',
-      images: currentProduct?.images || [],
-      code: currentProduct?.code || '',
-      sku: currentProduct?.sku || '',
-      price: currentProduct?.price || '',
-      priceSale: currentProduct?.priceSale || '',
-      tags: currentProduct?.tags || [TAGS_OPTION[0]],
-      inStock: Boolean(currentProduct?.inventoryType !== 'out_of_stock'),
-      taxes: true,
-      gender: currentProduct?.gender || GENDER_OPTION[2],
-      category: currentProduct?.category || CATEGORY_OPTION[0].classify[1]
+      location: currentProvince?.location || '',
+      address: currentProvince?.adress || '',
+      province: currentProvince?.province || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -117,29 +107,6 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      setFieldValue(
-        'images',
-        acceptedFiles.map((file: File | string) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
-    },
-    [setFieldValue]
-  );
-
-  const handleRemoveAll = () => {
-    setFieldValue('images', []);
-  };
-
-  const handleRemove = (file: File | string) => {
-    const filteredItems = values.images.filter((_file) => _file !== file);
-    setFieldValue('images', filteredItems);
-  };
-
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -150,40 +117,24 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
                 <TextField
                   fullWidth
                   label="Location"
-                  {...getFieldProps('name')}
-                  error={Boolean(touched.name && errors.name)}
-                  helperText={touched.name && errors.name}
+                  {...getFieldProps('location')}
+                  error={Boolean(touched.location && errors.location)}
+                  helperText={touched.location && errors.location}
                 />
                 <TextField
                   fullWidth
                   label="Address"
-                  {...getFieldProps('name')}
-                  error={Boolean(touched.name && errors.name)}
-                  helperText={touched.name && errors.name}
+                  {...getFieldProps('address')}
+                  error={Boolean(touched.address && errors.address)}
+                  helperText={touched.address && errors.address}
                 />
-
-                {/* <div>
-                  <LabelStyle>Description</LabelStyle>
-                  <QuillEditor
-                    simple
-                    id="product-description"
-                    value={values.description}
-                    onChange={(val) => setFieldValue('description', val)}
-                    error={Boolean(touched.description && errors.description)}
-                  />
-                  {touched.description && errors.description && (
-                    <FormHelperText error sx={{ px: 2 }}>
-                      {touched.description && errors.description}
-                    </FormHelperText>
-                  )}
-                </div> */}
                 <FormControl fullWidth>
                   <InputLabel>Province</InputLabel>
                   <Select
                     label="Category"
                     native
                     {...getFieldProps('category')}
-                    value={values.category}
+                    value={values.province}
                   >
                     {CATEGORY_OPTION.map((category) => (
                       <optgroup key={category.group} label={category.group}>
@@ -196,25 +147,6 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
                     ))}
                   </Select>
                 </FormControl>
-
-                {/* <div>
-                  <LabelStyle>Add Images</LabelStyle>
-                  <UploadMultiFile
-                    showPreview
-                    maxSize={3145728}
-                    accept="image/*"
-                    files={values.images}
-                    onDrop={handleDrop}
-                    onRemove={handleRemove}
-                    onRemoveAll={handleRemoveAll}
-                    error={Boolean(touched.images && errors.images)}
-                  />
-                  {touched.images && errors.images && (
-                    <FormHelperText error sx={{ px: 2 }}>
-                      {touched.images && errors.images}
-                    </FormHelperText>
-                  )}
-                </div> */}
                 <LoadingButton
                   type="submit"
                   fullWidth
@@ -227,119 +159,6 @@ export default function ProductNewForm({ isEdit, currentProduct }: ProductNewFor
               </Stack>
             </Card>
           </Grid>
-
-          {/* <Grid item xs={12} md={4}>
-            <Stack spacing={3}>
-              <Card sx={{ p: 3 }}>
-                <FormControlLabel
-                  control={<Switch {...getFieldProps('inStock')} checked={values.inStock} />}
-                  label="In stock"
-                  sx={{ mb: 2 }}
-                />
-
-                <Stack spacing={3}>
-                  <TextField fullWidth label="Product Code" {...getFieldProps('code')} />
-                  <TextField fullWidth label="Product SKU" {...getFieldProps('sku')} />
-
-                  <div>
-                    <LabelStyle>Gender</LabelStyle>
-                    <RadioGroup {...getFieldProps('gender')} row>
-                      <Stack spacing={1} direction="row">
-                        {GENDER_OPTION.map((gender) => (
-                          <FormControlLabel
-                            key={gender}
-                            value={gender}
-                            control={<Radio />}
-                            label={gender}
-                          />
-                        ))}
-                      </Stack>
-                    </RadioGroup>
-                  </div>
-
-                  <FormControl fullWidth>
-                    <InputLabel>Category</InputLabel>
-                    <Select
-                      label="Category"
-                      native
-                      {...getFieldProps('category')}
-                      value={values.category}
-                    >
-                      {CATEGORY_OPTION.map((category) => (
-                        <optgroup key={category.group} label={category.group}>
-                          {category.classify.map((classify) => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <Autocomplete
-                    multiple
-                    freeSolo
-                    value={values.tags}
-                    onChange={(event, newValue) => {
-                      setFieldValue('tags', newValue);
-                    }}
-                    options={TAGS_OPTION.map((option) => option)}
-                    renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <Chip size="small" label={option} {...getTagProps({ index })} />
-                      ))
-                    }
-                    renderInput={(params) => <TextField label="Tags" {...params} />}
-                  />
-                </Stack>
-              </Card>
-
-              <Card sx={{ p: 3 }}>
-                <Stack spacing={3}>
-                  <TextField
-                    fullWidth
-                    placeholder="0.00"
-                    label="Regular Price"
-                    {...getFieldProps('price')}
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                      type: 'number'
-                    }}
-                    error={Boolean(touched.price && errors.price)}
-                    helperText={touched.price && errors.price}
-                  />
-
-                  <TextField
-                    fullWidth
-                    placeholder="0.00"
-                    label="Sale Price"
-                    {...getFieldProps('priceSale')}
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                      type: 'number'
-                    }}
-                  />
-                </Stack>
-
-                <FormControlLabel
-                  control={<Switch {...getFieldProps('taxes')} checked={values.taxes} />}
-                  label="Price includes taxes"
-                  sx={{ mt: 2 }}
-                />
-              </Card>
-
-              <LoadingButton
-                type="submit"
-                fullWidth
-                variant="contained"
-                size="large"
-                loading={isSubmitting}
-              >
-                {!isEdit ? 'Create Product' : 'Save Changes'}
-              </LoadingButton>
-            </Stack>
-          </Grid> */}
         </Grid>
       </Form>
     </FormikProvider>
