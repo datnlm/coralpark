@@ -15,10 +15,10 @@ import { ProductState } from '../../@types/products';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import ProductNewForm from '../../components/_dashboard/e-commerce/ProductNewForm';
+import ProductNewForm from '../../components/_dashboard/area/ProductNewForm';
 // ----------------------------------------------------------------------
 
-export default function EcommerceProductCreate() {
+export default function AreaCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -32,7 +32,7 @@ export default function EcommerceProductCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Ecommerce: Create a new area | Minimal-UI">
+    <Page title="Area: Create a new area | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new area' : 'Edit area'}
@@ -40,7 +40,7 @@ export default function EcommerceProductCreate() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'Area',
-              href: PATH_DASHBOARD.eCommerce.root
+              href: PATH_DASHBOARD.area.root
             },
             { name: !isEdit ? 'New area' : name }
           ]}

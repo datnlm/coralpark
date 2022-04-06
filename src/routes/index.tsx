@@ -10,8 +10,6 @@ import AuthGuard from '../guards/AuthGuard';
 // import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
-import PhasesCreate from '../pages/dashboard/CoralPhases';
-import PhasesPhasesTypeCreate from '../pages/dashboard/CoralPhasesType';
 
 // ----------------------------------------------------------------------
 
@@ -86,38 +84,48 @@ export default function Router() {
           element: <GeneralAnalytics />
         },
         {
-          path: 'e-commerce',
+          path: 'area',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/e-commerce/shop" replace /> },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
+            { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
+            { path: 'list', element: <AreaList /> },
+            { path: 'new', element: <AreaCreate /> },
+            { path: '/:name/edit', element: <AreaCreate /> },
             { path: 'checkout', element: <EcommerceCheckout /> },
             { path: 'invoice', element: <EcommerceInvoice /> }
           ]
         },
         {
-          path: 'user',
+          path: 'coral',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
-            { path: 'profile', element: <UserProfile /> },
-            // { path: 'cards', element: <UserCards /> },
-            { path: 'list', element: <UserList /> },
-            { path: 'new', element: <UserCreate /> },
-            { path: '/:name/edit', element: <UserCreate /> },
-            { path: 'account', element: <UserAccount /> },
-            { path: 'phases', element: <PhasesCreate /> },
-            { path: 'phasestype', element: <PhasesPhasesTypeCreate /> }
+            { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
+            { path: 'list', element: <CoralList /> },
+            { path: 'new', element: <CoralCreate /> },
+            { path: 'type', element: <CoralType /> }
+          ]
+        },
+        // {
+        //   path: 'user',
+        //   children: [
+        //     { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
+        //     { path: 'profile', element: <UserProfile /> },
+        //     { path: '/:name/edit', element: <CoralCreate /> },
+        //     { path: 'account', element: <CoralType /> }
+        //   ]
+        // },
+        {
+          path: 'phases',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
+            { path: 'new', element: <PhasesCreate /> },
+            { path: '/type/new', element: <PhasesTypeCreate /> }
           ]
         },
         {
-          path: 'blog',
+          path: 'coralArea',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/blog/posts" replace /> },
-            { path: 'posts', element: <BlogPosts /> },
-            { path: 'post/:title', element: <BlogPost /> },
+            { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
+            { path: 'list', element: <CoraAreaList /> },
+            { path: 'new', element: <CoralAreaCreate /> },
             { path: 'new-post', element: <BlogNewPost /> }
           ]
         },
@@ -191,38 +199,51 @@ export default function Router() {
           element: <GeneralAnalytics />
         },
         {
-          path: 'e-commerce',
+          path: 'area',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/e-commerce/shop" replace /> },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
+            { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
+            { path: 'list', element: <AreaList /> },
+            { path: 'new', element: <AreaCreate /> },
+            { path: '/:name/edit', element: <AreaCreate /> },
             { path: 'checkout', element: <EcommerceCheckout /> },
             { path: 'invoice', element: <EcommerceInvoice /> }
           ]
         },
         {
-          path: 'user',
+          path: 'coral',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
-            { path: 'profile', element: <UserProfile /> },
-            // { path: 'cards', element: <UserCards /> },
-            { path: 'list', element: <UserList /> },
-            { path: 'new', element: <UserCreate /> },
-            { path: '/:name/edit', element: <UserCreate /> },
-            { path: 'account', element: <UserAccount /> },
-            { path: 'phases', element: <PhasesCreate /> },
-            { path: 'phasestype', element: <PhasesPhasesTypeCreate /> }
+            { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
+            { path: 'list', element: <CoralList /> },
+            { path: 'new', element: <CoralCreate /> },
+            { path: 'type', element: <CoralType /> }
+          ]
+        },
+        // {
+        //   path: 'user',
+        //   children: [
+        //     { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
+        //     { path: 'profile', element: <UserProfile /> },
+        //     // { path: 'cards', element: <UserCards /> },
+        //     { path: 'list', element: <CoralList /> },
+        //     { path: 'new', element: <CoralCreate /> },
+        //     { path: '/:name/edit', element: <CoralCreate /> },
+        //     { path: 'account', element: <CoralType /> }
+        //   ]
+        // },
+        {
+          path: 'phases',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
+            { path: 'new', element: <PhasesCreate /> },
+            { path: '/type/new', element: <PhasesTypeCreate /> }
           ]
         },
         {
-          path: 'blog',
+          path: 'coralArea',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/blog/posts" replace /> },
-            { path: 'posts', element: <BlogPosts /> },
-            { path: 'post/:title', element: <BlogPost /> },
+            { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
+            { path: 'list', element: <CoraAreaList /> },
+            { path: 'new', element: <CoralAreaCreate /> },
             { path: 'new-post', element: <BlogNewPost /> }
           ]
         },
@@ -249,13 +270,8 @@ export default function Router() {
         {
           path: 'garden',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/user/list" replace /> },
-            { path: 'list', element: <GardenList /> },
-            { path: 'new', element: <UserCreate /> },
-            { path: '/:name/edit', element: <UserCreate /> },
-            { path: 'account', element: <UserAccount /> },
-            { path: 'phases', element: <PhasesCreate /> },
-            { path: 'phasestype', element: <PhasesPhasesTypeCreate /> }
+            { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
+            { path: 'list', element: <GardenList /> }
           ]
         },
         {
@@ -348,37 +364,31 @@ const VerifyCode = Loadable(lazy(() => import('../pages/authentication/VerifyCod
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
 const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
 const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
-const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
-const EcommerceProductDetails = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductDetails'))
-);
-const EcommerceProductList = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductList'))
-);
-const EcommerceProductCreate = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductCreate'))
-);
+const AreaList = Loadable(lazy(() => import('../pages/dashboard/AreaList')));
+const AreaCreate = Loadable(lazy(() => import('../pages/dashboard/AreaCreate')));
+const PhasesCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhases')));
+const PhasesTypeCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhasesType')));
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/EcommerceInvoice')));
-const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
-const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
+const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralArea')));
+const CoralAreaCreate = Loadable(lazy(() => import('../pages/dashboard/CoralAreaCreate')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
-const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
+const CoralList = Loadable(lazy(() => import('../pages/dashboard/CoralList')));
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
 const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
-const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
-const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
+const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));
+const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 // Main
-const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
-const About = Loadable(lazy(() => import('../pages/About')));
-const Contact = Loadable(lazy(() => import('../pages/Contact')));
-const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
+// const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
+// const About = Loadable(lazy(() => import('../pages/About')));
+// const Contact = Loadable(lazy(() => import('../pages/Contact')));
+// const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
@@ -386,80 +396,80 @@ const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 // Components
-const ComponentsOverview = Loadable(lazy(() => import('../pages/ComponentsOverview')));
-const Color = Loadable(
-  lazy(() => import('../pages/components-overview/foundations/FoundationColors'))
-);
-const Typography = Loadable(
-  lazy(() => import('../pages/components-overview/foundations/FoundationTypography'))
-);
-const Shadows = Loadable(
-  lazy(() => import('../pages/components-overview/foundations/FoundationShadows'))
-);
-const Grid = Loadable(
-  lazy(() => import('../pages/components-overview/foundations/FoundationGrid'))
-);
-const Icons = Loadable(
-  lazy(() => import('../pages/components-overview/foundations/FoundationIcons'))
-);
-const Accordion = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/Accordion'))
-);
-const Alert = Loadable(lazy(() => import('../pages/components-overview/material-ui/Alert')));
-const Autocomplete = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/Autocomplete'))
-);
-const Avatar = Loadable(lazy(() => import('../pages/components-overview/material-ui/Avatar')));
-const Badge = Loadable(lazy(() => import('../pages/components-overview/material-ui/Badge')));
-const Breadcrumb = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/Breadcrumb'))
-);
-const Buttons = Loadable(lazy(() => import('../pages/components-overview/material-ui/buttons')));
-const Checkbox = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/Checkboxes'))
-);
-const Chip = Loadable(lazy(() => import('../pages/components-overview/material-ui/chips')));
-const Dialog = Loadable(lazy(() => import('../pages/components-overview/material-ui/dialog')));
-const Label = Loadable(lazy(() => import('../pages/components-overview/material-ui/Label')));
-const List = Loadable(lazy(() => import('../pages/components-overview/material-ui/Lists')));
-const Menu = Loadable(lazy(() => import('../pages/components-overview/material-ui/Menus')));
-const Pagination = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/Pagination'))
-);
-const Pickers = Loadable(lazy(() => import('../pages/components-overview/material-ui/pickers')));
-const Popover = Loadable(lazy(() => import('../pages/components-overview/material-ui/Popover')));
-const Progress = Loadable(lazy(() => import('../pages/components-overview/material-ui/progress')));
-const RadioButtons = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/RadioButtons'))
-);
-const Rating = Loadable(lazy(() => import('../pages/components-overview/material-ui/Rating')));
-const Slider = Loadable(lazy(() => import('../pages/components-overview/material-ui/Slider')));
-const Snackbar = Loadable(lazy(() => import('../pages/components-overview/material-ui/Snackbar')));
-const Stepper = Loadable(lazy(() => import('../pages/components-overview/material-ui/stepper')));
-const Switches = Loadable(lazy(() => import('../pages/components-overview/material-ui/Switches')));
-const Table = Loadable(lazy(() => import('../pages/components-overview/material-ui/table')));
-const Tabs = Loadable(lazy(() => import('../pages/components-overview/material-ui/Tabs')));
-const Textfield = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/textfield'))
-);
-const Timeline = Loadable(lazy(() => import('../pages/components-overview/material-ui/Timeline')));
-const Tooltip = Loadable(lazy(() => import('../pages/components-overview/material-ui/Tooltip')));
-const TransferList = Loadable(
-  lazy(() => import('../pages/components-overview/material-ui/transfer-list'))
-);
-const TreeView = Loadable(lazy(() => import('../pages/components-overview/material-ui/TreeView')));
-const DataGrid = Loadable(lazy(() => import('../pages/components-overview/material-ui/data-grid')));
-//
-const Charts = Loadable(lazy(() => import('../pages/components-overview/extra/Charts')));
-const Map = Loadable(lazy(() => import('../pages/components-overview/extra/Map')));
-const Editor = Loadable(lazy(() => import('../pages/components-overview/extra/Editor')));
-const CopyToClipboard = Loadable(
-  lazy(() => import('../pages/components-overview/extra/CopyToClipboard'))
-);
-const Upload = Loadable(lazy(() => import('../pages/components-overview/extra/Upload')));
-const Carousel = Loadable(lazy(() => import('../pages/components-overview/extra/Carousel')));
-const MultiLanguage = Loadable(
-  lazy(() => import('../pages/components-overview/extra/MultiLanguage'))
-);
-const Animate = Loadable(lazy(() => import('../pages/components-overview/extra/animate')));
-const MegaMenu = Loadable(lazy(() => import('../pages/components-overview/extra/MegaMenu')));
+// const ComponentsOverview = Loadable(lazy(() => import('../pages/ComponentsOverview')));
+// const Color = Loadable(
+//   lazy(() => import('../pages/components-overview/foundations/FoundationColors'))
+// );
+// const Typography = Loadable(
+//   lazy(() => import('../pages/components-overview/foundations/FoundationTypography'))
+// );
+// const Shadows = Loadable(
+//   lazy(() => import('../pages/components-overview/foundations/FoundationShadows'))
+// );
+// const Grid = Loadable(
+//   lazy(() => import('../pages/components-overview/foundations/FoundationGrid'))
+// );
+// const Icons = Loadable(
+//   lazy(() => import('../pages/components-overview/foundations/FoundationIcons'))
+// );
+// const Accordion = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/Accordion'))
+// );
+// const Alert = Loadable(lazy(() => import('../pages/components-overview/material-ui/Alert')));
+// const Autocomplete = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/Autocomplete'))
+// );
+// const Avatar = Loadable(lazy(() => import('../pages/components-overview/material-ui/Avatar')));
+// const Badge = Loadable(lazy(() => import('../pages/components-overview/material-ui/Badge')));
+// const Breadcrumb = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/Breadcrumb'))
+// );
+// const Buttons = Loadable(lazy(() => import('../pages/components-overview/material-ui/buttons')));
+// const Checkbox = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/Checkboxes'))
+// );
+// const Chip = Loadable(lazy(() => import('../pages/components-overview/material-ui/chips')));
+// const Dialog = Loadable(lazy(() => import('../pages/components-overview/material-ui/dialog')));
+// const Label = Loadable(lazy(() => import('../pages/components-overview/material-ui/Label')));
+// const List = Loadable(lazy(() => import('../pages/components-overview/material-ui/Lists')));
+// const Menu = Loadable(lazy(() => import('../pages/components-overview/material-ui/Menus')));
+// const Pagination = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/Pagination'))
+// );
+// const Pickers = Loadable(lazy(() => import('../pages/components-overview/material-ui/pickers')));
+// const Popover = Loadable(lazy(() => import('../pages/components-overview/material-ui/Popover')));
+// const Progress = Loadable(lazy(() => import('../pages/components-overview/material-ui/progress')));
+// const RadioButtons = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/RadioButtons'))
+// );
+// const Rating = Loadable(lazy(() => import('../pages/components-overview/material-ui/Rating')));
+// const Slider = Loadable(lazy(() => import('../pages/components-overview/material-ui/Slider')));
+// const Snackbar = Loadable(lazy(() => import('../pages/components-overview/material-ui/Snackbar')));
+// const Stepper = Loadable(lazy(() => import('../pages/components-overview/material-ui/stepper')));
+// const Switches = Loadable(lazy(() => import('../pages/components-overview/material-ui/Switches')));
+// const Table = Loadable(lazy(() => import('../pages/components-overview/material-ui/table')));
+// const Tabs = Loadable(lazy(() => import('../pages/components-overview/material-ui/Tabs')));
+// const Textfield = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/textfield'))
+// );
+// const Timeline = Loadable(lazy(() => import('../pages/components-overview/material-ui/Timeline')));
+// const Tooltip = Loadable(lazy(() => import('../pages/components-overview/material-ui/Tooltip')));
+// const TransferList = Loadable(
+//   lazy(() => import('../pages/components-overview/material-ui/transfer-list'))
+// );
+// const TreeView = Loadable(lazy(() => import('../pages/components-overview/material-ui/TreeView')));
+// const DataGrid = Loadable(lazy(() => import('../pages/components-overview/material-ui/data-grid')));
+// //
+// const Charts = Loadable(lazy(() => import('../pages/components-overview/extra/Charts')));
+// const Map = Loadable(lazy(() => import('../pages/components-overview/extra/Map')));
+// const Editor = Loadable(lazy(() => import('../pages/components-overview/extra/Editor')));
+// const CopyToClipboard = Loadable(
+//   lazy(() => import('../pages/components-overview/extra/CopyToClipboard'))
+// );
+// const Upload = Loadable(lazy(() => import('../pages/components-overview/extra/Upload')));
+// const Carousel = Loadable(lazy(() => import('../pages/components-overview/extra/Carousel')));
+// const MultiLanguage = Loadable(
+//   lazy(() => import('../pages/components-overview/extra/MultiLanguage'))
+// );
+// const Animate = Loadable(lazy(() => import('../pages/components-overview/extra/animate')));
+// const MegaMenu = Loadable(lazy(() => import('../pages/components-overview/extra/MegaMenu')));

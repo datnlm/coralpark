@@ -49,13 +49,13 @@ export default function UserCreate() {
     speciesName: 'string'
   });
 
-  useEffect(() => {
-    dispatch(getUserList());
-    manageCoral.getCoralByID(paramCase(name)).then((response) => {
-      setcurrrentCoral(response.data);
-      console.log(currrentCoral);
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getUserList());
+  //   manageCoral.getCoralByID(paramCase(name)).then((response) => {
+  //     setcurrrentCoral(response.data);
+  //     console.log(currrentCoral);
+  //   });
+  // }, [dispatch]);
 
   return (
     <Page title="Coral: Create a new list">
@@ -64,7 +64,7 @@ export default function UserCreate() {
           heading={!isEdit ? 'Create a new coral' : 'Edit coral'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral', href: PATH_DASHBOARD.user.root },
+            { name: 'Coral', href: PATH_DASHBOARD.coral.root },
             { name: !isEdit ? 'New coral' : name }
           ]}
         />

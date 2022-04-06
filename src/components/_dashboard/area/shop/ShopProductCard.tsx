@@ -31,7 +31,7 @@ type ShopProductCardProps = {
 
 export default function ShopProductCard({ product }: ShopProductCardProps) {
   const { name, cover, price, colors, status, priceSale } = product;
-  const linkTo = `${PATH_DASHBOARD.eCommerce.root}/product/${paramCase(name)}`;
+  const linkTo = `${PATH_DASHBOARD.area.root}/product/${paramCase(name)}`;
 
   return (
     <Card>

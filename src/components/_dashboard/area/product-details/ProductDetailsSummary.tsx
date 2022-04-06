@@ -171,7 +171,7 @@ export default function ProductDetailsSummary({
         }
         setSubmitting(false);
         onGotoStep(0);
-        navigate(PATH_DASHBOARD.eCommerce.checkout);
+        navigate(PATH_DASHBOARD.area.checkout);
       } catch (error) {
         setSubmitting(false);
       }

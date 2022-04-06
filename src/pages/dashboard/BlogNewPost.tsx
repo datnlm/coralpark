@@ -21,7 +21,7 @@ export default function BlogNewPost() {
           heading="Create a new post"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Blog', href: PATH_DASHBOARD.blog.root },
+            { name: 'Blog', href: PATH_DASHBOARD.coralArea.root },
             { name: 'New Post' }
           ]}
         />

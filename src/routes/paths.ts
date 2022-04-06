@@ -50,6 +50,12 @@ export const PATH_DASHBOARD = {
   },
   calendar: path(ROOTS_DASHBOARD, '/calendar'),
   kanban: path(ROOTS_DASHBOARD, '/kanban'),
+  coral: {
+    root: path(ROOTS_DASHBOARD, '/coral'),
+    list: path(ROOTS_DASHBOARD, '/coral/list'),
+    new: path(ROOTS_DASHBOARD, '/coral/new'),
+    type: path(ROOTS_DASHBOARD, '/coral/type')
+  },
   user: {
     root: path(ROOTS_DASHBOARD, '/user'),
     profile: path(ROOTS_DASHBOARD, '/user/profile'),
@@ -57,33 +63,31 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/user/list'),
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
     editById: path(ROOTS_DASHBOARD, '/user/ada-lindgren/edit'),
-    account: path(ROOTS_DASHBOARD, '/user/account'),
-    phases: path(ROOTS_DASHBOARD, '/user/phases'),
-    phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
-  },
-  eCommerce: {
-    root: path(ROOTS_DASHBOARD, '/e-commerce'),
-    shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),
-    product: path(ROOTS_DASHBOARD, '/e-commerce/product/:name'),
-    productById: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
-    list: path(ROOTS_DASHBOARD, '/e-commerce/list'),
-    newProduct: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
-    newProvince: path(ROOTS_DASHBOARD, '/e-commerce/product/province'),
-    editById: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
-    checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
-    invoice: path(ROOTS_DASHBOARD, '/e-commerce/invoice')
-  },
-  blog: {
-    root: path(ROOTS_DASHBOARD, '/blog'),
-    posts: path(ROOTS_DASHBOARD, '/blog/posts'),
-    post: path(ROOTS_DASHBOARD, '/blog/post/:title'),
-    postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
-    newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
+    account: path(ROOTS_DASHBOARD, '/user/account')
   },
   phases: {
-    root: path(ROOTS_DASHBOARD, '/user'),
-    phases: path(ROOTS_DASHBOARD, '/user/phases'),
-    phasesType: path(ROOTS_DASHBOARD, '/user/phasesType')
+    root: path(ROOTS_DASHBOARD, '/phases'),
+    new: path(ROOTS_DASHBOARD, '/phases/new'),
+    typeNew: path(ROOTS_DASHBOARD, '/phases/type/new')
+  },
+  area: {
+    root: path(ROOTS_DASHBOARD, '/area'),
+    shop: path(ROOTS_DASHBOARD, '/area/shop'),
+    product: path(ROOTS_DASHBOARD, '/area/:name'),
+    productById: path(ROOTS_DASHBOARD, '/area/product/nike-air-force-1-ndestrukt'),
+    list: path(ROOTS_DASHBOARD, '/area/list'),
+    new: path(ROOTS_DASHBOARD, '/area/new'),
+    newProvince: path(ROOTS_DASHBOARD, '/area/product/province'),
+    editById: path(ROOTS_DASHBOARD, '/area/product/nike-blazer-low-77-vintage/edit'),
+    checkout: path(ROOTS_DASHBOARD, '/area/checkout'),
+    invoice: path(ROOTS_DASHBOARD, '/area/invoice')
+  },
+  coralArea: {
+    root: path(ROOTS_DASHBOARD, '/coralarea'),
+    list: path(ROOTS_DASHBOARD, '/coralarea/list'),
+    new: path(ROOTS_DASHBOARD, '/coralarea/new'),
+    postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
+    newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
   },
   garden: {
     root: path(ROOTS_DASHBOARD, '/garden'),

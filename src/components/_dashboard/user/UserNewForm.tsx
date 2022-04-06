@@ -123,7 +123,7 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.eCommerce.list);
+        navigate(PATH_DASHBOARD.area.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);

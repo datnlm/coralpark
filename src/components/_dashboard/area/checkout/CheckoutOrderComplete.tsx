@@ -34,7 +34,7 @@ export default function CheckoutOrderComplete({ open }: DialogProps) {
 
   const handleResetStep = () => {
     dispatch(resetCart());
-    navigate(PATH_DASHBOARD.eCommerce.shop);
+    navigate(PATH_DASHBOARD.area.shop);
   };
 
   return (
