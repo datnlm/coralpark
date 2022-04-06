@@ -35,7 +35,7 @@ type PostItemProps = {
 
 function PostItem({ post }: PostItemProps) {
   const { cover, title, view, comment, share, author, createdAt } = post;
-  const linkTo = `${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`;
+  const linkTo = `${PATH_DASHBOARD.coralArea.root}/post/${paramCase(title)}`;
 
   const POST_INFO = [
     { number: comment, icon: messageCircleFill },

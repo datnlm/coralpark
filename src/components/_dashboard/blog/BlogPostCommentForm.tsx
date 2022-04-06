@@ -49,7 +49,7 @@ export default function BlogPostCommentForm() {
       } catch (error) {
         console.error(error);
         setSubmitting(false);
-        setErrors(error.code);
+        // setErrors(error.code);
       }
     }
   });

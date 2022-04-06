@@ -31,7 +31,7 @@ export default function UserCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Coral Area: Create a new list">
+    <Page title="Coral Area: Create a new coral area">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new coral area' : 'Edit coral area'}

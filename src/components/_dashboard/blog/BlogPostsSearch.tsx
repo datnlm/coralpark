@@ -59,7 +59,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function BlogPostsSearch({ sx }: BoxProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const linkTo = (title: string) => `${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`;
+  const linkTo = (title: string) => `${PATH_DASHBOARD.coralArea.root}/post/${paramCase(title)}`;
 
   const handleChangeSearch = async (value: string) => {
     try {

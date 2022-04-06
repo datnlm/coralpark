@@ -31,14 +31,14 @@ export default function PhasesTypeCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Coral: Create a new list">
+    <Page title="Coral: Create a new phases type">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new phases' : 'Edit coral phases'}
+          heading={!isEdit ? 'Create a new phases type' : 'Edit phases type'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Phases', href: PATH_DASHBOARD.user.root },
-            { name: !isEdit ? 'New phases' : name }
+            { name: 'Phases Type', href: PATH_DASHBOARD.user.root },
+            { name: !isEdit ? 'New type' : name }
           ]}
         />
 

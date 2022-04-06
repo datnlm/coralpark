@@ -168,7 +168,7 @@ export default function CoralPhasesTypeNewForm({
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Coral' : 'Save Changes'}
+                    {!isEdit ? 'Create Type' : 'Save Changes'}
                   </LoadingButton>
                 </Box>
               </Stack>

@@ -233,14 +233,14 @@ export default function CollapsibleTable() {
           heading="Coral Area"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Cora Area', href: PATH_DASHBOARD.blog.root },
+            { name: 'Cora Area', href: PATH_DASHBOARD.coralArea.root },
             { name: 'List' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.user.profile}
+              to={PATH_DASHBOARD.coralArea.new}
               startIcon={<Icon icon={plusFill} />}
             >
               New Coral Area

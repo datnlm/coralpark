@@ -22,7 +22,7 @@ import {
   CheckoutPayment,
   CheckoutOrderComplete,
   CheckoutBillingAddress
-} from '../../components/_dashboard/e-commerce/checkout';
+} from '../../components/_dashboard/area/checkout';
 
 // ----------------------------------------------------------------------
 
@@ -109,7 +109,7 @@ export default function EcommerceCheckout() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root
+              href: PATH_DASHBOARD.area.root
             },
             { name: 'Checkout' }
           ]}

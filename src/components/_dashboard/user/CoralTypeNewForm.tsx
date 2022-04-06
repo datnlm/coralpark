@@ -81,7 +81,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.eCommerce.list);
+        navigate(PATH_DASHBOARD.area.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);

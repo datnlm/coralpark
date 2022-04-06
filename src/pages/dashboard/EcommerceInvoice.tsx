@@ -27,7 +27,7 @@ import Page from '../../components/Page';
 import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { InvoiceToolbar } from '../../components/_dashboard/e-commerce/invoice';
+import { InvoiceToolbar } from '../../components/_dashboard/area/invoice';
 
 // ----------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ export default function EcommerceInvoice() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root
+              href: PATH_DASHBOARD.area.root
             },
             { name: 'Invoice' }
           ]}
