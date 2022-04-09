@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { manageArea } from '_apis_/area';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -29,17 +29,18 @@ import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { Province } from '../../../@types/user';
+import { Area } from '../../../@types/user';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
+// import Button from 'theme/overrides/Button';
 
 // ----------------------------------------------------------------------
 
 const GENDER_OPTION = ['Men', 'Women', 'Kids'];
 
 const CATEGORY_OPTION = [
-  { group: 'Province', classify: ['Vĩnh Long', 'Kiên Giang', 'Phan Thiết', 'Nha Trang'] }
+  { group: 'Province', classify: ['Vĩnh Long', 'Kiên Giang', 'Phan Thiết', 'Nha Trang', 'string'] }
 ];
 
 const TAGS_OPTION = [
@@ -68,30 +69,53 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 type ProductNewFormProps = {
   isEdit: boolean;
-  currentProvince?: Province;
+  currentArea?: Area;
 };
 
-export default function ProductNewForm({ isEdit, currentProvince }: ProductNewFormProps) {
+export default function ProductNewForm({ isEdit, currentArea }: ProductNewFormProps) {
+  // const [currentProvince, setCurrentProvince] = useState('');
+  // const provice = typeof currentArea?.province === 'undefined' ? '' : currentArea?.province;
+  // setCurrentProvince(provice);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-
   const NewProductSchema = Yup.object().shape({
     location: Yup.string().required('Location is required'),
     address: Yup.string().required('Address is required'),
     province: Yup.string().required('Province is required')
   });
 
+  const checkSelected = (provice: string) => {
+    return (
+      <option key={provice} value={provice}>
+        {provice}
+      </option>
+    );
+  };
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      location: currentProvince?.location || '',
-      address: currentProvince?.adress || '',
-      province: currentProvince?.province || ''
+      location: currentArea?.location || '',
+      address: currentArea?.address || '',
+      province: currentArea?.province || ' '
     },
+
+    // onSubmit: (values) => {
+    //   console.log('hello');s
+    // },
     validationSchema: NewProductSchema,
+
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+      // console.log(currentArea!.id);
       try {
-        await fakeRequest(500);
+        // console.log(values);
+
+        await manageArea.updateArea(
+          currentArea!.id,
+          values.location,
+          values.address,
+          values.province
+        );
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
@@ -104,8 +128,16 @@ export default function ProductNewForm({ isEdit, currentProvince }: ProductNewFo
     }
   });
 
-  const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
-    formik;
+  const {
+    errors,
+    values,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    setFieldValue,
+    getFieldProps,
+    handleChange
+  } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -116,14 +148,14 @@ export default function ProductNewForm({ isEdit, currentProvince }: ProductNewFo
               <Stack spacing={3}>
                 <TextField
                   fullWidth
-                  label="Location"
+                  label="location"
                   {...getFieldProps('location')}
                   error={Boolean(touched.location && errors.location)}
                   helperText={touched.location && errors.location}
                 />
                 <TextField
                   fullWidth
-                  label="Address"
+                  label="address"
                   {...getFieldProps('address')}
                   error={Boolean(touched.address && errors.address)}
                   helperText={touched.address && errors.address}
@@ -131,18 +163,14 @@ export default function ProductNewForm({ isEdit, currentProvince }: ProductNewFo
                 <FormControl fullWidth>
                   <InputLabel>Province</InputLabel>
                   <Select
-                    label="Category"
+                    // defaultValue={values.province}
+                    label="province"
                     native
-                    {...getFieldProps('category')}
-                    value={values.province}
+                    {...getFieldProps('province')}
                   >
                     {CATEGORY_OPTION.map((category) => (
                       <optgroup key={category.group} label={category.group}>
-                        {category.classify.map((classify) => (
-                          <option key={classify} value={classify}>
-                            {classify}
-                          </option>
-                        ))}
+                        {category.classify.map((classify) => checkSelected(classify))}
                       </optgroup>
                     ))}
                   </Select>
@@ -156,6 +184,7 @@ export default function ProductNewForm({ isEdit, currentProvince }: ProductNewFo
                 >
                   {!isEdit ? 'Create Area' : 'Save Changes'}
                 </LoadingButton>
+                {/* <button type="submit"> sssss</button> */}
               </Stack>
             </Card>
           </Grid>
