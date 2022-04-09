@@ -4,6 +4,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { manageArea } from '_apis_/area';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
 import {
@@ -49,8 +50,8 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Provice Name', alignRight: false },
   { id: 'createdAt', label: 'Location', alignRight: false },
   // { id: 'inventoryType', label: 'Status', alignRight: false },
-  { id: 'price', label: 'Address', alignRight: true },
-  { id: '' }
+  { id: 'price', label: 'Address', alignRight: true }
+  // { id: '' }
 ];
 
 const ThumbImgStyle = styled('img')(({ theme }) => ({
@@ -163,12 +164,13 @@ export default function EcommerceProductList() {
   };
 
   const handleDeleteUser = async (areaID: string) => {
+    console.log('167 handleDelete');
     try {
-      // await manageCoral.deleteCoral(areaID).then((respone) => {
-      //   if (respone.status === 200) {
-      //     dispatch(getListCoral());
-      //   }
-      // });
+      await manageArea.deleteArea(areaID).then((respone) => {
+        if (respone.status === 200) {
+          dispatch(getAreas());
+        }
+      });
     } catch (error) {
       console.log(error);
     }
@@ -179,7 +181,6 @@ export default function EcommerceProductList() {
   const filteredProducts = applySortFilter(arealist, getComparator(order, orderBy), filterName);
 
   const isProductNotFound = filteredProducts.length === 0;
-  console.log(arealist);
   return (
     <Page title="Area: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -238,13 +239,14 @@ export default function EcommerceProductList() {
                           key={id}
                           tabIndex={-1}
                           role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                          onClick={() => handleClick(location)}
+                          // selected={isItemSelected}
+                          // aria-checked={isItemSelected}
+                          // onClick={() => handleClick(location)}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} />
+                            {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
+                          {/* <TableCell align="left"></TableCell> */}
                           <TableCell align="left">{provinceName}</TableCell>
                           <TableCell align="left">{location}</TableCell>
                           <TableCell align="right">{address}</TableCell>

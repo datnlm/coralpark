@@ -1,32 +1,50 @@
 import axios from 'axios';
-
+import { apiCon } from './api';
+// @types
 export class Area {
   // get list area
   getArea = () => {
     return axios({
-      url: 'http://104.45.197.106:8080/api/v1/admin/areas',
+      url: `${apiCon.host}admin/areas`,
       method: 'GET'
     });
   };
 
-  //   // delete
-  //   deleteCoral = (id: number) => {
-  //     return axios({
-  //       url: `http://104.45.197.106:8080/api/v1/admin/corals/${id}`,
-  //       method: 'DELETE',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-  //   };
+  // delete
+  deleteArea = (id: string) => {
+    return axios({
+      url: `${apiCon.host}admin/areas/${id}`,
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+  };
 
-  //   // getCoralbyID
-  //   getCoralByID = (id: string) => {
-  //     return axios({
-  //       url: `http://104.45.197.106:8080/api/v1/admin/corals/${id}`,
-  //       method: 'GET'
-  //     });
-  //   };
+  // getAreaByID
+  getAreaByID = (id: string) => {
+    return axios({
+      url: `${apiCon.host}admin/areas/${id}`,
+      method: 'GET'
+    });
+  };
+
+  // updateArea
+  updateArea = (idd: string = '', locationn: string, addresss: string, provinceIDD: string) => {
+    const dt = {
+      id: parseInt(idd, 10),
+      location: locationn,
+      address: addresss,
+      provinceID: 1,
+      provinceName: 'string'
+    };
+    return axios({
+      url: `${apiCon.host}admin/areas/`,
+      method: 'PUT',
+      data: dt
+    });
+  };
 }
+
 export const manageArea = new Area();
