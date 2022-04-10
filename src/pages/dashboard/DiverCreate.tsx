@@ -15,7 +15,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralNewForm from '../../components/_dashboard/user/CoralNewForm';
+import DiverNewForm from '../../components/_dashboard/diver/DiverNewForm';
 import { UserManager, Coral } from '../../@types/user';
 // ----------------------------------------------------------------------
 
@@ -49,27 +49,27 @@ export default function UserCreate() {
     speciesName: 'string'
   });
 
-  useEffect(() => {
-    dispatch(getUserList());
-    manageCoral.getCoralByID(paramCase(name)).then((response) => {
-      setcurrrentCoral(response.data);
-      console.log(currrentCoral);
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getUserList());
+  //   manageCoral.getCoralByID(paramCase(name)).then((response) => {
+  //     setcurrrentCoral(response.data);
+  //     console.log(currrentCoral);
+  //   });
+  // }, [dispatch]);
 
   return (
-    <Page title="Coral: Create a new list">
+    <Page title="Diver: Create a new list">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new coral' : 'Edit coral'}
+          heading={!isEdit ? 'Create a new diver' : 'Edit diver'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral', href: PATH_DASHBOARD.coral.root },
-            { name: !isEdit ? 'New coral' : name }
+            { name: 'Diver', href: PATH_DASHBOARD.diver.root },
+            { name: !isEdit ? 'New diver' : name }
           ]}
         />
 
-        <CoralNewForm isEdit={isEdit} currentCoral={currrentCoral} />
+        <DiverNewForm isEdit={isEdit} currentCoral={currrentCoral} />
       </Container>
     </Page>
   );

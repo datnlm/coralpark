@@ -48,10 +48,10 @@ import {
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Scientific Name', alignRight: false },
-  { id: 'role', label: 'Type', alignRight: false },
-  { id: 'isVerified', label: 'Color', alignRight: false },
-  { id: 'statusss', label: 'longevity', alignRight: false },
+  { id: 'company', label: 'Address', alignRight: false },
+  { id: 'role', label: 'Acreage', alignRight: false },
+  { id: 'isVerified', label: 'Quantity of cells', alignRight: false },
+  { id: 'statusss', label: 'Type', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -206,7 +206,7 @@ export default function UserList() {
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.user.newUser}
+              to={PATH_DASHBOARD.garden.newGarden}
               startIcon={<Icon icon={plusFill} />}
             >
               New Garden
@@ -296,7 +296,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isUserNotFound && (
+                {/* {isUserNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -304,7 +304,7 @@ export default function UserList() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )}
+                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>

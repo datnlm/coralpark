@@ -44,7 +44,7 @@ export default function AreaCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Area: Create a new area | Minimal-UI">
+    <Page title="Area: Create a new area">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new area' : 'Edit area'}

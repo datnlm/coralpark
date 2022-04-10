@@ -45,12 +45,9 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_d
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Scientific Name', alignRight: false },
-  { id: 'role', label: 'Type', alignRight: false },
-  { id: 'isVerified', label: 'Color', alignRight: false },
-  { id: 'statusss', label: 'longevity', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'name', label: 'Type Name', alignRight: false },
+  { id: 'company', label: 'Parent', alignRight: false },
+  { id: 'role', label: 'Level Type', alignRight: false },
   { id: '' }
 ];
 
@@ -203,23 +200,23 @@ export default function UserList() {
   // }
 
   return (
-    <Page title="Coral: List">
+    <Page title="Coral Type: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral list"
+          heading="Coral Type list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral', href: PATH_DASHBOARD.user.root },
+            { name: 'Coral Type', href: PATH_DASHBOARD.coral.root },
             { name: 'List' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.coral.new}
+              to={PATH_DASHBOARD.coral.type}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Coral
+              New Coral Type
             </Button>
           }
         />
@@ -280,16 +277,14 @@ export default function UserList() {
                           </TableCell>
                           <TableCell align="left">{speciesName}</TableCell>
                           <TableCell align="left">{statusEnum}</TableCell>
-                          <TableCell align="left">{colour}</TableCell>
-                          <TableCell align="left">{longevity}</TableCell>
-                          <TableCell align="left">
+                          {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status === 0 && 'error') || 'success'}
                             >
                               {status == 1 ? 'Available' : 'deleted'}
                             </Label>
-                          </TableCell>
+                          </TableCell> */}
 
                           <TableCell align="right">
                             <UserMoreMenu

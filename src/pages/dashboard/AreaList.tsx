@@ -265,7 +265,7 @@ export default function EcommerceProductList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isProductNotFound && (
+                {/* {isProductNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6}>
@@ -275,7 +275,7 @@ export default function EcommerceProductList() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )}
+                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>
