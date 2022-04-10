@@ -64,9 +64,8 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.diver.root,
         icon: ICONS.diver,
         children: [
-          // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-          // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
-          { title: 'list', path: PATH_DASHBOARD.diver.list }
+          { title: 'list', path: PATH_DASHBOARD.diver.list },
+          { title: 'Create', path: PATH_DASHBOARD.diver.newDiver }
         ]
       },
       // MANAGEMENT : USER
@@ -77,6 +76,7 @@ const sidebarConfig = [
         children: [
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.coral.list },
+          { title: 'list type', path: PATH_DASHBOARD.coral.listType },
           { title: 'type', path: PATH_DASHBOARD.coral.type }
           // { title: 'edit', path: PATH_DASHBOARD.user.editById },
           // { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
@@ -90,7 +90,7 @@ const sidebarConfig = [
         icon: ICONS.phases,
         children: [
           { title: 'create', path: PATH_DASHBOARD.phases.new },
-          { title: 'type create', path: PATH_DASHBOARD.phases.typeNew }
+          { title: 'phases type create', path: PATH_DASHBOARD.phases.typeNew }
         ]
       },
       // MANAGEMENT : Coral Area

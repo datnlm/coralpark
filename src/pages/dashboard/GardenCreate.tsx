@@ -15,39 +15,39 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralNewForm from '../../components/_dashboard/user/CoralNewForm';
+import GardenNewForm from '../../components/_dashboard/garden/GardenNewForm';
 import { UserManager, Coral } from '../../@types/user';
 // ----------------------------------------------------------------------
 
-export default function UserCreate() {
+export default function GardenCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const { userList } = useSelector((state: RootState) => state.user);
+  const { gardenList } = useSelector((state: RootState) => state.garden);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const currentUser = userList.find((user) => paramCase(user.name) === name);
-  const [currrentCoral, setcurrrentCoral] = useState({
-    id: 0,
-    name: 'string',
-    imageUrl: 'string',
-    scientificName: 'string',
-    longevity: 0,
-    exhibitSocial: 'string',
-    sexualBehaviors: 'string',
-    nutrition: 'string',
-    colour: 'string',
-    description: 'string',
-    coralTypeId: 0,
-    status: 0,
-    statusEnum: 'string',
-    className: 'string',
-    orderName: 'string',
-    familyName: 'string',
-    genusName: 'string',
-    speciesName: 'string'
-  });
+  const currentGarden = gardenList.find((garden) => paramCase(garden.name) === name);
+  // const [currrentCoral, setcurrrentCoral] = useState({
+  //   id: 0,
+  //   name: 'string',
+  //   imageUrl: 'string',
+  //   scientificName: 'string',
+  //   longevity: 0,
+  //   exhibitSocial: 'string',
+  //   sexualBehaviors: 'string',
+  //   nutrition: 'string',
+  //   colour: 'string',
+  //   description: 'string',
+  //   coralTypeId: 0,
+  //   status: 0,
+  //   statusEnum: 'string',
+  //   className: 'string',
+  //   orderName: 'string',
+  //   familyName: 'string',
+  //   genusName: 'string',
+  //   speciesName: 'string'
+  // });
 
   // useEffect(() => {
   //   dispatch(getUserList());
@@ -58,18 +58,19 @@ export default function UserCreate() {
   // }, [dispatch]);
 
   return (
-    <Page title="Coral: Create a new list">
+    <Page title="Garden: Garden a new list">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new coral' : 'Edit coral'}
+          heading={!isEdit ? 'Create a new garden' : 'Edit coral'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral', href: PATH_DASHBOARD.coral.root },
-            { name: !isEdit ? 'New coral' : name }
+            { name: 'Garden', href: PATH_DASHBOARD.garden.root },
+            { name: !isEdit ? 'New garden' : name }
           ]}
         />
 
-        <CoralNewForm isEdit={isEdit} currentCoral={currrentCoral} />
+        <GardenNewForm isEdit={isEdit} currentGarden={currentGarden} />
+        {/* <GardenNewForm isEdit={isEdit} currentCoral={currrentCoral} /> */}
       </Container>
     </Page>
   );
