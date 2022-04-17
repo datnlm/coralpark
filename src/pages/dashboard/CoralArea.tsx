@@ -1,132 +1,12 @@
-// import { orderBy } from 'lodash';
-// import { Icon } from '@iconify/react';
-// import plusFill from '@iconify/icons-eva/plus-fill';
-// import { Link as RouterLink } from 'react-router-dom';
-// import InfiniteScroll from 'react-infinite-scroll-component';
-// import { useEffect, useCallback, useState } from 'react';
-// // material
-// import { Box, Grid, Button, Skeleton, Container, Stack } from '@material-ui/core';
-// // redux
-// import { useDispatch, useSelector } from '../../redux/store';
-// import { getPostsInitial, getMorePosts } from '../../redux/slices/blog';
-// // hooks
-// import useSettings from '../../hooks/useSettings';
-// // routes
-// import { PATH_DASHBOARD } from '../../routes/paths';
-// // @types
-// import { Post, BlogState } from '../../@types/blog';
-// // components
-// import Page from '../../components/Page';
-// import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-// import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../../components/_dashboard/blog';
-
-// // ----------------------------------------------------------------------
-
-// const SORT_OPTIONS = [
-//   { value: 'latest', label: 'Latest' },
-//   { value: 'popular', label: 'Popular' },
-//   { value: 'oldest', label: 'Oldest' }
-// ];
-
-// // ----------------------------------------------------------------------
-
-// const applySort = (posts: Post[], sortBy: string) => {
-//   if (sortBy === 'latest') {
-//     return orderBy(posts, ['createdAt'], ['desc']);
-//   }
-//   if (sortBy === 'oldest') {
-//     return orderBy(posts, ['createdAt'], ['asc']);
-//   }
-//   if (sortBy === 'popular') {
-//     return orderBy(posts, ['view'], ['desc']);
-//   }
-//   return posts;
-// };
-
-// const SkeletonLoad = (
-//   <Grid container spacing={3} sx={{ mt: 2 }}>
-//     {[...Array(4)].map((_, index) => (
-//       <Grid item xs={12} md={3} key={index}>
-//         <Skeleton variant="rectangular" width="100%" sx={{ height: 200, borderRadius: 2 }} />
-//         <Box sx={{ display: 'flex', mt: 1.5 }}>
-//           <Skeleton variant="circular" sx={{ width: 40, height: 40 }} />
-//           <Skeleton variant="text" sx={{ mx: 1, flexGrow: 1 }} />
-//         </Box>
-//       </Grid>
-//     ))}
-//   </Grid>
-// );
-
-// export default function BlogPosts() {
-//   const { themeStretch } = useSettings();
-//   const dispatch = useDispatch();
-//   const [filters, setFilters] = useState('latest');
-//   const { posts, hasMore, index, step } = useSelector((state: { blog: BlogState }) => state.blog);
-
-//   const sortedPosts = applySort(posts, filters);
-//   const onScroll = useCallback(() => dispatch(getMorePosts()), [dispatch]);
-
-//   useEffect(() => {
-//     dispatch(getPostsInitial(index, step));
-//   }, [dispatch, index, step]);
-
-//   const handleChangeSort = (value?: string) => {
-//     if (value) {
-//       setFilters(value);
-//     }
-//   };
-
-//   return (
-//     <Page title="Blog: Posts | Minimal-UI">
-//       <Container maxWidth={themeStretch ? false : 'lg'}>
-//         <HeaderBreadcrumbs
-//           heading="Blog"
-//           links={[
-//             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-//             { name: 'Blog', href: PATH_DASHBOARD.blog.root },
-//             { name: 'Posts' }
-//           ]}
-//           action={
-//             <Button
-//               variant="contained"
-//               component={RouterLink}
-//               to={PATH_DASHBOARD.blog.newPost}
-//               startIcon={<Icon icon={plusFill} />}
-//             >
-//               New Post
-//             </Button>
-//           }
-//         />
-
-//         <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-//           <BlogPostsSearch />
-//           <BlogPostsSort query={filters} options={SORT_OPTIONS} onSort={handleChangeSort} />
-//         </Stack>
-
-//         <InfiniteScroll
-//           next={onScroll}
-//           hasMore={hasMore}
-//           loader={SkeletonLoad}
-//           dataLength={posts.length}
-//           style={{ overflow: 'inherit' }}
-//         >
-//           <Grid container spacing={3}>
-//             {sortedPosts.map((post, index) => (
-//               <BlogPostCard key={post.id} post={post} index={index} />
-//             ))}
-//           </Grid>
-//         </InfiniteScroll>
-//       </Container>
-//     </Page>
-//   );
-// }
-
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
+import { useTheme, styled } from '@material-ui/core/styles';
 import {
   Box,
   Collapse,
+  Card,
   IconButton,
   Table,
   TableBody,
@@ -138,15 +18,61 @@ import {
   Paper,
   Button,
   Stack,
-  Container
+  Container,
+  TablePagination
 } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { Link as RouterLink } from 'react-router-dom';
 import plusFill from '@iconify/icons-eva/plus-fill';
+import { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import Scrollbar from '../../components/Scrollbar';
+import useSettings from '../../hooks/useSettings';
+import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../../components/_dashboard/area/list';
+import { Product, ProductState, Area } from '../../@types/products';
+import { useDispatch, useSelector } from '../../redux/store';
+import { getProducts, getAreas } from '../../redux/slices/product';
+
+const TABLE_HEAD = [{ id: 'name', label: 'Area', alignRight: false }];
+
+function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+type Anonymous = Record<string | number, string>;
+
+function getComparator(order: string, orderBy: string) {
+  return order === 'desc'
+    ? (a: Anonymous, b: Anonymous) => descendingComparator(a, b, orderBy)
+    : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
+}
+
+function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, query: string) {
+  const stabilizedThis = array.map((el, index) => [el, index] as const);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+
+  if (query) {
+    return filter(
+      array,
+      (_product) => _product.location.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
+  }
+
+  return stabilizedThis.map((el) => el[0]);
+}
 
 function createData(name: string) {
   return {
@@ -166,57 +92,6 @@ function createData(name: string) {
   };
 }
 
-function Row(props: { row: ReturnType<typeof createData> }) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <div>
-      <TableRow sx={{ p: { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Coral
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Scientific name</TableCell>
-                    <TableCell align="right">Status</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.coral.map((coralRow) => (
-                    <TableRow key={coralRow.name}>
-                      <TableCell component="th" scope="row">
-                        {coralRow.name}
-                      </TableCell>
-                      <TableCell>{coralRow.scientific}</TableCell>
-                      <TableCell>{coralRow.status}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </div>
-  );
-}
-
 const rows = [
   createData('Nha Trang'),
   createData('Phú Quốc'),
@@ -226,9 +101,86 @@ const rows = [
 ];
 
 export default function CollapsibleTable() {
+  const { themeStretch } = useSettings();
+  const theme = useTheme();
+  const dispatch = useDispatch();
+
+  const { products } = useSelector((state: { product: ProductState }) => state.product);
+  const arealist = useSelector((state: { product: ProductState }) => state.product.areas);
+  // const arealist = useSelector((state: ProductState) => state.areas);
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [selected, setSelected] = useState<string[]>([]);
+  const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [orderBy, setOrderBy] = useState('createdAt');
+  useEffect(() => {
+    dispatch(getProducts());
+    dispatch(getAreas());
+  }, [dispatch]);
+
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (checked: boolean) => {
+    if (checked) {
+      const selected = products.map((n) => n.name);
+      setSelected(selected);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (name: string) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected: string[] = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleFilterByName = (filterName: string) => {
+    setFilterName(filterName);
+  };
+
+  const handleDeleteUser = async (areaID: string) => {
+    try {
+      // await manageCoral.deleteCoral(areaID).then((respone) => {
+      //   if (respone.status === 200) {
+      //     dispatch(getListCoral());
+      //   }
+      // });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
+
+  const filteredProducts = applySortFilter(arealist, getComparator(order, orderBy), filterName);
+
+  const isProductNotFound = filteredProducts.length === 0;
   return (
-    <Page title="CoralArea: List">
-      <Container>
+    <Page title="Coral Area: List">
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Coral Area"
           links={[
@@ -247,28 +199,101 @@ export default function CollapsibleTable() {
             </Button>
           }
         />
-
-        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-          <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Coral Area</TableCell>
-                  {/* <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <Row key={row.name} row={row} />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Stack>
+        <Card>
+          <AreaListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
+          <Scrollbar>
+            {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between"> */}
+            <TableContainer component={Paper}>
+              <Table>
+                <AreaListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={arealist.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
+                />
+                <TableBody>
+                  {rows.map((row) => (
+                    <Row key={row.name} row={row} />
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow sx={{ minWidth: 800 }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={products.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={(event, value) => setPage(value)}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Card>
       </Container>
     </Page>
   );
+
+  function Row(props: { row: ReturnType<typeof createData> }) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+
+    return (
+      <div>
+        <TableRow sx={{ p: { borderBottom: 'unset' } }}>
+          <TableCell>
+            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell sx={{ minWidth: 800 }}> {row.name} </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
+                  Coral
+                </Typography>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Scientific name</TableCell>
+                        <TableCell align="left">Status</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {row.coral.map((coralRow) => (
+                        <TableRow key={coralRow.name}>
+                          <TableCell component="th" scope="row">
+                            {coralRow.name}
+                          </TableCell>
+                          <TableCell>{coralRow.scientific}</TableCell>
+                          <TableCell>{coralRow.status}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+        {/* </TableContainer> */}
+      </div>
+    );
+  }
 }

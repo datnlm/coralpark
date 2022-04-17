@@ -179,7 +179,7 @@ export default function EcommerceProductList() {
   const filteredProducts = applySortFilter(arealist, getComparator(order, orderBy), filterName);
 
   const isProductNotFound = filteredProducts.length === 0;
-  console.log(arealist);
+
   return (
     <Page title="Area: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
