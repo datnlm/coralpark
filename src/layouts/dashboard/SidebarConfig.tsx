@@ -16,6 +16,7 @@ const ICONS = {
   chat: getIcon('ic_chat'),
   mail: getIcon('ic_mail'),
   coral: getIcon('ic_coral'),
+  coralArea: getIcon('ic_coral_area'),
   garden: getIcon('ic_garden'),
   diver: getIcon('ic_diver'),
   area: getIcon('ic_area'),
@@ -64,8 +65,8 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.diver.root,
         icon: ICONS.diver,
         children: [
-          { title: 'list', path: PATH_DASHBOARD.diver.list },
-          { title: 'Create', path: PATH_DASHBOARD.diver.newDiver }
+          { title: 'list', path: PATH_DASHBOARD.diver.list }
+          // { title: 'Create', path: PATH_DASHBOARD.diver.newDiver }
         ]
       },
       // MANAGEMENT : USER
@@ -97,10 +98,10 @@ const sidebarConfig = [
       {
         title: 'coral area',
         path: PATH_DASHBOARD.coralArea.root,
-        icon: ICONS.blog,
+        icon: ICONS.coralArea,
         children: [
-          { title: 'list', path: PATH_DASHBOARD.coralArea.list },
-          { title: 'create', path: PATH_DASHBOARD.coralArea.new }
+          { title: 'list', path: PATH_DASHBOARD.coralArea.list }
+          // { title: 'create', path: PATH_DASHBOARD.coralArea.new }
         ]
       },
 
@@ -110,8 +111,8 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.area.root,
         icon: ICONS.area,
         children: [
-          { title: 'list', path: PATH_DASHBOARD.area.list },
-          { title: 'create', path: PATH_DASHBOARD.area.new }
+          { title: 'list', path: PATH_DASHBOARD.area.list }
+          // { title: 'create', path: PATH_DASHBOARD.area.new }
         ]
       }
     ]
