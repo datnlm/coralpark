@@ -110,12 +110,18 @@ export default function ProductNewForm({ isEdit, currentArea }: ProductNewFormPr
       try {
         // console.log(values);
 
-        await manageArea.updateArea(
-          currentArea!.id,
-          values.location,
-          values.address,
-          values.province
-        );
+        if (isEdit) {
+          await manageArea.updateArea(
+            currentArea!.id,
+            values.location,
+            values.address,
+            values.province
+          );
+        } else {
+          console.log('create');
+          await manageArea.createArea(values.location, values.address, values.province);
+        }
+
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
