@@ -27,11 +27,11 @@ export default function ProductListHead({
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          <Checkbox
+          {/* <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={(e) => onSelectAllClick(e.target.checked)}
-          />
+          /> */}
         </TableCell>
         {headLabel.map((headCell) => (
           <TableCell
