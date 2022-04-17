@@ -80,11 +80,17 @@ export type BillingAddress = {
 };
 
 export type Area = {
+  // id: string;
+  // location: string;
+  // address: string;
+  // provinceName: string;
+  // provinceId: string;
+
   id: string;
   location: string;
   address: string;
   provinceName: string;
-  provinceId: string;
+  provinceID: string;
 };
 
 export type ProductState = {

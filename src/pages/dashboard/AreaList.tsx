@@ -229,7 +229,7 @@ export default function EcommerceProductList() {
                   {filteredProducts
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const { id, location, address, provinceId, provinceName } = row;
+                      const { id, location, address, provinceID, provinceName } = row;
 
                       const isItemSelected = selected.indexOf(location) !== -1;
 

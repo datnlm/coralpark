@@ -97,7 +97,7 @@ export default function ProductNewForm({ isEdit, currentArea }: ProductNewFormPr
     initialValues: {
       location: currentArea?.location || '',
       address: currentArea?.address || '',
-      province: currentArea?.province || ' '
+      province: currentArea?.provinceName || ' '
     },
 
     // onSubmit: (values) => {
