@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // coral api
-import { manageCoral } from '_apis_/Coral';
+import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
 // redux
@@ -19,34 +19,22 @@ import DiverNewForm from '../../components/_dashboard/diver/DiverNewForm';
 import { UserManager, Coral } from '../../@types/user';
 // ----------------------------------------------------------------------
 
-export default function UserCreate() {
+export default function DiverCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const { userList } = useSelector((state: RootState) => state.user);
+  const { diverList } = useSelector((state: RootState) => state.diver);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const currentUser = userList.find((user) => paramCase(user.name) === name);
-  const [currrentCoral, setcurrrentCoral] = useState({
+  const currentDiver = diverList.find((diver) => paramCase(diver.name) === name);
+  const [currrentDiver, setcurrrentDiver] = useState({
     id: 0,
     name: 'string',
-    imageUrl: 'string',
-    scientificName: 'string',
-    longevity: 0,
-    exhibitSocial: 'string',
-    sexualBehaviors: 'string',
-    nutrition: 'string',
-    colour: 'string',
-    description: 'string',
-    coralTypeId: 0,
-    status: 0,
-    statusEnum: 'string',
-    className: 'string',
-    orderName: 'string',
-    familyName: 'string',
-    genusName: 'string',
-    speciesName: 'string'
+    phone: 'string',
+    email: 'string',
+    address: 'string',
+    status: 'string'
   });
 
   // useEffect(() => {
@@ -69,7 +57,7 @@ export default function UserCreate() {
           ]}
         />
 
-        <DiverNewForm isEdit={isEdit} currentCoral={currrentCoral} />
+        <DiverNewForm isEdit={isEdit} currentDiver={currentDiver} />
       </Container>
     </Page>
   );

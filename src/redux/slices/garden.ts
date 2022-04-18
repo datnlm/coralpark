@@ -1,4 +1,4 @@
-import { manageCoral } from '_apis_/Coral';
+import { manageCoral } from '_apis_/coral';
 import { map, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';

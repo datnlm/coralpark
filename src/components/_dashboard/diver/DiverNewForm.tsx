@@ -3,6 +3,7 @@ import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { manageDiver } from '_apis_/diver';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -30,7 +31,7 @@ import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { UserManager, Coral } from '../../../@types/user';
+import { Diver } from '../../../@types/diver';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
@@ -63,66 +64,41 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type UserNewFormProps = {
+type DiverNewFormProps = {
   isEdit: boolean;
-  // currentUser?: UserManager;
-  currentCoral: Coral;
+  currentDiver?: Diver;
 };
 
-export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) {
+export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    imageUrl: Yup.string().required('imageUrl is required'),
-    scientificName: Yup.string().required('scientificName is required'),
-    longevity: Yup.string().required('longevity is required'),
-    exhibitSocial: Yup.string().required('exhibitSocial is required'),
-    sexualBehaviors: Yup.string().required('sexualBehaviors is required'),
-    nutrition: Yup.string().required('nutrition is required'),
-    colour: Yup.string().required('colour is required'),
-    description: Yup.string().required('description is required'),
-    coralTypeId: Yup.string().required('coralTypeId is required'),
-    status: Yup.string().required('status is required'),
-    statusEnum: Yup.string().required('statusEnum is required'),
-    className: Yup.string().required('className is required'),
-    orderName: Yup.string().required('orderName is required'),
-    familyName: Yup.string().required('familyName is required'),
-    genusName: Yup.array().min(1, 'genusName is required'),
-    speciesName: Yup.array().min(1, 'speciesName is required')
+    phone: Yup.string().required('Phone is required'),
+    email: Yup.string().required('Email is required'),
+    address: Yup.string().required('Address is required'),
+    status: Yup.string().required('Status is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentCoral?.id || '',
-      name: currentCoral?.name || '',
-      imageUrl: [],
-      scientificName: currentCoral?.scientificName || '',
-      longevity: currentCoral?.longevity || '',
-      exhibitSocial: currentCoral?.exhibitSocial || '',
-      sexualBehaviors: currentCoral?.sexualBehaviors || '',
-      nutrition: currentCoral?.nutrition || '',
-      colour: currentCoral?.colour || '',
-      description: currentCoral?.description || '',
-      coralTypeId: currentCoral?.coralTypeId || '',
-      status: currentCoral?.status || '',
-      statusEnum: currentCoral?.statusEnum || '',
-      className: currentCoral?.className || '',
-      orderName: currentCoral?.orderName || '',
-      familyName: currentCoral?.familyName || '',
-      genusName: currentCoral?.genusName || '',
-      speciesName: currentCoral?.speciesName || ''
+      id: currentDiver?.id || '',
+      name: currentDiver?.name || '',
+      phone: currentDiver?.phone || '',
+      email: currentDiver?.email || '',
+      address: currentDiver?.address || '',
+      status: currentDiver?.status || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await fakeRequest(500);
+        await manageDiver.createDiver(values);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.area.list);
+        navigate(PATH_DASHBOARD.diver.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -147,14 +123,14 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
   //   [setFieldValue]
   // );
 
-  const handleRemoveAll = () => {
-    setFieldValue('images', []);
-  };
+  // const handleRemoveAll = () => {
+  //   setFieldValue('images', []);
+  // };
 
-  const handleRemove = (file: File | string) => {
-    const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
-    setFieldValue('images', filteredItems);
-  };
+  // const handleRemove = (file: File | string) => {
+  //   const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
+  //   setFieldValue('images', filteredItems);
+  // };
 
   return (
     <FormikProvider value={formik}>
@@ -174,9 +150,9 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                   <TextField
                     fullWidth
                     label="Phone"
-                    {...getFieldProps('scientificName')}
-                    error={Boolean(touched.scientificName && errors.scientificName)}
-                    helperText={touched.scientificName && errors.scientificName}
+                    {...getFieldProps('phone')}
+                    error={Boolean(touched.phone && errors.phone)}
+                    helperText={touched.phone && errors.phone}
                   />
                 </Stack>
 
@@ -184,16 +160,16 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                   <TextField
                     fullWidth
                     label="Email"
-                    {...getFieldProps('longevity')}
-                    error={Boolean(touched.longevity && errors.longevity)}
-                    helperText={touched.longevity && errors.longevity}
+                    {...getFieldProps('email')}
+                    error={Boolean(touched.email && errors.email)}
+                    helperText={touched.email && errors.email}
                   />
                   <TextField
                     fullWidth
                     label="Address"
-                    {...getFieldProps('genusName')}
-                    error={Boolean(touched.genusName && errors.genusName)}
-                    helperText={touched.genusName && errors.genusName}
+                    {...getFieldProps('address')}
+                    error={Boolean(touched.address && errors.address)}
+                    helperText={touched.address && errors.address}
                   />
                 </Stack>
 
@@ -201,9 +177,9 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                   <TextField
                     fullWidth
                     label="Status"
-                    {...getFieldProps('exhibitSocial')}
-                    error={Boolean(touched.exhibitSocial && errors.exhibitSocial)}
-                    helperText={touched.exhibitSocial && errors.exhibitSocial}
+                    {...getFieldProps('status')}
+                    error={Boolean(touched.status && errors.status)}
+                    helperText={touched.status && errors.status}
                   />
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

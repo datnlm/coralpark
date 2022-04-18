@@ -77,8 +77,8 @@ const sidebarConfig = [
         children: [
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.coral.list },
-          { title: 'list type', path: PATH_DASHBOARD.coral.listType },
-          { title: 'type', path: PATH_DASHBOARD.coral.type }
+          { title: 'list type', path: PATH_DASHBOARD.coral.listType }
+          // { title: 'type', path: PATH_DASHBOARD.coral.type }
           // { title: 'edit', path: PATH_DASHBOARD.user.editById },
           // { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
           // { title: 'phases', path: PATH_DASHBOARD.user.phases }

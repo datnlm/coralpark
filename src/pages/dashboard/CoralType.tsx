@@ -146,7 +146,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralTypeNewForm from '../../components/_dashboard/user/CoralTypeNewForm';
+import CoralTypeNewForm from '../../components/_dashboard/coral/CoralTypeNewForm';
 
 // ----------------------------------------------------------------------
 

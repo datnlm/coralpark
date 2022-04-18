@@ -13,7 +13,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralPhasesNewForm from '../../components/_dashboard/user/CoralPhasesNewForm';
+import CoralPhasesNewForm from '../../components/_dashboard/coral/CoralPhasesNewForm';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +41,6 @@ export default function PhasesCreate() {
             { name: !isEdit ? 'New phases' : name }
           ]}
         />
-
         <CoralPhasesNewForm isEdit={isEdit} />
       </Container>
     </Page>
