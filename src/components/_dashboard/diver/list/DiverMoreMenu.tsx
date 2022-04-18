@@ -14,10 +14,10 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 
 type DiverMoreMenuProps = {
   onDelete: VoidFunction;
-  userName: string;
+  diverID: string;
 };
 
-export default function DiverMoreMenu({ onDelete, userName }: DiverMoreMenuProps) {
+export default function DiverMoreMenu({ onDelete, diverID }: DiverMoreMenuProps) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export default function DiverMoreMenu({ onDelete, userName }: DiverMoreMenuProps
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.user.root}/${paramCase(userName)}/edit`}
+          to={`${PATH_DASHBOARD.diver.root}/${paramCase(diverID)}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

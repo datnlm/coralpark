@@ -16,6 +16,7 @@ const ICONS = {
   chat: getIcon('ic_chat'),
   mail: getIcon('ic_mail'),
   coral: getIcon('ic_coral'),
+  coralArea: getIcon('ic_coral_area'),
   garden: getIcon('ic_garden'),
   diver: getIcon('ic_diver'),
   area: getIcon('ic_area'),
@@ -64,9 +65,8 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.diver.root,
         icon: ICONS.diver,
         children: [
-          // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-          // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
           { title: 'list', path: PATH_DASHBOARD.diver.list }
+          // { title: 'Create', path: PATH_DASHBOARD.diver.newDiver }
         ]
       },
       // MANAGEMENT : USER
@@ -77,7 +77,8 @@ const sidebarConfig = [
         children: [
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.coral.list },
-          { title: 'type', path: PATH_DASHBOARD.coral.type }
+          { title: 'list type', path: PATH_DASHBOARD.coral.listType }
+          // { title: 'type', path: PATH_DASHBOARD.coral.type }
           // { title: 'edit', path: PATH_DASHBOARD.user.editById },
           // { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
           // { title: 'phases', path: PATH_DASHBOARD.user.phases }
@@ -90,17 +91,17 @@ const sidebarConfig = [
         icon: ICONS.phases,
         children: [
           { title: 'create', path: PATH_DASHBOARD.phases.new },
-          { title: 'type create', path: PATH_DASHBOARD.phases.typeNew }
+          { title: 'phases type create', path: PATH_DASHBOARD.phases.typeNew }
         ]
       },
       // MANAGEMENT : Coral Area
       {
         title: 'coral area',
         path: PATH_DASHBOARD.coralArea.root,
-        icon: ICONS.blog,
+        icon: ICONS.coralArea,
         children: [
-          { title: 'list', path: PATH_DASHBOARD.coralArea.list },
-          { title: 'create', path: PATH_DASHBOARD.coralArea.new }
+          { title: 'list', path: PATH_DASHBOARD.coralArea.list }
+          // { title: 'create', path: PATH_DASHBOARD.coralArea.new }
         ]
       },
 
@@ -110,8 +111,8 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.area.root,
         icon: ICONS.area,
         children: [
-          { title: 'list', path: PATH_DASHBOARD.area.list },
-          { title: 'create', path: PATH_DASHBOARD.area.new }
+          { title: 'list', path: PATH_DASHBOARD.area.list }
+          // { title: 'create', path: PATH_DASHBOARD.area.new }
         ]
       }
     ]

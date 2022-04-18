@@ -1,68 +1,63 @@
+import axios from 'axios';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
+import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import { manageArea } from '_apis_/area';
+import { manageCoral } from '_apis_/coral';
 // material
-import { useTheme, styled } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
+
 import {
-  Box,
   Card,
   Table,
+  Stack,
+  Avatar,
   Button,
-  TableRow,
   Checkbox,
+  TableRow,
   TableBody,
   TableCell,
   Container,
-  IconButton,
   Typography,
   TableContainer,
   TablePagination
 } from '@material-ui/core';
 
-import plusFill from '@iconify/icons-eva/plus-fill';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts, getAreas } from '../../redux/slices/product';
-// utils
-// import { fDate } from '../../utils/formatTime';
-import { fCurrency } from '../../utils/formatNumber';
+import { RootState, useDispatch, useSelector } from '../../redux/store';
+import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { Product, ProductState, Area } from '../../@types/products';
+import { UserManager, Coral } from '../../@types/user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../../components/_dashboard/area/list';
+import {
+  CoralListHead,
+  CoralListToolbar,
+  CoralMoreMenu
+} from '../../components/_dashboard/coral/list';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Provice Name', alignRight: false },
-  { id: 'createdAt', label: 'Location', alignRight: false },
-  // { id: 'inventoryType', label: 'Status', alignRight: false },
-  { id: 'price', label: 'Address', alignRight: true },
+  { id: 'name', label: 'Type Name', alignRight: false },
+  { id: 'company', label: 'Parent', alignRight: false },
+  { id: 'role', label: 'Level Type', alignRight: false },
   { id: '' }
 ];
 
-const ThumbImgStyle = styled('img')(({ theme }) => ({
-  width: 64,
-  height: 64,
-  objectFit: 'cover',
-  margin: theme.spacing(0, 2),
-  borderRadius: theme.shape.borderRadiusSm
-}));
-
 // ----------------------------------------------------------------------
+
+type Anonymous = Record<string | number, string>;
 
 function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
   if (b[orderBy] < a[orderBy]) {
@@ -74,52 +69,64 @@ function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
   return 0;
 }
 
-type Anonymous = Record<string | number, string>;
-
 function getComparator(order: string, orderBy: string) {
   return order === 'desc'
     ? (a: Anonymous, b: Anonymous) => descendingComparator(a, b, orderBy)
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(
+  array: UserManager[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-
   if (query) {
-    return filter(
-      array,
-      (_product) => _product.location.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
-
   return stabilizedThis.map((el) => el[0]);
 }
 
-// ----------------------------------------------------------------------
+function applySortFilterCoral(
+  array: Coral[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
+  const stabilizedThis = array.map((el, index) => [el, index] as const);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(array, (_coral) => _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+  }
+  return stabilizedThis.map((el) => el[0]);
+}
 
-export default function EcommerceProductList() {
+export default function UserList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
-
-  const { products } = useSelector((state: { product: ProductState }) => state.product);
-  const arealist = useSelector((state: { product: ProductState }) => state.product.areas);
-  // const arealist = useSelector((state: ProductState) => state.areas);
+  const { userList } = useSelector((state: RootState) => state.user);
+  const coralList = useSelector((state: RootState) => state.user.coralList);
+  const AreaProvice = useSelector((state: RootState) => state.user.proviceList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
+  const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [orderBy, setOrderBy] = useState('createdAt');
+
   useEffect(() => {
-    dispatch(getProducts());
-    dispatch(getAreas());
-    console.log(arealist);
+    dispatch(getUserList());
+    dispatch(getAreaProvice());
+    dispatch(getListCoral());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -130,8 +137,8 @@ export default function EcommerceProductList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const selected = products.map((n) => n.name);
-      setSelected(selected);
+      const newSelecteds = userList.map((n) => n.name);
+      setSelected(newSelecteds);
       return;
     }
     setSelected([]);
@@ -164,12 +171,15 @@ export default function EcommerceProductList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = async (areaID: string) => {
-    console.log('167 handleDelete');
+  // const handleDeleteUser = (userId: string) => {
+  //   dispatch(deleteUser(userId));
+  // };
+
+  const handleDeleteUser = async (coralId: number) => {
     try {
-      await manageArea.deleteArea(areaID).then((respone) => {
+      await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
-          dispatch(getAreas());
+          dispatch(getListCoral());
         }
       });
     } catch (error) {
@@ -177,38 +187,45 @@ export default function EcommerceProductList() {
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
 
-  const filteredProducts = applySortFilter(arealist, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredCorals = applySortFilterCoral(coralList, getComparator(order, orderBy), filterName);
 
-  const isProductNotFound = filteredProducts.length === 0;
+  const isUserNotFound = filteredUsers.length === 0;
+  // if (companiesList !== null) {
+  //   companiesList.map((item, index) => {
+  //     return (
+  //       <div key={index}>
+  //         <h1>{item[index]}</h1>
+  //       </div>
+  //     );
+  //   });
+  // }
+
   return (
-    <Page title="Area: List">
+    <Page title="Coral Type: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Area List"
+          heading="Coral Type list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            {
-              name: 'Area',
-              href: PATH_DASHBOARD.area.root
-            },
+            { name: 'Coral Type', href: PATH_DASHBOARD.coral.root },
             { name: 'List' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.area.new}
+              to={PATH_DASHBOARD.coral.type}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Area
+              New Coral Type
             </Button>
           }
         />
-
         <Card>
-          <AreaListToolbar
+          <CoralListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -217,44 +234,66 @@ export default function EcommerceProductList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <AreaListHead
+                <CoralListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={arealist.length}
+                  rowCount={userList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredProducts
+                  {filteredCorals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      const { id, location, address, provinceID, provinceName } = row;
-
-                      const isItemSelected = selected.indexOf(location) !== -1;
-
+                    .map((row) => {
+                      const {
+                        id,
+                        name,
+                        speciesName,
+                        status,
+                        statusEnum,
+                        colour,
+                        imageUrl,
+                        longevity
+                      } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
+                      console.log(AreaProvice);
                       return (
                         <TableRow
                           hover
                           key={id}
                           tabIndex={-1}
                           role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
-                          // onClick={() => handleClick(location)}
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} />
+                            <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
                           </TableCell>
-                          {/* <TableCell align="left"></TableCell> */}
-                          <TableCell align="left">{provinceName}</TableCell>
-                          <TableCell align="left">{location}</TableCell>
-                          <TableCell align="right">{address}</TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar alt={name} src={imageUrl} />
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">{speciesName}</TableCell>
+                          <TableCell align="left">{statusEnum}</TableCell>
+                          {/* <TableCell align="left">
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={(status === 0 && 'error') || 'success'}
+                            >
+                              {status == 1 ? 'Available' : 'deleted'}
+                            </Label>
+                          </TableCell> */}
+
                           <TableCell align="right">
-                            <AreaMoreMenu
-                              onDelete={() => handleDeleteUser(id.toString())}
-                              areaID={id.toString()}
+                            <CoralMoreMenu
+                              onDelete={() => handleDeleteUser(id)}
+                              coralID={id.toString()}
                             />
                           </TableCell>
                         </TableRow>
@@ -266,13 +305,11 @@ export default function EcommerceProductList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {/* {isProductNotFound && (
+                {/* {isUserNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6}>
-                        <Box sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </Box>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -284,11 +321,11 @@ export default function EcommerceProductList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={products.length}
+            count={coralList.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onPageChange={(event, value) => setPage(value)}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+            onPageChange={(e, page) => setPage(page)}
+            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
           />
         </Card>
       </Container>

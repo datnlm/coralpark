@@ -15,61 +15,49 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralNewForm from '../../components/_dashboard/coral/CoralNewForm';
+import DiverNewForm from '../../components/_dashboard/diver/DiverNewForm';
 import { UserManager, Coral } from '../../@types/user';
 // ----------------------------------------------------------------------
 
-export default function UserCreate() {
+export default function DiverCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const { userList } = useSelector((state: RootState) => state.user);
+  const { diverList } = useSelector((state: RootState) => state.diver);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const currentUser = userList.find((user) => paramCase(user.name) === name);
-  const [currrentCoral, setcurrrentCoral] = useState({
+  const currentDiver = diverList.find((diver) => paramCase(diver.name) === name);
+  const [currrentDiver, setcurrrentDiver] = useState({
     id: 0,
     name: 'string',
-    imageUrl: 'string',
-    scientificName: 'string',
-    longevity: 0,
-    exhibitSocial: 'string',
-    sexualBehaviors: 'string',
-    nutrition: 'string',
-    colour: 'string',
-    description: 'string',
-    coralTypeId: 0,
-    status: 0,
-    statusEnum: 'string',
-    className: 'string',
-    orderName: 'string',
-    familyName: 'string',
-    genusName: 'string',
-    speciesName: 'string'
+    phone: 'string',
+    email: 'string',
+    address: 'string',
+    status: 'string'
   });
 
-  useEffect(() => {
-    dispatch(getUserList());
-    manageCoral.getCoralByID(paramCase(name)).then((response) => {
-      setcurrrentCoral(response.data);
-      console.log(currrentCoral);
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getUserList());
+  //   manageCoral.getCoralByID(paramCase(name)).then((response) => {
+  //     setcurrrentCoral(response.data);
+  //     console.log(currrentCoral);
+  //   });
+  // }, [dispatch]);
 
   return (
-    <Page title="Coral: Create a new list">
+    <Page title="Diver: Create a new list">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new coral' : 'Edit coral'}
+          heading={!isEdit ? 'Create a new diver' : 'Edit diver'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral', href: PATH_DASHBOARD.coral.root },
-            { name: !isEdit ? 'New coral' : name }
+            { name: 'Diver', href: PATH_DASHBOARD.diver.root },
+            { name: !isEdit ? 'New diver' : name }
           ]}
         />
 
-        <CoralNewForm isEdit={isEdit} currentCoral={currrentCoral} />
+        <DiverNewForm isEdit={isEdit} currentDiver={currentDiver} />
       </Container>
     </Page>
   );

@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { manageCoral } from '_apis_/coral';
 // material
 import { LoadingButton } from '@material-ui/lab';
 import { Box, Card, Grid, Stack, TextField } from '@material-ui/core';
@@ -55,11 +56,11 @@ export default function CoralPhasesTypeNewForm({
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await fakeRequest(500);
+        await manageCoral.createCoralPhasesType(values);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.user.list);
+        navigate(PATH_DASHBOARD.phases.typeNew);
       } catch (error) {
         console.error(error);
         setSubmitting(false);

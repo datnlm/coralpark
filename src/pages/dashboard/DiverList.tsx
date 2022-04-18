@@ -5,6 +5,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { manageDiver } from '_apis_/diver';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -25,7 +26,8 @@ import {
 
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
+import { getListDiver, deleteDiver } from '../../redux/slices/diver';
+
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -125,9 +127,7 @@ export default function UserList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getUserList());
-    dispatch(getAreaProvice());
-    dispatch(getListCoral());
+    dispatch(getListDiver());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -172,8 +172,16 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = (userId: string) => {
-    dispatch(deleteUser(userId));
+  const handleDeleteDiver = async (id: string) => {
+    try {
+      await manageDiver.deleteDiver(id).then((respone) => {
+        if (respone.status === 200) {
+          dispatch(deleteDiver(id));
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
@@ -193,20 +201,20 @@ export default function UserList() {
   // }
 
   return (
-    <Page title="Coral: List">
+    <Page title="Diver: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral list"
+          heading="Diver list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden', href: PATH_DASHBOARD.garden.root },
+            { name: 'Diver', href: PATH_DASHBOARD.diver.root },
             { name: 'List' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.user.newUser}
+              to={PATH_DASHBOARD.diver.newDiver}
               startIcon={<Icon icon={plusFill} />}
             >
               New Diver
@@ -283,8 +291,8 @@ export default function UserList() {
 
                           <TableCell align="right">
                             <DiverMoreMenu
-                              onDelete={() => handleDeleteUser(id.toString())}
-                              userName={name}
+                              onDelete={() => handleDeleteDiver(id.toString())}
+                              diverID={id.toString()}
                             />
                           </TableCell>
                         </TableRow>
@@ -296,7 +304,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isUserNotFound && (
+                {/* {isUserNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -304,7 +312,7 @@ export default function UserList() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )}
+                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>

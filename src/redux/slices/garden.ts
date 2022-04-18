@@ -19,6 +19,7 @@ import {
   AreaProvice,
   Coral
 } from '../../@types/user';
+import { Garden } from '../../@types/garden';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +39,7 @@ type UserState = {
   notifications: NotificationSettings | null;
   proviceList: AreaProvice[];
   coralList: Coral[];
+  gardenList: Garden[];
 };
 
 const initialState: UserState = {
@@ -55,7 +57,8 @@ const initialState: UserState = {
   invoices: [],
   notifications: null,
   proviceList: [],
-  coralList: []
+  coralList: [],
+  gardenList: []
 };
 
 const slice = createSlice({
@@ -172,6 +175,11 @@ const slice = createSlice({
     getListCoral(state, action) {
       state.isLoading = false;
       state.coralList = action.payload;
+    },
+    // GET LIST Garden
+    getListGarden(state, action) {
+      state.isLoading = false;
+      state.gardenList = action.payload;
     }
   }
 });

@@ -54,7 +54,8 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/coral'),
     list: path(ROOTS_DASHBOARD, '/coral/list'),
     new: path(ROOTS_DASHBOARD, '/coral/new'),
-    type: path(ROOTS_DASHBOARD, '/coral/type')
+    type: path(ROOTS_DASHBOARD, '/coral/type'),
+    listType: path(ROOTS_DASHBOARD, '/coral/coral-type-list')
   },
   user: {
     root: path(ROOTS_DASHBOARD, '/user'),
@@ -91,11 +92,13 @@ export const PATH_DASHBOARD = {
   },
   garden: {
     root: path(ROOTS_DASHBOARD, '/garden'),
-    list: path(ROOTS_DASHBOARD, '/garden/list')
+    list: path(ROOTS_DASHBOARD, '/garden/list'),
+    newGarden: path(ROOTS_DASHBOARD, '/garden/new')
   },
   diver: {
     root: path(ROOTS_DASHBOARD, '/diver'),
-    list: path(ROOTS_DASHBOARD, '/diver/list')
+    list: path(ROOTS_DASHBOARD, '/diver/list'),
+    newDiver: path(ROOTS_DASHBOARD, '/diver/new')
   }
 };
 
