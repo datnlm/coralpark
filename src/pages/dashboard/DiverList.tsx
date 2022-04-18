@@ -26,8 +26,8 @@ import {
 
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { deleteDiver } from '../../redux/slices/diver';
-import { getUserList, getAreaProvice, getListCoral } from '../../redux/slices/user';
+import { getListDiver, deleteDiver } from '../../redux/slices/diver';
+
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -127,9 +127,7 @@ export default function UserList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getUserList());
-    dispatch(getAreaProvice());
-    dispatch(getListCoral());
+    dispatch(getListDiver());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
