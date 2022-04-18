@@ -50,8 +50,8 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Provice Name', alignRight: false },
   { id: 'createdAt', label: 'Location', alignRight: false },
   // { id: 'inventoryType', label: 'Status', alignRight: false },
-  { id: 'price', label: 'Address', alignRight: true }
-  // { id: '' }
+  { id: 'price', label: 'Address', alignRight: true },
+  { id: '' }
 ];
 
 const ThumbImgStyle = styled('img')(({ theme }) => ({
@@ -244,7 +244,7 @@ export default function EcommerceProductList() {
                           // onClick={() => handleClick(location)}
                         >
                           <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} /> */}
+                            <Checkbox checked={isItemSelected} />
                           </TableCell>
                           {/* <TableCell align="left"></TableCell> */}
                           <TableCell align="left">{provinceName}</TableCell>

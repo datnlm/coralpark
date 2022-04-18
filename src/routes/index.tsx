@@ -249,26 +249,6 @@ export default function Router() {
           ]
         },
         {
-          path: 'mail',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/mail/all" replace /> },
-            { path: 'label/:customLabel', element: <Mail /> },
-            { path: 'label/:customLabel/:mailId', element: <Mail /> },
-            { path: ':systemLabel', element: <Mail /> },
-            { path: ':systemLabel/:mailId', element: <Mail /> }
-          ]
-        },
-        {
-          path: 'chat',
-          children: [
-            { path: '/', element: <Chat /> },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> }
-          ]
-        },
-        { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> },
-        {
           path: 'garden',
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
@@ -281,7 +261,8 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
             { path: 'list', element: <DiverList /> },
-            { path: 'new', element: <DiverCreate /> }
+            { path: 'new', element: <DiverCreate /> },
+            { path: '/:name/edit', element: <DiverCreate /> }
           ]
         }
       ]
@@ -375,8 +356,8 @@ const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/Ecommerc
 const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralArea')));
 const CoralAreaCreate = Loadable(lazy(() => import('../pages/dashboard/CoralAreaCreate')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
-const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
-const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
+// const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
+// const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const CoralList = Loadable(lazy(() => import('../pages/dashboard/CoralList')));
 const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')));
 const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));

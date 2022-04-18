@@ -5,7 +5,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import { manageCoral } from '_apis_/Coral';
+import { manageCoral } from '_apis_/coral';
 // material
 import { useTheme } from '@material-ui/core/styles';
 
@@ -40,7 +40,11 @@ import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_dashboard/user/list';
+import {
+  CoralListHead,
+  CoralListToolbar,
+  CoralMoreMenu
+} from '../../components/_dashboard/coral/list';
 
 // ----------------------------------------------------------------------
 
@@ -224,7 +228,7 @@ export default function UserList() {
           }
         />
         <Card>
-          <UserListToolbar
+          <CoralListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -233,7 +237,7 @@ export default function UserList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <CoralListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -292,7 +296,7 @@ export default function UserList() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu
+                            <CoralMoreMenu
                               onDelete={() => handleDeleteUser(id)}
                               coralID={id.toString()}
                             />

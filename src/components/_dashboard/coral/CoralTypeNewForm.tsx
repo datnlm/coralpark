@@ -3,6 +3,7 @@ import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { manageCoral } from '_apis_/coral';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -77,11 +78,11 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await fakeRequest(500);
+        await manageCoral.createCoralType(values);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.area.list);
+        navigate(PATH_DASHBOARD.coral.listType);
       } catch (error) {
         console.error(error);
         setSubmitting(false);

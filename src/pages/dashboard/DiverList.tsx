@@ -5,6 +5,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { manageDiver } from '_apis_/diver';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -25,7 +26,8 @@ import {
 
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
+import { deleteDiver } from '../../redux/slices/diver';
+import { getUserList, getAreaProvice, getListCoral } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -172,8 +174,16 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = (userId: string) => {
-    dispatch(deleteUser(userId));
+  const handleDeleteDiver = async (id: string) => {
+    try {
+      await manageDiver.deleteDiver(id).then((respone) => {
+        if (respone.status === 200) {
+          dispatch(deleteDiver(id));
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
@@ -283,8 +293,8 @@ export default function UserList() {
 
                           <TableCell align="right">
                             <DiverMoreMenu
-                              onDelete={() => handleDeleteUser(id.toString())}
-                              userName={name}
+                              onDelete={() => handleDeleteDiver(id.toString())}
+                              diverID={id.toString()}
                             />
                           </TableCell>
                         </TableRow>

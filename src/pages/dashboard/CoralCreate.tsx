@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // coral api
-import { manageCoral } from '_apis_/Coral';
+import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
 // redux
@@ -15,7 +15,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralNewForm from '../../components/_dashboard/user/CoralNewForm';
+import CoralNewForm from '../../components/_dashboard/coral/CoralNewForm';
 import { UserManager, Coral } from '../../@types/user';
 // ----------------------------------------------------------------------
 
