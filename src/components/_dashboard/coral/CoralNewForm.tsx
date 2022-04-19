@@ -38,8 +38,6 @@ import { UploadMultiFile } from '../../upload';
 // ----------------------------------------------------------------------
 import countries from './countries';
 
-const GENDER_OPTION = ['Men', 'Women', 'Kids'];
-
 const TAGS_OPTION = [
   'Toy Story 3',
   'Logan',
@@ -91,6 +89,7 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
     genusName: currentCoral?.genusName || '',
     speciesName: currentCoral?.speciesName || ''
   });
+  const [currenOption, setCurrentOtion] = useState(['haha']);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -197,9 +196,15 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
 
   const handleOnChange = (event: any) => {
     console.log('Form::onChange', event.target.value);
-    setCurrentCoralType(event.target.value);
-    formik.initialValues.colour = event.target.value;
-    console.log('init', formik.initialValues.colour);
+    if (event.target.value === 'red') {
+      setCurrentOtion(['haha', 'hoho']);
+    } else {
+      setCurrentOtion(['haha']);
+    }
+    const coral = currentCoralType;
+    coral.colour = event.target.value;
+    setCurrentCoralType(coral);
+    console.log('state', currentCoralType);
   };
   // return (
   //   <FormikProvider value={formik}>
@@ -494,11 +499,11 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                   <TextField
                     fullWidth
                     label="Colour"
-                    // {...getFieldProps('colour')}
-                    value={currentCoralType.colour}
+                    {...getFieldProps('colour')}
+                    // value={currentCoralType.colour}
                     error={Boolean(touched.colour && errors.colour)}
                     helperText={touched.colour && errors.colour}
-                    onChange={handleOnChange}
+                    // onChange={handleOnChange}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -547,12 +552,12 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                   <Autocomplete
                     id="country-select-demo"
                     fullWidth
-                    options={countries}
+                    options={currenOption}
                     autoHighlight
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option) => option}
                     renderOption={(props, option) => (
                       <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                        {option.label}
+                        {option}
                       </Box>
                     )}
                     renderInput={(params) => (

@@ -51,10 +51,10 @@ export default function UserCreate() {
 
   useEffect(() => {
     dispatch(getUserList());
-    manageCoral.getCoralByID(paramCase(name)).then((response) => {
-      setcurrrentCoral(response.data);
-      console.log(currrentCoral);
-    });
+    // manageCoral.getCoralByID(paramCase(name)).then((response) => {
+    //   setcurrrentCoral(response.data);
+    //   console.log(currrentCoral);
+    // });
   }, [dispatch]);
 
   return (

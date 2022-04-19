@@ -245,11 +245,11 @@ export default function EcommerceProductList() {
                           // onClick={() => handleClick(location)}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} />
+                            {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
                           {/* <TableCell align="left"></TableCell> */}
-                          <TableCell align="left">{provinceName}</TableCell>
-                          <TableCell align="left">{location}</TableCell>
+                          <TableCell align="left">{provinceName}ProviceName</TableCell>
+                          <TableCell align="left">{location}Locaion</TableCell>
                           <TableCell align="right">{address}</TableCell>
                           <TableCell align="right">
                             <AreaMoreMenu
