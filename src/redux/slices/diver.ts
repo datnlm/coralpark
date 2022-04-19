@@ -39,7 +39,7 @@ const initialState: UserState = {
 };
 
 const slice = createSlice({
-  name: 'user',
+  name: 'diver',
   initialState,
   reducers: {
     // START LOADING
