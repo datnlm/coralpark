@@ -36,8 +36,9 @@ export class DiverManager {
   };
 
   // update diver
-  updateArea = (diver: Diver) => {
+  updateDiver = (diver: Diver) => {
     const dt = {
+      id: diver.id,
       name: diver.name,
       phone: diver.phone,
       email: diver.email,
