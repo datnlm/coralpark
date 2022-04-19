@@ -119,6 +119,7 @@ export default function EcommerceProductList() {
   useEffect(() => {
     dispatch(getProducts());
     dispatch(getAreas());
+    console.log(arealist);
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -229,7 +230,7 @@ export default function EcommerceProductList() {
                   {filteredProducts
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const { id, location, address, provinceId, provinceName } = row;
+                      const { id, location, address, provinceID, provinceName } = row;
 
                       const isItemSelected = selected.indexOf(location) !== -1;
 
@@ -244,11 +245,11 @@ export default function EcommerceProductList() {
                           // onClick={() => handleClick(location)}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} />
+                            {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
                           {/* <TableCell align="left"></TableCell> */}
-                          <TableCell align="left">{provinceName}</TableCell>
-                          <TableCell align="left">{location}</TableCell>
+                          <TableCell align="left">{provinceName}ProviceName</TableCell>
+                          <TableCell align="left">{location}Locaion</TableCell>
                           <TableCell align="right">{address}</TableCell>
                           <TableCell align="right">
                             <AreaMoreMenu

@@ -46,7 +46,7 @@ export default function UserMoreMenu({ onDelete, coralID }: UserMoreMenuProps) {
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.user.root}/${coralID}/edit/`}
+          to={`${PATH_DASHBOARD.coral.root}/${coralID}/edit/`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

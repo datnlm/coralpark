@@ -201,6 +201,6 @@ export type Area = {
   id: string;
   location: string;
   address: string;
-  province: string;
+  provinceName: string;
   provinceID: string;
 };

@@ -45,6 +45,23 @@ export class Area {
       data: dt
     });
   };
+
+  createArea = (locationn: string, addresss: string, provinceIDD: string) => {
+    const dt = {
+      id: parseInt('0', 10),
+      location: locationn,
+      address: addresss,
+      provinceID: 1,
+      provinceName: 'string'
+    };
+    return axios({
+      url: `${apiCon.host}admin/areas/`,
+      method: 'POST',
+      data: dt
+    });
+  };
 }
+
+// createArea
 
 export const manageArea = new Area();

@@ -100,6 +100,7 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
             { path: 'list', element: <CoralList /> },
             { path: 'new', element: <CoralCreate /> },
+            { path: '/:name/edit', element: <CoralCreate /> },
             { path: 'type', element: <CoralType /> },
             { path: 'coral-type-list', element: <CoralTypeList /> }
           ]

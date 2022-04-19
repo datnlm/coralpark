@@ -26,21 +26,26 @@ export default function AreaCreate() {
   const { pathname } = useLocation();
   const { name } = useParams();
   // const { products } = useSelector((state: { product: ProductState }) => state.product);
+  const arealist = useSelector((state: { product: ProductState }) => state.product.areas);
   const isEdit = pathname.includes('edit');
+  // const currentProduct = products.find((product) => paramCase(product.name) === name);
+  const currentArea = arealist.find((area) => paramCase(area.id.toString()) === name);
+  // const [currentArea, setCurrentArea] = useState({
+  //   id: 'string',
+  //   location: 'string',
+  //   address: 'string',
+  //   provinceName: 'string',
+  //   provinceID: 'string'
+  // });
 
-  const [currentArea, setCurrentArea] = useState({
-    id: 'string',
-    location: 'string',
-    address: 'string',
-    province: 'string',
-    provinceID: 'string'
-  });
+  const fetchData = async () => {
+    // await manageArea.getAreaByID(paramCase(name)).then((response) => {
+    //   setCurrentArea(response.data);
+    // });
+  };
+
   useEffect(() => {
-    // dispatch(getProducts());
-    manageArea.getAreaByID(paramCase(name)).then((response) => {
-      setCurrentArea(response.data);
-      // console.log(currentArea);
-    });
+    fetchData();
   }, [dispatch]);
 
   return (
@@ -58,6 +63,7 @@ export default function AreaCreate() {
           ]}
         />
         <ProductNewForm isEdit={isEdit} currentArea={currentArea} />
+        {/* currentArea={currentArea} */}
       </Container>
     </Page>
   );
