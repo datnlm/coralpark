@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { manageCoral } from '_apis_/coral';
 // material
@@ -39,7 +39,7 @@ import { UploadMultiFile } from '../../upload';
 // ----------------------------------------------------------------------
 import countries from './countries';
 
-const CATEGORY_OPTION = [{ group: 'Coral', classify: ['1', '2', '3', '4', '5'] }];
+const CATEGORY_OPTION = [{ group: 'Coral', classify: ['Select level', '1', '2', '3', '4', '5'] }];
 const CATEGORY_OPTION2 = [{ group: 'Coral', classify: ['11', '22', '33', '4', '5'] }];
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
@@ -58,13 +58,21 @@ type CoralTypeNewFromProps = {
 export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFromProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [currentLevel, setCurrenLevel] = useState('');
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     parent: Yup.string().required('Parent is required'),
     level: Yup.string().required('Level is required'),
     description: Yup.string().required('Description is required')
   });
+  const [currentLevel, setCurrenLevel] = useState('');
+  const [genusOption, setGeneusOption] = useState([]);
+  const [familyOption, setFamilyOption] = useState([]);
+  const [orderOption, setOrderOption] = useState([]);
+  const [classOption, setClassOptionOption] = useState([]);
+
+  useEffect(() => {
+    console.log('useEffect');
+  }, []);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -72,7 +80,12 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
       name: currentType?.name || '',
       parent: currentType?.parent || CATEGORY_OPTION[0].classify[0],
       level: currentType?.level || CATEGORY_OPTION[0].classify[0],
-      description: currentType?.description || ''
+      description: currentType?.description || '',
+      className: currentType?.description || '',
+      orderName: currentType?.description || '',
+      familyName: currentType?.description || '',
+      GenusName: currentType?.description || '',
+      speciesName: currentType?.description || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -90,6 +103,28 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   });
 
   const onchangeLevel = (event: any) => {
+    setCurrenLevel(event.target.value);
+    console.log('helee');
+  };
+
+  const onchangeLevel1 = (val: any) => {
+    console.log(val.target);
+    console.log(val);
+  };
+
+  const onchangeClassName = (event: any) => {
+    // call api get all class Name
+  };
+
+  const onchangeOrderName = (event: any) => {
+    setCurrenLevel(event.target.value);
+  };
+
+  const onchangeFamilyName = (event: any) => {
+    setCurrenLevel(event.target.value);
+  };
+
+  const onchangeGenusName = (event: any) => {
     setCurrenLevel(event.target.value);
   };
 
@@ -265,6 +300,8 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                       id="product-description"
                       value={values.description}
                       onChange={(val) => setFieldValue('description', val)}
+                      // onChange={(val) => onchangeLevel1(val)}
+                      // onChange={onchangeLevel1}
                       error={Boolean(touched.description && errors.description)}
                     />
                     {touched.description && errors.description && (
