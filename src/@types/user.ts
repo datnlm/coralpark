@@ -199,8 +199,6 @@ export type Phases = {
 };
 export type Area = {
   id: string;
-  location: string;
   address: string;
-  provinceName: string;
-  provinceID: string;
+  wardCode: string;
 };

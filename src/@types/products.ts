@@ -87,10 +87,8 @@ export type Area = {
   // provinceId: string;
 
   id: string;
-  location: string;
   address: string;
-  provinceName: string;
-  provinceID: string;
+  wardCode: string;
 };
 
 export type ProductState = {
