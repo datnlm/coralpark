@@ -67,7 +67,7 @@ function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, 
   if (query) {
     return filter(
       array,
-      (_product) => _product.location.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_product) => _product.id.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
 

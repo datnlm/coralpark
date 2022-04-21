@@ -24,6 +24,8 @@ import {
 } from '@material-ui/core';
 
 import plusFill from '@iconify/icons-eva/plus-fill';
+import axiosInstance from 'utils/axios';
+import axios from 'axios';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProducts, getAreas } from '../../redux/slices/product';
@@ -47,10 +49,10 @@ import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../../components/_d
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Provice Name', alignRight: false },
-  { id: 'createdAt', label: 'Location', alignRight: false },
+  { id: 'name', label: 'Address', alignRight: false },
+  { id: 'createdAt', label: 'Ward Code', alignRight: false },
   // { id: 'inventoryType', label: 'Status', alignRight: false },
-  { id: 'price', label: 'Address', alignRight: true },
+  // { id: 'price', label: 'Address', alignRight: true },
   { id: '' }
 ];
 
@@ -93,7 +95,7 @@ function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, 
   if (query) {
     return filter(
       array,
-      (_product) => _product.location.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_product) => _product.address.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
 
@@ -117,9 +119,10 @@ export default function EcommerceProductList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('createdAt');
   useEffect(() => {
-    dispatch(getProducts());
+    // dispatch(getProducts());
     dispatch(getAreas());
     console.log(arealist);
+    console.log(process.env.REACT_APP_HOST_API_KEY);
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -230,9 +233,9 @@ export default function EcommerceProductList() {
                   {filteredProducts
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const { id, location, address, provinceID, provinceName } = row;
+                      const { id, address, wardCode } = row;
 
-                      const isItemSelected = selected.indexOf(location) !== -1;
+                      const isItemSelected = selected.indexOf(id) !== -1;
 
                       return (
                         <TableRow
@@ -248,9 +251,9 @@ export default function EcommerceProductList() {
                             {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
                           {/* <TableCell align="left"></TableCell> */}
-                          <TableCell align="left">{provinceName}ProviceName</TableCell>
-                          <TableCell align="left">{location}Locaion</TableCell>
-                          <TableCell align="right">{address}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">{wardCode}</TableCell>
+                          {/* <TableCell align="right"></TableCell> */}
                           <TableCell align="right">
                             <AreaMoreMenu
                               onDelete={() => handleDeleteUser(id.toString())}

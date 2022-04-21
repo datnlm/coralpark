@@ -26,9 +26,7 @@ export type AccountBillingFormikProps = FormikProps<{
 
 export type Area = {
    id: string;
-   location: string;
    address: string;
-   proviceId: string;
-   proviceName: string;
+   wardCode: string;
   };
 

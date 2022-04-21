@@ -95,9 +95,8 @@ export default function ProductNewForm({ isEdit, currentArea }: ProductNewFormPr
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      location: currentArea?.location || '',
       address: currentArea?.address || '',
-      province: currentArea?.provinceName || ' '
+      wardCode: currentArea?.wardCode || ' '
     },
 
     // onSubmit: (values) => {
@@ -110,17 +109,17 @@ export default function ProductNewForm({ isEdit, currentArea }: ProductNewFormPr
       try {
         // console.log(values);
 
-        if (isEdit) {
-          await manageArea.updateArea(
-            currentArea!.id,
-            values.location,
-            values.address,
-            values.province
-          );
-        } else {
-          console.log('create');
-          await manageArea.createArea(values.location, values.address, values.province);
-        }
+        // if (isEdit) {
+        //   await manageArea.updateArea(
+        //     currentArea!.id,
+        //     values.location,
+        //     values.address,
+        //     values.province
+        //   );
+        // } else {
+        //   console.log('create');
+        //   await manageArea.createArea(values.location, values.address, values.province);
+        // }
 
         resetForm();
         setSubmitting(false);
@@ -155,16 +154,16 @@ export default function ProductNewForm({ isEdit, currentArea }: ProductNewFormPr
                 <TextField
                   fullWidth
                   label="location"
-                  {...getFieldProps('location')}
-                  error={Boolean(touched.location && errors.location)}
-                  helperText={touched.location && errors.location}
+                  {...getFieldProps('address')}
+                  error={Boolean(touched.address && errors.address)}
+                  helperText={touched.address && errors.address}
                 />
                 <TextField
                   fullWidth
                   label="address"
                   {...getFieldProps('address')}
-                  error={Boolean(touched.address && errors.address)}
-                  helperText={touched.address && errors.address}
+                  error={Boolean(touched.wardCode && errors.wardCode)}
+                  helperText={touched.wardCode && errors.wardCode}
                 />
                 <FormControl fullWidth>
                   <InputLabel>Province</InputLabel>
