@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
-import axios from '../utils/axios';
+// import axios from '../utils/axios';
+import axios from 'axios';
 import { isValidToken, setSession } from '../utils/jwt';
 // @types
 import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/authentication';
@@ -78,12 +79,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
-
+        console.log(accessToken);
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
+          const response = await axios.get(`/api/v1/account-info/${accessToken}`);
           const { user } = response.data;
+          console.log(user);
 
           dispatch({
             type: Types.Initial,
@@ -116,14 +118,42 @@ function AuthProvider({ children }: { children: ReactNode }) {
     initialize();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', {
-      email,
-      password
-    });
-    const { accessToken, user } = response.data;
+  const login = async (id: string, password: string) => {
+    await axios
+      .post('/api/v1/login', {
+        email: id,
+        pass: password
+      })
+      .then((res: any) => {
+        localStorage.setItem('accessToken', res.data.token);
+        console.log(localStorage.getItem('accessToken'));
+        setSession(res.data.token);
+      })
+      .catch((err) => err);
 
-    setSession(accessToken);
+    // const response = await axios.post('/api/v1/login', {
+    //   email,
+    //   password
+    // });
+    const user = [
+      {
+        id: '8864c717-587d-472a-929a-8e5f298024da-0',
+        displayName: 'Jaydon Frankie',
+        email: 'demo@minimals.cc',
+        password: 'demo1234',
+        photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+        phoneNumber: '+40 777666555',
+        country: 'United States',
+        address: '90210 Broadway Blvd',
+        state: 'California',
+        city: 'San Francisco',
+        zipCode: '94116',
+        about: 'a',
+        role: 'admin',
+        isPublic: true
+      }
+    ];
+
     dispatch({
       type: Types.Login,
       payload: {
