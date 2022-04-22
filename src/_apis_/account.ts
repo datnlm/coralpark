@@ -33,7 +33,7 @@ const users: User[] = [
 
 // ----------------------------------------------------------------------
 
-mock.onPost('/api/account/login').reply(async (config) => {
+mock.onPost('/api/v1/login').reply(async (config) => {
   try {
     await fakeRequest(1000);
 

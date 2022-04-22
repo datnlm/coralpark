@@ -55,6 +55,7 @@ export default function LoginForm() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         await login(values.email, values.password);
+        // manageLogin.login(values.email, values.password);
         enqueueSnackbar('Login success', {
           variant: 'success',
           action: (key) => (
@@ -71,7 +72,7 @@ export default function LoginForm() {
         resetForm();
         if (isMountedRef.current) {
           setSubmitting(false);
-          setErrors({ afterSubmit: error.message });
+          // setErrors({ afterSubmit: error.message });x
         }
       }
     }
