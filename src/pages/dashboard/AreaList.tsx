@@ -121,8 +121,6 @@ export default function EcommerceProductList() {
   useEffect(() => {
     // dispatch(getProducts());
     dispatch(getAreas());
-    console.log(arealist);
-    console.log(process.env.REACT_APP_HOST_API_KEY);
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {

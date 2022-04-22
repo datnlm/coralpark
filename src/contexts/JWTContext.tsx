@@ -82,7 +82,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
         console.log(accessToken);
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-
           const response = await axios.get(`/api/v1/account-info/${accessToken}`);
           const { user } = response.data;
           console.log(user);
@@ -126,40 +125,33 @@ function AuthProvider({ children }: { children: ReactNode }) {
       })
       .then((res: any) => {
         localStorage.setItem('accessToken', res.data.token);
-        console.log(localStorage.getItem('accessToken'));
         setSession(res.data.token);
-      })
-      .catch((err) => err);
+        const user = [
+          {
+            id: '8864c717-587d-472a-929a-8e5f298024da-0',
+            displayName: 'Jaydon Frankie',
+            email: 'demo@minimals.cc',
+            password: 'demo1234',
+            photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+            phoneNumber: '+40 777666555',
+            country: 'United States',
+            address: '90210 Broadway Blvd',
+            state: 'California',
+            city: 'San Francisco',
+            zipCode: '94116',
+            about: 'a',
+            role: 'admin',
+            isPublic: true
+          }
+        ];
 
-    // const response = await axios.post('/api/v1/login', {
-    //   email,
-    //   password
-    // });
-    const user = [
-      {
-        id: '8864c717-587d-472a-929a-8e5f298024da-0',
-        displayName: 'Jaydon Frankie',
-        email: 'demo@minimals.cc',
-        password: 'demo1234',
-        photoURL: '/static/mock-images/avatars/avatar_default.jpg',
-        phoneNumber: '+40 777666555',
-        country: 'United States',
-        address: '90210 Broadway Blvd',
-        state: 'California',
-        city: 'San Francisco',
-        zipCode: '94116',
-        about: 'a',
-        role: 'admin',
-        isPublic: true
-      }
-    ];
-
-    dispatch({
-      type: Types.Login,
-      payload: {
-        user
-      }
-    });
+        dispatch({
+          type: Types.Login,
+          payload: {
+            user
+          }
+        });
+      });
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {

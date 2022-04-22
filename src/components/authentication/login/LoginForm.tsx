@@ -19,6 +19,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { codes, emailError } from 'utils/helpError';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
 // hooks
@@ -55,7 +56,6 @@ export default function LoginForm() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         await login(values.email, values.password);
-        // manageLogin.login(values.email, values.password);
         enqueueSnackbar('Login success', {
           variant: 'success',
           action: (key) => (
@@ -72,7 +72,7 @@ export default function LoginForm() {
         resetForm();
         if (isMountedRef.current) {
           setSubmitting(false);
-          // setErrors({ afterSubmit: error.message });x
+          setErrors({ afterSubmit: 'The email address or password are not valid.' });
         }
       }
     }
