@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { manageCoral } from '_apis_/coral';
 // material
+import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import {
   Box,
@@ -23,6 +24,8 @@ import fakeRequest from '../../../utils/fakeRequest';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
 import { Phases } from '../../../@types/user';
+import { QuillEditor } from '../../editor';
+import { UploadMultiFile } from '../../upload';
 // ----------------------------------------------------------------------
 
 type CoralPhasesNewFormProps = {
@@ -30,20 +33,28 @@ type CoralPhasesNewFormProps = {
   currentPhases?: Phases;
 };
 
+const LabelStyle = styled(Typography)(({ theme }) => ({
+  ...theme.typography.subtitle2,
+  color: theme.palette.text.secondary,
+  marginBottom: theme.spacing(1)
+}));
+
 export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhasesNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required')
+    description: Yup.string().required('Description is required'),
+    imageUrl: Yup.array().min(1, 'Images is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: currentPhases?.name || '',
-      description: currentPhases?.description || ''
+      description: currentPhases?.description || '',
+      imageUrl: currentPhases?.imageUrl || []
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -66,16 +77,25 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
+      setFieldValue(
+        'imageUrl',
+        acceptedFiles.map((file: File | string) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        )
+      );
     },
     [setFieldValue]
   );
+  const handleRemoveAll = () => {
+    setFieldValue('imageUrl', []);
+  };
+
+  const handleRemove = (file: File | string) => {
+    const filteredItems = values.imageUrl.filter((_file) => _file !== file);
+    setFieldValue('imageUrl', filteredItems);
+  };
 
   return (
     <FormikProvider value={formik}>
@@ -94,16 +114,42 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Description"
-                    multiline
-                    rows={2}
-                    {...getFieldProps('description')}
-                    error={Boolean(touched.description && errors.description)}
-                    helperText={touched.description && errors.description}
-                  />
+                  <div>
+                    <LabelStyle>Description</LabelStyle>
+                    <QuillEditor
+                      simple
+                      id="product-description"
+                      value={values.description}
+                      onChange={(val) => setFieldValue('description', val)}
+                      error={Boolean(touched.description && errors.description)}
+                    />
+                    {touched.description && errors.description && (
+                      <FormHelperText error sx={{ px: 2 }}>
+                        {touched.description && errors.description}
+                      </FormHelperText>
+                    )}
+                  </div>
                 </Stack>
+
+                <div>
+                  <LabelStyle>Add Images</LabelStyle>
+                  <UploadMultiFile
+                    showPreview
+                    maxSize={3145728}
+                    accept="image/*"
+                    files={values.imageUrl}
+                    onDrop={handleDrop}
+                    onRemove={handleRemove}
+                    onRemoveAll={handleRemoveAll}
+                    error={Boolean(touched.imageUrl && errors.imageUrl)}
+                  />
+                  {touched.imageUrl && errors.imageUrl && (
+                    <FormHelperText error sx={{ px: 2 }}>
+                      {touched.imageUrl && errors.imageUrl}
+                    </FormHelperText>
+                  )}
+                </div>
+
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? 'Create Phases' : 'Save Changes'}

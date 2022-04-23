@@ -21,18 +21,14 @@ export class DiverManager {
 
   // create diver
   createDiver = (diver: Diver) => {
-    const dt = {
+    const data = {
       name: diver.name,
       phone: diver.phone,
       email: diver.email,
       address: diver.address,
       status: diver.status
     };
-    return axios({
-      url: `${apiCon.host}admin/divers/`,
-      method: 'POST',
-      data: dt
-    });
+    axios.post('/api/v1/admin/divers', data);
   };
 
   // update diver
