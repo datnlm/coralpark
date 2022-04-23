@@ -35,20 +35,16 @@ export class Coral {
   };
 
   createCoralPhases = (phases: Phases) => {
-    const dt = {
+    const data = {
       name: phases.name,
-      imageUrl: 'string',
+      imageUrl: phases.imageUrl,
       description: phases.description
     };
-    return axios({
-      url: `${apiCon.host}admin/coral-phases/`,
-      method: 'POST',
-      data: dt
-    });
+    axios.post('/api/v1/admin/coral-phases', data);
   };
 
   createCoralPhasesType = (phaseType: PhasesType) => {
-    const dt = {
+    const data = {
       minWeight: phaseType.maxWeight,
       maxWeight: phaseType.maxWeight,
       minHigh: phaseType.minHigh,
@@ -59,11 +55,7 @@ export class Coral {
       coral: phaseType.coralID,
       coralPhases: phaseType.phaseID
     };
-    return axios({
-      url: `${apiCon.host}admin/coral-phase-types/`,
-      method: 'POST',
-      data: dt
-    });
+    axios.post('/api/v1/admin/coral-phase-types', data);
   };
 
   createCoralType = (coralType: CoralType) => {

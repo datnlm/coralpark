@@ -79,13 +79,12 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
-        console.log(accessToken);
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-          const response = await axios.get(`/api/v1/account-info/${accessToken}`);
-          const { user } = response.data;
-          console.log(user);
-
+          const response = await axios.get('/api/v1/account-info', {
+            params: { token: accessToken }
+          });
+          const user = response.data;
           dispatch({
             type: Types.Initial,
             payload: {
@@ -123,27 +122,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
         email: id,
         pass: password
       })
-      .then((res: any) => {
+      .then(async (res: any) => {
         localStorage.setItem('accessToken', res.data.token);
         setSession(res.data.token);
-        const user = [
-          {
-            id: '8864c717-587d-472a-929a-8e5f298024da-0',
-            displayName: 'Jaydon Frankie',
-            email: 'demo@minimals.cc',
-            password: 'demo1234',
-            photoURL: '/static/mock-images/avatars/avatar_default.jpg',
-            phoneNumber: '+40 777666555',
-            country: 'United States',
-            address: '90210 Broadway Blvd',
-            state: 'California',
-            city: 'San Francisco',
-            zipCode: '94116',
-            about: 'a',
-            role: 'admin',
-            isPublic: true
-          }
-        ];
+        const response = await axios.get('/api/v1/account-info', {
+          params: { token: res.data.token }
+        });
+        const user = response.data;
 
         dispatch({
           type: Types.Login,
@@ -186,6 +171,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         ...state,
         method: 'jwt',
+        user: {
+          id: state?.user?.sub,
+          photoURL:
+            state?.user?.imageUrl == null
+              ? 'https://i.pinimg.com/originals/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg'
+              : state?.user?.imageUrl,
+          email: state?.user?.email,
+          displayName: state?.user?.name,
+          role: state?.user?.role_id
+        },
         login,
         logout,
         register,

@@ -9,7 +9,6 @@ const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.log('set accessToken sau khi login');
     axios.defaults.headers.common = {
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`
     };
