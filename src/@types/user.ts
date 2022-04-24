@@ -83,8 +83,9 @@ export type UserManager = {
 };
 
 export type CoralType = {
+  id: string;
   name: string;
-  parent: string;
+  parentID: string;
   level: string;
   description: string;
 };

@@ -67,25 +67,39 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   const [currentLevel, setCurrenLevel] = useState('');
   const [genusOption, setGeneusOption] = useState([]);
   const [familyOption, setFamilyOption] = useState([]);
-  const [orderOption, setOrderOption] = useState([]);
-  const [classOption, setClassOptionOption] = useState([]);
+  const [orderOption, setOrderOption] = useState([
+    { id: ``, name: ``, parentID: ``, level: ``, description: `` }
+  ]);
+  const [classOption, setClassOption] = useState([
+    { id: ``, name: ``, parentID: ``, level: ``, description: `` }
+  ]);
+  const [currentClass, setCurrentClass] = useState('');
+  const [currentOrder, setCurrentOrder] = useState('');
 
-  useEffect(() => {
-    console.log('useEffect');
-  }, []);
+  const getOption = async (id: string) => {
+    if (parseInt(id, 10) > 1) {
+      await manageCoral.getCoralType(id).then((response) => {
+        setClassOption(response.data.items);
+      });
+    }
+  };
 
+  const resetSelectedOption = (level: string) => {
+    // 0-all,1-from class,2-order,
+  };
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      id: currentType?.id || '',
       name: currentType?.name || '',
-      parent: currentType?.parent || CATEGORY_OPTION[0].classify[0],
+      parentID: currentType?.parentID || CATEGORY_OPTION[0].classify[0],
       level: currentType?.level || CATEGORY_OPTION[0].classify[0],
-      description: currentType?.description || '',
-      className: currentType?.description || '',
-      orderName: currentType?.description || '',
-      familyName: currentType?.description || '',
-      GenusName: currentType?.description || '',
-      speciesName: currentType?.description || ''
+      description: currentType?.description || ''
+      // className: currentType?.description || '',
+      // orderName: currentType?.description || '',
+      // familyName: currentType?.description || '',
+      // GenusName: currentType?.description || '',
+      // speciesName: currentType?.description || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -104,7 +118,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
 
   const onchangeLevel = (event: any) => {
     setCurrenLevel(event.target.value);
-    console.log('helee');
+    getOption(event.target.value);
   };
 
   const onchangeLevel1 = (val: any) => {
@@ -114,10 +128,12 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
 
   const onchangeClassName = (event: any) => {
     // call api get all class Name
+    setCurrentClass(event.target.value);
+    getOption(event.target.value);
   };
 
   const onchangeOrderName = (event: any) => {
-    setCurrenLevel(event.target.value);
+    setCurrentOrder(event.target.value);
   };
 
   const onchangeFamilyName = (event: any) => {
@@ -168,25 +184,6 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
-                  <FormControl fullWidth>
-                    <InputLabel>Parent</InputLabel>
-                    <Select
-                      label="Parent"
-                      native
-                      {...getFieldProps('parent')}
-                      value={values.parent}
-                    >
-                      {CATEGORY_OPTION.map((category) => (
-                        <optgroup key={category.group} label={category.group}>
-                          {category.classify.map((classify) => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                  </FormControl>
                 </Stack>
 
                 {currentLevel === '2' ||
@@ -200,17 +197,16 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                         label="Class name"
                         native
                         {...getFieldProps('level')}
-                        value={values.level}
+                        value={currentClass}
+                        onChange={onchangeClassName}
                       >
-                        {CATEGORY_OPTION.map((category) => (
-                          <optgroup key={category.group} label={category.group}>
-                            {category.classify.map((classify) => (
-                              <option key={classify} value={classify}>
-                                {classify}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
+                        <optgroup key="Class name" label="Class name">
+                          {classOption.map((classify) => (
+                            <option key={classify.id} value={classify.id}>
+                              {classify.name}
+                            </option>
+                          ))}
+                        </optgroup>
                       </Select>
                     </FormControl>
                   </Stack>
@@ -225,17 +221,16 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                         label="Order name"
                         native
                         {...getFieldProps('level')}
-                        value={values.level}
+                        value={currentOrder}
+                        onChange={onchangeOrderName}
                       >
-                        {CATEGORY_OPTION.map((category) => (
-                          <optgroup key={category.group} label={category.group}>
-                            {category.classify.map((classify) => (
-                              <option key={classify} value={classify}>
-                                {classify}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
+                        <optgroup key="Order name" label="Order name">
+                          {orderOption.map((classify) => (
+                            <option key={classify.id} value={classify.id}>
+                              {classify.name}
+                            </option>
+                          ))}
+                        </optgroup>
                       </Select>
                     </FormControl>
                   </Stack>
