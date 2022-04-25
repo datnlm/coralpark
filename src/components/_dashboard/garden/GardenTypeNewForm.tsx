@@ -3,7 +3,6 @@ import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { manageDiver } from '_apis_/diver';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -27,34 +26,15 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 // utils
-import fakeRequest from '../../../utils/fakeRequest';
+import { manageGarden } from '_apis_/garden';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { Diver } from '../../../@types/diver';
+import { GardenType } from '../../../@types/garden';
 //
 import { QuillEditor } from '../../editor';
-import { UploadMultiFile } from '../../upload';
 
 // ----------------------------------------------------------------------
-
-const GENDER_OPTION = ['Men', 'Women', 'Kids'];
-
-const TAGS_OPTION = [
-  'Toy Story 3',
-  'Logan',
-  'Full Metal Jacket',
-  'Dangal',
-  'The Sting',
-  '2001: A Space Odyssey',
-  "Singin' in the Rain",
-  'Toy Story',
-  'Bicycle Thieves',
-  'The Kid',
-  'Inglourious Basterds',
-  'Snatch',
-  '3 Idiots'
-];
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -64,44 +44,39 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type DiverNewFormProps = {
+type GardenNewFormProps = {
   isEdit: boolean;
-  currentDiver?: Diver;
+  // currentUser?: UserManager;
+  currentGardenType?: GardenType;
 };
 
-export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps) {
+export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const NewProductSchema = Yup.object().shape({
+  const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    phone: Yup.string().required('Phone is required'),
-    email: Yup.string().required('Email is required'),
-    address: Yup.string().required('Address is required'),
-    status: Yup.string().required('Status is required'),
+    description: Yup.string().required('Description is required'),
     imageUrl: Yup.array().min(1, 'Images is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentDiver?.id || '',
-      username: currentDiver?.username || '',
-      name: currentDiver?.name || '',
-      phone: currentDiver?.phone || '',
-      email: currentDiver?.email || '',
-      address: currentDiver?.address || '',
-      imageUrl: currentDiver?.imageUrl || '',
-      status: currentDiver?.status || 0
+      id: currentGardenType?.id || '',
+      name: currentGardenType?.name || '',
+      description: currentGardenType?.description || ''
     },
-    validationSchema: NewProductSchema,
+    validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await manageDiver.createDiver(values);
+        !isEdit
+          ? await manageGarden.createGardenType(values)
+          : await manageGarden.updateGardenType(values);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.diver.list);
+        navigate(PATH_DASHBOARD.garden.typesList);
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -111,6 +86,29 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
 
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
+
+  // const handleDrop = useCallback(
+  //   (acceptedFiles) => {
+  //     setFieldValue(
+  //       'images',
+  //       acceptedFiles.map((file: File | string) =>
+  //         Object.assign(file, {
+  //           preview: URL.createObjectURL(file)
+  //         })
+  //       )
+  //     );
+  //   },
+  //   [setFieldValue]
+  // );
+
+  // const handleRemoveAll = () => {
+  //   setFieldValue('images', []);
+  // };
+
+  // const handleRemove = (file: File | string) => {
+  //   const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
+  //   setFieldValue('images', filteredItems);
+  // };
 
   return (
     <FormikProvider value={formik}>
@@ -122,49 +120,33 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Full Name"
+                    label="Name"
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
-                  <TextField
-                    fullWidth
-                    label="Phone"
-                    {...getFieldProps('phone')}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <div>
+                    <LabelStyle>Description</LabelStyle>
+                    <QuillEditor
+                      simple
+                      id="description"
+                      value={values.description}
+                      onChange={(val) => setFieldValue('description', val)}
+                      error={Boolean(touched.description && errors.description)}
+                    />
+                    {touched.description && errors.description && (
+                      <FormHelperText error sx={{ px: 2 }}>
+                        {touched.description && errors.description}
+                      </FormHelperText>
+                    )}
+                  </div>
                 </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Email"
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Address"
-                    {...getFieldProps('address')}
-                    error={Boolean(touched.address && errors.address)}
-                    helperText={touched.address && errors.address}
-                  />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Status"
-                    {...getFieldProps('status')}
-                    error={Boolean(touched.status && errors.status)}
-                    helperText={touched.status && errors.status}
-                  />
-                </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Diver' : 'Save Changes'}
+                    {!isEdit ? 'Create Garden Type' : 'Save Changes'}
                   </LoadingButton>
                 </Box>
               </Stack>

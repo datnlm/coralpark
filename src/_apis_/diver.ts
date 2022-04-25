@@ -5,18 +5,20 @@ import { Diver } from '../@types/diver';
 export class DiverManager {
   // get list diver
   getListDiver = () => {
-    return axios({
-      url: `${apiCon.host}admin/divers`,
-      method: 'GET'
-    });
+    return axios
+      .get('/api/v1/admin/divers')
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // get diver by id
-  getDiverByID = (id: string) => {
-    return axios({
-      url: `${apiCon.host}admin/divers/${id}`,
-      method: 'GET'
-    });
+  getDiverByID = (diverID: string) => {
+    return axios
+      .get('/api/v1/admin/divers', {
+        params: { id: diverID }
+      })
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // create diver
@@ -33,7 +35,7 @@ export class DiverManager {
 
   // update diver
   updateDiver = (diver: Diver) => {
-    const dt = {
+    const data = {
       id: diver.id,
       name: diver.name,
       phone: diver.phone,
@@ -41,23 +43,17 @@ export class DiverManager {
       address: diver.address,
       status: diver.status
     };
-    return axios({
-      url: `${apiCon.host}admin/divers/`,
-      method: 'PUT',
-      data: dt
-    });
+    axios.put('/api/v1/admin/divers', data);
   };
 
   // delete diver
-  deleteDiver = (id: string) => {
-    return axios({
-      url: `${apiCon.host}admin/divers/${id}`,
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
+  deleteDiver = (diverID: string) => {
+    return axios
+      .delete('/api/v1/admin/divers', {
+        data: { id: diverID }
+      })
+      .then((res) => res)
+      .catch((err) => err);
   };
 }
 export const manageDiver = new DiverManager();
