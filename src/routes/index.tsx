@@ -156,7 +156,12 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'new', element: <GardenCreate /> }
+            { path: 'owners-list', element: <GardenOwnersList /> },
+            { path: 'types-list', element: <GardenTypesList /> },
+            { path: 'new', element: <GardenCreate /> },
+            { path: 'garden-owner-new', element: <GardenOwnerCreate /> },
+            { path: 'garden-type-new', element: <GardenTypeCreate /> },
+            { path: '/:name/edit', element: <GardenTypeCreate /> }
           ]
         },
         {
@@ -164,7 +169,8 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
             { path: 'list', element: <DiverList /> },
-            { path: 'new', element: <DiverCreate /> }
+            { path: 'new', element: <DiverCreate /> },
+            { path: '/:name/edit', element: <DiverCreate /> }
           ]
         }
       ]
@@ -254,7 +260,12 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'new', element: <GardenCreate /> }
+            { path: 'owners-list', element: <GardenOwnersList /> },
+            { path: 'types-list', element: <GardenTypesList /> },
+            { path: 'new', element: <GardenCreate /> },
+            { path: 'garden-owner-new', element: <GardenOwnerCreate /> },
+            { path: 'garden-type-new', element: <GardenTypeCreate /> },
+            { path: '/:name/edit', element: <GardenTypeCreate /> }
           ]
         },
         {
@@ -364,7 +375,11 @@ const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')
 const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));
 const CoralTypeList = Loadable(lazy(() => import('../pages/dashboard/CoralTypeList')));
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
+const GardenOwnersList = Loadable(lazy(() => import('../pages/dashboard/GardenOwnersList')));
+const GardenTypesList = Loadable(lazy(() => import('../pages/dashboard/GardenTypesList')));
 const GardenCreate = Loadable(lazy(() => import('../pages/dashboard/GardenCreate')));
+const GardenOwnerCreate = Loadable(lazy(() => import('../pages/dashboard/GardenOwnerCreate')));
+const GardenTypeCreate = Loadable(lazy(() => import('../pages/dashboard/GardenTypeCreate')));
 const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));

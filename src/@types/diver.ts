@@ -6,9 +6,11 @@ import { StringLocale } from 'yup/lib/locale';
 
 export type Diver = {
     id: string;
+    username: string;
     name: string;
     phone: string;
     email: string;
     address: string;
-    status: string;
+    imageUrl: string;
+    status: number;
 };
