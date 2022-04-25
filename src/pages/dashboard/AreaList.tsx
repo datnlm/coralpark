@@ -24,7 +24,7 @@ import {
 } from '@material-ui/core';
 
 import plusFill from '@iconify/icons-eva/plus-fill';
-import axiosInstance from 'utils/axios';
+// import axiosInstance from 'utils/axios';
 import axios from 'axios';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
@@ -121,8 +121,6 @@ export default function EcommerceProductList() {
   useEffect(() => {
     // dispatch(getProducts());
     dispatch(getAreas());
-    console.log(arealist);
-    console.log(process.env.REACT_APP_HOST_API_KEY);
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {

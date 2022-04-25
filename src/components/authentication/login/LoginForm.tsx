@@ -19,6 +19,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { codes, emailError } from 'utils/helpError';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
 // hooks
@@ -71,7 +72,7 @@ export default function LoginForm() {
         resetForm();
         if (isMountedRef.current) {
           setSubmitting(false);
-          setErrors({ afterSubmit: error.message });
+          setErrors({ afterSubmit: 'The email address or password are not valid.' });
         }
       }
     }

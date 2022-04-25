@@ -196,6 +196,7 @@ export type PhasesType = {
 };
 export type Phases = {
   name: string;
+  imageUrl: string[];
   description: string;
 };
 export type Area = {
