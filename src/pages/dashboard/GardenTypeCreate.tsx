@@ -32,17 +32,22 @@ export default function GardenCreate() {
   //   (gardenType) => paramCase(gardenType.name) === name
   // );
   const [currentGardenType, setcurrentGardenType] = useState({
-    id: 'string',
-    name: 'string',
-    description: 'string'
+    id: '',
+    name: '',
+    description: ''
   });
 
   useEffect(() => {
-    // dispatch(getUserList());
-    console.log('do day');
     if (isEdit) {
       manageGarden.getGardenTypeByID(paramCase(name)).then((response) => {
-        setcurrentGardenType(response.data.items);
+        if (response.status == 200) {
+          const data = {
+            id: response.data.id,
+            name: response.data.name,
+            description: response.data.description
+          };
+          setcurrentGardenType(data);
+        }
       });
     }
   }, [dispatch]);
@@ -51,10 +56,10 @@ export default function GardenCreate() {
     <Page title="Garden: Garden a new list">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new garden type' : 'Edit coral'}
+          heading={!isEdit ? 'Create a new garden type' : 'Edit garden type'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden', href: PATH_DASHBOARD.garden.root },
+            { name: 'Garden type', href: PATH_DASHBOARD.garden.root },
             { name: !isEdit ? 'New type garden' : name }
           ]}
         />

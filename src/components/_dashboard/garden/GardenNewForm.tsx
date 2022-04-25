@@ -26,7 +26,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 // utils
-import fakeRequest from '../../../utils/fakeRequest';
+import { manageGarden } from '_apis_/garden';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
@@ -82,7 +82,8 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     areaID: Yup.string().required('Area is required'),
     gardenTypeId: Yup.string().required('Garden Type is required'),
     gardenOwnerId: Yup.string().required('Garden Owner is required'),
-    status: Yup.string().required('Name is required')
+    staffId: Yup.string().required('Garden Staff is required'),
+    status: Yup.string().required('Status is required')
   });
 
   const formik = useFormik({
@@ -97,16 +98,17 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       areaID: currentGarden?.areaID || '',
       gardenTypeId: currentGarden?.gardenTypeId || '',
       gardenOwnerId: currentGarden?.gardenOwnerId || '',
-      status: currentGarden?.status || ''
+      staffId: currentGarden?.staffId || '',
+      status: currentGarden?.status || 0
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await fakeRequest(500);
+        !isEdit ? await manageGarden.createGarden(values) : await manageGarden.updateGarden(values);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.area.list);
+        navigate(PATH_DASHBOARD.garden.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -151,7 +153,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                   <TextField
                     fullWidth
                     label="Garden Name"
-                    {...getFieldProps('garden name')}
+                    {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
@@ -201,19 +203,26 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                   <TextField
                     fullWidth
                     label="Garden Type"
-                    {...getFieldProps('nutrition')}
+                    {...getFieldProps('gardenTypeId')}
                     error={Boolean(touched.gardenTypeId && errors.gardenTypeId)}
                     helperText={touched.gardenTypeId && errors.gardenTypeId}
                   />
                   <TextField
                     fullWidth
                     label="Garden Owner"
-                    {...getFieldProps('colour')}
+                    {...getFieldProps('gardenOwnerId')}
                     error={Boolean(touched.gardenOwnerId && errors.gardenOwnerId)}
                     helperText={touched.gardenOwnerId && errors.gardenOwnerId}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    label="Staff"
+                    {...getFieldProps('staffId')}
+                    error={Boolean(touched.staffId && errors.staffId)}
+                    helperText={touched.staffId && errors.staffId}
+                  />
                   <TextField
                     fullWidth
                     label="Status"

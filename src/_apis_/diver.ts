@@ -14,9 +14,7 @@ export class DiverManager {
   // get diver by id
   getDiverByID = (diverID: string) => {
     return axios
-      .get('/api/v1/admin/divers', {
-        params: { id: diverID }
-      })
+      .get(`/api/v1/admin/divers/${diverID}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -24,11 +22,15 @@ export class DiverManager {
   // create diver
   createDiver = (diver: Diver) => {
     const data = {
+      username: diver.username,
+      password: diver.password,
       name: diver.name,
       phone: diver.phone,
       email: diver.email,
       address: diver.address,
-      status: diver.status
+      imageUrl:
+        'https://www.thewrap.com/wp-content/uploads/2021/08/Robert-Downey-Jr-Iron-Man-620x400.jpg',
+      status: 1
     };
     axios.post('/api/v1/admin/divers', data);
   };
@@ -37,10 +39,14 @@ export class DiverManager {
   updateDiver = (diver: Diver) => {
     const data = {
       id: diver.id,
+      username: diver.username,
+      password: diver.password,
       name: diver.name,
       phone: diver.phone,
       email: diver.email,
       address: diver.address,
+      imageUrl:
+        'https://www.thewrap.com/wp-content/uploads/2021/08/Robert-Downey-Jr-Iron-Man-620x400.jpg',
       status: diver.status
     };
     axios.put('/api/v1/admin/divers', data);
@@ -49,9 +55,7 @@ export class DiverManager {
   // delete diver
   deleteDiver = (diverID: string) => {
     return axios
-      .delete('/api/v1/admin/divers', {
-        data: { id: diverID }
-      })
+      .delete(`/api/v1/admin/divers/${diverID}`)
       .then((res) => res)
       .catch((err) => err);
   };

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
@@ -22,7 +23,8 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-
+import { manageGarden } from '_apis_/garden';
+import { Garden } from '../../@types/garden';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListGarden } from '../../redux/slices/garden';
@@ -76,11 +78,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(
-  array: UserManager[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
+function applySortFilter(array: Garden[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -88,35 +86,20 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
-function applySortFilterCoral(
-  array: Coral[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
-  const stabilizedThis = array.map((el, index) => [el, index] as const);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_coral) => _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_garden) => _garden.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function UserList() {
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { userList } = useSelector((state: RootState) => state.user);
-  const coralList = useSelector((state: RootState) => state.user.coralList);
-  const AreaProvice = useSelector((state: RootState) => state.user.proviceList);
+  const gardenList = useSelector((state: RootState) => state.garden.gardenList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -136,7 +119,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = userList.map((n) => n.name);
+      const newSelecteds = gardenList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -170,16 +153,24 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = (userId: string) => {
-    // dispatch(deleteUser(userId));
+  const handleDeleteGarden = async (gardenId: string) => {
+    try {
+      await manageGarden.deleteGarden(gardenId).then((respone) => {
+        if (respone.status === 200) {
+          enqueueSnackbar('Delete success', { variant: 'success' });
+          dispatch(getListGarden());
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - gardenList.length) : 0;
 
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
-  const filteredCorals = applySortFilterCoral(coralList, getComparator(order, orderBy), filterName);
+  const filteredGarden = applySortFilter(gardenList, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isGardenNotFound = filteredGarden.length === 0;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -225,27 +216,29 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
+                  rowCount={gardenList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredCorals
+                  {filteredGarden
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
                         id,
                         name,
-                        speciesName,
-                        status,
-                        statusEnum,
-                        colour,
-                        imageUrl,
-                        longevity
+                        location,
+                        address,
+                        acreage,
+                        quantityOfCells,
+                        areaID,
+                        gardenTypeId,
+                        gardenOwnerId,
+                        staffId,
+                        status
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-                      console.log(AreaProvice);
                       return (
                         <TableRow
                           hover
@@ -260,16 +253,16 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl} />
+                              {/* <Avatar alt={name} src={imageUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{speciesName}</TableCell>
-                          <TableCell align="left">{statusEnum}</TableCell>
-                          <TableCell align="left">{colour}</TableCell>
-                          <TableCell align="left">{longevity}</TableCell>
+                          <TableCell align="left">{location}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">{acreage}</TableCell>
+                          <TableCell align="left">{quantityOfCells}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -281,8 +274,8 @@ export default function UserList() {
 
                           <TableCell align="right">
                             <GardenMoreMenu
-                              onDelete={() => handleDeleteUser(id.toString())}
-                              userName={name}
+                              onDelete={() => handleDeleteGarden(id.toString())}
+                              userName={id.toString()}
                             />
                           </TableCell>
                         </TableRow>
@@ -294,7 +287,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {/* {isUserNotFound && (
+                {isGardenNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -302,7 +295,7 @@ export default function UserList() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )} */}
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -310,7 +303,7 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={coralList.length}
+            count={gardenList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

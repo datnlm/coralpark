@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
@@ -92,6 +93,7 @@ function applySortFilter(array: Diver[], comparator: (a: any, b: any) => number,
 
 export default function UserList() {
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
   const diverList = useSelector((state: RootState) => state.diver.diverList);
@@ -152,7 +154,8 @@ export default function UserList() {
     try {
       await manageDiver.deleteDiver(id).then((respone) => {
         if (respone.status === 200) {
-          dispatch(deleteDiver(id));
+          enqueueSnackbar('Delete success', { variant: 'success' });
+          dispatch(getListDiver());
         }
       });
     } catch (error) {
@@ -164,7 +167,7 @@ export default function UserList() {
 
   const filteredDiver = applySortFilter(diverList, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredDiver.length === 0;
+  const isDiverNotFound = filteredDiver.length === 0;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -235,7 +238,7 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl} />
+                              <Avatar alt={name} src={imageUrl.toString()} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
@@ -268,7 +271,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {/* {isUserNotFound && (
+                {isDiverNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -276,7 +279,7 @@ export default function UserList() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )} */}
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>

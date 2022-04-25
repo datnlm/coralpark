@@ -263,7 +263,7 @@ export default function UserList() {
                           <TableCell align="right">
                             <GardenTypesMoreMenu
                               onDelete={() => handleDeleteGardenType(id.toString())}
-                              userName={name}
+                              userName={id.toString()}
                             />
                           </TableCell>
                         </TableRow>
