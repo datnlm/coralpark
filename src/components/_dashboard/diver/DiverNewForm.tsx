@@ -75,6 +75,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
+    username: Yup.string().required('Username is required'),
     phone: Yup.string().required('Phone is required'),
     email: Yup.string().required('Email is required'),
     address: Yup.string().required('Address is required'),
@@ -91,13 +92,14 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
       phone: currentDiver?.phone || '',
       email: currentDiver?.email || '',
       address: currentDiver?.address || '',
-      imageUrl: currentDiver?.imageUrl || '',
+      imageUrl: currentDiver?.imageUrl || [],
+      password: currentDiver?.password || '',
       status: currentDiver?.status || 0
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await manageDiver.createDiver(values);
+        !isEdit ? await manageDiver.createDiver(values) : await manageDiver.updateDiver(values);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
@@ -112,6 +114,27 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      setFieldValue(
+        'imageUrl',
+        acceptedFiles.map((file: File | string) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        )
+      );
+    },
+    [setFieldValue]
+  );
+  const handleRemoveAll = () => {
+    setFieldValue('imageUrl', []);
+  };
+
+  const handleRemove = (file: File | string) => {
+    const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
+    setFieldValue('imageUrl', filteredItems);
+  };
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -119,6 +142,22 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
           <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    label="Username"
+                    {...getFieldProps('username')}
+                    error={Boolean(touched.username && errors.username)}
+                    helperText={touched.username && errors.username}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Password"
+                    {...getFieldProps('password')}
+                    error={Boolean(touched.password && errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
@@ -161,6 +200,26 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                     error={Boolean(touched.status && errors.status)}
                     helperText={touched.status && errors.status}
                   />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <div>
+                    <LabelStyle>Add Images</LabelStyle>
+                    <UploadMultiFile
+                      showPreview
+                      maxSize={3145728}
+                      accept="image/*"
+                      files={values.imageUrl}
+                      onDrop={handleDrop}
+                      onRemove={handleRemove}
+                      onRemoveAll={handleRemoveAll}
+                      error={Boolean(touched.imageUrl && errors.imageUrl)}
+                    />
+                    {touched.imageUrl && errors.imageUrl && (
+                      <FormHelperText error sx={{ px: 2 }}>
+                        {touched.imageUrl && errors.imageUrl}
+                      </FormHelperText>
+                    )}
+                  </div>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>

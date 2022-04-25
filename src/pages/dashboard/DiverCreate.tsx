@@ -5,6 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
+import { manageDiver } from '_apis_/diver';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 import { getUserList } from '../../redux/slices/user';
@@ -16,7 +17,7 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import DiverNewForm from '../../components/_dashboard/diver/DiverNewForm';
-import { UserManager, Coral } from '../../@types/user';
+
 // ----------------------------------------------------------------------
 
 export default function DiverCreate() {
@@ -27,23 +28,39 @@ export default function DiverCreate() {
   const { diverList } = useSelector((state: RootState) => state.diver);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const currentDiver = diverList.find((diver) => paramCase(diver.name) === name);
-  const [currrentDiver, setcurrrentDiver] = useState({
-    id: 0,
-    name: 'string',
-    phone: 'string',
-    email: 'string',
-    address: 'string',
-    status: 'string'
+  // const currentDiver = diverList.find((diver) => paramCase(diver.name) === name);
+  const [currentDiver, setcurrentDiver] = useState({
+    id: '',
+    username: '',
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    password: '',
+    imageUrl: [],
+    status: 0
   });
 
-  // useEffect(() => {
-  //   dispatch(getUserList());
-  //   manageCoral.getCoralByID(paramCase(name)).then((response) => {
-  //     setcurrrentCoral(response.data);
-  //     console.log(currrentCoral);
-  //   });
-  // }, [dispatch]);
+  useEffect(() => {
+    if (isEdit) {
+      manageDiver.getDiverByID(paramCase(name)).then((response) => {
+        if (response.status == 200) {
+          const data = {
+            id: response.data.id,
+            username: response.data.userName,
+            name: response.data.name,
+            phone: response.data.phone,
+            email: response.data.email,
+            address: response.data.address,
+            password: response.data.password,
+            imageUrl: [],
+            status: response.data.status
+          };
+          setcurrentDiver(data);
+        }
+      });
+    }
+  }, [dispatch]);
 
   return (
     <Page title="Diver: Create a new list">

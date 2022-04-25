@@ -37,24 +37,6 @@ import { UploadMultiFile } from '../../upload';
 
 // ----------------------------------------------------------------------
 
-const GENDER_OPTION = ['Men', 'Women', 'Kids'];
-
-const TAGS_OPTION = [
-  'Toy Story 3',
-  'Logan',
-  'Full Metal Jacket',
-  'Dangal',
-  'The Sting',
-  '2001: A Space Odyssey',
-  "Singin' in the Rain",
-  'Toy Story',
-  'Bicycle Thieves',
-  'The Kid',
-  'Inglourious Basterds',
-  'Snatch',
-  '3 Idiots'
-];
-
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
@@ -88,7 +70,6 @@ export default function GardenOwnerNewForm({
       phone: currentGardenOwner?.phone || '',
       email: currentGardenOwner?.email || '',
       address: currentGardenOwner?.address || '',
-      status: currentGardenOwner?.status || 0,
       imageUrl: currentGardenOwner?.imageUrl || []
     },
     validationSchema: NewGardenSchema,

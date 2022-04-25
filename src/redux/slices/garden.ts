@@ -92,7 +92,9 @@ export function getListGarden() {
     dispatch(slice.actions.startLoading());
     try {
       manageGarden.getListGarden().then((response) => {
-        dispatch(slice.actions.getListGarden(response.data.items));
+        if (response.status == 200) {
+          dispatch(slice.actions.getListGarden(response.data.items));
+        }
       });
     } catch (error) {
       dispatch(slice.actions.hasError(error));

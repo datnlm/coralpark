@@ -8,12 +8,13 @@ export type Garden = {
   name: string;
   location: string;
   address: string;
-  acreage: number;
-  quantityOfCells: number;
+  acreage: string;
+  quantityOfCells: string;
   areaID: string;
   gardenTypeId: string;
   gardenOwnerId: string;
-  status: string;
+  staffId: string;
+  status: number;
 };
 export type GardenType = {
   id: string;
@@ -27,5 +28,4 @@ export type GardenOwner = {
   email: string;
   address: string;
   imageUrl: string[];
-  status: number;
 };

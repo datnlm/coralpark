@@ -14,9 +14,7 @@ export class GardenManager {
   // get garden by id
   getGardenByID = (gardenID: string) => {
     return axios
-      .get('/api/v1/admin/gardens', {
-        params: { id: gardenID }
-      })
+      .get(`/api/v1/admin/gardens/${gardenID}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -32,7 +30,8 @@ export class GardenManager {
       areaID: garden.areaID,
       gardenTypeId: garden.gardenTypeId,
       gardenOwnerId: garden.gardenOwnerId,
-      status: garden.status
+      staffId: garden.staffId,
+      status: 1
     };
     axios.post('/api/v1/admin/gardens', data);
   };
@@ -49,6 +48,7 @@ export class GardenManager {
       areaID: garden.areaID,
       gardenTypeId: garden.gardenTypeId,
       gardenOwnerId: garden.gardenOwnerId,
+      staffId: garden.staffId,
       status: garden.status
     };
     axios.put('/api/v1/admin/gardens', data);
@@ -57,9 +57,7 @@ export class GardenManager {
   // delete garden
   deleteGarden = (gardenID: string) => {
     return axios
-      .delete('/api/v1/admin/gardens', {
-        data: { id: gardenID }
-      })
+      .delete(`/api/v1/admin/gardens/${gardenID}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -76,9 +74,7 @@ export class GardenManager {
   // get garden owners by id
   getGardenOwnerByID = (gardenOwnerID: string) => {
     return axios
-      .get('/api/v1/admin/garden-owners', {
-        params: { id: gardenOwnerID }
-      })
+      .get(`/api/v1/admin/garden-owners/${gardenOwnerID}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -91,8 +87,7 @@ export class GardenManager {
       phone: owner.phone,
       email: owner.email,
       address: owner.address,
-      imageUrl: 'https://icons-for-free.com/download-icon-boss+icon-1320184414387489483_512.png',
-      status: 1
+      imageUrl: 'https://cdn.dribbble.com/users/7057015/screenshots/15127355/thor_4x.png'
     };
     axios.post('/api/v1/admin/garden-owners', data);
   };
@@ -105,7 +100,7 @@ export class GardenManager {
       phone: owner.phone,
       email: owner.email,
       address: owner.address,
-      status: owner.status
+      imageUrl: 'https://cdn.dribbble.com/users/7057015/screenshots/15127355/thor_4x.png'
     };
     axios.put('/api/v1/admin/garden-owners', data);
   };
@@ -113,9 +108,7 @@ export class GardenManager {
   // delete garden owner
   deleteGardenOwner = (gardenOwnerID: string) => {
     return axios
-      .delete('/api/v1/admin/garden-owners', {
-        data: { id: gardenOwnerID }
-      })
+      .delete(`/api/v1/admin/garden-owners/${gardenOwnerID}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -130,11 +123,17 @@ export class GardenManager {
   };
 
   // get garden type by id
+  // getGardenTypeByID = (gardenTypeID: string) => {
+  //   return axios
+  //     .get('/api/v1/admin/garden-types', {
+  //       params: { gardenTypeID }
+  //     })
+  //     .then((res) => res)
+  //     .catch((err) => err);
+  // };
   getGardenTypeByID = (gardenTypeID: string) => {
     return axios
-      .get('/api/v1/admin/garden-types', {
-        params: { id: gardenTypeID }
-      })
+      .get(`/api/v1/admin/garden-types/${gardenTypeID}`)
       .then((res) => res)
       .catch((err) => err);
   };

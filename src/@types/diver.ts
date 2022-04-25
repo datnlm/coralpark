@@ -11,6 +11,7 @@ export type Diver = {
     phone: string;
     email: string;
     address: string;
-    imageUrl: string;
+    imageUrl: string[];
+    password: string;
     status: number;
 };

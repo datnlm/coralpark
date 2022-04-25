@@ -150,18 +150,19 @@ export type AccountBillingFormikProps = FormikProps<{
   cardCvv: string;
 }>;
 
-//Coral park
+// Coral park
 export type CoralArea = {
   coralId: string;
   areanID: string;
 };
+
 export type AreaProvice = {
   id: number;
   name: string;
   country: string;
 };
 
-//Coral type
+// Coral type
 export type Coral = {
   id: number;
   name: string;
@@ -182,6 +183,7 @@ export type Coral = {
   genusName: String;
   speciesName: string;
 };
+
 export type PhasesType = {
   minWeight: string;
   maxWeight: string;
@@ -193,11 +195,13 @@ export type PhasesType = {
   coralID: string;
   phaseID: string;
 };
+
 export type Phases = {
   name: string;
   imageUrl: string[];
   description: string;
 };
+
 export type Area = {
   id: string;
   address: string;

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
@@ -22,6 +23,8 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import { manageGarden } from '_apis_/garden';
+// @types
 import { GardenOwner } from '../../@types/garden';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
@@ -30,8 +33,6 @@ import { getListGardenOwners } from '../../redux/slices/garden';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
-// @types
-import { UserManager, Coral } from '../../@types/user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -51,7 +52,6 @@ const TABLE_HEAD = [
   { id: 'company', label: 'Phone', alignRight: false },
   { id: 'role', label: 'Email', alignRight: false },
   { id: 'isVerified', label: 'Address', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
 
@@ -111,6 +111,7 @@ function applySortFilterCoral(
 
 export default function UserList() {
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { gardenOwnersList } = useSelector((state: RootState) => state.garden);
@@ -167,8 +168,17 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = (userId: string) => {
-    // dispatch(deleteUser(userId));
+  const handleDeleteUser = async (gardenOwner: string) => {
+    try {
+      await manageGarden.deleteGardenOwner(gardenOwner).then((respone) => {
+        if (respone.status === 200) {
+          enqueueSnackbar('Delete success', { variant: 'success' });
+          dispatch(getListGardenOwners());
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - gardenOwnersList.length) : 0;
@@ -234,7 +244,7 @@ export default function UserList() {
                   {filteredGardenOwners
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, phone, email, address, status, imageUrl } = row;
+                      const { id, name, phone, email, address, imageUrl } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -259,19 +269,11 @@ export default function UserList() {
                           <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">{email}</TableCell>
                           <TableCell align="left">{address}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status === 0 && 'success') || 'error'}
-                            >
-                              {status == 1 ? 'Available' : 'deleted'}
-                            </Label>
-                          </TableCell>
 
                           <TableCell align="right">
                             <GardenOwnersMoreMenu
                               onDelete={() => handleDeleteUser(id.toString())}
-                              userName={name}
+                              userName={id.toString()}
                             />
                           </TableCell>
                         </TableRow>

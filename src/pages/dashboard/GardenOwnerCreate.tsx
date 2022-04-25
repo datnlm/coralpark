@@ -5,6 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
+import { manageGarden } from '_apis_/garden';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 import { getUserList } from '../../redux/slices/user';
@@ -16,7 +17,6 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import GardenOwnerNewForm from '../../components/_dashboard/garden/GardenOwnerNewForm';
-import { UserManager, Coral } from '../../@types/user';
 // ----------------------------------------------------------------------
 
 export default function GardenCreate() {
@@ -27,44 +27,42 @@ export default function GardenCreate() {
   const { gardenOwnersList } = useSelector((state: RootState) => state.garden);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const currentGardenOwner = gardenOwnersList.find((garden) => paramCase(garden.name) === name);
-  // const [currrentCoral, setcurrrentCoral] = useState({
-  //   id: 0,
-  //   name: 'string',
-  //   imageUrl: 'string',
-  //   scientificName: 'string',
-  //   longevity: 0,
-  //   exhibitSocial: 'string',
-  //   sexualBehaviors: 'string',
-  //   nutrition: 'string',
-  //   colour: 'string',
-  //   description: 'string',
-  //   coralTypeId: 0,
-  //   status: 0,
-  //   statusEnum: 'string',
-  //   className: 'string',
-  //   orderName: 'string',
-  //   familyName: 'string',
-  //   genusName: 'string',
-  //   speciesName: 'string'
-  // });
+  // const currentGardenOwner = gardenOwnersList.find((garden) => paramCase(garden.name) === name);
+  const [currentGardenOwner, setcurrentGardenOwner] = useState({
+    id: '',
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    imageUrl: []
+  });
 
-  // useEffect(() => {
-  //   dispatch(getUserList());
-  //   manageCoral.getCoralByID(paramCase(name)).then((response) => {
-  //     setcurrrentCoral(response.data);
-  //     console.log(currrentCoral);
-  //   });
-  // }, [dispatch]);
+  useEffect(() => {
+    if (isEdit) {
+      manageGarden.getGardenOwnerByID(paramCase(name)).then((response) => {
+        if (response.status == 200) {
+          const data = {
+            id: response.data.id,
+            name: response.data.name,
+            phone: response.data.phone,
+            email: response.data.email,
+            address: response.data.address,
+            imageUrl: []
+          };
+          setcurrentGardenOwner(data);
+        }
+      });
+    }
+  }, [dispatch]);
 
   return (
     <Page title="Garden: Garden a new list">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new garden owner' : 'Edit coral'}
+          heading={!isEdit ? 'Create a new garden owner' : 'Edit garden owner'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden', href: PATH_DASHBOARD.garden.root },
+            { name: 'Garden Owner', href: PATH_DASHBOARD.garden.root },
             { name: !isEdit ? 'New owner garden' : name }
           ]}
         />

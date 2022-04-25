@@ -156,12 +156,14 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'owners-list', element: <GardenOwnersList /> },
-            { path: 'types-list', element: <GardenTypesList /> },
+            { path: 'owners', element: <GardenOwnersList /> },
+            { path: 'types', element: <GardenTypesList /> },
             { path: 'new', element: <GardenCreate /> },
             { path: 'garden-owner-new', element: <GardenOwnerCreate /> },
             { path: 'garden-type-new', element: <GardenTypeCreate /> },
-            { path: '/:name/edit', element: <GardenTypeCreate /> }
+            { path: 'types/:name/edit', element: <GardenTypeCreate /> },
+            { path: 'owners/:name/edit', element: <GardenOwnerCreate /> },
+            { path: '/:name/edit', element: <GardenCreate /> }
           ]
         },
         {
@@ -260,12 +262,14 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'owners-list', element: <GardenOwnersList /> },
-            { path: 'types-list', element: <GardenTypesList /> },
+            { path: 'owners', element: <GardenOwnersList /> },
+            { path: 'types', element: <GardenTypesList /> },
             { path: 'new', element: <GardenCreate /> },
             { path: 'garden-owner-new', element: <GardenOwnerCreate /> },
             { path: 'garden-type-new', element: <GardenTypeCreate /> },
-            { path: '/:name/edit', element: <GardenTypeCreate /> }
+            { path: 'types/:name/edit', element: <GardenTypeCreate /> },
+            { path: 'owners/:name/edit', element: <GardenOwnerCreate /> },
+            { path: '/:name/edit', element: <GardenCreate /> }
           ]
         },
         {
