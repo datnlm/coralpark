@@ -25,7 +25,7 @@ import {
 
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
+import { getListGarden } from '../../redux/slices/garden';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -125,9 +125,7 @@ export default function UserList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getUserList());
-    dispatch(getAreaProvice());
-    dispatch(getListCoral());
+    dispatch(getListGarden());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -173,7 +171,7 @@ export default function UserList() {
   };
 
   const handleDeleteUser = (userId: string) => {
-    dispatch(deleteUser(userId));
+    // dispatch(deleteUser(userId));
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;

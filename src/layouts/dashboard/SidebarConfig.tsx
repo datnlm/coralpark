@@ -57,7 +57,9 @@ const sidebarConfig = [
         children: [
           // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
           // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
-          { title: 'list', path: PATH_DASHBOARD.garden.list }
+          { title: 'list', path: PATH_DASHBOARD.garden.list },
+          { title: 'list owners', path: PATH_DASHBOARD.garden.ownersList },
+          { title: 'list types', path: PATH_DASHBOARD.garden.typesList }
         ]
       },
       {

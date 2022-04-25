@@ -119,7 +119,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (id: string, password: string) => {
     await axios
       .post('/api/v1/login', {
-        email: id,
+        username: id,
         pass: password
       })
       .then(async (res: any) => {
@@ -178,8 +178,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
               ? 'https://i.pinimg.com/originals/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg'
               : state?.user?.imageUrl,
           email: state?.user?.email,
+          username: state?.user?.username,
           displayName: state?.user?.name,
-          role: state?.user?.role_id
+          role: state?.user?.role
         },
         login,
         logout,

@@ -130,26 +130,26 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                     )}
                   </div>
                 </Stack>
-
-                <div>
-                  <LabelStyle>Add Images</LabelStyle>
-                  <UploadMultiFile
-                    showPreview
-                    maxSize={3145728}
-                    accept="image/*"
-                    files={values.imageUrl}
-                    onDrop={handleDrop}
-                    onRemove={handleRemove}
-                    onRemoveAll={handleRemoveAll}
-                    error={Boolean(touched.imageUrl && errors.imageUrl)}
-                  />
-                  {touched.imageUrl && errors.imageUrl && (
-                    <FormHelperText error sx={{ px: 2 }}>
-                      {touched.imageUrl && errors.imageUrl}
-                    </FormHelperText>
-                  )}
-                </div>
-
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <div>
+                    <LabelStyle>Add Images</LabelStyle>
+                    <UploadMultiFile
+                      showPreview
+                      maxSize={3145728}
+                      accept="image/*"
+                      files={values.imageUrl}
+                      onDrop={handleDrop}
+                      onRemove={handleRemove}
+                      onRemoveAll={handleRemoveAll}
+                      error={Boolean(touched.imageUrl && errors.imageUrl)}
+                    />
+                    {touched.imageUrl && errors.imageUrl && (
+                      <FormHelperText error sx={{ px: 2 }}>
+                        {touched.imageUrl && errors.imageUrl}
+                      </FormHelperText>
+                    )}
+                  </div>
+                </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? 'Create Phases' : 'Save Changes'}
