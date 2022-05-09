@@ -53,7 +53,7 @@ const TABLE_HEAD = [
   { id: 'company', label: 'Scientific Name', alignRight: false },
   { id: 'role', label: 'Type', alignRight: false },
   { id: 'isVerified', label: 'Color', alignRight: false },
-  { id: 'statusss', label: 'longevity', alignRight: false },
+  { id: 'statusss', label: 'Longevity', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];

@@ -77,11 +77,11 @@ export default function ContactsPopover() {
         anchorEl={anchorRef.current}
         sx={{ width: 360 }}
       >
-        <Typography variant="h6" sx={{ p: PADDING_ITEM }}>
+        {/* <Typography variant="h6" sx={{ p: PADDING_ITEM }}>
           Contacts <Typography component="span">({contacts.length})</Typography>
-        </Typography>
+        </Typography> */}
 
-        <Scrollbar sx={{ height: ITEM_HEIGHT * 8 }}>
+        {/* <Scrollbar sx={{ height: ITEM_HEIGHT * 8 }}>
           {contacts.map((contact) => {
             const { id, name, avatar, status, lastActivity } = contact;
 
@@ -104,7 +104,7 @@ export default function ContactsPopover() {
               </ListItemButton>
             );
           })}
-        </Scrollbar>
+        </Scrollbar> */}
       </MenuPopover>
     </>
   );
