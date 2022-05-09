@@ -97,7 +97,7 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
     name: Yup.string().required('Name is required'),
     imageUrl: Yup.string().required('imageUrl is required'),
     scientificName: Yup.string().required('scientificName is required'),
-    longevity: Yup.string().required('longevity is required'),
+    longevity: Yup.string().required('Longevity is required'),
     exhibitSocial: Yup.string().required('exhibitSocial is required'),
     sexualBehaviors: Yup.string().required('sexualBehaviors is required'),
     nutrition: Yup.string().required('nutrition is required'),
@@ -459,7 +459,7 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                   <TextField
                     fullWidth
                     label="Longevity"
-                    {...getFieldProps('longevity')}
+                    {...getFieldProps('Longevity')}
                     error={Boolean(touched.longevity && errors.longevity)}
                     helperText={touched.longevity && errors.longevity}
                   />

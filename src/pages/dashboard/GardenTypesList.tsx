@@ -250,7 +250,10 @@ export default function UserList() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{description}</TableCell>
+                          <TableCell align="left">
+                            <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
+                          </TableCell>
+                          {/* <TableCell align="left">{description}</TableCell> */}
                           {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
