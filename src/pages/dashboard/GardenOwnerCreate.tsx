@@ -34,7 +34,7 @@ export default function GardenCreate() {
     phone: '',
     email: '',
     address: '',
-    imageUrl: []
+    imageUrl: ''
   });
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function GardenCreate() {
             phone: response.data.phone,
             email: response.data.email,
             address: response.data.address,
-            imageUrl: []
+            imageUrl: response.data.imageUrl
           };
           setcurrentGardenOwner(data);
         }

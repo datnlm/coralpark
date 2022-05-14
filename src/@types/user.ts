@@ -166,22 +166,16 @@ export type AreaProvice = {
 export type Coral = {
   id: number;
   name: string;
-  imageUrl: string;
+  imageUrl: string[];
   scientificName: string;
-  longevity: number;
+  longevity: string;
   exhibitSocial: string;
   sexualBehaviors: string;
   nutrition: string;
   colour: string;
   description: string;
-  coralTypeId: number;
-  status: number;
-  statusEnum: string;
-  className: String;
-  orderName: String;
-  familyName: String;
-  genusName: String;
-  speciesName: string;
+  coralTypeId: any;
+  statusEnum: any;
 };
 
 export type PhasesType = {

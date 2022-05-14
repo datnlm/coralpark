@@ -28,25 +28,19 @@ export default function UserCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const currentUser = userList.find((user) => paramCase(user.name) === name);
-  const [currrentCoral, setcurrrentCoral] = useState({
+  const [currentCoral, setcurrentCoral] = useState({
     id: 0,
-    name: 'string',
-    imageUrl: 'string',
-    scientificName: 'string',
-    longevity: 0,
-    exhibitSocial: 'string',
-    sexualBehaviors: 'string',
-    nutrition: 'string',
-    colour: 'string',
-    description: 'string',
-    coralTypeId: 0,
-    status: 0,
-    statusEnum: 'string',
-    className: 'string',
-    orderName: 'string',
-    familyName: 'string',
-    genusName: 'string',
-    speciesName: 'string'
+    name: '',
+    imageUrl: [],
+    scientificName: '',
+    longevity: '',
+    exhibitSocial: '',
+    sexualBehaviors: '',
+    nutrition: '',
+    colour: '',
+    description: '',
+    coralTypeId: '',
+    statusEnum: ''
   });
 
   useEffect(() => {
@@ -69,7 +63,7 @@ export default function UserCreate() {
           ]}
         />
 
-        <CoralNewForm isEdit={isEdit} currentCoral={currrentCoral} />
+        <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} />
       </Container>
     </Page>
   );

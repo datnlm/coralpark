@@ -20,36 +20,21 @@ export class DiverManager {
   };
 
   // create diver
-  createDiver = (diver: Diver) => {
-    const data = {
-      username: diver.username,
-      password: diver.password,
-      name: diver.name,
-      phone: diver.phone,
-      email: diver.email,
-      address: diver.address,
-      imageUrl:
-        'https://www.thewrap.com/wp-content/uploads/2021/08/Robert-Downey-Jr-Iron-Man-620x400.jpg',
-      status: 1
-    };
-    axios.post('/api/v1/admin/divers', data);
+  createDiver = (diver: any) => {
+    axios.post('/api/v1/admin/divers', diver, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   };
 
   // update diver
-  updateDiver = (diver: Diver) => {
-    const data = {
-      id: diver.id,
-      username: diver.username,
-      password: diver.password,
-      name: diver.name,
-      phone: diver.phone,
-      email: diver.email,
-      address: diver.address,
-      imageUrl:
-        'https://www.thewrap.com/wp-content/uploads/2021/08/Robert-Downey-Jr-Iron-Man-620x400.jpg',
-      status: diver.status
-    };
-    axios.put('/api/v1/admin/divers', data);
+  updateDiver = (diver: any) => {
+    axios.put('/api/v1/admin/divers', diver, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   };
 
   // delete diver

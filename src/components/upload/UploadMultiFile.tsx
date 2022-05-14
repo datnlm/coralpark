@@ -242,7 +242,7 @@ export default function UploadMultiFile({
           <Button onClick={onRemoveAll} sx={{ mr: 1.5 }}>
             Remove all
           </Button>
-          <Button variant="contained">Upload files</Button>
+          {/* <Button variant="contained">Upload files</Button> */}
         </Stack>
       )}
     </Box>

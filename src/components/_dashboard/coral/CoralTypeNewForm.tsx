@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { manageCoral } from '_apis_/coral';
 // material
@@ -40,7 +40,6 @@ import { UploadMultiFile } from '../../upload';
 import countries from './countries';
 
 const CATEGORY_OPTION = [{ group: 'Coral', classify: ['1', '2', '3', '4', '5'] }];
-const CATEGORY_OPTION2 = [{ group: 'Coral', classify: ['11', '22', '33', '4', '5'] }];
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -58,25 +57,110 @@ type CoralTypeNewFromProps = {
 export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFromProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [currentLevel, setCurrenLevel] = useState('');
+  const [optionsClass, setOptionsClass] = useState([]);
+  const [optionsOrder, setOptionsOrder] = useState([]);
+  const [optionsFamily, setOptionsFamily] = useState([]);
+  const [optionsGenus, setOptionsGenus] = useState([]);
+  const [currentLevel, setCurrenLevel] = useState(1);
+  const [currentClass, setCurrentClass] = useState('');
+  // const [currentOrder, setCurrentOrder] = useState('');
+  const [currentOrder, setCurrentOrder] = useState<any>([]);
+  const [currentFamily, setCurrentFamily] = useState<any>([]);
+  const [currentGenus, setCurrentGenus] = useState<any>([]);
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     parent: Yup.string().required('Parent is required'),
-    level: Yup.string().required('Level is required'),
+    // level: Yup.string().required('Level is required'),
     description: Yup.string().required('Description is required')
   });
+
+  // call class name parent id = null
+  useEffect(() => {
+    manageCoral.getCoralType('class').then((response) => {
+      if (response.status == 200) {
+        setOptionsClass(response.data.items);
+      }
+    });
+  }, []);
+
+  // call order name parent class id = ?
+  useEffect(() => {
+    setCurrentOrder([]);
+    if (currentClass != '') {
+      manageCoral.getCoralType(currentClass.toString()).then((response) => {
+        if (response.status == 200) {
+          setOptionsOrder(response.data.items);
+          console.log(response.data.items);
+        } else {
+          setOptionsOrder([]);
+        }
+      });
+    }
+  }, [currentClass]);
+
+  // call family name theo order id = ?
+  useEffect(() => {
+    setCurrentFamily([]);
+    manageCoral.getCoralType(currentOrder!.id).then((response) => {
+      if (response.status == 200) {
+        setOptionsFamily(response.data.items);
+      } else {
+        setOptionsFamily([]);
+      }
+    });
+  }, [currentOrder]);
+
+  // call Genus name theo family id = ?
+  useEffect(() => {
+    setCurrentGenus([]);
+    manageCoral.getCoralType(currentFamily!.id).then((response) => {
+      if (response.status == 200) {
+        console.log(response.data.items);
+        setOptionsGenus(response.data.items);
+      } else {
+        setOptionsGenus([]);
+      }
+    });
+  }, [currentFamily]);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: currentType?.name || '',
-      parent: currentType?.parent || CATEGORY_OPTION[0].classify[0],
+      parent: currentType?.parent || '',
       level: currentType?.level || CATEGORY_OPTION[0].classify[0],
       description: currentType?.description || ''
     },
-    validationSchema: NewProductSchema,
+    // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        // level 1 - class
+        // level 2 - order
+        // level 3 - family
+        // level 4 - genus
+        // level 5 - species
+        switch (currentLevel.toString()) {
+          case '1':
+            values.parent = '';
+            break;
+          case '2':
+            values.parent = currentClass;
+            break;
+          case '3':
+            values.parent = currentOrder!.id;
+            break;
+          case '4':
+            values.parent = currentFamily!.id;
+            break;
+          case '5':
+            values.parent = currentGenus!.id;
+            break;
+          default:
+            console.log('default');
+            break;
+        }
+
+        values.level = currentLevel.toString();
         await manageCoral.createCoralType(values);
         resetForm();
         setSubmitting(false);
@@ -109,7 +193,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                     <Select
                       label="Level Type"
                       native
-                      // {...getFieldProps('level')}
+                      {...getFieldProps('level')}
                       value={currentLevel}
                       onChange={onchangeLevel}
                     >
@@ -125,144 +209,82 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                     </Select>
                   </FormControl>
                 </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Type Name"
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
-                  />
-                  <FormControl fullWidth>
-                    <InputLabel>Parent</InputLabel>
-                    <Select
-                      label="Parent"
-                      native
-                      {...getFieldProps('parent')}
-                      value={values.parent}
-                    >
-                      {CATEGORY_OPTION.map((category) => (
-                        <optgroup key={category.group} label={category.group}>
-                          {category.classify.map((classify) => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Stack>
-
-                {currentLevel === '2' ||
-                currentLevel === '3' ||
-                currentLevel === '4' ||
-                currentLevel === '5' ? (
+                {Number(currentLevel) > 1 && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <FormControl fullWidth>
-                      <InputLabel>Class name</InputLabel>
-                      <Select
-                        label="Class name"
-                        native
-                        {...getFieldProps('level')}
-                        value={values.level}
-                      >
-                        {CATEGORY_OPTION.map((category) => (
-                          <optgroup key={category.group} label={category.group}>
-                            {category.classify.map((classify) => (
-                              <option key={classify} value={classify}>
-                                {classify}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      clearIcon
+                      id="class"
+                      {...getFieldProps('class')}
+                      options={optionsClass}
+                      getOptionLabel={(option) => (option ? option.name : '')}
+                      onChange={(e, value) => (value ? setCurrentClass(value.id) : '')}
+                      renderInput={(params) => <TextField {...params} label="Class" />}
+                    />
+                    {Number(currentLevel) > 2 && (
+                      <Autocomplete
+                        fullWidth
+                        disablePortal
+                        clearIcon
+                        inputValue={currentOrder != '' ? currentOrder!.name : ''}
+                        id="order"
+                        {...getFieldProps('order')}
+                        options={optionsOrder}
+                        getOptionLabel={(option: any) => (option ? option.name : '')}
+                        onChange={(e, value: any) => (value ? setCurrentOrder(value) : '')}
+                        renderInput={(params) => <TextField {...params} label="Order" />}
+                      />
+                    )}
                   </Stack>
-                ) : (
-                  <></>
                 )}
-                {currentLevel === '3' || currentLevel === '4' || currentLevel === '5' ? (
+                {Number(currentLevel) > 3 && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <FormControl fullWidth>
-                      <InputLabel>Order name</InputLabel>
-                      <Select
-                        label="Order name"
-                        native
-                        {...getFieldProps('level')}
-                        value={values.level}
-                      >
-                        {CATEGORY_OPTION.map((category) => (
-                          <optgroup key={category.group} label={category.group}>
-                            {category.classify.map((classify) => (
-                              <option key={classify} value={classify}>
-                                {classify}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      clearIcon
+                      inputValue={currentFamily != '' ? currentFamily!.name : ''}
+                      id="family"
+                      {...getFieldProps('family')}
+                      options={optionsFamily}
+                      getOptionLabel={(option) => (option ? option.name : '')}
+                      onChange={(e, value) => (value ? setCurrentFamily(value) : '')}
+                      renderInput={(params) => <TextField {...params} label="Family" />}
+                    />
+                    {Number(currentLevel) > 4 && (
+                      <Autocomplete
+                        fullWidth
+                        disablePortal
+                        clearIcon
+                        inputValue={currentGenus != '' ? currentGenus!.name : ''}
+                        id="Genus"
+                        {...getFieldProps('genus')}
+                        options={optionsGenus}
+                        getOptionLabel={(option) => (option ? option.name : '')}
+                        onChange={(e, value) => (value ? setCurrentGenus(value) : '')}
+                        renderInput={(params) => <TextField {...params} label="Genus" />}
+                      />
+                    )}
                   </Stack>
-                ) : (
-                  <></>
                 )}
-                {currentLevel === '4' || currentLevel === '5' ? (
+                {Number(currentLevel) >= 1 && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <FormControl fullWidth>
-                      <InputLabel>Family name</InputLabel>
-                      <Select
-                        label="Family name"
-                        native
-                        {...getFieldProps('level')}
-                        value={values.level}
-                      >
-                        {CATEGORY_OPTION.map((category) => (
-                          <optgroup key={category.group} label={category.group}>
-                            {category.classify.map((classify) => (
-                              <option key={classify} value={classify}>
-                                {classify}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <TextField
+                      fullWidth
+                      label="Name"
+                      {...getFieldProps('name')}
+                      error={Boolean(touched.name && errors.name)}
+                      helperText={touched.name && errors.name}
+                    />
                   </Stack>
-                ) : (
-                  <></>
-                )}
-                {currentLevel === '5' ? (
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <FormControl fullWidth>
-                      <InputLabel>Genus name</InputLabel>
-                      <Select
-                        label="Genus name"
-                        native
-                        {...getFieldProps('level')}
-                        value={values.level}
-                      >
-                        {CATEGORY_OPTION.map((category) => (
-                          <optgroup key={category.group} label={category.group}>
-                            {category.classify.map((classify) => (
-                              <option key={classify} value={classify}>
-                                {classify}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Stack>
-                ) : (
-                  <></>
                 )}
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <div>
                     <LabelStyle>Description</LabelStyle>
                     <QuillEditor
                       simple
-                      id="product-description"
+                      id="description"
                       value={values.description}
                       onChange={(val) => setFieldValue('description', val)}
                       error={Boolean(touched.description && errors.description)}

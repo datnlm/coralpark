@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
@@ -50,10 +51,8 @@ import {
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Scientific Name', alignRight: false },
-  { id: 'role', label: 'Type', alignRight: false },
-  { id: 'isVerified', label: 'Color', alignRight: false },
-  { id: 'statusss', label: 'Longevity', alignRight: false },
+  { id: 'scientific', label: 'Scientific Name', alignRight: false },
+  { id: 'type', label: 'Type', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -116,6 +115,7 @@ export default function UserList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const { userList } = useSelector((state: RootState) => state.user);
   const coralList = useSelector((state: RootState) => state.user.coralList);
   const AreaProvice = useSelector((state: RootState) => state.user.proviceList);
@@ -174,15 +174,14 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  // const handleDeleteUser = (userId: string) => {
-  //   dispatch(deleteUser(userId));
-  // };
-
-  const handleDeleteUser = async (coralId: number) => {
+  const handleDeleteCoral = async (coralId: number) => {
     try {
       await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
+          enqueueSnackbar('Delete success', { variant: 'success' });
           dispatch(getListCoral());
+        } else {
+          enqueueSnackbar('Delete fail', { variant: 'error' });
         }
       });
     } catch (error) {
@@ -250,16 +249,7 @@ export default function UserList() {
                   {filteredCorals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const {
-                        id,
-                        name,
-                        speciesName,
-                        status,
-                        statusEnum,
-                        colour,
-                        imageUrl,
-                        longevity
-                      } = row;
+                      const { id, name, scientificName, statusEnum, coralTypeId } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       console.log(AreaProvice);
                       return (
@@ -272,32 +262,31 @@ export default function UserList() {
                           aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl} />
+                              {/* <Avatar alt={name} src={imageUrl[0]} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{speciesName}</TableCell>
+                          <TableCell align="left">{scientificName}</TableCell>
+                          <TableCell align="left">{coralTypeId}</TableCell>
                           <TableCell align="left">{statusEnum}</TableCell>
-                          <TableCell align="left">{colour}</TableCell>
-                          <TableCell align="left">{longevity}</TableCell>
-                          <TableCell align="left">
+                          {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status === 0 && 'error') || 'success'}
                             >
                               {status == 1 ? 'Available' : 'deleted'}
                             </Label>
-                          </TableCell>
+                          </TableCell> */}
 
                           <TableCell align="right">
                             <CoralMoreMenu
-                              onDelete={() => handleDeleteUser(id)}
+                              onDelete={() => handleDeleteCoral(id)}
                               coralID={id.toString()}
                             />
                           </TableCell>

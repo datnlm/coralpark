@@ -37,7 +37,7 @@ export default function DiverCreate() {
     email: '',
     address: '',
     password: '',
-    imageUrl: [],
+    imageUrl: null,
     status: 0
   });
 
@@ -53,7 +53,7 @@ export default function DiverCreate() {
             email: response.data.email,
             address: response.data.address,
             password: response.data.password,
-            imageUrl: [],
+            imageUrl: response.data.imageUrl,
             status: response.data.status
           };
           setcurrentDiver(data);

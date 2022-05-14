@@ -228,7 +228,6 @@ export default function UserList() {
                       const {
                         id,
                         name,
-                        location,
                         address,
                         acreage,
                         quantityOfCells,
@@ -245,11 +244,11 @@ export default function UserList() {
                           key={id}
                           tabIndex={-1}
                           role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
+                          // selected={isItemSelected}
+                          // aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
@@ -259,10 +258,10 @@ export default function UserList() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{location}</TableCell>
                           <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{acreage}</TableCell>
                           <TableCell align="left">{quantityOfCells}</TableCell>
+                          <TableCell align="left">{gardenTypeId}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}

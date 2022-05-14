@@ -13,14 +13,10 @@ export class Coral {
 
   // delete
   deleteCoral = (id: number) => {
-    return axios({
-      url: `http://104.45.197.106:8080/api/v1/admin/corals/${id}`,
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
+    return axios
+      .delete(`/api/v1/admin/corals/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // getCoralbyID
@@ -29,6 +25,15 @@ export class Coral {
       .get(`/api/v1/admin/corals/${id}`)
       .then((res) => res)
       .catch((err) => err);
+  };
+
+  // create coral
+  createCoral = (coral: any) => {
+    axios.post('/api/v1/admin/corals', coral, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   };
 
   createCoralPhases = (phases: Phases) => {
@@ -56,17 +61,45 @@ export class Coral {
   };
 
   createCoralType = (coralType: CoralType) => {
-    const dt = {
-      name: coralType.name,
-      parent: coralType.parent,
-      level: coralType.level,
-      description: coralType.description
-    };
-    return axios({
-      url: `${apiCon.host}admin/coral-types/`,
-      method: 'POST',
-      data: dt
-    });
+    let data = {};
+    if (coralType.level === '1') {
+      data = {
+        name: coralType.name,
+        levelType: coralType.level,
+        description: coralType.description
+      };
+    } else {
+      data = {
+        name: coralType.name,
+        parentId: coralType.parent,
+        levelType: coralType.level,
+        description: coralType.description
+      };
+    }
+    axios.post('/api/v1/admin/coral-types', data);
+  };
+
+  // get coral type
+  getCoralType = (ParentID: string) => {
+    console.log(ParentID);
+    if (ParentID === 'class' || ParentID === 'species') {
+      // level type = 1 to get all class
+      // level type = 5 to get all species
+      const LevelType = ParentID === 'class' ? '1' : '5';
+      console.log(LevelType);
+      return axios
+        .get('/api/v1/admin/coral-types', {
+          params: { LevelType }
+        })
+        .then((res) => res)
+        .catch((err) => err);
+    }
+    return axios
+      .get('/api/v1/admin/coral-types', {
+        params: { ParentID }
+      })
+      .then((res) => res)
+      .catch((err) => err);
   };
 }
 export const manageCoral = new Coral();

@@ -81,6 +81,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
         const accessToken = window.localStorage.getItem('accessToken');
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
+          // set bearer token
+          axios.defaults.headers.common = {
+            Authorization: `Bearer ${accessToken}`
+          };
           const response = await axios.get('/api/v1/account-info', {
             params: { token: accessToken }
           });
@@ -116,11 +120,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
     initialize();
   }, []);
 
-  const login = async (id: string, password: string) => {
+  const login = async (id: string, pass: string) => {
     await axios
       .post('/api/v1/login', {
         username: id,
-        pass: password
+        password: pass
       })
       .then(async (res: any) => {
         localStorage.setItem('accessToken', res.data.token);
@@ -180,7 +184,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
           email: state?.user?.email,
           username: state?.user?.username,
           displayName: state?.user?.name,
-          role: state?.user?.role
+          role: state?.user?.roleName
         },
         login,
         logout,

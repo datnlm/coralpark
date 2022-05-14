@@ -255,8 +255,9 @@ export function getAreas() {
     dispatch(slice.actions.startLoading());
     try {
       manageArea.getArea().then((response) => {
-        dispatch(slice.actions.getAreasSuccess(response.data.items));
-        // console.log(response.data.items);
+        if (response.status == 200) {
+          dispatch(slice.actions.getAreasSuccess(response.data.items));
+        }
       });
     } catch (error) {
       dispatch(slice.actions.hasError(error));
