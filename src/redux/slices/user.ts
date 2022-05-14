@@ -356,8 +356,9 @@ export function getListCoral() {
     dispatch(slice.actions.startLoading());
     try {
       manageCoral.getListCoral().then((response) => {
-        dispatch(slice.actions.getListCoral(response.data.items));
-        // console.log(response!.data!.items);
+        if (response.status == 200) {
+          dispatch(slice.actions.getListCoral(response.data.items));
+        }
       });
     } catch (error) {
       dispatch(slice.actions.hasError(error));

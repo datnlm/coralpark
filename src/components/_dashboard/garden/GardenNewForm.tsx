@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled } from '@material-ui/core/styles';
@@ -26,6 +26,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 // utils
+import { manageArea } from '_apis_/area';
 import { manageGarden } from '_apis_/garden';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -72,14 +73,14 @@ type GardenNewFormProps = {
 export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-
+  const [optionsGardenType, setOptionsGardenType] = useState([]);
+  const [optionsArea, setOptionsArea] = useState([]);
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    location: Yup.string().required('Location is required'),
     address: Yup.string().required('Address is required'),
     acreage: Yup.string().required('Acreage is required'),
     quantityOfCells: Yup.string().required('Quantity of Cells is required'),
-    areaID: Yup.string().required('Area is required'),
+    areaID: Yup.object().required('Area is required').nullable(true),
     gardenTypeId: Yup.string().required('Garden Type is required'),
     gardenOwnerId: Yup.string().required('Garden Owner is required'),
     staffId: Yup.string().required('Garden Staff is required'),
@@ -91,7 +92,6 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     initialValues: {
       id: currentGarden?.id || '',
       name: currentGarden?.name || '',
-      location: currentGarden?.location || '',
       address: currentGarden?.address || '',
       acreage: currentGarden?.acreage || '',
       quantityOfCells: currentGarden?.quantityOfCells || '',
@@ -141,7 +141,22 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   //   const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
   //   setFieldValue('images', filteredItems);
   // };
-
+  useEffect(() => {
+    manageGarden.getListGardenType().then((response) => {
+      if (response.status == 200) {
+        setOptionsGardenType(response.data.items);
+      } else {
+        setOptionsGardenType([]);
+      }
+    });
+    manageArea.getArea().then((response) => {
+      if (response.status == 200) {
+        setOptionsArea(response.data.items);
+      } else {
+        setOptionsArea([]);
+      }
+    });
+  }, []);
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -159,21 +174,14 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                   />
                   <TextField
                     fullWidth
-                    label="Location"
-                    {...getFieldProps('location')}
-                    error={Boolean(touched.location && errors.location)}
-                    helperText={touched.location && errors.location}
-                  />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
                     label="Address"
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
                   />
+                </Stack>
+
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Acreage"
@@ -181,9 +189,6 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     error={Boolean(touched.acreage && errors.acreage)}
                     helperText={touched.acreage && errors.acreage}
                   />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Quantity of Cells"
@@ -191,22 +196,52 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     error={Boolean(touched.quantityOfCells && errors.quantityOfCells)}
                     helperText={touched.quantityOfCells && errors.quantityOfCells}
                   />
-                  <TextField
+                </Stack>
+
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <Autocomplete
                     fullWidth
-                    label="Area"
+                    disablePortal
+                    clearIcon
+                    id="areaID"
                     {...getFieldProps('areaID')}
-                    error={Boolean(touched.areaID && errors.areaID)}
-                    helperText={touched.areaID && errors.areaID}
+                    options={optionsArea}
+                    getOptionLabel={(option: any) => (option ? option.address : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('areaID', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Area"
+                        error={Boolean(touched.areaID && errors.areaID)}
+                        helperText={touched.areaID && errors.areaID}
+                      />
+                    )}
+                  />
+
+                  <Autocomplete
+                    fullWidth
+                    disablePortal
+                    clearIcon
+                    id="gardenTypeId"
+                    {...getFieldProps('gardenTypeId')}
+                    options={optionsGardenType}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('gardenTypeId', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Type"
+                        error={Boolean(touched.gardenTypeId && errors.gardenTypeId)}
+                        helperText={touched.gardenTypeId && errors.gardenTypeId}
+                      />
+                    )}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Garden Type"
-                    {...getFieldProps('gardenTypeId')}
-                    error={Boolean(touched.gardenTypeId && errors.gardenTypeId)}
-                    helperText={touched.gardenTypeId && errors.gardenTypeId}
-                  />
                   <TextField
                     fullWidth
                     label="Garden Owner"
@@ -214,8 +249,6 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     error={Boolean(touched.gardenOwnerId && errors.gardenOwnerId)}
                     helperText={touched.gardenOwnerId && errors.gardenOwnerId}
                   />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Staff"
@@ -223,15 +256,18 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     error={Boolean(touched.staffId && errors.staffId)}
                     helperText={touched.staffId && errors.staffId}
                   />
-                  <TextField
-                    fullWidth
-                    label="Status"
-                    {...getFieldProps('status')}
-                    error={Boolean(touched.status && errors.status)}
-                    helperText={touched.status && errors.status}
-                  />
                 </Stack>
-
+                {isEdit && (
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                    <TextField
+                      fullWidth
+                      label="Status"
+                      {...getFieldProps('status')}
+                      error={Boolean(touched.status && errors.status)}
+                      helperText={touched.status && errors.status}
+                    />
+                  </Stack>
+                )}
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? 'Create Garden' : 'Save Changes'}

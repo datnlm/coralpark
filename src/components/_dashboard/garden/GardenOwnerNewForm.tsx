@@ -32,8 +32,8 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
 import { GardenOwner } from '../../../@types/garden';
 //
-import { QuillEditor } from '../../editor';
-import { UploadMultiFile } from '../../upload';
+import { UploadAvatar } from '../../upload';
+import { fData } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ export default function GardenOwnerNewForm({
       phone: currentGardenOwner?.phone || '',
       email: currentGardenOwner?.email || '',
       address: currentGardenOwner?.address || '',
-      imageUrl: currentGardenOwner?.imageUrl || []
+      imageUrl: currentGardenOwner?.imageUrl || ''
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -94,30 +94,61 @@ export default function GardenOwnerNewForm({
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      setFieldValue(
-        'imageUrl',
-        acceptedFiles.map((file: File | string) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
+      const file = acceptedFiles[0];
+      if (file) {
+        setFieldValue('imageUrl', {
+          ...file,
+          preview: URL.createObjectURL(file)
+        });
+      }
     },
     [setFieldValue]
   );
-  const handleRemoveAll = () => {
-    setFieldValue('imageUrl', []);
-  };
-
-  const handleRemove = (file: File | string) => {
-    const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
-    setFieldValue('imageUrl', filteredItems);
-  };
 
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
+          <Grid item xs={12} md={4}>
+            <Card sx={{ py: 10, px: 3 }}>
+              {/* {isEdit && (
+                <Label
+                  color={values.status !== 'active' ? 'error' : 'success'}
+                  sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
+                >
+                  {values.status}
+                </Label>
+              )} */}
+
+              <Box sx={{ mb: 5 }}>
+                <UploadAvatar
+                  accept="image/*"
+                  file={values.imageUrl}
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                  error={Boolean(touched.imageUrl && errors.imageUrl)}
+                  caption={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        mt: 2,
+                        mx: 'auto',
+                        display: 'block',
+                        textAlign: 'center',
+                        color: 'text.secondary'
+                      }}
+                    >
+                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                      <br /> max size of {fData(3145728)}
+                    </Typography>
+                  }
+                />
+                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
+                  {touched.imageUrl && errors.imageUrl}
+                </FormHelperText>
+              </Box>
+            </Card>
+          </Grid>
           <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
@@ -153,26 +184,6 @@ export default function GardenOwnerNewForm({
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
                   />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <div>
-                    <LabelStyle>Add Images</LabelStyle>
-                    <UploadMultiFile
-                      showPreview
-                      maxSize={3145728}
-                      accept="image/*"
-                      files={values.imageUrl}
-                      onDrop={handleDrop}
-                      onRemove={handleRemove}
-                      onRemoveAll={handleRemoveAll}
-                      error={Boolean(touched.imageUrl && errors.imageUrl)}
-                    />
-                    {touched.imageUrl && errors.imageUrl && (
-                      <FormHelperText error sx={{ px: 2 }}>
-                        {touched.imageUrl && errors.imageUrl}
-                      </FormHelperText>
-                    )}
-                  </div>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>

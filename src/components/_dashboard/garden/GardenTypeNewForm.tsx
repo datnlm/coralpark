@@ -78,6 +78,7 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
         navigate(PATH_DASHBOARD.garden.typesList);
       } catch (error) {
+        enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
         console.error(error);
         setSubmitting(false);
       }

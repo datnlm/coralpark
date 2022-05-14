@@ -23,7 +23,6 @@ export class GardenManager {
   createGarden = (garden: Garden) => {
     const data = {
       name: garden.name,
-      location: garden.location,
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
@@ -41,7 +40,6 @@ export class GardenManager {
     const data = {
       id: garden.id,
       name: garden.name,
-      location: garden.location,
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
@@ -83,13 +81,18 @@ export class GardenManager {
   createGardenOwner = (owner: GardenOwner) => {
     // imageUrl: 'owner.imageUrl',
     const data = {
+      useName: owner.name,
       name: owner.name,
       phone: owner.phone,
       email: owner.email,
       address: owner.address,
-      imageUrl: 'https://cdn.dribbble.com/users/7057015/screenshots/15127355/thor_4x.png'
+      imageUrl: owner.imageUrl
     };
-    axios.post('/api/v1/admin/garden-owners', data);
+    axios.post('/api/v1/admin/garden-owners', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   };
 
   // update garden owner

@@ -6,7 +6,6 @@ import { StringLocale } from 'yup/lib/locale';
 export type Garden = {
   id: string;
   name: string;
-  location: string;
   address: string;
   acreage: string;
   quantityOfCells: string;
@@ -27,5 +26,5 @@ export type GardenOwner = {
   phone: string;
   email: string;
   address: string;
-  imageUrl: string[];
+  imageUrl: string;
 };

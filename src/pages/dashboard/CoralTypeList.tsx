@@ -247,16 +247,7 @@ export default function UserList() {
                   {filteredCorals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const {
-                        id,
-                        name,
-                        speciesName,
-                        status,
-                        statusEnum,
-                        colour,
-                        imageUrl,
-                        longevity
-                      } = row;
+                      const { id, name, statusEnum, colour, imageUrl, longevity } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       console.log(AreaProvice);
                       return (
@@ -273,13 +264,12 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl} />
+                              <Avatar alt={name} src={imageUrl[0]} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{speciesName}</TableCell>
                           <TableCell align="left">{statusEnum}</TableCell>
                           {/* <TableCell align="left">
                             <Label

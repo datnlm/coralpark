@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { FormEvent, useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled } from '@material-ui/core/styles';
@@ -26,6 +26,8 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 // utils
+import { manageCoral } from '_apis_/coral';
+import { manageArea } from '_apis_/area';
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -54,6 +56,18 @@ const TAGS_OPTION = [
   '3 Idiots'
 ];
 
+const optionsStatus = [
+  { id: 'EX', name: 'Tuyệt chủng' },
+  { id: 'EW', name: 'Tuyệt chủng trong tự nhiên' },
+  { id: 'CR', name: 'Cực kỳ nguy cấp' },
+  { id: 'EN', name: 'Nguy cấp' },
+  { id: 'VU', name: 'Sắp nguy cấp' },
+  { id: 'NT', name: 'Sắp bị đe doạ' },
+  { id: 'CD', name: 'Phụ thuộc bảo tồn' },
+  { id: 'LC', name: 'Ít quan tâm' },
+  { id: 'DD', name: 'Thiếu dữ liệu' },
+  { id: 'NE', name: 'Không được đánh giá' }
+];
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
@@ -69,48 +83,22 @@ type UserNewFormProps = {
 };
 
 export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) {
-  const [currentCoralType, setCurrentCoralType] = useState({
-    id: currentCoral?.id || '',
-    name: currentCoral?.name || '',
-    imageUrl: [],
-    scientificName: currentCoral?.scientificName || '',
-    longevity: currentCoral?.longevity || '',
-    exhibitSocial: currentCoral?.exhibitSocial || '',
-    sexualBehaviors: currentCoral?.sexualBehaviors || '',
-    nutrition: currentCoral?.nutrition || '',
-    colour: currentCoral?.colour || '',
-    description: currentCoral?.description || '',
-    coralTypeId: currentCoral?.coralTypeId || '',
-    status: currentCoral?.status || '',
-    statusEnum: currentCoral?.statusEnum || '',
-    className: currentCoral?.className || '',
-    orderName: currentCoral?.orderName || '',
-    familyName: currentCoral?.familyName || '',
-    genusName: currentCoral?.genusName || '',
-    speciesName: currentCoral?.speciesName || ''
-  });
-  const [currenOption, setCurrentOtion] = useState(['haha']);
+  const [optionsGenus, setOptionsGenus] = useState([]);
+  const [currentParent, setCurrentParent] = useState<any>([]);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    imageUrl: Yup.string().required('imageUrl is required'),
-    scientificName: Yup.string().required('scientificName is required'),
+    scientificName: Yup.string().required('Scientific Name is required'),
     longevity: Yup.string().required('Longevity is required'),
-    exhibitSocial: Yup.string().required('exhibitSocial is required'),
-    sexualBehaviors: Yup.string().required('sexualBehaviors is required'),
-    nutrition: Yup.string().required('nutrition is required'),
-    colour: Yup.string().required('colour is required'),
-    description: Yup.string().required('description is required'),
-    coralTypeId: Yup.string().required('coralTypeId is required'),
-    status: Yup.string().required('status is required'),
-    statusEnum: Yup.string().required('statusEnum is required'),
-    className: Yup.string().required('className is required'),
-    orderName: Yup.string().required('orderName is required'),
-    familyName: Yup.string().required('familyName is required'),
-    genusName: Yup.array().min(1, 'genusName is required'),
-    speciesName: Yup.array().min(1, 'speciesName is required')
+    exhibitSocial: Yup.string().required('ExhibitSocial is required'),
+    sexualBehaviors: Yup.string().required('SexualBehaviors is required'),
+    nutrition: Yup.string().required('Nutrition is required'),
+    colour: Yup.string().required('Colour is required'),
+    // description: Yup.string().required('Description is required'),
+    coralTypeId: Yup.object().required('CoralTypeId is required').nullable(true),
+    statusEnum: Yup.object().required('StatusEnum is required').nullable(true)
   });
 
   const formik = useFormik({
@@ -126,23 +114,29 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
       nutrition: currentCoral?.nutrition || '',
       colour: currentCoral?.colour || '',
       description: currentCoral?.description || '',
-      coralTypeId: currentCoral?.coralTypeId || '',
-      status: currentCoral?.status || '',
-      statusEnum: currentCoral?.statusEnum || '',
-      className: currentCoral?.className || '',
-      orderName: currentCoral?.orderName || '',
-      familyName: currentCoral?.familyName || '',
-      genusName: currentCoral?.genusName || '',
-      speciesName: currentCoral?.speciesName || ''
+      coralTypeId: currentCoral?.coralTypeId || null,
+      statusEnum: currentCoral?.statusEnum || null
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await fakeRequest(500);
+        const bodyFormData = new FormData();
+        bodyFormData.append('name', values.name);
+        bodyFormData.append('scientificName', values.scientificName);
+        bodyFormData.append('longevity', values.longevity);
+        bodyFormData.append('exhibitSocial', values.exhibitSocial);
+        bodyFormData.append('sexualBehaviors', values.sexualBehaviors);
+        bodyFormData.append('nutrition', values.nutrition);
+        bodyFormData.append('colour', values.colour);
+        bodyFormData.append('description', values.description);
+        bodyFormData.append('coralTypeId', values.coralTypeId.id);
+        bodyFormData.append('status', values.statusEnum.id);
+        values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
+        await manageCoral.createCoral(bodyFormData);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.area.list);
+        navigate(PATH_DASHBOARD.coral.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -161,276 +155,39 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
     handleChange
   } = formik;
 
-  // const handleDrop = useCallback(
-  //   (acceptedFiles) => {
-  //     setFieldValue(
-  //       'images',
-  //       acceptedFiles.map((file: File | string) =>
-  //         Object.assign(file, {
-  //           preview: URL.createObjectURL(file)
-  //         })
-  //       )
-  //     );
-  //   },
-  //   [setFieldValue]
-  // );
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      setFieldValue(
+        'imageUrl',
+        acceptedFiles.map((file: File | string) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        )
+      );
+    },
+    [setFieldValue]
+  );
 
   const handleRemoveAll = () => {
-    setFieldValue('images', []);
+    setFieldValue('imageUrl', []);
   };
 
   const handleRemove = (file: File | string) => {
-    const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
-    setFieldValue('images', filteredItems);
+    const filteredItems = values.imageUrl.filter((_file) => _file !== file);
+    setFieldValue('imageUrl', filteredItems);
   };
 
-  // const handleChange = (e : any) => {
-  //   // setCurrentCoralType(formik.initialValues.coralTypeId.toString());
-  //   console.log(e);
-  // };
+  useEffect(() => {
+    manageCoral.getCoralType('species').then((response) => {
+      if (response.status == 200) {
+        setOptionsGenus(response.data.items);
+      } else {
+        setOptionsGenus([]);
+      }
+    });
+  }, []);
 
-  // function handleChange() {
-  //   console.log(formik.initialValues.colour);
-  //   setCurrentCoralType('a');
-  // }
-
-  const handleOnChange = (event: any) => {
-    console.log('Form::onChange', event.target.value);
-    if (event.target.value === 'red') {
-      setCurrentOtion(['haha', 'hoho']);
-    } else {
-      setCurrentOtion(['haha']);
-    }
-    const coral = currentCoralType;
-    coral.colour = event.target.value;
-    setCurrentCoralType(coral);
-    console.log('state', currentCoralType);
-  };
-  // return (
-  //   <FormikProvider value={formik}>
-  //     <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-  //       <Grid container spacing={3}>
-  //         <Grid item xs={12} md={8}>
-  //           <Card sx={{ p: 3 }}>
-  //             <Stack spacing={3}>
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Full Name"
-  //                   {...getFieldProps('name')}
-  //                   error={Boolean(touched.name && errors.name)}
-  //                   helperText={touched.name && errors.name}
-  //                 />
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Scientific Name"
-  //                   {...getFieldProps('scientificName')}
-  //                   error={Boolean(touched.scientificName && errors.scientificName)}
-  //                   helperText={touched.scientificName && errors.scientificName}
-  //                 />
-  //               </Stack>
-
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Longevity"
-  //                   {...getFieldProps('longevity')}
-  //                   error={Boolean(touched.longevity && errors.longevity)}
-  //                   helperText={touched.longevity && errors.longevity}
-  //                 />
-  //                 <TextField
-  //                   fullWidth
-  //                   label="genusName"
-  //                   {...getFieldProps('genusName')}
-  //                   error={Boolean(touched.genusName && errors.genusName)}
-  //                   helperText={touched.genusName && errors.genusName}
-  //                 />
-  //               </Stack>
-
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Exhibit Social"
-  //                   {...getFieldProps('exhibitSocial')}
-  //                   error={Boolean(touched.exhibitSocial && errors.exhibitSocial)}
-  //                   helperText={touched.exhibitSocial && errors.exhibitSocial}
-  //                 />
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Sexual Behaviors"
-  //                   {...getFieldProps('sexualBehaviors')}
-  //                   error={Boolean(touched.sexualBehaviors && errors.sexualBehaviors)}
-  //                   helperText={touched.sexualBehaviors && errors.sexualBehaviors}
-  //                 />
-  //               </Stack>
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Nutrition"
-  //                   {...getFieldProps('nutrition')}
-  //                   error={Boolean(touched.nutrition && errors.nutrition)}
-  //                   helperText={touched.nutrition && errors.nutrition}
-  //                 />
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Colour"
-  //                   // {...getFieldProps('colour')}
-  //                   value={currentCoralType.a}
-  //                   error={Boolean(touched.colour && errors.colour)}
-  //                   helperText={touched.colour && errors.colour}
-  //                   onChange={handleOnChange}
-  //                 />
-  //               </Stack>
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <TextField
-  //                   select
-  //                   fullWidth
-  //                   label="Coral Type"
-  //                   placeholder="Coral Type"
-  //                   {...getFieldProps('coralTypeId')}
-  //                   SelectProps={{ native: true }}
-  //                   error={Boolean(touched.coralTypeId && errors.coralTypeId)}
-  //                   helperText={touched.coralTypeId && errors.coralTypeId}
-  //                   onChange={handleOnChange}
-  //                 >
-  //                   <option value="" />
-  //                   {countries.map((option) => (
-  //                     <option key={option.code} value={option.label}>
-  //                       {option.label}
-  //                     </option>
-  //                   ))}
-  //                 </TextField>
-  //                 {/* <TextField
-  //                   select
-  //                   fullWidth
-  //                   label="Habital"
-  //                   placeholder="Habital"
-  //                   {...getFieldProps('habital')}
-  //                   SelectProps={{ native: true }}
-  //                   error={Boolean(touched.habital && errors.habital)}
-  //                   helperText={touched.habital && errors.habital}
-  //                 >
-  //                   <option value="" />
-  //                   {countries.map((option) => (
-  //                     <option key={option.code} value={option.label}>
-  //                       {option.label}
-  //                     </option>
-  //                   ))}
-  //                 </TextField> */}
-  //                 {/* <TextField
-  //                   fullWidth
-  //                   label="Status"
-  //                   {...getFieldProps('status')}
-  //                   error={Boolean(touched.status && errors.status)}
-  //                   helperText={touched.status && errors.status}
-  //                 /> */}
-  //                 <Autocomplete
-  //                   id="country-select-demo"
-  //                   fullWidth
-  //                   options={countries}
-  //                   autoHighlight
-  //                   getOptionLabel={(option) => option.label}
-  //                   renderOption={(props, option) => (
-  //                     <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-  //                       {option.label}
-  //                     </Box>
-  //                   )}
-  //                   renderInput={(params) => (
-  //                     <TextField
-  //                       {...params}
-  //                       label="Status"
-  //                       inputProps={{
-  //                         ...params.inputProps,
-  //                         autoComplete: 'new-password' // disable autocomplete and autofill
-  //                       }}
-  //                     />
-  //                   )}
-  //                 />
-  //               </Stack>
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <TextField
-  //                   fullWidth
-  //                   label="Status Enum"
-  //                   {...getFieldProps('statusEnum')}
-  //                   error={Boolean(touched.statusEnum && errors.statusEnum)}
-  //                   helperText={touched.statusEnum && errors.statusEnum}
-  //                 />
-  //                 <TextField
-  //                   fullWidth
-  //                   label="className"
-  //                   {...getFieldProps('className')}
-  //                   error={Boolean(touched.className && errors.className)}
-  //                   helperText={touched.className && errors.className}
-  //                 />
-  //               </Stack>
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <TextField
-  //                   fullWidth
-  //                   label="orderName"
-  //                   {...getFieldProps('orderName')}
-  //                   error={Boolean(touched.orderName && errors.orderName)}
-  //                   helperText={touched.orderName && errors.orderName}
-  //                 />
-  //                 <TextField
-  //                   fullWidth
-  //                   // label="Role"
-  //                   label="familyName"
-  //                   {...getFieldProps('familyName')}
-  //                   error={Boolean(touched.familyName && errors.familyName)}
-  //                   helperText={touched.familyName && errors.familyName}
-  //                 />
-  //               </Stack>
-
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <div>
-  //                   <LabelStyle>Description</LabelStyle>
-  //                   <QuillEditor
-  //                     simple
-  //                     id="product-description"
-  //                     value={values.description}
-  //                     onChange={(val) => setFieldValue('description', val)}
-  //                     error={Boolean(touched.description && errors.description)}
-  //                   />
-  //                   {touched.description && errors.description && (
-  //                     <FormHelperText error sx={{ px: 2 }}>
-  //                       {touched.description && errors.description}
-  //                     </FormHelperText>
-  //                   )}
-  //                 </div>
-  //               </Stack>
-
-  //               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-  //                 <div>
-  //                   <LabelStyle>Add Images</LabelStyle>
-  //                   <UploadMultiFile
-  //                     showPreview
-  //                     maxSize={3145728}
-  //                     accept="image/*"
-  //                     files={values.imageUrl}
-  //                     // onDrop={handleDrop}
-  //                     onRemove={handleRemove}
-  //                     onRemoveAll={handleRemoveAll}
-  //                     error={Boolean(touched.imageUrl && errors.imageUrl)}
-  //                   />
-  //                   {touched.imageUrl && errors.imageUrl && (
-  //                     <FormHelperText error sx={{ px: 2 }}>
-  //                       {touched.imageUrl && errors.imageUrl}
-  //                     </FormHelperText>
-  //                   )}
-  //                 </div>
-  //               </Stack>
-  //               <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-  //                 <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-  //                   {!isEdit ? 'Create Coral' : 'Save Changes'}
-  //                 </LoadingButton>
-  //               </Box>
-  //             </Stack>
-  //           </Card>
-  //         </Grid>
-  //       </Grid>
-  //     </Form>
-  //   </FormikProvider>
-  // );
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -459,20 +216,10 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                   <TextField
                     fullWidth
                     label="Longevity"
-                    {...getFieldProps('Longevity')}
+                    {...getFieldProps('longevity')}
                     error={Boolean(touched.longevity && errors.longevity)}
                     helperText={touched.longevity && errors.longevity}
                   />
-                  <TextField
-                    fullWidth
-                    label="genusName"
-                    {...getFieldProps('genusName')}
-                    error={Boolean(touched.genusName && errors.genusName)}
-                    helperText={touched.genusName && errors.genusName}
-                  />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Exhibit Social"
@@ -480,6 +227,9 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                     error={Boolean(touched.exhibitSocial && errors.exhibitSocial)}
                     helperText={touched.exhibitSocial && errors.exhibitSocial}
                   />
+                </Stack>
+
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Sexual Behaviors"
@@ -487,8 +237,6 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                     error={Boolean(touched.sexualBehaviors && errors.sexualBehaviors)}
                     helperText={touched.sexualBehaviors && errors.sexualBehaviors}
                   />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Nutrition"
@@ -496,116 +244,56 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                     error={Boolean(touched.nutrition && errors.nutrition)}
                     helperText={touched.nutrition && errors.nutrition}
                   />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Colour"
                     {...getFieldProps('colour')}
-                    // value={currentCoralType.colour}
                     error={Boolean(touched.colour && errors.colour)}
                     helperText={touched.colour && errors.colour}
-                    // onChange={handleOnChange}
                   />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Coral Type"
-                    placeholder="Coral Type"
-                    {...getFieldProps('coralTypeId')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.coralTypeId && errors.coralTypeId)}
-                    helperText={touched.coralTypeId && errors.coralTypeId}
-                    onChange={handleOnChange}
-                  >
-                    <option value="" />
-                    {countries.map((option) => (
-                      <option key={option.code} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                  {/* <TextField
-                    select
-                    fullWidth
-                    label="Habital"
-                    placeholder="Habital"
-                    {...getFieldProps('habital')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.habital && errors.habital)}
-                    helperText={touched.habital && errors.habital}
-                  >
-                    <option value="" />
-                    {countries.map((option) => (
-                      <option key={option.code} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField> */}
-                  {/* <TextField
-                    fullWidth
-                    label="Status"
-                    {...getFieldProps('status')}
-                    error={Boolean(touched.status && errors.status)}
-                    helperText={touched.status && errors.status}
-                  /> */}
                   <Autocomplete
-                    id="country-select-demo"
                     fullWidth
-                    options={currenOption}
-                    autoHighlight
-                    getOptionLabel={(option) => option}
-                    renderOption={(props, option) => (
-                      <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                        {option}
-                      </Box>
-                    )}
+                    disablePortal
+                    clearIcon
+                    id="Status"
+                    {...getFieldProps('statusEnum')}
+                    options={optionsStatus}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('statusEnum', value) } : ''
+                    }
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Status"
-                        inputProps={{
-                          ...params.inputProps,
-                          autoComplete: 'new-password' // disable autocomplete and autofill
-                        }}
+                        error={Boolean(touched.statusEnum && errors.statusEnum)}
+                        helperText={touched.statusEnum && errors.statusEnum}
                       />
                     )}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
+                  <Autocomplete
                     fullWidth
-                    label="Status Enum"
-                    {...getFieldProps('statusEnum')}
-                    error={Boolean(touched.statusEnum && errors.statusEnum)}
-                    helperText={touched.statusEnum && errors.statusEnum}
-                  />
-                  <TextField
-                    fullWidth
-                    label="className"
-                    {...getFieldProps('className')}
-                    error={Boolean(touched.className && errors.className)}
-                    helperText={touched.className && errors.className}
-                  />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="orderName"
-                    {...getFieldProps('orderName')}
-                    error={Boolean(touched.orderName && errors.orderName)}
-                    helperText={touched.orderName && errors.orderName}
-                  />
-                  <TextField
-                    fullWidth
-                    // label="Role"
-                    label="familyName"
-                    {...getFieldProps('familyName')}
-                    error={Boolean(touched.familyName && errors.familyName)}
-                    helperText={touched.familyName && errors.familyName}
+                    disablePortal
+                    clearIcon
+                    id="coralTypeId"
+                    {...getFieldProps('coralTypeId')}
+                    options={optionsGenus}
+                    getOptionLabel={(option) => (option ? option.name : '')}
+                    onChange={(e, value) => setFieldValue('coralTypeId', value)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Species name"
+                        error={Boolean(touched.coralTypeId && errors.coralTypeId)}
+                        helperText={touched.coralTypeId && errors.coralTypeId}
+                      />
+                    )}
                   />
                 </Stack>
-
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <div>
                     <LabelStyle>Description</LabelStyle>
@@ -629,19 +317,18 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                     <LabelStyle>Add Images</LabelStyle>
                     <UploadMultiFile
                       showPreview
-                      maxSize={3145728}
                       accept="image/*"
                       files={values.imageUrl}
-                      // onDrop={handleDrop}
+                      onDrop={handleDrop}
                       onRemove={handleRemove}
                       onRemoveAll={handleRemoveAll}
-                      error={Boolean(touched.imageUrl && errors.imageUrl)}
+                      // error={Boolean(touched.imageUrl && errors.imageUrl)}
                     />
-                    {touched.imageUrl && errors.imageUrl && (
+                    {/* {touched.imageUrl && errors.imageUrl && (
                       <FormHelperText error sx={{ px: 2 }}>
                         {touched.imageUrl && errors.imageUrl}
                       </FormHelperText>
-                    )}
+                    )} */}
                   </div>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
