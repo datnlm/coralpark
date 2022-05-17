@@ -52,6 +52,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      id: currentPhases?.id || '',
       name: currentPhases?.name || '',
       description: currentPhases?.description || '',
       imageUrl: currentPhases?.imageUrl || []
@@ -59,7 +60,38 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await manageCoral.createCoralPhases(values);
+        const bodyFormData = new FormData();
+        if (isEdit) {
+          bodyFormData.append('id', values.id);
+        }
+        bodyFormData.append('name', values.name);
+        bodyFormData.append('description', values.description);
+        values.imageUrl.map((file: File | string) => bodyFormData.append('imageFile', file));
+        !isEdit
+          ? await manageCoral.createCoralPhases(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.phases.new);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            })
+          : await manageCoral.updateCoralPhases(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.phases.new);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            });
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
@@ -113,43 +145,42 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                     helperText={touched.name && errors.name}
                   />
                 </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <div>
-                    <LabelStyle>Description</LabelStyle>
-                    <QuillEditor
-                      simple
-                      id="product-description"
-                      value={values.description}
-                      onChange={(val) => setFieldValue('description', val)}
-                      error={Boolean(touched.description && errors.description)}
-                    />
-                    {touched.description && errors.description && (
-                      <FormHelperText error sx={{ px: 2 }}>
-                        {touched.description && errors.description}
-                      </FormHelperText>
-                    )}
-                  </div>
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <div>
-                    <LabelStyle>Add Images</LabelStyle>
-                    <UploadMultiFile
-                      showPreview
-                      maxSize={3145728}
-                      accept="image/*"
-                      files={values.imageUrl}
-                      onDrop={handleDrop}
-                      onRemove={handleRemove}
-                      onRemoveAll={handleRemoveAll}
-                      error={Boolean(touched.imageUrl && errors.imageUrl)}
-                    />
-                    {touched.imageUrl && errors.imageUrl && (
-                      <FormHelperText error sx={{ px: 2 }}>
-                        {touched.imageUrl && errors.imageUrl}
-                      </FormHelperText>
-                    )}
-                  </div>
-                </Stack>
+
+                <div>
+                  <LabelStyle>Description</LabelStyle>
+                  <QuillEditor
+                    simple
+                    id="product-description"
+                    value={values.description}
+                    onChange={(val) => setFieldValue('description', val)}
+                    error={Boolean(touched.description && errors.description)}
+                  />
+                  {touched.description && errors.description && (
+                    <FormHelperText error sx={{ px: 2 }}>
+                      {touched.description && errors.description}
+                    </FormHelperText>
+                  )}
+                </div>
+
+                <div>
+                  <LabelStyle>Add Images</LabelStyle>
+                  <UploadMultiFile
+                    showPreview
+                    maxSize={3145728}
+                    accept="image/*"
+                    files={values.imageUrl}
+                    onDrop={handleDrop}
+                    onRemove={handleRemove}
+                    onRemoveAll={handleRemoveAll}
+                    error={Boolean(touched.imageUrl && errors.imageUrl)}
+                  />
+                  {touched.imageUrl && errors.imageUrl && (
+                    <FormHelperText error sx={{ px: 2 }}>
+                      {touched.imageUrl && errors.imageUrl}
+                    </FormHelperText>
+                  )}
+                </div>
+
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? 'Create Phases' : 'Save Changes'}

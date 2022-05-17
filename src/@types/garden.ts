@@ -6,13 +6,14 @@ import { StringLocale } from 'yup/lib/locale';
 export type Garden = {
   id: string;
   name: string;
+  latitude: string
+  longitude: string,
   address: string;
   acreage: string;
   quantityOfCells: string;
-  areaID: string;
-  gardenTypeId: string;
-  gardenOwnerId: string;
-  staffId: string;
+  areaID: any;
+  gardenTypeId: any;
+  siteId: any;
   status: number;
 };
 export type GardenType = {
@@ -20,11 +21,16 @@ export type GardenType = {
   name: string;
   description: string;
 };
-export type GardenOwner = {
+export type Site = {
   id: string;
   name: string;
+  imageUrl: string;
+  createTime: any;
   phone: string;
   email: string;
   address: string;
-  imageUrl: string;
+  webUrl: string;
+  latitude: string;
+  longitude: string;
+  status: any;
 };

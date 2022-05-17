@@ -158,9 +158,12 @@ export default function UserList() {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
           dispatch(getListGardenTypes());
+        } else {
+          enqueueSnackbar('Delete error', { variant: 'error' });
         }
       });
     } catch (error) {
+      enqueueSnackbar('Delete error', { variant: 'error' });
       console.log(error);
     }
   };

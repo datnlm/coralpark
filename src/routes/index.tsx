@@ -156,13 +156,14 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'owners', element: <GardenOwnersList /> },
+            { path: 'sites', element: <SiteList /> },
             { path: 'types', element: <GardenTypesList /> },
             { path: 'new', element: <GardenCreate /> },
-            { path: 'garden-owner-new', element: <GardenOwnerCreate /> },
-            { path: 'garden-type-new', element: <GardenTypeCreate /> },
+            { path: 'site-new', element: <SiteCreate /> },
+            { path: 'site', element: <GardenTypeCreate /> },
+            { path: 'type-new', element: <GardenTypeCreate /> },
             { path: 'types/:name/edit', element: <GardenTypeCreate /> },
-            { path: 'owners/:name/edit', element: <GardenOwnerCreate /> },
+            { path: 'owners/:name/edit', element: <SiteCreate /> },
             { path: '/:name/edit', element: <GardenCreate /> }
           ]
         },
@@ -262,13 +263,13 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'owners', element: <GardenOwnersList /> },
+            { path: 'sites', element: <SiteList /> },
             { path: 'types', element: <GardenTypesList /> },
             { path: 'new', element: <GardenCreate /> },
-            { path: 'garden-owner-new', element: <GardenOwnerCreate /> },
-            { path: 'garden-type-new', element: <GardenTypeCreate /> },
+            { path: 'site-new', element: <SiteCreate /> },
+            { path: 'type-new', element: <GardenTypeCreate /> },
             { path: 'types/:name/edit', element: <GardenTypeCreate /> },
-            { path: 'owners/:name/edit', element: <GardenOwnerCreate /> },
+            { path: 'owners/:name/edit', element: <SiteCreate /> },
             { path: '/:name/edit', element: <GardenCreate /> }
           ]
         },
@@ -372,17 +373,15 @@ const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/Ecommerc
 const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralArea')));
 const CoralAreaCreate = Loadable(lazy(() => import('../pages/dashboard/CoralAreaCreate')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
-// const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
-// const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const CoralList = Loadable(lazy(() => import('../pages/dashboard/CoralList')));
 const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')));
 const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));
 const CoralTypeList = Loadable(lazy(() => import('../pages/dashboard/CoralTypeList')));
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
-const GardenOwnersList = Loadable(lazy(() => import('../pages/dashboard/GardenOwnersList')));
+const SiteList = Loadable(lazy(() => import('../pages/dashboard/SiteList')));
 const GardenTypesList = Loadable(lazy(() => import('../pages/dashboard/GardenTypesList')));
 const GardenCreate = Loadable(lazy(() => import('../pages/dashboard/GardenCreate')));
-const GardenOwnerCreate = Loadable(lazy(() => import('../pages/dashboard/GardenOwnerCreate')));
+const SiteCreate = Loadable(lazy(() => import('../pages/dashboard/SiteCreate')));
 const GardenTypeCreate = Loadable(lazy(() => import('../pages/dashboard/GardenTypeCreate')));
 const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));

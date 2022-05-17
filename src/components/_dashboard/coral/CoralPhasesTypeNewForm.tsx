@@ -1,12 +1,12 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
 import { useSnackbar } from 'notistack5';
+import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { manageCoral } from '_apis_/coral';
 // material
 import { LoadingButton } from '@material-ui/lab';
-import { Box, Card, Grid, Stack, TextField } from '@material-ui/core';
+import { Box, Card, Grid, Stack, TextField, Autocomplete } from '@material-ui/core';
 // utils
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
@@ -27,6 +27,8 @@ export default function CoralPhasesTypeNewForm({
 }: CoralPhasesTypeNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [optionCoral, setOptionCoral] = useState([]);
+  const [optionCoralPhases, setOptionCoralPhases] = useState([]);
 
   const NewUserSchema = Yup.object().shape({
     minWeight: Yup.string().required('MinWeight is required'),
@@ -56,11 +58,31 @@ export default function CoralPhasesTypeNewForm({
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await manageCoral.createCoralPhasesType(values);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.phases.typeNew);
+        !isEdit
+          ? await manageCoral.createCoralPhasesType(values).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.phases.typeNew);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            })
+          : await manageCoral.updateCoralPhasesType(values).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.phases.typeNew);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            });
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -84,6 +106,23 @@ export default function CoralPhasesTypeNewForm({
     },
     [setFieldValue]
   );
+
+  useEffect(() => {
+    manageCoral.getListCoral().then((response) => {
+      if (response.status == 200) {
+        setOptionCoral(response.data.items);
+      } else {
+        setOptionCoral([]);
+      }
+    });
+    manageCoral.getListCoralPhases().then((response) => {
+      if (response.status == 200) {
+        setOptionCoralPhases(response.data.items);
+      } else {
+        setOptionCoralPhases([]);
+      }
+    });
+  }, []);
 
   return (
     <FormikProvider value={formik}>
@@ -148,23 +187,47 @@ export default function CoralPhasesTypeNewForm({
                     error={Boolean(touched.coulour && errors.coulour)}
                     helperText={touched.coulour && errors.coulour}
                   />
-                  <TextField
+                  <Autocomplete
                     fullWidth
-                    label="Coral"
+                    disablePortal
+                    clearIcon
+                    id="coral"
                     {...getFieldProps('coralID')}
-                    error={Boolean(touched.coralID && errors.coralID)}
-                    helperText={touched.coralID && errors.coralID}
+                    options={optionCoral}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('coralID', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Coral"
+                        error={Boolean(touched.coralID && errors.coralID)}
+                        helperText={touched.coralID && errors.coralID}
+                      />
+                    )}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
+                  <Autocomplete
                     fullWidth
-                    label="Coral Phase"
-                    multiline
-                    rows={2}
+                    disablePortal
+                    clearIcon
+                    id="coral"
                     {...getFieldProps('phaseID')}
-                    error={Boolean(touched.phaseID && errors.phaseID)}
-                    helperText={touched.phaseID && errors.phaseID}
+                    options={optionCoralPhases}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('phaseID', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Phases"
+                        error={Boolean(touched.phaseID && errors.phaseID)}
+                        helperText={touched.phaseID && errors.phaseID}
+                      />
+                    )}
                   />
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

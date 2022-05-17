@@ -17,7 +17,8 @@ import {
   UserAddressBook,
   NotificationSettings,
   AreaProvice,
-  Coral
+  Coral,
+  CoralType
 } from '../../@types/user';
 
 // ----------------------------------------------------------------------
@@ -38,6 +39,7 @@ type UserState = {
   notifications: NotificationSettings | null;
   proviceList: AreaProvice[];
   coralList: Coral[];
+  coralListType: CoralType[];
 };
 
 const initialState: UserState = {
@@ -55,7 +57,8 @@ const initialState: UserState = {
   invoices: [],
   notifications: null,
   proviceList: [],
-  coralList: []
+  coralList: [],
+  coralListType: []
 };
 
 const slice = createSlice({
@@ -172,6 +175,11 @@ const slice = createSlice({
     getListCoral(state, action) {
       state.isLoading = false;
       state.coralList = action.payload;
+    },
+
+    getListCoralType(state, action) {
+      state.isLoading = false;
+      state.coralListType = action.payload;
     }
   }
 });
@@ -355,9 +363,24 @@ export function getListCoral() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageCoral.getListCoral().then((response) => {
+      await manageCoral.getListCoral().then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getListCoral(response.data.items));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getListCoralType() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await manageCoral.getListCoralType().then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.getListCoralType(response.data.items));
         }
       });
     } catch (error) {

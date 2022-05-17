@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiCon } from './api';
-import { Garden, GardenOwner, GardenType } from '../@types/garden';
+import { Garden, Site, GardenType } from '../@types/garden';
 
 export class GardenManager {
   // get list garden
@@ -23,33 +23,39 @@ export class GardenManager {
   createGarden = (garden: Garden) => {
     const data = {
       name: garden.name,
+      latitude: garden.latitude,
+      longitude: garden.longitude,
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      areaID: garden.areaID,
-      gardenTypeId: garden.gardenTypeId,
-      gardenOwnerId: garden.gardenOwnerId,
-      staffId: garden.staffId,
+      areaID: garden.areaID.id,
+      gardenTypeId: garden.gardenTypeId.id,
+      siteId: garden.siteId.id,
       status: 1
     };
-    axios.post('/api/v1/admin/gardens', data);
+    return axios
+      .post('/api/v1/admin/gardens', data)
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // update garden
   updateGarden = (garden: Garden) => {
     const data = {
       id: garden.id,
-      name: garden.name,
+      latitude: garden.latitude,
+      longitude: garden.longitude,
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
       areaID: garden.areaID,
       gardenTypeId: garden.gardenTypeId,
-      gardenOwnerId: garden.gardenOwnerId,
-      staffId: garden.staffId,
       status: garden.status
     };
-    axios.put('/api/v1/admin/gardens', data);
+    return axios
+      .put('/api/v1/admin/gardens', data)
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // delete garden
@@ -62,56 +68,49 @@ export class GardenManager {
   //-----------------------------------------------
 
   // get garden owners
-  getListGardenOwners = () => {
+  getListSites = () => {
     return axios
-      .get('/api/v1/admin/garden-owners')
+      .get('/api/v1/admin/site')
       .then((res) => res)
       .catch((err) => err);
   };
 
-  // get garden owners by id
-  getGardenOwnerByID = (gardenOwnerID: string) => {
+  // get site by id
+  getSiteByID = (siteId: string) => {
     return axios
-      .get(`/api/v1/admin/garden-owners/${gardenOwnerID}`)
+      .get(`/api/v1/admin/site/${siteId}`)
       .then((res) => res)
       .catch((err) => err);
   };
 
-  // create garden owner
-  createGardenOwner = (owner: GardenOwner) => {
-    // imageUrl: 'owner.imageUrl',
-    const data = {
-      useName: owner.name,
-      name: owner.name,
-      phone: owner.phone,
-      email: owner.email,
-      address: owner.address,
-      imageUrl: owner.imageUrl
-    };
-    axios.post('/api/v1/admin/garden-owners', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+  // create site
+  createSite = (site: any) => {
+    return axios
+      .post('/api/v1/admin/site', site, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // update garden owner
-  updateGardenOwner = (owner: GardenOwner) => {
-    const data = {
-      id: owner.id,
-      name: owner.name,
-      phone: owner.phone,
-      email: owner.email,
-      address: owner.address,
-      imageUrl: 'https://cdn.dribbble.com/users/7057015/screenshots/15127355/thor_4x.png'
-    };
-    axios.put('/api/v1/admin/garden-owners', data);
+  updateSite = (site: any) => {
+    return axios
+      .put('/api/v1/admin/site', site, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // delete garden owner
-  deleteGardenOwner = (gardenOwnerID: string) => {
+  deleteSite = (siteId: string) => {
     return axios
-      .delete(`/api/v1/admin/garden-owners/${gardenOwnerID}`)
+      .delete(`/api/v1/admin/site/${siteId}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -147,7 +146,10 @@ export class GardenManager {
       name: type.name,
       description: type.description
     };
-    axios.post('/api/v1/admin/garden-types', data);
+    return axios
+      .post('/api/v1/admin/garden-types', data)
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // update garden type
@@ -157,7 +159,10 @@ export class GardenManager {
       name: type.name,
       description: type.description
     };
-    axios.put('/api/v1/admin/garden-types', data);
+    return axios
+      .put('/api/v1/admin/garden-types', data)
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // delete garden type
@@ -168,10 +173,7 @@ export class GardenManager {
     //   })
     //   .then((res) => res)
     //   .catch((err) => err);
-    return axios
-      .delete(`/api/v1/admin/garden-types/${gardenTypeID}`)
-      .then((res) => res)
-      .catch((err) => err);
+    return axios.delete(`/api/v1/admin/garden-types/${gardenTypeID}`).then((res) => res);
   };
 }
 export const manageGarden = new GardenManager();

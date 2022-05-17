@@ -12,7 +12,7 @@ export class Coral {
   };
 
   // delete
-  deleteCoral = (id: number) => {
+  deleteCoral = (id: string) => {
     return axios
       .delete(`/api/v1/admin/corals/${id}`)
       .then((res) => res)
@@ -36,13 +36,50 @@ export class Coral {
     });
   };
 
-  createCoralPhases = (phases: Phases) => {
-    const data = {
-      name: phases.name,
-      imageUrl: phases.imageUrl,
-      description: phases.description
-    };
-    axios.post('/api/v1/admin/coral-phases', data);
+  // get list coral type
+  getListCoralType = () => {
+    return axios
+      .get('/api/v1/admin/coral-types')
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // get list coral phases
+  getListCoralPhases = () => {
+    return axios
+      .get('/api/v1/admin/coral-phases')
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  createCoralPhases = (phases: any) => {
+    return axios
+      .post('/api/v1/admin/coral-phases', phases, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateCoralPhases = (phases: any) => {
+    return axios
+      .put('/api/v1/admin/coral-phases', phases, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // get list coral phases
+  getListCoralPhasesTypes = () => {
+    return axios
+      .get('/api/v1/admin/coral-phase-types')
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   createCoralPhasesType = (phaseType: PhasesType) => {
@@ -57,22 +94,44 @@ export class Coral {
       coral: phaseType.coralID,
       coralPhases: phaseType.phaseID
     };
-    axios.post('/api/v1/admin/coral-phase-types', data);
+    return axios
+      .post('/api/v1/admin/coral-phase-types', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateCoralPhasesType = (phaseType: PhasesType) => {
+    const data = {
+      id: phaseType.phaseID,
+      minWeight: phaseType.maxWeight,
+      maxWeight: phaseType.maxWeight,
+      minHigh: phaseType.minHigh,
+      maxHigh: phaseType.maxHigh,
+      timeFrom: phaseType.timeForm,
+      timeTo: phaseType.timeTo,
+      colour: phaseType.coulour,
+      coral: phaseType.coralID,
+      coralPhases: phaseType.phaseID
+    };
+    return axios
+      .post('/api/v1/admin/coral-phase-types', data)
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   createCoralType = (coralType: CoralType) => {
     let data = {};
-    if (coralType.level === '1') {
+    if (coralType.levelType === '1') {
       data = {
         name: coralType.name,
-        levelType: coralType.level,
+        levelType: coralType.levelType,
         description: coralType.description
       };
     } else {
       data = {
         name: coralType.name,
-        parentId: coralType.parent,
-        levelType: coralType.level,
+        parentId: coralType.parentId,
+        levelType: coralType.levelType,
         description: coralType.description
       };
     }
@@ -100,6 +159,18 @@ export class Coral {
       })
       .then((res) => res)
       .catch((err) => err);
+  };
+
+  createHabitat = (habitat: any) => {
+    console.log(habitat);
+    const data = {
+      bathymetry: habitat.bathymetry,
+      temperature: habitat.temperature,
+      tides: habitat.tides,
+      current: habitat.current
+      // coraId: habitat.id
+    };
+    axios.post('/api/v1/admin/habitats', data);
   };
 }
 export const manageCoral = new Coral();

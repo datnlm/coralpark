@@ -16,7 +16,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import GardenOwnerNewForm from '../../components/_dashboard/garden/GardenOwnerNewForm';
+import SiteNewForm from '../../components/_dashboard/garden/SiteNewForm';
 // ----------------------------------------------------------------------
 
 export default function GardenCreate() {
@@ -24,50 +24,59 @@ export default function GardenCreate() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const { gardenOwnersList } = useSelector((state: RootState) => state.garden);
+  const { siteList } = useSelector((state: RootState) => state.garden);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   // const currentGardenOwner = gardenOwnersList.find((garden) => paramCase(garden.name) === name);
-  const [currentGardenOwner, setcurrentGardenOwner] = useState({
+  const [currentSite, setCurrentSite] = useState({
     id: '',
     name: '',
+    imageUrl: '',
+    createTime: '',
     phone: '',
     email: '',
     address: '',
-    imageUrl: ''
+    webUrl: '',
+    latitude: '',
+    longitude: '',
+    status: ''
   });
 
   useEffect(() => {
     if (isEdit) {
-      manageGarden.getGardenOwnerByID(paramCase(name)).then((response) => {
+      manageGarden.getSiteByID(paramCase(name)).then((response) => {
         if (response.status == 200) {
           const data = {
             id: response.data.id,
             name: response.data.name,
+            imageUrl: response.data.imageUrl,
+            createTime: response.data.createTime,
             phone: response.data.phone,
             email: response.data.email,
             address: response.data.address,
-            imageUrl: response.data.imageUrl
+            webUrl: response.data.webUrl,
+            latitude: response.data.latitude,
+            longitude: response.data.longitude,
+            status: response.data.status
           };
-          setcurrentGardenOwner(data);
+          setCurrentSite(data);
         }
       });
     }
   }, [dispatch]);
 
   return (
-    <Page title="Garden: Garden a new list">
+    <Page title="Site: Site a new list">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new garden owner' : 'Edit garden owner'}
+          heading={!isEdit ? 'Create a new site' : 'Edit site'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden Owner', href: PATH_DASHBOARD.garden.root },
-            { name: !isEdit ? 'New owner garden' : name }
+            { name: 'Site', href: PATH_DASHBOARD.garden.root },
+            { name: !isEdit ? 'New site' : name }
           ]}
         />
-
-        <GardenOwnerNewForm isEdit={isEdit} currentGardenOwner={currentGardenOwner} />
+        <SiteNewForm isEdit={isEdit} currentSite={currentSite} />
       </Container>
     </Page>
   );

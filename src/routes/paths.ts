@@ -93,11 +93,11 @@ export const PATH_DASHBOARD = {
   garden: {
     root: path(ROOTS_DASHBOARD, '/garden'),
     list: path(ROOTS_DASHBOARD, '/garden/list'),
-    ownersList: path(ROOTS_DASHBOARD, '/garden/owners'),
+    sitesList: path(ROOTS_DASHBOARD, '/garden/sites'),
     typesList: path(ROOTS_DASHBOARD, '/garden/types'),
     newGarden: path(ROOTS_DASHBOARD, '/garden/new'),
-    newGardenOwner: path(ROOTS_DASHBOARD, '/garden/garden-owner-new'),
-    newGardenType: path(ROOTS_DASHBOARD, '/garden/garden-type-new'),
+    newSite: path(ROOTS_DASHBOARD, '/garden/site-new'),
+    newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
     editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
     editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit'),
     editByIdGardenOwner: path(ROOTS_DASHBOARD, '/garden/owner/:name/edit')
