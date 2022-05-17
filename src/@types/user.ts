@@ -83,10 +83,12 @@ export type UserManager = {
 };
 
 export type CoralType = {
+  id: string;
   name: string;
-  parent: string;
-  level: string;
+  parentId: string;
+  levelType: string;
   description: string;
+  parents: any;
 };
 
 export type UserData = {
@@ -166,6 +168,7 @@ export type AreaProvice = {
 export type Coral = {
   id: number;
   name: string;
+  images: object[];
   imageUrl: string[];
   scientificName: string;
   longevity: string;
@@ -191,6 +194,7 @@ export type PhasesType = {
 };
 
 export type Phases = {
+  id: string;
   name: string;
   imageUrl: string[];
   description: string;

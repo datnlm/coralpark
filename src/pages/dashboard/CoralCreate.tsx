@@ -28,10 +28,11 @@ export default function UserCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const currentUser = userList.find((user) => paramCase(user.name) === name);
-  const [currentCoral, setcurrentCoral] = useState({
+  const [currentCoral, setCurrentCoral] = useState({
     id: 0,
     name: '',
     imageUrl: [],
+    images: [],
     scientificName: '',
     longevity: '',
     exhibitSocial: '',
@@ -44,11 +45,13 @@ export default function UserCreate() {
   });
 
   useEffect(() => {
-    dispatch(getUserList());
-    // manageCoral.getCoralByID(paramCase(name)).then((response) => {
-    //   setcurrrentCoral(response.data);
-    //   console.log(currrentCoral);
-    // });
+    if (isEdit) {
+      dispatch(getUserList());
+      manageCoral.getCoralByID(paramCase(name)).then((response) => {
+        setCurrentCoral(response.data);
+        console.log(response.data);
+      });
+    }
   }, [dispatch]);
 
   return (

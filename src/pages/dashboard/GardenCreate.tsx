@@ -31,14 +31,14 @@ export default function GardenCreate() {
   const [currentGarden, setcurrentGarden] = useState({
     id: '',
     name: '',
-    location: '',
+    latitude: '',
+    longitude: '',
     address: '',
     acreage: '',
     quantityOfCells: '',
     areaID: '',
     gardenTypeId: '',
-    gardenOwnerId: '',
-    staffId: '',
+    siteId: '',
     status: 0
   });
 
@@ -49,14 +49,14 @@ export default function GardenCreate() {
           const data = {
             id: response.data.id,
             name: response.data.name,
-            location: response.data.location,
+            latitude: response.data.latitude,
+            longitude: response.data.longitude,
             address: response.data.address,
             acreage: response.data.acreage,
             quantityOfCells: response.data.quantityOfCells,
             areaID: response.data.areaId,
             gardenTypeId: response.data.gardenTypeId,
-            gardenOwnerId: response.data.gardenOwnerId,
-            staffId: response.data.staffId,
+            siteId: response.data.siteId,
             status: response.data.status
           };
           setcurrentGarden(data);

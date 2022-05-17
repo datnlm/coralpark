@@ -21,20 +21,26 @@ export class DiverManager {
 
   // create diver
   createDiver = (diver: any) => {
-    axios.post('/api/v1/admin/divers', diver, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+    return axios
+      .post('/api/v1/admin/divers', diver, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((response) => response)
+      .catch((err) => err);
   };
 
   // update diver
   updateDiver = (diver: any) => {
-    axios.put('/api/v1/admin/divers', diver, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+    return axios
+      .put('/api/v1/admin/divers', diver, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((response) => response)
+      .catch((err) => err);
   };
 
   // delete diver

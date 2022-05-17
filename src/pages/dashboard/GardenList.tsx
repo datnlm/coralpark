@@ -159,6 +159,8 @@ export default function UserList() {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
           dispatch(getListGarden());
+        } else {
+          enqueueSnackbar('Delete error', { variant: 'error' });
         }
       });
     } catch (error) {
@@ -233,8 +235,6 @@ export default function UserList() {
                         quantityOfCells,
                         areaID,
                         gardenTypeId,
-                        gardenOwnerId,
-                        staffId,
                         status
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;

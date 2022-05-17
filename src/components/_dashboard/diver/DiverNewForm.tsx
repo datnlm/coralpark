@@ -54,7 +54,8 @@ type DiverNewFormProps = {
 export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [ImageFILE, setImageFILE] = useState('');
+  const [imageFILE, setImageFILE] = useState('');
+  const [responseStatus, setResponseStatus] = useState();
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     // username: Yup.string().required('Username is required'),
@@ -89,12 +90,39 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
         bodyFormData.append('Phone', values.phone);
         bodyFormData.append('Email', values.email);
         bodyFormData.append('Address', values.address);
-        bodyFormData.append('imageFile', ImageFILE);
-        !isEdit ? manageDiver.createDiver(bodyFormData) : manageDiver.updateDiver(bodyFormData);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.diver.list);
+        bodyFormData.append('imageFile', imageFILE);
+        // manageGarden.getListGardenType().then((response) => {
+        //   if (response.status == 200) {
+        //     setOptionsGardenType(response.data.items);
+        //   } else {
+        //     setOptionsGardenType([]);
+        //   }
+        // });
+        !isEdit
+          ? manageDiver.createDiver(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.diver.list);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            })
+          : manageDiver.updateDiver(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.diver.list);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            });
       } catch (error) {
         console.error(error);
         setSubmitting(false);

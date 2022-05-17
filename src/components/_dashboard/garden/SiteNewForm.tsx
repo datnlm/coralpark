@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled } from '@material-ui/core/styles';
@@ -30,7 +30,7 @@ import { manageGarden } from '_apis_/garden';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { GardenOwner } from '../../../@types/garden';
+import { Site } from '../../../@types/garden';
 //
 import { UploadAvatar } from '../../upload';
 import { fData } from '../../../utils/formatNumber';
@@ -43,45 +43,90 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1)
 }));
 
+const optionsStatus = [
+  { id: '1', name: 'Available' },
+  { id: '0', name: 'Deteled' }
+];
 // ----------------------------------------------------------------------
 
-type GardenOwnerNewFormProps = {
+type SiteNewFormProps = {
   isEdit: boolean;
-  currentGardenOwner?: GardenOwner;
+  currentSite?: Site;
 };
 
-export default function GardenOwnerNewForm({
-  isEdit,
-  currentGardenOwner
-}: GardenOwnerNewFormProps) {
+export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [imageFILE, setImageFILE] = useState('');
 
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    address: Yup.string().required('Address is required')
+    phone: Yup.string().required('Phone is required'),
+    latitude: Yup.string().required('Latitude is required'),
+    longitude: Yup.string().required('Longitude is required'),
+    address: Yup.string().required('Address is required'),
+    email: Yup.string().email('Email must be a valid email address').required('Email is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentGardenOwner?.id || '',
-      name: currentGardenOwner?.name || '',
-      phone: currentGardenOwner?.phone || '',
-      email: currentGardenOwner?.email || '',
-      address: currentGardenOwner?.address || '',
-      imageUrl: currentGardenOwner?.imageUrl || ''
+      id: currentSite?.id || '',
+      name: currentSite?.name || '',
+      imageUrl: currentSite?.imageUrl || '',
+      createTime: currentSite?.createTime || '',
+      phone: currentSite?.phone || '',
+      email: currentSite?.email || '',
+      address: currentSite?.address || '',
+      webUrl: currentSite?.webUrl || '',
+      latitude: currentSite?.latitude || '',
+      longitude: currentSite?.longitude || '',
+      status: currentSite?.status || ''
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        const bodyFormData = new FormData();
+        if (isEdit) {
+          bodyFormData.append('id', values.id);
+        }
+        bodyFormData.append('Name', values.name);
+        bodyFormData.append('Phone', values.phone);
+        bodyFormData.append('Email', values.email);
+        bodyFormData.append('Address', values.address);
+        bodyFormData.append('WebUrl', values.webUrl);
+        bodyFormData.append('Latitude', values.latitude);
+        bodyFormData.append('Longitude', values.longitude);
+        bodyFormData.append('Status', values.status.id);
+        // bodyFormData.append('ListGarden', values.address);
+        if (imageFILE != '') {
+          bodyFormData.append('imageFile', imageFILE);
+        }
         !isEdit
-          ? await manageGarden.createGardenOwner(values)
-          : await manageGarden.updateGardenOwner(values);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.garden.ownersList);
+          ? manageGarden.createSite(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.garden.sitesList);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            })
+          : manageGarden.updateSite(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.garden.sitesList);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            });
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -95,6 +140,7 @@ export default function GardenOwnerNewForm({
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
+      setImageFILE(file);
       if (file) {
         setFieldValue('imageUrl', {
           ...file,
@@ -173,6 +219,7 @@ export default function GardenOwnerNewForm({
                   <TextField
                     fullWidth
                     label="Email"
+                    type="email"
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
@@ -185,9 +232,56 @@ export default function GardenOwnerNewForm({
                     helperText={touched.address && errors.address}
                   />
                 </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    label="Website"
+                    {...getFieldProps('webUrl')}
+                    error={Boolean(touched.webUrl && errors.webUrl)}
+                    helperText={touched.webUrl && errors.webUrl}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    label="Latitude"
+                    {...getFieldProps('latitude')}
+                    error={Boolean(touched.latitude && errors.latitude)}
+                    helperText={touched.latitude && errors.latitude}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Longitude"
+                    {...getFieldProps('longitude')}
+                    error={Boolean(touched.longitude && errors.longitude)}
+                    helperText={touched.longitude && errors.longitude}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <Autocomplete
+                    fullWidth
+                    disablePortal
+                    clearIcon
+                    id="status"
+                    {...getFieldProps('status')}
+                    options={optionsStatus}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('status', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Status"
+                        error={Boolean(touched.status && errors.status)}
+                        helperText={touched.status && errors.status}
+                      />
+                    )}
+                  />
+                </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Garden Owner' : 'Save Changes'}
+                    {!isEdit ? 'Create Site' : 'Save Changes'}
                   </LoadingButton>
                 </Box>
               </Stack>

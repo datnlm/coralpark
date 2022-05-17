@@ -64,7 +64,7 @@ export default function GardenListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder="Search garden owner..."
+        placeholder="Search sites..."
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

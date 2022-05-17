@@ -7,7 +7,7 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 import { manageCoral } from '_apis_/coral';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, styled } from '@material-ui/core/styles';
 
 import {
   Card,
@@ -24,16 +24,30 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import ArrowForwardIosSharpIcon from '@material-ui/icons/ArrowForwardIosSharp';
+import MuiAccordion, { AccordionProps } from '@material-ui/core/Accordion';
+import MuiAccordionSummary, { AccordionSummaryProps } from '@material-ui/core/AccordionSummary';
+import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
+import TreeView from '@material-ui/lab/TreeView';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeItem from '@material-ui/lab/TreeItem';
 
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
+import {
+  getUserList,
+  deleteUser,
+  getAreaProvice,
+  getListCoral,
+  getListCoralType
+} from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { UserManager, Coral } from '../../@types/user';
+import { CoralType } from '../../@types/user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -50,7 +64,6 @@ import {
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Type Name', alignRight: false },
-  { id: 'company', label: 'Parent', alignRight: false },
   { id: 'role', label: 'Level Type', alignRight: false },
   { id: '' }
 ];
@@ -76,7 +89,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: UserManager[],
+  array: CoralType[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -93,7 +106,7 @@ function applySortFilter(
 }
 
 function applySortFilterCoral(
-  array: Coral[],
+  array: CoralType[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -109,24 +122,55 @@ function applySortFilterCoral(
   return stabilizedThis.map((el) => el[0]);
 }
 
+const Accordion = styled((props: AccordionProps) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  '&:not(:last-child)': {
+    borderBottom: 0
+  },
+  '&:before': {
+    display: 'none'
+  }
+}));
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, .05)' : 'rgba(0, 0, 0, .03)',
+  flexDirection: 'row-reverse',
+  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+    transform: 'rotate(90deg)'
+  },
+  '& .MuiAccordionSummary-content': {
+    marginLeft: theme.spacing(1)
+  }
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: '1px solid rgba(0, 0, 0, .125)'
+}));
+
 export default function UserList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { userList } = useSelector((state: RootState) => state.user);
-  const coralList = useSelector((state: RootState) => state.user.coralList);
-  const AreaProvice = useSelector((state: RootState) => state.user.proviceList);
+  const coralTypeList = useSelector((state: RootState) => state.user.coralListType);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [expanded, setExpanded] = useState<string | false>('panel1');
 
   useEffect(() => {
-    dispatch(getUserList());
-    dispatch(getAreaProvice());
-    dispatch(getListCoral());
+    dispatch(getListCoralType());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -137,7 +181,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = userList.map((n) => n.name);
+      const newSelecteds = coralTypeList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -175,7 +219,7 @@ export default function UserList() {
   //   dispatch(deleteUser(userId));
   // };
 
-  const handleDeleteUser = async (coralId: number) => {
+  const handleDeleteUser = async (coralId: string) => {
     try {
       await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
@@ -187,10 +231,18 @@ export default function UserList() {
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    setExpanded(newExpanded ? panel : false);
+  };
 
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
-  const filteredCorals = applySortFilterCoral(coralList, getComparator(order, orderBy), filterName);
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - coralTypeList.length) : 0;
+
+  const filteredUsers = applySortFilter(coralTypeList, getComparator(order, orderBy), filterName);
+  const filteredCorals = applySortFilterCoral(
+    coralTypeList,
+    getComparator(order, orderBy),
+    filterName
+  );
 
   const isUserNotFound = filteredUsers.length === 0;
   // if (companiesList !== null) {
@@ -230,7 +282,6 @@ export default function UserList() {
             filterName={filterName}
             onFilterName={handleFilterByName}
           />
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -238,7 +289,7 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
+                  rowCount={coralTypeList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -247,9 +298,8 @@ export default function UserList() {
                   {filteredCorals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, statusEnum, colour, imageUrl, longevity } = row;
+                      const { id, name, parentId, levelType, parents, description } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-                      console.log(AreaProvice);
                       return (
                         <TableRow
                           hover
@@ -264,22 +314,12 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl[0]} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{statusEnum}</TableCell>
-                          {/* <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status === 0 && 'error') || 'success'}
-                            >
-                              {status == 1 ? 'Available' : 'deleted'}
-                            </Label>
-                          </TableCell> */}
-
+                          <TableCell align="left">{levelType}</TableCell>
                           <TableCell align="right">
                             <CoralMoreMenu
                               onDelete={() => handleDeleteUser(id)}
@@ -295,15 +335,6 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {/* {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -311,7 +342,7 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={coralList.length}
+            count={coralTypeList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

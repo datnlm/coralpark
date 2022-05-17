@@ -71,12 +71,30 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         !isEdit
-          ? await manageGarden.createGardenType(values)
-          : await manageGarden.updateGardenType(values);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.garden.typesList);
+          ? await manageGarden.createGardenType(values).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.garden.sitesList);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            })
+          : await manageGarden.updateGardenType(values).then((response) => {
+              if (response.status == 200) {
+                resetForm();
+                setSubmitting(false);
+                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+                  variant: 'success'
+                });
+                navigate(PATH_DASHBOARD.garden.sitesList);
+              } else {
+                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+              }
+            });
       } catch (error) {
         enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
         console.error(error);
@@ -87,29 +105,6 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
 
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
-
-  // const handleDrop = useCallback(
-  //   (acceptedFiles) => {
-  //     setFieldValue(
-  //       'images',
-  //       acceptedFiles.map((file: File | string) =>
-  //         Object.assign(file, {
-  //           preview: URL.createObjectURL(file)
-  //         })
-  //       )
-  //     );
-  //   },
-  //   [setFieldValue]
-  // );
-
-  // const handleRemoveAll = () => {
-  //   setFieldValue('images', []);
-  // };
-
-  // const handleRemove = (file: File | string) => {
-  //   const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
-  //   setFieldValue('images', filteredItems);
-  // };
 
   return (
     <FormikProvider value={formik}>

@@ -174,7 +174,7 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteCoral = async (coralId: number) => {
+  const handleDeleteCoral = async (coralId: string) => {
     try {
       await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
@@ -286,7 +286,7 @@ export default function UserList() {
 
                           <TableCell align="right">
                             <CoralMoreMenu
-                              onDelete={() => handleDeleteCoral(id)}
+                              onDelete={() => handleDeleteCoral(id.toString())}
                               coralID={id.toString()}
                             />
                           </TableCell>

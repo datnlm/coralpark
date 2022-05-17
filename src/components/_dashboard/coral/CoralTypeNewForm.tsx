@@ -126,10 +126,12 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      id: currentType?.id || '',
       name: currentType?.name || '',
-      parent: currentType?.parent || '',
-      level: currentType?.level || CATEGORY_OPTION[0].classify[0],
-      description: currentType?.description || ''
+      parentId: currentType?.parentId || '',
+      levelType: currentType?.levelType || CATEGORY_OPTION[0].classify[0],
+      description: currentType?.description || '',
+      parents: currentType?.parents || ''
     },
     // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -141,27 +143,27 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
         // level 5 - species
         switch (currentLevel.toString()) {
           case '1':
-            values.parent = '';
+            values.parentId = '';
             break;
           case '2':
-            values.parent = currentClass;
+            values.parentId = currentClass;
             break;
           case '3':
-            values.parent = currentOrder!.id;
+            values.parentId = currentOrder!.id;
             break;
           case '4':
-            values.parent = currentFamily!.id;
+            values.parentId = currentFamily!.id;
             break;
           case '5':
-            values.parent = currentGenus!.id;
+            values.parentId = currentGenus!.id;
             break;
           default:
             console.log('default');
             break;
         }
 
-        values.level = currentLevel.toString();
-        await manageCoral.createCoralType(values);
+        values.levelType = currentLevel.toString();
+        manageCoral.createCoralType(values);
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });

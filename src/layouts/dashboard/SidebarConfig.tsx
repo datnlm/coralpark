@@ -51,15 +51,15 @@ const sidebarConfig = [
     subheader: 'management',
     items: [
       {
-        title: 'garden',
+        title: 'sites',
         path: PATH_DASHBOARD.garden.root,
         icon: ICONS.garden,
         children: [
           // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
           // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
-          { title: 'list', path: PATH_DASHBOARD.garden.list },
-          { title: 'list owners', path: PATH_DASHBOARD.garden.ownersList },
-          { title: 'list types', path: PATH_DASHBOARD.garden.typesList }
+          { title: 'sites', path: PATH_DASHBOARD.garden.sitesList },
+          { title: 'garden', path: PATH_DASHBOARD.garden.list },
+          { title: 'garden types', path: PATH_DASHBOARD.garden.typesList }
         ]
       },
       {

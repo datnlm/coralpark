@@ -6,7 +6,7 @@ import { dispatch } from '../store';
 // utils
 import axios from '../../utils/axios';
 
-import { Garden, GardenOwner, GardenType } from '../../@types/garden';
+import { Garden, Site, GardenType } from '../../@types/garden';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ type GardenState = {
   isLoading: boolean;
   error: boolean;
   gardenList: Garden[];
-  gardenOwnersList: GardenOwner[];
+  siteList: Site[];
   gardenTypesList: GardenType[];
 };
 
@@ -22,7 +22,7 @@ const initialState: GardenState = {
   isLoading: false,
   error: false,
   gardenList: [],
-  gardenOwnersList: [],
+  siteList: [],
   gardenTypesList: []
 };
 
@@ -57,7 +57,7 @@ const slice = createSlice({
     // GET LIST Garden owners
     getListGardenOwners(state, action) {
       state.isLoading = false;
-      state.gardenOwnersList = action.payload;
+      state.siteList = action.payload;
     },
 
     // ---------------------------------------------------------------
@@ -74,6 +74,12 @@ const slice = createSlice({
         (gardenType) => gardenType.id !== action.payload
       );
       state.gardenTypesList = deleteGardenType;
+    },
+
+    // DELETE USERS
+    deleteSite(state, action) {
+      const deleteSite = filter(state.siteList, (site) => site.id !== action.payload);
+      state.siteList = deleteSite;
     }
   }
 });
@@ -82,7 +88,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-export const { deleteGarden, deleteGardenType } = slice.actions;
+export const { deleteGarden, deleteGardenType, deleteSite } = slice.actions;
 
 // ----------------------------------------------------------------------
 
@@ -104,11 +110,11 @@ export function getListGarden() {
 
 // ----------------------------------------------------------------------
 // get garden
-export function getListGardenOwners() {
+export function getListSites() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageGarden.getListGardenOwners().then((response) => {
+      await manageGarden.getListSites().then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getListGardenOwners(response.data.items));
         }

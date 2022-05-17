@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -21,14 +21,15 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  Link
 } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // @types
-import { GardenOwner } from '../../@types/garden';
+import { Site } from '../../@types/garden';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListGardenOwners } from '../../redux/slices/garden';
+import { getListSites, deleteSite } from '../../redux/slices/garden';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -49,9 +50,11 @@ import {
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Phone', alignRight: false },
-  { id: 'role', label: 'Email', alignRight: false },
-  { id: 'isVerified', label: 'Address', alignRight: false },
+  { id: 'webUrl', label: 'Website', alignRight: false },
+  { id: 'phone', label: 'Phone', alignRight: false },
+  { id: 'address', label: 'Email', alignRight: false },
+  { id: 'email', label: 'Address', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
 
@@ -75,11 +78,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(
-  array: GardenOwner[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
+function applySortFilter(array: Site[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -93,7 +92,7 @@ function applySortFilter(
 }
 
 function applySortFilterCoral(
-  array: GardenOwner[],
+  array: Site[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -110,11 +109,12 @@ function applySortFilterCoral(
 }
 
 export default function UserList() {
+  const navigate = useNavigate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { gardenOwnersList } = useSelector((state: RootState) => state.garden);
+  const siteList = useSelector((state: RootState) => state.garden.siteList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -123,7 +123,7 @@ export default function UserList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getListGardenOwners());
+    dispatch(getListSites());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -134,7 +134,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = gardenOwnersList.map((n) => n.name);
+      const newSelecteds = siteList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -168,26 +168,24 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = async (gardenOwner: string) => {
+  const handleDeleteSite = async (siteId: string) => {
     try {
-      await manageGarden.deleteGardenOwner(gardenOwner).then((respone) => {
+      await manageGarden.deleteSite(siteId).then((respone) => {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getListGardenOwners());
+          dispatch(getListSites());
+          navigate(PATH_DASHBOARD.garden.sitesList);
         }
       });
     } catch (error) {
+      enqueueSnackbar('Delete error', { variant: 'error' });
       console.log(error);
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - gardenOwnersList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - siteList.length) : 0;
 
-  const filteredGardenOwners = applySortFilter(
-    gardenOwnersList,
-    getComparator(order, orderBy),
-    filterName
-  );
+  const filteredGardenOwners = applySortFilter(siteList, getComparator(order, orderBy), filterName);
 
   const isGardenOwnerNotFound = filteredGardenOwners.length === 0;
   // if (companiesList !== null) {
@@ -201,23 +199,23 @@ export default function UserList() {
   // }
 
   return (
-    <Page title="Garden Owners: List">
+    <Page title="Garden Sites: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Garden Owners list"
+          heading="Garden Sites list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Owners', href: PATH_DASHBOARD.garden.root },
+            { name: 'Sites', href: PATH_DASHBOARD.garden.root },
             { name: 'List' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.garden.newGardenOwner}
+              to={PATH_DASHBOARD.garden.newSite}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Garden Owner
+              New Sites
             </Button>
           }
         />
@@ -235,7 +233,7 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={gardenOwnersList.length}
+                  rowCount={siteList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -244,7 +242,7 @@ export default function UserList() {
                   {filteredGardenOwners
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, phone, email, address, imageUrl } = row;
+                      const { id, name, phone, email, address, webUrl, imageUrl, status } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -260,19 +258,37 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl.toString()} />
+                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
+                          <TableCell align="left">
+                            <Link
+                              href={webUrl}
+                              underline="hover"
+                              target="_blank"
+                              style={{ color: '#0000ff' }}
+                            >
+                              {webUrl}
+                            </Link>
+                          </TableCell>
                           <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">{email}</TableCell>
                           <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={(status == '0' && 'error') || 'success'}
+                            >
+                              {status == '1' ? 'Available' : 'deleted'}
+                            </Label>
+                          </TableCell>
 
                           <TableCell align="right">
                             <GardenOwnersMoreMenu
-                              onDelete={() => handleDeleteUser(id.toString())}
+                              onDelete={() => handleDeleteSite(id.toString())}
                               userName={id.toString()}
                             />
                           </TableCell>
@@ -301,7 +317,7 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={gardenOwnersList.length}
+            count={siteList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
