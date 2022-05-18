@@ -70,31 +70,28 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        let flag = false;
         !isEdit
           ? await manageGarden.createGardenType(values).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.garden.typesList);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             })
           : await manageGarden.updateGardenType(values).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.garden.typesList);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             });
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.garden.typesList);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
       } catch (error) {
         enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
         console.error(error);

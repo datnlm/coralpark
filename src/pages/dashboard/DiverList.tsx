@@ -104,10 +104,6 @@ export default function UserList() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  useEffect(() => {
-    dispatch(getListDiver());
-  }, [dispatch]);
-
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -162,6 +158,10 @@ export default function UserList() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    dispatch(getListDiver());
+  }, [dispatch]);
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - diverList.length) : 0;
 
@@ -255,6 +255,14 @@ export default function UserList() {
                               {status == 1 ? 'Available' : 'deleted'}
                             </Label>
                           </TableCell>
+                          {/* <TableCell align="left">
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={(status == 0 && 'error') || 'success'}
+                            >
+                              {status == 1 ? 'Available' : 'deleted'}
+                            </Label>
+                          </TableCell> */}
 
                           <TableCell align="right">
                             <DiverMoreMenu

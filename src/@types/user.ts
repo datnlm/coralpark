@@ -171,7 +171,7 @@ export type AreaProvice = {
 
 // Coral type
 export type Coral = {
-  id: number;
+  id: string;
   name: string;
   images: object[];
   imageUrl: string[];
@@ -187,6 +187,7 @@ export type Coral = {
 };
 
 export type PhasesType = {
+  id: string;
   minWeight: string;
   maxWeight: string;
   minHigh: string;
@@ -194,8 +195,8 @@ export type PhasesType = {
   timeForm: string;
   timeTo: string;
   coulour: string;
-  coralID: string;
-  phaseID: string;
+  coralID: any;
+  phaseID: any;
 };
 
 export type Phases = {

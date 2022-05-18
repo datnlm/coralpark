@@ -105,31 +105,28 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        let flag = false;
         !isEdit
           ? await manageGarden.createGarden(values).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.garden.list);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             })
           : await manageGarden.updateGarden(values).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.garden.list);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             });
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.garden.list);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -276,7 +273,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     options={optionsGardenType}
                     getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('gardenTypeId', value.id) } : ''
+                      value ? { ...setFieldValue('gardenTypeId', value) } : ''
                     }
                     renderInput={(params) => (
                       <TextField
@@ -294,18 +291,18 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     disablePortal
                     clearIcon
                     id="sites"
-                    {...getFieldProps('sitesId')}
+                    {...getFieldProps('siteId')}
                     options={optionsSite}
                     getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('sitesId', value.id) } : ''
+                      value ? { ...setFieldValue('siteId', value) } : ''
                     }
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Sites"
-                        error={Boolean(touched.areaID && errors.areaID)}
-                        helperText={touched.areaID && errors.areaID}
+                        error={Boolean(touched.siteId && errors.siteId)}
+                        helperText={touched.siteId && errors.siteId}
                       />
                     )}
                   />

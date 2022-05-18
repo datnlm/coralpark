@@ -125,10 +125,6 @@ export default function UserList() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  useEffect(() => {
-    dispatch(getListCoral());
-  }, [dispatch]);
-
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -186,12 +182,16 @@ export default function UserList() {
     }
   };
 
+  useEffect(() => {
+    dispatch(getListCoral());
+  }, [dispatch]);
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
 
   const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
   const filteredCorals = applySortFilterCoral(coralList, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isCoralNotFound = filteredCorals.length === 0;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -296,7 +296,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {/* {isUserNotFound && (
+                {isCoralNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -304,7 +304,7 @@ export default function UserList() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )} */}
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>

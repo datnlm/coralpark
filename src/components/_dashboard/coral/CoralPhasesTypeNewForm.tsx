@@ -38,13 +38,14 @@ export default function CoralPhasesTypeNewForm({
     timeForm: Yup.string().required('TimeForm is required'),
     timeTo: Yup.string().required('TimeTo is required'),
     coulour: Yup.string().required('Coulour is required'),
-    coralID: Yup.string().required('CoralID is required'),
-    phaseID: Yup.string().required('PhaseID is required')
+    coralID: Yup.object().required('CoralID is required').nullable(true),
+    phaseID: Yup.object().required('PhaseID is required').nullable(true)
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      id: currentPhasesType?.id || '',
       minWeight: currentPhasesType?.minWeight || '',
       maxWeight: currentPhasesType?.maxWeight || '',
       minHigh: currentPhasesType?.minHigh || '',
@@ -58,31 +59,28 @@ export default function CoralPhasesTypeNewForm({
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        let flag = false;
         !isEdit
           ? await manageCoral.createCoralPhasesType(values).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.phases.typeNew);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             })
           : await manageCoral.updateCoralPhasesType(values).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.phases.typeNew);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             });
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.phases.typeNew);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
       } catch (error) {
         console.error(error);
         setSubmitting(false);

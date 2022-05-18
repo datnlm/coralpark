@@ -62,7 +62,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   const [optionsFamily, setOptionsFamily] = useState([]);
   const [optionsGenus, setOptionsGenus] = useState([]);
   const [currentLevel, setCurrenLevel] = useState(1);
-  const [currentClass, setCurrentClass] = useState('');
+  const [currentClass, setCurrentClass] = useState<any>([]);
   // const [currentOrder, setCurrentOrder] = useState('');
   const [currentOrder, setCurrentOrder] = useState<any>([]);
   const [currentFamily, setCurrentFamily] = useState<any>([]);
@@ -80,6 +80,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
     manageCoral.getCoralType('class').then((response) => {
       if (response.status == 200) {
         setOptionsClass(response.data.items);
+        console.log(response.data.items);
       }
     });
   }, []);
@@ -87,8 +88,8 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   // call order name parent class id = ?
   useEffect(() => {
     setCurrentOrder([]);
-    if (currentClass != '') {
-      manageCoral.getCoralType(currentClass.toString()).then((response) => {
+    if (currentClass!.id != null) {
+      manageCoral.getCoralType(currentClass!.id).then((response) => {
         if (response.status == 200) {
           setOptionsOrder(response.data.items);
           console.log(response.data.items);
@@ -143,7 +144,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
       genus: currentType?.genus || '',
       species: currentType?.species || ''
     },
-    validationSchema: NewProductSchema,
+    // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         // level 1 - class
@@ -172,12 +173,30 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
             break;
         }
 
+        let flag = false;
+
         values.levelType = currentLevel.toString();
-        manageCoral.createCoralType(values);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.coral.listType);
+        !isEdit
+          ? await manageCoral.createCoralType(values).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            })
+          : await manageCoral.createCoralType(values).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            });
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.coral.listType);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -228,10 +247,11 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                       disablePortal
                       clearIcon
                       id="class"
+                      inputValue={currentClass != '' ? currentClass!.name : ''}
                       {...getFieldProps('class')}
                       options={optionsClass}
-                      getOptionLabel={(option) => (option ? option.name : '')}
-                      onChange={(e, value) => (value ? setCurrentClass(value.id) : '')}
+                      getOptionLabel={(option: any) => (option ? option.name : '')}
+                      onChange={(e, value: any) => (value ? setCurrentClass(value) : '')}
                       renderInput={(params) => (
                         <TextField
                           {...params}

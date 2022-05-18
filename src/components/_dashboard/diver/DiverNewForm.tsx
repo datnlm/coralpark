@@ -44,6 +44,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1)
 }));
 
+const optionsStatus = ['1', '0'];
+
 // ----------------------------------------------------------------------
 
 type DiverNewFormProps = {
@@ -77,11 +79,12 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
       address: currentDiver?.address || '',
       imageUrl: currentDiver?.imageUrl || null,
       password: currentDiver?.password || '',
-      status: currentDiver?.status || 0
+      status: currentDiver?.status || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        let flag = false;
         const bodyFormData = new FormData();
         if (isEdit) {
           bodyFormData.append('id', values.id);
@@ -90,7 +93,9 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
         bodyFormData.append('Phone', values.phone);
         bodyFormData.append('Email', values.email);
         bodyFormData.append('Address', values.address);
+        bodyFormData.append('Status', values.status);
         bodyFormData.append('imageFile', imageFILE);
+
         // manageGarden.getListGardenType().then((response) => {
         //   if (response.status == 200) {
         //     setOptionsGardenType(response.data.items);
@@ -101,28 +106,24 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
         !isEdit
           ? manageDiver.createDiver(bodyFormData).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.diver.list);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             })
           : manageDiver.updateDiver(bodyFormData).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.diver.list);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             });
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.diver.list);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -217,6 +218,31 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                     helperText={touched.address && errors.address}
                   />
                 </Stack>
+                {isEdit && (
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      clearIcon
+                      id="status"
+                      {...getFieldProps('status')}
+                      options={optionsStatus}
+                      getOptionLabel={(option: any) => option}
+                      // getOptionLabel={(option: any) => (option ? option.name : '')}
+                      onChange={(e, value: any) =>
+                        value ? { ...setFieldValue('status', value) } : ''
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Status"
+                          error={Boolean(touched.status && errors.status)}
+                          helperText={touched.status && errors.status}
+                        />
+                      )}
+                    />
+                  </Stack>
+                )}
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? 'Create Diver' : 'Save Changes'}
