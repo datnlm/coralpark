@@ -122,10 +122,6 @@ export default function UserList() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  useEffect(() => {
-    dispatch(getListSites());
-  }, [dispatch]);
-
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -174,7 +170,6 @@ export default function UserList() {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
           dispatch(getListSites());
-          navigate(PATH_DASHBOARD.garden.sitesList);
         }
       });
     } catch (error) {
@@ -182,6 +177,10 @@ export default function UserList() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    dispatch(getListSites());
+  }, [dispatch]);
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - siteList.length) : 0;
 

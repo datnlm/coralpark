@@ -42,13 +42,15 @@ export class GardenManager {
   updateGarden = (garden: Garden) => {
     const data = {
       id: garden.id,
+      name: garden.name,
       latitude: garden.latitude,
       longitude: garden.longitude,
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      areaID: garden.areaID,
-      gardenTypeId: garden.gardenTypeId,
+      areaID: garden.areaID.id,
+      gardenTypeId: garden.gardenTypeId.id,
+      siteId: garden.siteId.id,
       status: garden.status
     };
     return axios

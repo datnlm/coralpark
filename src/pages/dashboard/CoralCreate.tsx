@@ -29,7 +29,7 @@ export default function UserCreate() {
   const { name } = useParams();
   const currentUser = userList.find((user) => paramCase(user.name) === name);
   const [currentCoral, setCurrentCoral] = useState({
-    id: 0,
+    id: '',
     name: '',
     imageUrl: [],
     images: [],

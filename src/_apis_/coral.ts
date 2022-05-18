@@ -28,11 +28,25 @@ export class Coral {
 
   // create coral
   createCoral = (coral: any) => {
-    axios.post('/api/v1/admin/corals', coral, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+    return axios
+      .post('/api/v1/admin/corals', coral, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateCoral = (coral: any) => {
+    return axios
+      .put('/api/v1/admin/corals', coral, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // get list coral type
@@ -90,8 +104,8 @@ export class Coral {
       timeFrom: phaseType.timeForm,
       timeTo: phaseType.timeTo,
       colour: phaseType.coulour,
-      coral: phaseType.coralID,
-      coralPhases: phaseType.phaseID
+      coral: phaseType.coralID.id,
+      coralPhases: phaseType.phaseID.id
     };
     return axios
       .post('/api/v1/admin/coral-phase-types', data)
@@ -134,7 +148,10 @@ export class Coral {
         description: coralType.description
       };
     }
-    axios.post('/api/v1/admin/coral-types', data);
+    return axios
+      .post('/api/v1/admin/coral-types', data)
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   // get coral type
@@ -161,13 +178,13 @@ export class Coral {
   };
 
   createHabitat = (habitat: any) => {
-    console.log(habitat);
     const data = {
       bathymetry: habitat.bathymetry,
       temperature: habitat.temperature,
+      brightness: habitat.brightness,
       tides: habitat.tides,
-      current: habitat.current
-      // coraId: habitat.id
+      current: habitat.current,
+      coralId: habitat.id
     };
     axios.post('/api/v1/admin/habitats', data);
   };

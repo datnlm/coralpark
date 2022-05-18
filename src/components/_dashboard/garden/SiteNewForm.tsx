@@ -42,18 +42,18 @@ import { Site } from '../../../@types/garden';
 import { UploadAvatar } from '../../upload';
 import { fData } from '../../../utils/formatNumber';
 // ----------------------------------------------------------------------
-const baseSettings = {
-  mapboxApiAccessToken:
-    'pk.eyJ1IjoiZGF0bmxtIiwiYSI6ImNsM2E3amtyaDAydzUzZHAxMTFtaWx4ZHcifQ.eLx8xZ0KfftAAekyFCVJEQ',
-  width: '100%',
-  height: '100%',
-  minZoom: 1
-};
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
+// const baseSettings = {
+//   mapboxApiAccessToken:
+//     'pk.eyJ1IjoiZGF0bmxtIiwiYSI6ImNsM2E3amtyaDAydzUzZHAxMTFtaWx4ZHcifQ.eLx8xZ0KfftAAekyFCVJEQ',
+//   width: '100%',
+//   height: '100%',
+//   minZoom: 1
+// };
+// const LabelStyle = styled(Typography)(({ theme }) => ({
+//   ...theme.typography.subtitle2,
+//   color: theme.palette.text.secondary,
+//   marginBottom: theme.spacing(1)
+// }));
 const MapWrapperStyle = styled('div')(({ theme }) => ({
   zIndex: 0,
   height: 560,
@@ -64,38 +64,16 @@ const MapWrapperStyle = styled('div')(({ theme }) => ({
     display: 'none'
   }
 }));
-const THEMES = {
-  streets: 'mapbox://styles/mapbox/streets-v11',
-  outdoors: 'mapbox://styles/mapbox/outdoors-v11',
-  light: 'mapbox://styles/mapbox/light-v10',
-  dark: 'mapbox://styles/mapbox/dark-v10',
-  satellite: 'mapbox://styles/mapbox/satellite-v9',
-  satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v11'
-};
+// const THEMES = {
+//   streets: 'mapbox://styles/mapbox/streets-v11',
+//   outdoors: 'mapbox://styles/mapbox/outdoors-v11',
+//   light: 'mapbox://styles/mapbox/light-v10',
+//   dark: 'mapbox://styles/mapbox/dark-v10',
+//   satellite: 'mapbox://styles/mapbox/satellite-v9',
+//   satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v11'
+// };
 
-const optionsStatus = [
-  { id: '1', name: 'Available' },
-  { id: '0', name: 'Deteled' }
-];
-
-const countries = [
-  {
-    timezones: ['VN/VN'],
-    latlng: [10.150798, 105.966704],
-    name: 'Dat',
-    country_code: 'VN',
-    capital: 'HN',
-    photo: 'https://c.wallhere.com/photos/50/0c/1920x1080_px_Coral_fish_sea-515541.jpg!d'
-  },
-  {
-    timezones: ['VN/VN'],
-    latlng: [10.123238, 105.21324],
-    name: 'Dat2',
-    country_code: 'VN',
-    capital: 'HN',
-    photo: 'https://c.wallhere.com/photos/50/0c/1920x1080_px_Coral_fish_sea-515541.jpg!d'
-  }
-];
+const optionsStatus = ['1', '0'];
 
 // ----------------------------------------------------------------------
 
@@ -115,33 +93,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const [lng, setLng] = useState(111.202);
   const [lat, setLat] = useState(11.305);
   const [zoomMap, setZoomMap] = useState(4.5);
-
-  useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: mapContainerRef.current || '',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [lng, lat],
-      zoom: zoomMap
-    });
-
-    // Add navigation control (the +/- zoom buttons)
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    const marker = new mapboxgl.Marker({ color: 'red' });
-
-    map.on('click', (e) => {
-      marker.remove();
-      // setLng(Number(map.getCenter().lng.toFixed(4)));
-      // setLat(Number(map.getCenter().lat.toFixed(4)));
-      setZoomMap(Number(map.getZoom().toFixed(2)));
-      // new mapboxgl.Marker({ color: 'red' }).setLngLat(e.lngLat).addTo(map);
-      marker.setLngLat(e.lngLat).addTo(map);
-
-      setLng(e.lngLat.lng);
-      setLat(e.lngLat.lat);
-      setFieldValue('longitude', e.lngLat.lng);
-      setFieldValue('latitude', e.lngLat.lat);
-    });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -170,6 +121,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        let flag = false;
         const bodyFormData = new FormData();
         if (isEdit) {
           bodyFormData.append('id', values.id);
@@ -181,34 +133,30 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
         bodyFormData.append('WebUrl', values.webUrl);
         bodyFormData.append('Latitude', values.latitude);
         bodyFormData.append('Longitude', values.longitude);
-        bodyFormData.append('Status', values.status.id);
+        bodyFormData.append('Status', values.status);
         // bodyFormData.append('ListGarden', values.address);
         bodyFormData.append('imageFile', imageFILE);
         !isEdit
-          ? manageGarden.createSite(bodyFormData).then((response) => {
+          ? await manageGarden.createSite(bodyFormData).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.garden.sitesList);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             })
-          : manageGarden.updateSite(bodyFormData).then((response) => {
+          : await manageGarden.updateSite(bodyFormData).then((response) => {
               if (response.status == 200) {
-                resetForm();
-                setSubmitting(false);
-                enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-                  variant: 'success'
-                });
-                navigate(PATH_DASHBOARD.garden.sitesList);
-              } else {
-                enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+                flag = true;
               }
             });
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.garden.sitesList);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -232,6 +180,31 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     },
     [setFieldValue]
   );
+
+  useEffect(() => {
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current || '',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [lng, lat],
+      zoom: zoomMap
+    });
+
+    // Add navigation control (the +/- zoom buttons)
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    const marker = new mapboxgl.Marker({ color: 'red' });
+    marker.setLngLat([Number(currentSite?.longitude), Number(currentSite?.latitude)]).addTo(map);
+
+    map.on('click', (e) => {
+      marker.remove();
+      setZoomMap(Number(map.getZoom().toFixed(2)));
+      marker.setLngLat(e.lngLat).addTo(map);
+
+      setLng(e.lngLat.lng);
+      setLat(e.lngLat.lat);
+      setFieldValue('longitude', e.lngLat.lng);
+      setFieldValue('latitude', e.lngLat.lat);
+    });
+  }, [currentSite]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <FormikProvider value={formik}>
@@ -368,7 +341,8 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                     id="status"
                     {...getFieldProps('status')}
                     options={optionsStatus}
-                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    getOptionLabel={(option: any) => option}
+                    // getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
                       value ? { ...setFieldValue('status', value) } : ''
                     }

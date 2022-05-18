@@ -144,9 +144,12 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
     // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        console.log(values);
+        let flag = false;
         if (valueTab === 'coral') {
           const bodyFormData = new FormData();
+          if (isEdit) {
+            bodyFormData.append('Id', values.id);
+          }
           bodyFormData.append('Name', values.name);
           bodyFormData.append('ScientificName', values.scientificName);
           bodyFormData.append('Longevity', values.longevity);
@@ -158,14 +161,31 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
           bodyFormData.append('CoralTypeId', values.coralTypeId.id);
           bodyFormData.append('StatusEnum', values.statusEnum.id);
           values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
-          await manageCoral.createCoral(bodyFormData);
+
+          !isEdit
+            ? await manageCoral.createCoral(bodyFormData).then((response) => {
+                if (response.status == 200) {
+                  flag = true;
+                }
+              })
+            : await manageCoral.updateCoral(bodyFormData).then((response) => {
+                if (response.status == 200) {
+                  flag = true;
+                }
+              });
         } else {
           await manageCoral.createHabitat(values);
         }
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.coral.list);
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.coral.list);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -227,7 +247,7 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
             <Tab label="Coral" value="coral" />
-            <Tab label="Habitat" value="habitat" />
+            <Tab label="Habitat" value="habitat" disabled={!isEdit} />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
