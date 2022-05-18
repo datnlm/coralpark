@@ -1,10 +1,10 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect, useRef, lazy } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { styled } from '@material-ui/core/styles';
+import { styled as styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import {
   Card,
@@ -23,10 +23,17 @@ import {
   Autocomplete,
   InputAdornment,
   FormHelperText,
-  FormControlLabel
+  FormControlLabel,
+  CardHeader,
+  CardContent
 } from '@material-ui/core';
 // utils
 import { manageGarden } from '_apis_/garden';
+import mapboxgl from 'mapbox-gl';
+import './Map.css';
+import MapGL, { Source, Layer, MapEvent, MapRef, LayerProps } from 'react-map-gl';
+import { MapMarkersPopups } from 'components/map';
+// import { countries as COUNTRIES } from 'components/map/assets/countries';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
@@ -34,19 +41,62 @@ import { Site } from '../../../@types/garden';
 //
 import { UploadAvatar } from '../../upload';
 import { fData } from '../../../utils/formatNumber';
-
 // ----------------------------------------------------------------------
-
+const baseSettings = {
+  mapboxApiAccessToken:
+    'pk.eyJ1IjoiZGF0bmxtIiwiYSI6ImNsM2E3amtyaDAydzUzZHAxMTFtaWx4ZHcifQ.eLx8xZ0KfftAAekyFCVJEQ',
+  width: '100%',
+  height: '100%',
+  minZoom: 1
+};
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
   marginBottom: theme.spacing(1)
 }));
+const MapWrapperStyle = styled('div')(({ theme }) => ({
+  zIndex: 0,
+  height: 560,
+  overflow: 'hidden',
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  '& .mapboxgl-ctrl-logo, .mapboxgl-ctrl-bottom-right': {
+    display: 'none'
+  }
+}));
+const THEMES = {
+  streets: 'mapbox://styles/mapbox/streets-v11',
+  outdoors: 'mapbox://styles/mapbox/outdoors-v11',
+  light: 'mapbox://styles/mapbox/light-v10',
+  dark: 'mapbox://styles/mapbox/dark-v10',
+  satellite: 'mapbox://styles/mapbox/satellite-v9',
+  satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v11'
+};
 
 const optionsStatus = [
   { id: '1', name: 'Available' },
   { id: '0', name: 'Deteled' }
 ];
+
+const countries = [
+  {
+    timezones: ['VN/VN'],
+    latlng: [10.150798, 105.966704],
+    name: 'Dat',
+    country_code: 'VN',
+    capital: 'HN',
+    photo: 'https://c.wallhere.com/photos/50/0c/1920x1080_px_Coral_fish_sea-515541.jpg!d'
+  },
+  {
+    timezones: ['VN/VN'],
+    latlng: [10.123238, 105.21324],
+    name: 'Dat2',
+    country_code: 'VN',
+    capital: 'HN',
+    photo: 'https://c.wallhere.com/photos/50/0c/1920x1080_px_Coral_fish_sea-515541.jpg!d'
+  }
+];
+
 // ----------------------------------------------------------------------
 
 type SiteNewFormProps = {
@@ -54,10 +104,44 @@ type SiteNewFormProps = {
   currentSite?: Site;
 };
 
+mapboxgl.accessToken =
+  'pk.eyJ1IjoiZGF0bmxtIiwiYSI6ImNsM2E3amtyaDAydzUzZHAxMTFtaWx4ZHcifQ.eLx8xZ0KfftAAekyFCVJEQ';
+
 export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
+  const mapContainerRef = useRef(null);
+  const [lng, setLng] = useState(111.202);
+  const [lat, setLat] = useState(11.305);
+  const [zoomMap, setZoomMap] = useState(4.5);
+
+  useEffect(() => {
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current || '',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [lng, lat],
+      zoom: zoomMap
+    });
+
+    // Add navigation control (the +/- zoom buttons)
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    const marker = new mapboxgl.Marker({ color: 'red' });
+
+    map.on('click', (e) => {
+      marker.remove();
+      // setLng(Number(map.getCenter().lng.toFixed(4)));
+      // setLat(Number(map.getCenter().lat.toFixed(4)));
+      setZoomMap(Number(map.getZoom().toFixed(2)));
+      // new mapboxgl.Marker({ color: 'red' }).setLngLat(e.lngLat).addTo(map);
+      marker.setLngLat(e.lngLat).addTo(map);
+
+      setLng(e.lngLat.lng);
+      setLat(e.lngLat.lat);
+      setFieldValue('longitude', e.lngLat.lng);
+      setFieldValue('latitude', e.lngLat.lat);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -99,9 +183,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
         bodyFormData.append('Longitude', values.longitude);
         bodyFormData.append('Status', values.status.id);
         // bodyFormData.append('ListGarden', values.address);
-        if (imageFILE != '') {
-          bodyFormData.append('imageFile', imageFILE);
-        }
+        bodyFormData.append('imageFile', imageFILE);
         !isEdit
           ? manageGarden.createSite(bodyFormData).then((response) => {
               if (response.status == 200) {
@@ -185,7 +267,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                       }}
                     >
                       Allowed *.jpeg, *.jpg, *.png, *.gif
-                      <br /> max size of {fData(3145728)}
                     </Typography>
                   }
                 />
@@ -241,20 +322,42 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                     helperText={touched.webUrl && errors.webUrl}
                   />
                 </Stack>
+                <Grid item xs={12}>
+                  <Card sx={{ mb: 3 }}>
+                    <CardContent>
+                      <MapWrapperStyle>
+                        {/* <MapMarkersPopups
+                          {...baseSettings}
+                          data={countries}
+                          mapStyle={THEMES.streets}
+                        /> */}
+                        <div>
+                          {/* <div className="sidebarStyle">
+                            <div>
+                              Longitude: {lng} | Latitude: {lat} | Zoom: {zoomMap}
+                            </div>
+                          </div> */}
+                          <div className="map-container" ref={mapContainerRef} />
+                        </div>
+                      </MapWrapperStyle>
+                    </CardContent>
+                  </Card>
+                </Grid>
+
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Latitude"
-                    {...getFieldProps('latitude')}
-                    error={Boolean(touched.latitude && errors.latitude)}
-                    helperText={touched.latitude && errors.latitude}
-                  />
                   <TextField
                     fullWidth
                     label="Longitude"
                     {...getFieldProps('longitude')}
                     error={Boolean(touched.longitude && errors.longitude)}
                     helperText={touched.longitude && errors.longitude}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Latitude"
+                    {...getFieldProps('latitude')}
+                    error={Boolean(touched.latitude && errors.latitude)}
+                    helperText={touched.latitude && errors.latitude}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>

@@ -21,6 +21,8 @@ export default function MapControlGeolocate({ ...props }: GeolocateControlProps)
     <GeolocateControlStyle
       positionOptions={{ enableHighAccuracy: true }}
       trackUserLocation={true}
+      auto={true}
+      showUserLocation={true}
       {...props}
     />
   );

@@ -46,7 +46,6 @@ import {
   CoralListToolbar,
   CoralMoreMenu
 } from '../../components/_dashboard/coral/list';
-
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -127,8 +126,6 @@ export default function UserList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getUserList());
-    dispatch(getAreaProvice());
     dispatch(getListCoral());
   }, [dispatch]);
 

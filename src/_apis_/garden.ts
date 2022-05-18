@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { apiCon } from './api';
 import { Garden, Site, GardenType } from '../@types/garden';
 
 export class GardenManager {

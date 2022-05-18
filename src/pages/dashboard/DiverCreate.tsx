@@ -37,7 +37,7 @@ export default function DiverCreate() {
     email: '',
     address: '',
     password: '',
-    imageUrl: null,
+    imageUrl: '',
     status: 0
   });
 

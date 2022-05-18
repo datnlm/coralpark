@@ -78,7 +78,7 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
                 enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
                   variant: 'success'
                 });
-                navigate(PATH_DASHBOARD.garden.sitesList);
+                navigate(PATH_DASHBOARD.garden.typesList);
               } else {
                 enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
               }
@@ -90,7 +90,7 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
                 enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
                   variant: 'success'
                 });
-                navigate(PATH_DASHBOARD.garden.sitesList);
+                navigate(PATH_DASHBOARD.garden.typesList);
               } else {
                 enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
               }

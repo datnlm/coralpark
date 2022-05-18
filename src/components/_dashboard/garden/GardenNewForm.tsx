@@ -170,13 +170,16 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
         setOptionsGardenType([]);
       }
     });
+
     manageArea.getArea().then((response) => {
       if (response.status == 200) {
         setOptionsArea(response.data.items);
+        // setFieldValue('areaID', { id: 1, wellKnownText: 'string', address: 'string' });
       } else {
         setOptionsArea([]);
       }
     });
+
     manageGarden.getListSites().then((response) => {
       if (response.status == 200) {
         setOptionsSite(response.data.items);
@@ -273,7 +276,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     options={optionsGardenType}
                     getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('gardenTypeId', value) } : ''
+                      value ? { ...setFieldValue('gardenTypeId', value.id) } : ''
                     }
                     renderInput={(params) => (
                       <TextField
@@ -295,7 +298,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     options={optionsSite}
                     getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('sitesId', value) } : ''
+                      value ? { ...setFieldValue('sitesId', value.id) } : ''
                     }
                     renderInput={(params) => (
                       <TextField

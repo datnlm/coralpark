@@ -45,8 +45,8 @@ const unClusteredPointLayer: LayerProps = {
 export default function MapClusters({ ...other }) {
   const mapRef = useRef<MapRef>(null);
   const [viewport, setViewport] = useState({
-    latitude: 40.67,
-    longitude: -103.59,
+    latitude: 10.15113,
+    longitude: 105.966819,
     zoom: 3,
     bearing: 0,
     pitch: 0,
