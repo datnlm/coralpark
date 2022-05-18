@@ -89,6 +89,11 @@ export type CoralType = {
   levelType: string;
   description: string;
   parents: any;
+  class: any;
+  order: any;
+  family: any;
+  genus: any;
+  species: any;
 };
 
 export type UserData = {

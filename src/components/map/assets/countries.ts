@@ -30,7 +30,7 @@ export const countries = [
   {
     timezones: ['Pacific/Efate'],
     latlng: [-16, 167],
-    name: 'Vanuatu',
+    name: 'HIHI',
     country_code: 'VU',
     capital: 'Port Vila',
     photo: faker.image.image()
@@ -80,6 +80,14 @@ export const countries = [
     latlng: [-20, 30],
     name: 'Zimbabwe',
     country_code: 'ZW',
+    capital: 'Harare',
+    photo: faker.image.image()
+  },
+  {
+    timezones: ['VN/VN'],
+    latlng: [10.150798, 105.966704],
+    name: 'Dat',
+    country_code: 'VN',
     capital: 'Harare',
     photo: faker.image.image()
   }

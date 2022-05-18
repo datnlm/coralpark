@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { apiCon } from './api';
 import { CoralType, Phases, PhasesType } from '../@types/user';
 
 export class Coral {

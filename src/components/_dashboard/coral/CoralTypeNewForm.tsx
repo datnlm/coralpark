@@ -70,6 +70,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     parent: Yup.string().required('Parent is required'),
+    class: Yup.string().required('Class is required'),
     // level: Yup.string().required('Level is required'),
     description: Yup.string().required('Description is required')
   });
@@ -101,26 +102,30 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   // call family name theo order id = ?
   useEffect(() => {
     setCurrentFamily([]);
-    manageCoral.getCoralType(currentOrder!.id).then((response) => {
-      if (response.status == 200) {
-        setOptionsFamily(response.data.items);
-      } else {
-        setOptionsFamily([]);
-      }
-    });
+    if (currentOrder!.id != null) {
+      manageCoral.getCoralType(currentOrder!.id).then((response) => {
+        if (response.status == 200) {
+          setOptionsFamily(response.data.items);
+        } else {
+          setOptionsFamily([]);
+        }
+      });
+    }
   }, [currentOrder]);
 
   // call Genus name theo family id = ?
   useEffect(() => {
     setCurrentGenus([]);
-    manageCoral.getCoralType(currentFamily!.id).then((response) => {
-      if (response.status == 200) {
-        console.log(response.data.items);
-        setOptionsGenus(response.data.items);
-      } else {
-        setOptionsGenus([]);
-      }
-    });
+    if (currentFamily!.id != null) {
+      manageCoral.getCoralType(currentFamily!.id).then((response) => {
+        if (response.status == 200) {
+          console.log(response.data.items);
+          setOptionsGenus(response.data.items);
+        } else {
+          setOptionsGenus([]);
+        }
+      });
+    }
   }, [currentFamily]);
 
   const formik = useFormik({
@@ -131,9 +136,14 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
       parentId: currentType?.parentId || '',
       levelType: currentType?.levelType || CATEGORY_OPTION[0].classify[0],
       description: currentType?.description || '',
-      parents: currentType?.parents || ''
+      parents: currentType?.parents || '',
+      class: currentType?.class || '',
+      order: currentType?.order || '',
+      family: currentType?.family || '',
+      genus: currentType?.genus || '',
+      species: currentType?.species || ''
     },
-    // validationSchema: NewProductSchema,
+    validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         // level 1 - class
@@ -222,7 +232,14 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                       options={optionsClass}
                       getOptionLabel={(option) => (option ? option.name : '')}
                       onChange={(e, value) => (value ? setCurrentClass(value.id) : '')}
-                      renderInput={(params) => <TextField {...params} label="Class" />}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Class"
+                          error={Boolean(touched.class && errors.class)}
+                          helperText={touched.class && errors.class}
+                        />
+                      )}
                     />
                     {Number(currentLevel) > 2 && (
                       <Autocomplete

@@ -168,11 +168,11 @@ export default function EcommerceProductList() {
   const handleDeleteUser = async (areaID: string) => {
     console.log('167 handleDelete');
     try {
-      await manageArea.deleteArea(areaID).then((respone) => {
-        if (respone.status === 200) {
-          dispatch(getAreas());
-        }
-      });
+      // await manageArea.deleteArea(areaID).then((respone) => {
+      //   if (respone.status === 200) {
+      //     dispatch(getAreas());
+      //   }
+      // });
     } catch (error) {
       console.log(error);
     }
