@@ -27,7 +27,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 // utils
-import fakeRequest from '../../../utils/fakeRequest';
+import { OptionStatus, statusOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
@@ -44,17 +44,17 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1)
 }));
 
-type OptionStatus = {
-  id: number;
-  label: string;
-};
+// type OptionStatus = {
+//   id: number;
+//   label: string;
+// };
 
-const status = ['Deleted', 'Available'];
+// const status = ['Deleted', 'Available'];
 
-const statusOptions = status.map((v, index) => ({
-  id: index,
-  label: v
-}));
+// const statusOptions = status.map((v, index) => ({
+//   id: index,
+//   label: v
+// }));
 // ----------------------------------------------------------------------
 
 type DiverNewFormProps = {
@@ -71,7 +71,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
     name: Yup.string().required('Name is required'),
     // username: Yup.string().required('Username is required'),
     phone: Yup.string().required('Phone is required'),
-    email: Yup.string().required('Email is required'),
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     address: Yup.string().required('Address is required')
     // imageUrl: Yup.array().min(1, 'Images is required')
   });
@@ -225,29 +225,6 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                   />
                 </Stack>
                 {isEdit && (
-                  // <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  //   <Autocomplete
-                  //     fullWidth
-                  //     disablePortal
-                  //     clearIcon
-                  //     id="status"
-                  //     {...getFieldProps('status')}
-                  //     options={optionsStatus}
-                  //     getOptionLabel={(option: any) => option}
-                  //     // getOptionLabel={(option: any) => (option ? option.name : '')}
-                  //     onChange={(e, value: any) =>
-                  //       value ? { ...setFieldValue('status', value) } : ''
-                  //     }
-                  //     renderInput={(params) => (
-                  //       <TextField
-                  //         {...params}
-                  //         label="Status"
-                  //         error={Boolean(touched.status && errors.status)}
-                  //         helperText={touched.status && errors.status}
-                  //       />
-                  //     )}
-                  //   />
-                  // </Stack>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <Autocomplete
                       fullWidth

@@ -24,6 +24,7 @@ import {
   TablePagination
 } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
+import { QuillEditor } from 'components/editor';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListGardenTypes, deleteGardenTypes, deleteGardenType } from '../../redux/slices/garden';
@@ -253,7 +254,9 @@ export default function UserList() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left">
-                            <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
+                            {description && (
+                              <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
+                            )}
                           </TableCell>
                           {/* <TableCell align="left">{description}</TableCell> */}
                           {/* <TableCell align="left">

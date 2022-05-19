@@ -28,6 +28,7 @@ import {
 // utils
 import { manageArea } from '_apis_/area';
 import { manageGarden } from '_apis_/garden';
+import { OptionStatus, statusOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
@@ -74,6 +75,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [optionsGardenType, setOptionsGardenType] = useState([]);
+  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const [optionsSite, setOptionsSite] = useState([]);
   const [optionsArea, setOptionsArea] = useState([]);
   const NewGardenSchema = Yup.object().shape({
@@ -106,6 +108,11 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         let flag = false;
+
+        if (isEdit) {
+          values.status = enumStatus!.id;
+        }
+
         !isEdit
           ? await manageGarden.createGarden(values).then((response) => {
               if (response.status == 200) {
@@ -159,6 +166,10 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   //   const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
   //   setFieldValue('images', filteredItems);
   // };
+  useEffect(() => {
+    setEnumStatus(statusOptions.find((e) => e.id == currentGarden?.status) || null);
+  }, [currentGarden]);
+
   useEffect(() => {
     manageGarden.getListGardenType().then((response) => {
       if (response.status == 200) {
@@ -307,12 +318,24 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     )}
                   />
                   {isEdit && (
-                    <TextField
+                    <Autocomplete
                       fullWidth
-                      label="Status"
-                      {...getFieldProps('status')}
-                      error={Boolean(touched.status && errors.status)}
-                      helperText={touched.status && errors.status}
+                      disablePortal
+                      clearIcon
+                      id="status"
+                      value={enumStatus}
+                      options={statusOptions}
+                      getOptionLabel={(option: OptionStatus) => option.label}
+                      // getOptionLabel={(option: any) => (option ? option.name : '')}
+                      onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Status"
+                          error={Boolean(touched.status && errors.status)}
+                          helperText={touched.status && errors.status}
+                        />
+                      )}
                     />
                   )}
                 </Stack>

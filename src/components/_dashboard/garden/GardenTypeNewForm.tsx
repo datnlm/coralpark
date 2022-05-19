@@ -56,7 +56,6 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
 
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
     imageUrl: Yup.array().min(1, 'Images is required')
   });
 
