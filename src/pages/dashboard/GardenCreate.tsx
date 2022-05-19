@@ -54,9 +54,9 @@ export default function GardenCreate() {
             address: response.data.address,
             acreage: response.data.acreage,
             quantityOfCells: response.data.quantityOfCells,
-            areaID: response.data.areaId,
-            gardenTypeId: response.data.gardenTypeId,
-            siteId: response.data.siteId,
+            areaID: response.data.area,
+            gardenTypeId: response.data.gardenType,
+            siteId: response.data.site,
             status: response.data.status
           };
           setcurrentGarden(data);

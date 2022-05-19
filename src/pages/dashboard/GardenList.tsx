@@ -53,7 +53,6 @@ const TABLE_HEAD = [
   { id: 'company', label: 'Address', alignRight: false },
   { id: 'role', label: 'Acreage', alignRight: false },
   { id: 'isVerified', label: 'Quantity of cells', alignRight: false },
-  { id: 'statusss', label: 'Type', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -261,7 +260,6 @@ export default function UserList() {
                           <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{acreage}</TableCell>
                           <TableCell align="left">{quantityOfCells}</TableCell>
-                          <TableCell align="left">{gardenTypeId}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}

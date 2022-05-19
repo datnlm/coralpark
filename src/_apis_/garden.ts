@@ -27,9 +27,9 @@ export class GardenManager {
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      areaID: garden.areaID.id,
-      gardenTypeId: garden.gardenTypeId.id,
-      siteId: garden.siteId.id,
+      area: garden.areaID,
+      gardenType: garden.gardenTypeId,
+      site: garden.siteId,
       status: 1
     };
     return axios
@@ -48,9 +48,9 @@ export class GardenManager {
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      areaID: garden.areaID.id,
-      gardenTypeId: garden.gardenTypeId.id,
-      siteId: garden.siteId.id,
+      area: garden.areaID,
+      gardenType: garden.gardenTypeId,
+      site: garden.siteId,
       status: garden.status
     };
     return axios
@@ -71,7 +71,7 @@ export class GardenManager {
   // get garden owners
   getListSites = () => {
     return axios
-      .get('/api/v1/admin/site')
+      .get('/api/v1/admin/sites')
       .then((res) => res)
       .catch((err) => err);
   };
@@ -79,7 +79,7 @@ export class GardenManager {
   // get site by id
   getSiteByID = (siteId: string) => {
     return axios
-      .get(`/api/v1/admin/site/${siteId}`)
+      .get(`/api/v1/admin/sites/${siteId}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -87,7 +87,7 @@ export class GardenManager {
   // create site
   createSite = (site: any) => {
     return axios
-      .post('/api/v1/admin/site', site, {
+      .post('/api/v1/admin/sites', site, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -99,7 +99,7 @@ export class GardenManager {
   // update garden owner
   updateSite = (site: any) => {
     return axios
-      .put('/api/v1/admin/site', site, {
+      .put('/api/v1/admin/sites', site, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -111,7 +111,7 @@ export class GardenManager {
   // delete garden owner
   deleteSite = (siteId: string) => {
     return axios
-      .delete(`/api/v1/admin/site/${siteId}`)
+      .delete(`/api/v1/admin/sites/${siteId}`)
       .then((res) => res)
       .catch((err) => err);
   };

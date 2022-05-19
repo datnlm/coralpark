@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { manageDiver } from '_apis_/diver';
 // material
@@ -44,8 +44,17 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1)
 }));
 
-const optionsStatus = ['1', '0'];
+type OptionStatus = {
+  id: number;
+  label: string;
+};
 
+const status = ['Deleted', 'Available'];
+
+const statusOptions = status.map((v, index) => ({
+  id: index,
+  label: v
+}));
 // ----------------------------------------------------------------------
 
 type DiverNewFormProps = {
@@ -57,16 +66,19 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
-  const [responseStatus, setResponseStatus] = useState();
+  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     // username: Yup.string().required('Username is required'),
     phone: Yup.string().required('Phone is required'),
     email: Yup.string().required('Email is required'),
-    address: Yup.string().required('Address is required'),
-    status: Yup.string().required('Status is required')
+    address: Yup.string().required('Address is required')
     // imageUrl: Yup.array().min(1, 'Images is required')
   });
+
+  useEffect(() => {
+    setEnumStatus(statusOptions.find((e) => e.id == currentDiver?.status) || null);
+  }, [currentDiver]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -79,15 +91,16 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
       address: currentDiver?.address || '',
       imageUrl: currentDiver?.imageUrl || null,
       password: currentDiver?.password || '',
-      status: currentDiver?.status || ''
+      status: currentDiver?.status || 1
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+      let flag = false;
       try {
-        let flag = false;
         const bodyFormData = new FormData();
         if (isEdit) {
           bodyFormData.append('id', values.id);
+          values.status = enumStatus!.id;
         }
         bodyFormData.append('Name', values.name);
         bodyFormData.append('Phone', values.phone);
@@ -96,20 +109,13 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
         bodyFormData.append('Status', values.status);
         bodyFormData.append('imageFile', imageFILE);
 
-        // manageGarden.getListGardenType().then((response) => {
-        //   if (response.status == 200) {
-        //     setOptionsGardenType(response.data.items);
-        //   } else {
-        //     setOptionsGardenType([]);
-        //   }
-        // });
         !isEdit
-          ? manageDiver.createDiver(bodyFormData).then((response) => {
+          ? await manageDiver.createDiver(bodyFormData).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : manageDiver.updateDiver(bodyFormData).then((response) => {
+          : await manageDiver.updateDiver(bodyFormData).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
@@ -219,19 +225,40 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                   />
                 </Stack>
                 {isEdit && (
+                  // <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  //   <Autocomplete
+                  //     fullWidth
+                  //     disablePortal
+                  //     clearIcon
+                  //     id="status"
+                  //     {...getFieldProps('status')}
+                  //     options={optionsStatus}
+                  //     getOptionLabel={(option: any) => option}
+                  //     // getOptionLabel={(option: any) => (option ? option.name : '')}
+                  //     onChange={(e, value: any) =>
+                  //       value ? { ...setFieldValue('status', value) } : ''
+                  //     }
+                  //     renderInput={(params) => (
+                  //       <TextField
+                  //         {...params}
+                  //         label="Status"
+                  //         error={Boolean(touched.status && errors.status)}
+                  //         helperText={touched.status && errors.status}
+                  //       />
+                  //     )}
+                  //   />
+                  // </Stack>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <Autocomplete
                       fullWidth
                       disablePortal
                       clearIcon
                       id="status"
-                      {...getFieldProps('status')}
-                      options={optionsStatus}
-                      getOptionLabel={(option: any) => option}
+                      value={enumStatus}
+                      options={statusOptions}
+                      getOptionLabel={(option: OptionStatus) => option.label}
                       // getOptionLabel={(option: any) => (option ? option.name : '')}
-                      onChange={(e, value: any) =>
-                        value ? { ...setFieldValue('status', value) } : ''
-                      }
+                      onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
                       renderInput={(params) => (
                         <TextField
                           {...params}

@@ -10,31 +10,31 @@ const ICON_SIZE = {
   height: '100%'
 };
 
-const PRODUCTS = [...Array(10)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    name: `Product Phasellus volutpat metus eget egestas ${setIndex}`,
-    image: `/static/mock-images/feeds/feed_${setIndex}.jpg`,
-    path: '#'
-  };
-});
+// const PRODUCTS = [...Array(10)].map((_, index) => {
+//   const setIndex = index + 1;
+//   return {
+//     name: `Product Phasellus volutpat metus eget egestas ${setIndex}`,
+//     image: `/static/mock-images/feeds/feed_${setIndex}.jpg`,
+//     path: '#'
+//   };
+// });
 
-const TAGS = [
-  { name: 'Paper Cup', path: '#' },
-  { name: 'Lotion Pump', path: '#' },
-  { name: 'Brush Cutter', path: '#' },
-  { name: 'Display Rack', path: '#' },
-  { name: 'Glass Bottle', path: '#' }
-];
+// const TAGS = [
+//   { name: 'Paper Cup', path: '#' },
+//   { name: 'Lotion Pump', path: '#' },
+//   { name: 'Brush Cutter', path: '#' },
+//   { name: 'Display Rack', path: '#' },
+//   { name: 'Glass Bottle', path: '#' }
+// ];
 
 const menuConfig: MegaMenuItemProps[] = [
   {
-    title: 'Parent 1',
+    title: 'Configuration',
     path: '#',
     icon: <Icon icon={fileFill} {...ICON_SIZE} />,
-    more: { title: 'More Categories', path: '#' },
-    products: PRODUCTS,
-    tags: TAGS,
+    // more: { title: 'More Categories', path: '#' },
+    // products: PRODUCTS,
+    // tags: TAGS,
     children: [
       {
         subheader: 'Agriculture Machinery',
@@ -94,81 +94,82 @@ const menuConfig: MegaMenuItemProps[] = [
         ]
       }
     ]
-  },
-  {
-    title: 'Parent 2',
-    path: '#',
-    icon: <Icon icon={fileFill} {...ICON_SIZE} />,
-    more: { title: 'More Categories', path: '#' },
-    products: PRODUCTS,
-    tags: TAGS,
-    children: [
-      {
-        subheader: 'Cellphone & Accessories',
-        items: [
-          { title: 'Mobile Phone Charger', path: '#' },
-          { title: 'Power Bank', path: '#' },
-          { title: 'Mobile Phone LCD', path: '#' },
-          { title: 'Bluetooth Headset', path: '#' },
-          { title: 'Mobile Phone', path: '#' }
-        ]
-      },
-      {
-        subheader: 'Audio & Video',
-        items: [
-          { title: 'Display & Accessories', path: '#' },
-          { title: 'Audio & Sets', path: '#' },
-          { title: 'Professional Audio', path: '#' },
-          { title: 'LCD Display', path: '#' },
-          { title: 'LCD Module', path: '#' },
-          { title: 'Video', path: '#' },
-          { title: 'TV & Parts', path: '#' },
-          { title: 'Amplifier', path: '#' },
-          { title: 'Portable Audio Appliance', path: '#' },
-          { title: 'Home Theatre System', path: '#' },
-          { title: 'HDMI Cable', path: '#' },
-          { title: 'Radio', path: '#' }
-        ]
-      },
-      {
-        subheader: 'Household Appliances',
-        items: [
-          { title: 'Air Conditioner, Purifier & Humidifier', path: '#' },
-          { title: 'Refrigerator, Freezer & Parts', path: '#' },
-          { title: 'Water Heater & Components', path: '#' },
-          { title: 'Electrical Fan & Exhaust Fan', path: '#' },
-          { title: 'Household Water Treatment Equipment', path: '#' },
-          { title: 'Solar Water Heater', path: '#' },
-          { title: 'Photographic Apparatus', path: '#' },
-          { title: 'Gas Burner & Gas Stove', path: '#' },
-          { title: 'Entertainment Electronics', path: '#' },
-          { title: 'Electrical Kettle', path: '#' },
-          { title: 'Food Blender', path: '#' },
-          { title: 'Dehumidifier', path: '#' }
-        ]
-      },
-      {
-        subheader: 'Digital Devices',
-        items: [
-          { title: 'Battery & Charger', path: '#' },
-          { title: 'Wearable Devices', path: '#' },
-          { title: 'Digital Photo Frame', path: '#' },
-          { title: 'Digital Camera', path: '#' },
-          { title: 'Smart Glasses', path: '#' }
-        ]
-      }
-    ]
-  },
-  {
-    title: 'Parent 3',
-    path: '#',
-    icon: <Icon icon={fileFill} {...ICON_SIZE} />
-  },
-  {
-    title: 'Parent 4',
-    path: '#',
-    icon: <Icon icon={fileFill} {...ICON_SIZE} />
   }
+  // },
+  // {
+  //   title: 'Parent 2',
+  //   path: '#',
+  //   icon: <Icon icon={fileFill} {...ICON_SIZE} />,
+  //   more: { title: 'More Categories', path: '#' },
+  //   products: PRODUCTS,
+  //   tags: TAGS,
+  //   children: [
+  //     {
+  //       subheader: 'Cellphone & Accessories',
+  //       items: [
+  //         { title: 'Mobile Phone Charger', path: '#' },
+  //         { title: 'Power Bank', path: '#' },
+  //         { title: 'Mobile Phone LCD', path: '#' },
+  //         { title: 'Bluetooth Headset', path: '#' },
+  //         { title: 'Mobile Phone', path: '#' }
+  //       ]
+  //     },
+  //     {
+  //       subheader: 'Audio & Video',
+  //       items: [
+  //         { title: 'Display & Accessories', path: '#' },
+  //         { title: 'Audio & Sets', path: '#' },
+  //         { title: 'Professional Audio', path: '#' },
+  //         { title: 'LCD Display', path: '#' },
+  //         { title: 'LCD Module', path: '#' },
+  //         { title: 'Video', path: '#' },
+  //         { title: 'TV & Parts', path: '#' },
+  //         { title: 'Amplifier', path: '#' },
+  //         { title: 'Portable Audio Appliance', path: '#' },
+  //         { title: 'Home Theatre System', path: '#' },
+  //         { title: 'HDMI Cable', path: '#' },
+  //         { title: 'Radio', path: '#' }
+  //       ]
+  //     },
+  //     {
+  //       subheader: 'Household Appliances',
+  //       items: [
+  //         { title: 'Air Conditioner, Purifier & Humidifier', path: '#' },
+  //         { title: 'Refrigerator, Freezer & Parts', path: '#' },
+  //         { title: 'Water Heater & Components', path: '#' },
+  //         { title: 'Electrical Fan & Exhaust Fan', path: '#' },
+  //         { title: 'Household Water Treatment Equipment', path: '#' },
+  //         { title: 'Solar Water Heater', path: '#' },
+  //         { title: 'Photographic Apparatus', path: '#' },
+  //         { title: 'Gas Burner & Gas Stove', path: '#' },
+  //         { title: 'Entertainment Electronics', path: '#' },
+  //         { title: 'Electrical Kettle', path: '#' },
+  //         { title: 'Food Blender', path: '#' },
+  //         { title: 'Dehumidifier', path: '#' }
+  //       ]
+  //     },
+  //     {
+  //       subheader: 'Digital Devices',
+  //       items: [
+  //         { title: 'Battery & Charger', path: '#' },
+  //         { title: 'Wearable Devices', path: '#' },
+  //         { title: 'Digital Photo Frame', path: '#' },
+  //         { title: 'Digital Camera', path: '#' },
+  //         { title: 'Smart Glasses', path: '#' }
+  //       ]
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: 'Parent 3',
+  //   path: '#',
+  //   icon: <Icon icon={fileFill} {...ICON_SIZE} />
+  // },
+  // {
+  //   title: 'Parent 4',
+  //   path: '#',
+  //   icon: <Icon icon={fileFill} {...ICON_SIZE} />
+  // }
 ];
 
 export default menuConfig;

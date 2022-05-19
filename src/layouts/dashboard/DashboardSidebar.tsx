@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Icon } from '@iconify/react';
+import listFill from '@iconify/icons-eva/list-fill';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import {
@@ -10,8 +12,15 @@ import {
   Drawer,
   Tooltip,
   Typography,
-  CardActionArea
+  CardActionArea,
+  Card,
+  Paper,
+  Container,
+  AppBar
 } from '@material-ui/core';
+
+import MegaMenuDesktopVertical from 'components/mega-menu/MegaMenuDesktopVertical';
+import MenuConfig from 'components/mega-menu/MenuConfig';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
@@ -176,7 +185,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       </Stack>
 
       <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
-
       <Box sx={{ flexGrow: 1 }} />
 
       {/* {!isCollapse && (
