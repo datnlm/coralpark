@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { filter } from 'lodash';
+import { filter, orderBy } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
@@ -28,11 +28,7 @@ import ArrowForwardIosSharpIcon from '@material-ui/icons/ArrowForwardIosSharp';
 import MuiAccordion, { AccordionProps } from '@material-ui/core/Accordion';
 import MuiAccordionSummary, { AccordionSummaryProps } from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import TreeView from '@material-ui/lab/TreeView';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TreeItem from '@material-ui/lab/TreeItem';
-
+import CoralTypeSort from 'components/_dashboard/coral/CoralTypeSort';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import {
@@ -55,10 +51,10 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  CoralListHead,
-  CoralListToolbar,
-  CoralMoreMenu
-} from '../../components/_dashboard/coral/list';
+  CoralTypeListHead,
+  CoralTypeListToolbar,
+  CoralTypeMoreMenu
+} from '../../components/_dashboard/coral/list_type';
 
 // ----------------------------------------------------------------------
 
@@ -68,7 +64,54 @@ const TABLE_HEAD = [
   { id: '' }
 ];
 
+const SORT_OPTIONS = [
+  { value: '1', label: 'Class' },
+  { value: '2', label: 'Order' },
+  { value: '3', label: 'Family' },
+  { value: '4', label: 'Genus' },
+  { value: '5', label: 'Species' }
+];
+
 // ----------------------------------------------------------------------
+
+// const applySort = (coralType: CoralType[], sortBy: string) => {
+
+// console.log(sortBy);
+// if (sortBy == '1') {
+//   return orderBy(coralType, ['createdAt'], ['desc']);
+// }
+// if (sortBy == '2') {
+//   return orderBy(coralType, ['createdAt'], ['asc']);
+// }
+// if (sortBy == '3') {
+//   return orderBy(coralType, ['view'], ['desc']);
+// }
+// return coralType;
+// };
+// function applySort(array: CoralType[], comparator: (a: any, b: any) => number, query: string) {
+//   const stabilizedThis = array.map((el, index) => [el, index] as const);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   if (query) {
+//     return filter(array, (_coral) => _coral.levelType.indexOf(query) !== -1);
+//   }
+//   return stabilizedThis.map((el) => el[0]);
+// }
+function applySort(array: CoralType[], comparator: (a: any, b: any) => number, query: string) {
+  const stabilizedThis = array.map((el, index) => [el, index] as const);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(array, (_coral) => _coral.levelType == query);
+  }
+  return stabilizedThis.map((el) => el[0]);
+}
 
 type Anonymous = Record<string | number, string>;
 
@@ -88,22 +131,22 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(
-  array: CoralType[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
-  const stabilizedThis = array.map((el, index) => [el, index] as const);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
+// function applySortFilter(
+//   array: CoralType[],
+//   comparator: (a: any, b: any) => number,
+//   query: string
+// ) {
+//   const stabilizedThis = array.map((el, index) => [el, index] as const);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   if (query) {
+//     return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+//   }
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
 function applySortFilterCoral(
   array: CoralType[],
@@ -122,42 +165,10 @@ function applySortFilterCoral(
   return stabilizedThis.map((el) => el[0]);
 }
 
-const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  '&:not(:last-child)': {
-    borderBottom: 0
-  },
-  '&:before': {
-    display: 'none'
-  }
-}));
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, .05)' : 'rgba(0, 0, 0, .03)',
-  flexDirection: 'row-reverse',
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)'
-  },
-  '& .MuiAccordionSummary-content': {
-    marginLeft: theme.spacing(1)
-  }
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: '1px solid rgba(0, 0, 0, .125)'
-}));
-
 export default function UserList() {
   const { themeStretch } = useSettings();
+  // 1 - class
+  const [filters, setFilters] = useState('1');
   const theme = useTheme();
   const dispatch = useDispatch();
   const coralTypeList = useSelector((state: RootState) => state.user.coralListType);
@@ -172,6 +183,12 @@ export default function UserList() {
   useEffect(() => {
     dispatch(getListCoralType());
   }, [dispatch]);
+
+  const handleChangeSort = (value?: string) => {
+    if (value) {
+      setFilters(value);
+    }
+  };
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -237,14 +254,15 @@ export default function UserList() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - coralTypeList.length) : 0;
 
-  const filteredUsers = applySortFilter(coralTypeList, getComparator(order, orderBy), filterName);
-  const filteredCorals = applySortFilterCoral(
+  // const filteredUsers = applySortFilter(coralTypeList, getComparator(order, orderBy), filterName);
+  const filteredCoralsType = applySortFilterCoral(
     coralTypeList,
     getComparator(order, orderBy),
     filterName
   );
+  const sortCoralsType = applySort(coralTypeList, getComparator(order, orderBy), filters);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isCoralTypeNotFound = filteredCoralsType.length === 0;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -277,15 +295,19 @@ export default function UserList() {
           }
         />
         <Card>
-          <CoralListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+          <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
+            {/* <CoralTypeListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            /> */}
+            <CoralTypeSort query={filters} options={SORT_OPTIONS} onSort={handleChangeSort} />
+          </Stack>
+
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <CoralListHead
+                <CoralTypeListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -295,7 +317,7 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredCorals
+                  {sortCoralsType
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const { id, name, parentId, levelType, parents, description } = row;
@@ -321,7 +343,7 @@ export default function UserList() {
                           </TableCell>
                           <TableCell align="left">{levelType}</TableCell>
                           <TableCell align="right">
-                            <CoralMoreMenu
+                            <CoralTypeMoreMenu
                               onDelete={() => handleDeleteUser(id)}
                               coralID={id.toString()}
                             />
@@ -335,6 +357,15 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
+                {isCoralTypeNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>

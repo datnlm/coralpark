@@ -129,6 +129,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
       .then(async (res: any) => {
         localStorage.setItem('accessToken', res.data.token);
         setSession(res.data.token);
+        // set bearer token
+        axios.defaults.headers.common = {
+          Authorization: `Bearer ${res.data.token}`
+        };
         const response = await axios.get('/api/v1/account-info', {
           params: { token: res.data.token }
         });

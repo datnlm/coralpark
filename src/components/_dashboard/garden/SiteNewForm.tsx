@@ -73,7 +73,7 @@ const MapWrapperStyle = styled('div')(({ theme }) => ({
 //   satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v11'
 // };
 
-const optionsStatus = ['1', '0'];
+const optionsStatus = [0, 1];
 
 // ----------------------------------------------------------------------
 
@@ -333,29 +333,31 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                     helperText={touched.latitude && errors.latitude}
                   />
                 </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <Autocomplete
-                    fullWidth
-                    disablePortal
-                    clearIcon
-                    id="status"
-                    {...getFieldProps('status')}
-                    options={optionsStatus}
-                    getOptionLabel={(option: any) => option}
-                    // getOptionLabel={(option: any) => (option ? option.name : '')}
-                    onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('status', value) } : ''
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Status"
-                        error={Boolean(touched.status && errors.status)}
-                        helperText={touched.status && errors.status}
-                      />
-                    )}
-                  />
-                </Stack>
+                {isEdit && (
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      clearIcon
+                      id="status"
+                      {...getFieldProps('status')}
+                      options={optionsStatus}
+                      getOptionLabel={(option: any) => option}
+                      // getOptionLabel={(option: any) => (option ? option.name : '')}
+                      onChange={(e, value: any) =>
+                        value ? { ...setFieldValue('status', value) } : ''
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Status"
+                          error={Boolean(touched.status && errors.status)}
+                          helperText={touched.status && errors.status}
+                        />
+                      )}
+                    />
+                  </Stack>
+                )}
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? 'Create Site' : 'Save Changes'}
