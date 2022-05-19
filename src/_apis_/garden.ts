@@ -27,9 +27,9 @@ export class GardenManager {
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      area: garden.areaID,
-      gardenType: garden.gardenTypeId,
-      site: garden.siteId,
+      area: { id: garden.areaID.id },
+      gardenType: { id: garden.gardenTypeId.id },
+      site: { id: garden.siteId.id },
       status: 1
     };
     return axios
@@ -48,9 +48,9 @@ export class GardenManager {
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      area: garden.areaID,
-      gardenType: garden.gardenTypeId,
-      site: garden.siteId,
+      area: { id: garden.areaID.id },
+      gardenType: { id: garden.gardenTypeId.id },
+      site: { id: garden.siteId.id },
       status: garden.status
     };
     return axios

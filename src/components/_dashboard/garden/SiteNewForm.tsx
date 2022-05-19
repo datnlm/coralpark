@@ -28,6 +28,7 @@ import {
   CardContent
 } from '@material-ui/core';
 // utils
+import { OptionStatus, statusOptions } from 'utils/constants';
 import { manageGarden } from '_apis_/garden';
 import mapboxgl from 'mapbox-gl';
 import './Map.css';
@@ -88,6 +89,7 @@ mapboxgl.accessToken =
 export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const [imageFILE, setImageFILE] = useState('');
   const mapContainerRef = useRef(null);
   const [lng, setLng] = useState(111.202);
@@ -125,6 +127,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
         const bodyFormData = new FormData();
         if (isEdit) {
           bodyFormData.append('id', values.id);
+          values.status = enumStatus!.id;
         }
         bodyFormData.append('Name', values.name);
         bodyFormData.append('Phone', values.phone);
@@ -180,6 +183,10 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     },
     [setFieldValue]
   );
+
+  useEffect(() => {
+    setEnumStatus(statusOptions.find((e) => e.id == currentSite?.status) || null);
+  }, [currentSite]);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -340,13 +347,11 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                       disablePortal
                       clearIcon
                       id="status"
-                      {...getFieldProps('status')}
-                      options={optionsStatus}
-                      getOptionLabel={(option: any) => option}
+                      value={enumStatus}
+                      options={statusOptions}
+                      getOptionLabel={(option: OptionStatus) => option.label}
                       // getOptionLabel={(option: any) => (option ? option.name : '')}
-                      onChange={(e, value: any) =>
-                        value ? { ...setFieldValue('status', value) } : ''
-                      }
+                      onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
                       renderInput={(params) => (
                         <TextField
                           {...params}
