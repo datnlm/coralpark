@@ -34,8 +34,8 @@ export default function GardenCreate() {
     latitude: '',
     longitude: '',
     address: '',
-    acreage: '',
-    quantityOfCells: '',
+    acreage: 0,
+    quantityOfCells: 0,
     areaID: '',
     gardenTypeId: '',
     siteId: '',
@@ -66,7 +66,7 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Garden: Garden a new list">
+    <Page title={!isEdit ? 'Garden: Create a new garden' : 'Garden: Edit garden'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new garden' : 'Edit garden'}

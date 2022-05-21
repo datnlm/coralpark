@@ -181,10 +181,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
         method: 'jwt',
         user: {
           id: state?.user?.sub,
-          photoURL:
-            state?.user?.imageUrl == null
-              ? 'https://i.pinimg.com/originals/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg'
-              : state?.user?.imageUrl,
+          // photoURL:
+          //   state?.user?.imageUrl == null
+          //     ? 'https://i.pinimg.com/originals/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg'
+          //     : state?.user?.imageUrl,
+          photoURL: state?.user?.imageUrl,
           email: state?.user?.email,
           username: state?.user?.username,
           displayName: state?.user?.name,

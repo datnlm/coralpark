@@ -39,7 +39,8 @@ export default function GardenCreate() {
     webUrl: '',
     latitude: '',
     longitude: '',
-    status: ''
+    status: '',
+    listGarden: ''
   });
 
   useEffect(() => {
@@ -57,7 +58,8 @@ export default function GardenCreate() {
             webUrl: response.data.webUrl,
             latitude: response.data.latitude,
             longitude: response.data.longitude,
-            status: response.data.status
+            status: response.data.status,
+            listGarden: response.data.listGarden
           };
           setCurrentSite(data);
         }
@@ -66,13 +68,13 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Site: Site a new list">
+    <Page title={!isEdit ? 'Site: Create a new site' : 'Site: Edit site'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new site' : 'Edit site'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Site', href: PATH_DASHBOARD.garden.root },
+            { name: 'Site', href: PATH_DASHBOARD.site.root },
             { name: !isEdit ? 'New site' : name }
           ]}
         />

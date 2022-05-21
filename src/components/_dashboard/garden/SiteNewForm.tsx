@@ -43,18 +43,7 @@ import { Site } from '../../../@types/garden';
 import { UploadAvatar } from '../../upload';
 import { fData } from '../../../utils/formatNumber';
 // ----------------------------------------------------------------------
-// const baseSettings = {
-//   mapboxApiAccessToken:
-//     'pk.eyJ1IjoiZGF0bmxtIiwiYSI6ImNsM2E3amtyaDAydzUzZHAxMTFtaWx4ZHcifQ.eLx8xZ0KfftAAekyFCVJEQ',
-//   width: '100%',
-//   height: '100%',
-//   minZoom: 1
-// };
-// const LabelStyle = styled(Typography)(({ theme }) => ({
-//   ...theme.typography.subtitle2,
-//   color: theme.palette.text.secondary,
-//   marginBottom: theme.spacing(1)
-// }));
+
 const MapWrapperStyle = styled('div')(({ theme }) => ({
   zIndex: 0,
   height: 560,
@@ -74,8 +63,6 @@ const MapWrapperStyle = styled('div')(({ theme }) => ({
 //   satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v11'
 // };
 
-const optionsStatus = [0, 1];
-
 // ----------------------------------------------------------------------
 
 type SiteNewFormProps = {
@@ -89,6 +76,7 @@ mapboxgl.accessToken =
 export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [gardenList, setGardenList] = useState([]);
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const [imageFILE, setImageFILE] = useState('');
   const mapContainerRef = useRef(null);
@@ -118,7 +106,8 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
       webUrl: currentSite?.webUrl || '',
       latitude: currentSite?.latitude || '',
       longitude: currentSite?.longitude || '',
-      status: currentSite?.status || ''
+      status: currentSite?.status || '',
+      listGarden: currentSite?.listGarden || ''
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -156,7 +145,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
           enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
             variant: 'success'
           });
-          navigate(PATH_DASHBOARD.garden.sitesList);
+          navigate(PATH_DASHBOARD.site.list);
         } else {
           enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
         }
@@ -186,6 +175,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
 
   useEffect(() => {
     setEnumStatus(statusOptions.find((e) => e.id == currentSite?.status) || null);
+    setGardenList(currentSite?.listGarden);
   }, [currentSite]);
 
   useEffect(() => {
@@ -306,17 +296,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                   <Card sx={{ mb: 3 }}>
                     <CardContent>
                       <MapWrapperStyle>
-                        {/* <MapMarkersPopups
-                          {...baseSettings}
-                          data={countries}
-                          mapStyle={THEMES.streets}
-                        /> */}
                         <div>
-                          {/* <div className="sidebarStyle">
-                            <div>
-                              Longitude: {lng} | Latitude: {lat} | Zoom: {zoomMap}
-                            </div>
-                          </div> */}
                           <div className="map-container" ref={mapContainerRef} />
                         </div>
                       </MapWrapperStyle>
@@ -344,13 +324,25 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <Autocomplete
                       fullWidth
+                      multiple
+                      id="tags-readOnly"
+                      value={gardenList}
+                      options={gardenList}
+                      getOptionLabel={(option: any) => (option ? option.name : '')}
+                      defaultValue={gardenList}
+                      limitTags={2}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Garden List" placeholder="Garden List" />
+                      )}
+                    />
+                    <Autocomplete
+                      fullWidth
                       disablePortal
                       clearIcon
                       id="status"
                       value={enumStatus}
                       options={statusOptions}
                       getOptionLabel={(option: OptionStatus) => option.label}
-                      // getOptionLabel={(option: any) => (option ? option.name : '')}
                       onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
                       renderInput={(params) => (
                         <TextField

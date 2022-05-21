@@ -53,13 +53,13 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Garden: Garden a new list">
+    <Page title={!isEdit ? 'Garden: Create a new garden type' : 'Garden: Edit garden type'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new garden type' : 'Edit garden type'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden type', href: PATH_DASHBOARD.garden.root },
+            { name: 'Garden type', href: PATH_DASHBOARD.garden.typesList },
             { name: !isEdit ? 'New type garden' : name }
           ]}
         />

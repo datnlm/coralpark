@@ -280,7 +280,7 @@ export default function UserList() {
           heading="Coral Type list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral Type', href: PATH_DASHBOARD.coral.root },
+            { name: 'Coral Type', href: PATH_DASHBOARD.coral.listType },
             { name: 'List' }
           ]}
           action={

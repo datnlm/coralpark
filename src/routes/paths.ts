@@ -90,17 +90,20 @@ export const PATH_DASHBOARD = {
     postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
     newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
   },
+  site: {
+    root: path(ROOTS_DASHBOARD, '/site'),
+    list: path(ROOTS_DASHBOARD, '/site/list'),
+    newSite: path(ROOTS_DASHBOARD, '/site/new'),
+    editByIdSite: path(ROOTS_DASHBOARD, '/site/:name/edit')
+  },
   garden: {
     root: path(ROOTS_DASHBOARD, '/garden'),
     list: path(ROOTS_DASHBOARD, '/garden/list'),
-    sitesList: path(ROOTS_DASHBOARD, '/garden/sites'),
     typesList: path(ROOTS_DASHBOARD, '/garden/types'),
     newGarden: path(ROOTS_DASHBOARD, '/garden/new'),
-    newSite: path(ROOTS_DASHBOARD, '/garden/site-new'),
     newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
     editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
-    editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit'),
-    editByIdGardenOwner: path(ROOTS_DASHBOARD, '/garden/owner/:name/edit')
+    editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
   },
   diver: {
     root: path(ROOTS_DASHBOARD, '/diver'),

@@ -6,20 +6,43 @@ import { Link as RouterLink } from 'react-router-dom';
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
-import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@material-ui/core';
+import {
+  Menu,
+  MenuItem,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText
+} from '@material-ui/core';
+import AlertDialog from 'pages/components-overview/material-ui/dialog/AlertDialog';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
-type GardenMoreMenuProps = {
+type SiteMoreMenuProps = {
   onDelete: VoidFunction;
   userName: string;
 };
 
-export default function GardenMoreMenu({ onDelete, userName }: GardenMoreMenuProps) {
+export default function SiteMoreMenu({ onDelete, userName }: SiteMoreMenuProps) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -37,16 +60,39 @@ export default function GardenMoreMenu({ onDelete, userName }: GardenMoreMenuPro
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={onDelete} sx={{ color: 'text.secondary' }}>
+        <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Icon icon={trash2Outline} width={24} height={24} />
           </ListItemIcon>
           <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
+        <div>
+          <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
+            <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+              Confirm delete
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>Are you sure to delete this?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                onClick={(event) => {
+                  onDelete();
+                  handleClose();
+                }}
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.garden.root}/owners/${paramCase(userName)}/edit`}
+          to={`${PATH_DASHBOARD.site.root}/${paramCase(userName)}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

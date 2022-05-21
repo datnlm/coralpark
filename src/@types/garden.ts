@@ -9,8 +9,8 @@ export type Garden = {
   latitude: string
   longitude: string,
   address: string;
-  acreage: string;
-  quantityOfCells: string;
+  acreage: number;
+  quantityOfCells: number;
   areaID: any;
   gardenTypeId: any;
   siteId: any;
@@ -33,4 +33,5 @@ export type Site = {
   latitude: string;
   longitude: string;
   status: any;
+  listGarden: any;
 };

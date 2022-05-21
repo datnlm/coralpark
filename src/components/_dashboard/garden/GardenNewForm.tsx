@@ -83,10 +83,13 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     latitude: Yup.string().required('Latitude is required'),
     longitude: Yup.string().required('Longitude is required'),
     address: Yup.string().required('Address is required'),
-    acreage: Yup.string().required('Acreage is required'),
-    quantityOfCells: Yup.string().required('Quantity of Cells is required'),
+    acreage: Yup.number().min(1, 'Acreage must be greater than 0').required('Acreage is required'),
+    quantityOfCells: Yup.number()
+      .min(1, 'Quantity of Cells  must be greater than 0')
+      .required('Quantity of Cells is required'),
     areaID: Yup.object().required('Area is required').nullable(true),
-    gardenTypeId: Yup.object().required('Garden Type is required').nullable(true)
+    gardenTypeId: Yup.object().required('Garden Type is required').nullable(true),
+    siteId: Yup.object().required('Garden Type is required').nullable(true)
   });
 
   const formik = useFormik({
@@ -97,8 +100,8 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       latitude: currentGarden?.latitude || '',
       longitude: currentGarden?.longitude || '',
       address: currentGarden?.address || '',
-      acreage: currentGarden?.acreage || '',
-      quantityOfCells: currentGarden?.quantityOfCells || '',
+      acreage: currentGarden?.acreage || 0,
+      quantityOfCells: currentGarden?.quantityOfCells || 0,
       areaID: currentGarden?.areaID || '',
       gardenTypeId: currentGarden?.gardenTypeId || '',
       siteId: currentGarden?.siteId || '',

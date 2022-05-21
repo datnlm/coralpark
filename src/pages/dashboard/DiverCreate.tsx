@@ -63,7 +63,7 @@ export default function DiverCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Diver: Create a new list">
+    <Page title={!isEdit ? 'Diver: Create a new diver' : 'Diver: Edit diver'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new diver' : 'Edit diver'}

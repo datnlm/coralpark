@@ -29,15 +29,15 @@ export default function PhasesCreate() {
   useEffect(() => {
     dispatch(getUserList());
   }, [dispatch]);
-
+  // chua sua coral phase list
   return (
-    <Page title="Coral: Create a new phases">
+    <Page title={!isEdit ? 'Coral Phase: Create a new phase' : 'Coral Phase: Edit phase'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new phases' : 'Edit phases'}
+          heading={!isEdit ? 'Create a new phase' : 'Edit phases'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Phases', href: PATH_DASHBOARD.user.root },
+            { name: 'Coral Phase', href: PATH_DASHBOARD.coral.list },
             { name: !isEdit ? 'New phases' : name }
           ]}
         />

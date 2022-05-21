@@ -188,13 +188,13 @@ export default function UserList() {
   // }
 
   return (
-    <Page title="Garden Types: List">
+    <Page title="Garden Type: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Garden Types list"
+          heading="Garden Type list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Types', href: PATH_DASHBOARD.garden.root },
+            { name: 'Garden Type', href: PATH_DASHBOARD.garden.typesList },
             { name: 'List' }
           ]}
           action={
@@ -204,7 +204,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.garden.newGardenType}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Garden Types
+              New Garden Type
             </Button>
           }
         />
