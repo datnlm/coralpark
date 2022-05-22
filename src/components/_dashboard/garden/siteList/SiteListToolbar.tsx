@@ -38,17 +38,17 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type GardenListToolbarProps = {
+type SiteListToolbarProps = {
   numSelected: number;
   filterName: string;
   onFilterName: (value: string) => void;
 };
 
-export default function GardenListToolbar({
+export default function SiteListToolbar({
   numSelected,
   filterName,
   onFilterName
-}: GardenListToolbarProps) {
+}: SiteListToolbarProps) {
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
 

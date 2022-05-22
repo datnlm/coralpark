@@ -39,7 +39,7 @@ export default function GardenCreate() {
     areaID: '',
     gardenTypeId: '',
     siteId: '',
-    status: 0
+    status: 1
   });
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Garden: Garden a new list">
+    <Page title={!isEdit ? 'Garden: Create a new garden' : 'Garden: Edit garden'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new garden' : 'Edit garden'}

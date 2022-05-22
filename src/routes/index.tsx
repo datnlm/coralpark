@@ -102,18 +102,10 @@ export default function Router() {
             { path: 'new', element: <CoralCreate /> },
             { path: '/:name/edit', element: <CoralCreate /> },
             { path: 'type', element: <CoralType /> },
+            { path: 'type/:name/edit', element: <CoralType /> },
             { path: 'coral-type-list', element: <CoralTypeList /> }
           ]
         },
-        // {
-        //   path: 'user',
-        //   children: [
-        //     { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
-        //     { path: 'profile', element: <UserProfile /> },
-        //     { path: '/:name/edit', element: <CoralCreate /> },
-        //     { path: 'account', element: <CoralType /> }
-        //   ]
-        // },
         {
           path: 'phases',
           children: [
@@ -152,18 +144,24 @@ export default function Router() {
         { path: 'calendar', element: <Calendar /> },
         { path: 'kanban', element: <Kanban /> },
         {
+          path: 'site',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/site/list" replace /> },
+            { path: 'list', element: <SiteList /> },
+            { path: 'new', element: <SiteCreate /> },
+            { path: '/:name/edit', element: <SiteCreate /> }
+          ]
+        },
+        {
           path: 'garden',
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'sites', element: <SiteList /> },
             { path: 'types', element: <GardenTypesList /> },
             { path: 'new', element: <GardenCreate /> },
-            { path: 'site-new', element: <SiteCreate /> },
             { path: 'site', element: <GardenTypeCreate /> },
             { path: 'type-new', element: <GardenTypeCreate /> },
             { path: 'types/:name/edit', element: <GardenTypeCreate /> },
-            { path: 'owners/:name/edit', element: <SiteCreate /> },
             { path: '/:name/edit', element: <GardenCreate /> }
           ]
         },
@@ -229,18 +227,6 @@ export default function Router() {
             { path: 'coral-type-list', element: <CoralTypeList /> }
           ]
         },
-        // {
-        //   path: 'user',
-        //   children: [
-        //     { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
-        //     { path: 'profile', element: <UserProfile /> },
-        //     // { path: 'cards', element: <UserCards /> },
-        //     { path: 'list', element: <CoralList /> },
-        //     { path: 'new', element: <CoralCreate /> },
-        //     { path: '/:name/edit', element: <CoralCreate /> },
-        //     { path: 'account', element: <CoralType /> }
-        //   ]
-        // },
         {
           path: 'phases',
           children: [
@@ -259,17 +245,23 @@ export default function Router() {
           ]
         },
         {
+          path: 'site',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/site/list" replace /> },
+            { path: 'list', element: <SiteList /> },
+            { path: 'site-new', element: <SiteCreate /> },
+            { path: 'owners/:name/edit', element: <SiteCreate /> }
+          ]
+        },
+        {
           path: 'garden',
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
             { path: 'list', element: <GardenList /> },
-            { path: 'sites', element: <SiteList /> },
             { path: 'types', element: <GardenTypesList /> },
             { path: 'new', element: <GardenCreate /> },
-            { path: 'site-new', element: <SiteCreate /> },
             { path: 'type-new', element: <GardenTypeCreate /> },
             { path: 'types/:name/edit', element: <GardenTypeCreate /> },
-            { path: 'owners/:name/edit', element: <SiteCreate /> },
             { path: '/:name/edit', element: <GardenCreate /> }
           ]
         },
@@ -285,70 +277,6 @@ export default function Router() {
       ]
     },
 
-    // {
-    //   path: '/',
-    //   element: <MainLayout />,
-    //   children: [
-    //     { path: '/', element: <LandingPage /> },
-    //     { path: 'about-us', element: <About /> },
-    //     { path: 'contact-us', element: <Contact /> },
-    //     { path: 'faqs', element: <Faqs /> },
-    //     {
-    //       path: 'components',
-    //       children: [
-    //         { path: '/', element: <ComponentsOverview /> },
-    //         // FOUNDATIONS
-    //         { path: 'color', element: <Color /> },
-    //         { path: 'typography', element: <Typography /> },
-    //         { path: 'shadows', element: <Shadows /> },
-    //         { path: 'grid', element: <Grid /> },
-    //         { path: 'icons', element: <Icons /> },
-    //         // MATERIAL UI
-    //         { path: 'accordion', element: <Accordion /> },
-    //         { path: 'alert', element: <Alert /> },
-    //         { path: 'autocomplete', element: <Autocomplete /> },
-    //         { path: 'avatar', element: <Avatar /> },
-    //         { path: 'badge', element: <Badge /> },
-    //         { path: 'breadcrumbs', element: <Breadcrumb /> },
-    //         { path: 'buttons', element: <Buttons /> },
-    //         { path: 'checkbox', element: <Checkbox /> },
-    //         { path: 'chip', element: <Chip /> },
-    //         { path: 'dialog', element: <Dialog /> },
-    //         { path: 'label', element: <Label /> },
-    //         { path: 'list', element: <List /> },
-    //         { path: 'menu', element: <Menu /> },
-    //         { path: 'pagination', element: <Pagination /> },
-    //         { path: 'pickers', element: <Pickers /> },
-    //         { path: 'popover', element: <Popover /> },
-    //         { path: 'progress', element: <Progress /> },
-    //         { path: 'radio-button', element: <RadioButtons /> },
-    //         { path: 'rating', element: <Rating /> },
-    //         { path: 'slider', element: <Slider /> },
-    //         { path: 'snackbar', element: <Snackbar /> },
-    //         { path: 'stepper', element: <Stepper /> },
-    //         { path: 'switch', element: <Switches /> },
-    //         { path: 'table', element: <Table /> },
-    //         { path: 'tabs', element: <Tabs /> },
-    //         { path: 'textfield', element: <Textfield /> },
-    //         { path: 'timeline', element: <Timeline /> },
-    //         { path: 'tooltip', element: <Tooltip /> },
-    //         { path: 'transfer-list', element: <TransferList /> },
-    //         { path: 'tree-view', element: <TreeView /> },
-    //         { path: 'data-grid', element: <DataGrid /> },
-    //         // EXTRA COMPONENTS
-    //         { path: 'chart', element: <Charts /> },
-    //         { path: 'map', element: <Map /> },
-    //         { path: 'editor', element: <Editor /> },
-    //         { path: 'copy-to-clipboard', element: <CopyToClipboard /> },
-    //         { path: 'upload', element: <Upload /> },
-    //         { path: 'carousel', element: <Carousel /> },
-    //         { path: 'multi-language', element: <MultiLanguage /> },
-    //         { path: 'animate', element: <Animate /> },
-    //         { path: 'mega-menu', element: <MegaMenu /> }
-    //       ]
-    //     }
-    //   ]
-    // },
     { path: '*', element: <Navigate to="/404" replace /> }
   ]);
 }

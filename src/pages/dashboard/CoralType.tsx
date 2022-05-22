@@ -165,13 +165,13 @@ export default function UserCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Coral: Create a new list | Minimal-UI">
+    <Page title={!isEdit ? 'Coral Type: Create a new coral type' : 'Coral Type: Edit coral type'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new coral type' : 'Edit coral type'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Type', href: PATH_DASHBOARD.user.root },
+            { name: 'Coral Type', href: PATH_DASHBOARD.coral.listType },
             { name: !isEdit ? 'New coral type' : name }
           ]}
         />

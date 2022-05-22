@@ -31,6 +31,7 @@ import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
 // utils
 import { manageCoral } from '_apis_/coral';
+import { OptionStatus, coralStatusOptions } from 'utils/constants';
 import { manageArea } from '_apis_/area';
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
@@ -45,35 +46,6 @@ import { UploadMultiFile } from '../../upload';
 import countries from './countries';
 import CoralDetailsCarousel from './CoralDetailsCarousel';
 import CoralDetailsSummary from './CoralDetailsSummary';
-
-const TAGS_OPTION = [
-  'Toy Story 3',
-  'Logan',
-  'Full Metal Jacket',
-  'Dangal',
-  'The Sting',
-  '2001: A Space Odyssey',
-  "Singin' in the Rain",
-  'Toy Story',
-  'Bicycle Thieves',
-  'The Kid',
-  'Inglourious Basterds',
-  'Snatch',
-  '3 Idiots'
-];
-
-const optionsStatus = [
-  { id: 'EX', name: 'Tuyệt chủng' },
-  { id: 'EW', name: 'Tuyệt chủng trong tự nhiên' },
-  { id: 'CR', name: 'Cực kỳ nguy cấp' },
-  { id: 'EN', name: 'Nguy cấp' },
-  { id: 'VU', name: 'Sắp nguy cấp' },
-  { id: 'NT', name: 'Sắp bị đe doạ' },
-  { id: 'CD', name: 'Phụ thuộc bảo tồn' },
-  { id: 'LC', name: 'Ít quan tâm' },
-  { id: 'DD', name: 'Thiếu dữ liệu' },
-  { id: 'NE', name: 'Không được đánh giá' }
-];
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -92,7 +64,7 @@ type UserNewFormProps = {
 export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) {
   const [valueTab, setValueTab] = useState('coral');
   const [optionsGenus, setOptionsGenus] = useState([]);
-  const [currentParent, setCurrentParent] = useState<any>([]);
+  const [enumCoralStatus, setEnumCoralStatus] = useState<OptionStatus | null>(null);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -143,53 +115,54 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
     },
     // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
-      try {
-        let flag = false;
-        if (valueTab === 'coral') {
-          const bodyFormData = new FormData();
-          if (isEdit) {
-            bodyFormData.append('Id', values.id);
-          }
-          bodyFormData.append('Name', values.name);
-          bodyFormData.append('ScientificName', values.scientificName);
-          bodyFormData.append('Longevity', values.longevity);
-          bodyFormData.append('ExhibitSocial', values.exhibitSocial);
-          bodyFormData.append('SexualBehaviors', values.sexualBehaviors);
-          bodyFormData.append('Nutrition', values.nutrition);
-          bodyFormData.append('Colour', values.colour);
-          bodyFormData.append('Description', values.description);
-          bodyFormData.append('CoralTypeId', values.coralTypeId.id);
-          bodyFormData.append('StatusEnum', values.statusEnum.id);
-          values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
+      console.log(enumCoralStatus!.id);
+      // try {
+      //   let flag = false;
+      //   if (valueTab === 'coral') {
+      //     const bodyFormData = new FormData();
+      //     if (isEdit) {
+      //       bodyFormData.append('Id', values.id);
+      //     }
+      //     bodyFormData.append('Name', values.name);
+      //     bodyFormData.append('ScientificName', values.scientificName);
+      //     bodyFormData.append('Longevity', values.longevity);
+      //     bodyFormData.append('ExhibitSocial', values.exhibitSocial);
+      //     bodyFormData.append('SexualBehaviors', values.sexualBehaviors);
+      //     bodyFormData.append('Nutrition', values.nutrition);
+      //     bodyFormData.append('Colour', values.colour);
+      //     bodyFormData.append('Description', values.description);
+      //     bodyFormData.append('CoralTypeId', values.coralTypeId.id);
+      //     bodyFormData.append('StatusEnum', enumCoralStatus!.id);
+      //     values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
 
-          !isEdit
-            ? await manageCoral.createCoral(bodyFormData).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              })
-            : await manageCoral.updateCoral(bodyFormData).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              });
-        } else {
-          await manageCoral.createHabitat(values);
-        }
-        if (flag) {
-          resetForm();
-          setSubmitting(false);
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
-          navigate(PATH_DASHBOARD.coral.list);
-        } else {
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
-        }
-      } catch (error) {
-        console.error(error);
-        setSubmitting(false);
-      }
+      //     !isEdit
+      //       ? await manageCoral.createCoral(bodyFormData).then((response) => {
+      //           if (response.status == 200) {
+      //             flag = true;
+      //           }
+      //         })
+      //       : await manageCoral.updateCoral(bodyFormData).then((response) => {
+      //           if (response.status == 200) {
+      //             flag = true;
+      //           }
+      //         });
+      //   } else {
+      //     await manageCoral.createHabitat(values);
+      //   }
+      //   if (flag) {
+      //     resetForm();
+      //     setSubmitting(false);
+      //     enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+      //       variant: 'success'
+      //     });
+      //     navigate(PATH_DASHBOARD.coral.list);
+      //   } else {
+      //     enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+      //   }
+      // } catch (error) {
+      //   console.error(error);
+      //   setSubmitting(false);
+      // }
     }
   });
 
@@ -320,13 +293,11 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                           fullWidth
                           disablePortal
                           clearIcon
-                          id="Status"
-                          {...getFieldProps('statusEnum')}
-                          options={optionsStatus}
-                          getOptionLabel={(option: any) => (option ? option.name : '')}
-                          onChange={(e, value: any) =>
-                            value ? { ...setFieldValue('statusEnum', value) } : ''
-                          }
+                          id="status"
+                          value={enumCoralStatus}
+                          options={coralStatusOptions}
+                          getOptionLabel={(option: OptionStatus) => option.label}
+                          onChange={(e, values: OptionStatus | null) => setEnumCoralStatus(values)}
                           renderInput={(params) => (
                             <TextField
                               {...params}

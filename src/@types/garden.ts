@@ -6,8 +6,8 @@ import { StringLocale } from 'yup/lib/locale';
 export type Garden = {
   id: string;
   name: string;
-  latitude: string
-  longitude: string,
+  latitude: string;
+  longitude: string;
   address: string;
   acreage: string;
   quantityOfCells: string;
@@ -33,4 +33,5 @@ export type Site = {
   latitude: string;
   longitude: string;
   status: any;
+  listGarden: any;
 };

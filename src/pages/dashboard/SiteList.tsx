@@ -22,9 +22,13 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  Link
+  Link,
+  Dialog,
+  DialogTitle,
+  DialogContent
 } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
+import AlertDialog from 'pages/components-overview/material-ui/dialog/AlertDialog';
 // @types
 import { Site } from '../../@types/garden';
 // redux
@@ -41,10 +45,10 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  GardenOwnersListHead,
-  GardenOwnersListToolbar,
-  GardenOwnersMoreMenu
-} from '../../components/_dashboard/garden/ownersList';
+  SiteListHead,
+  SiteListToolbar,
+  SiteMoreMenu
+} from '../../components/_dashboard/garden/siteList';
 
 // ----------------------------------------------------------------------
 
@@ -198,28 +202,28 @@ export default function UserList() {
   // }
 
   return (
-    <Page title="Garden Sites: List">
+    <Page title="Site: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Garden Sites list"
+          heading="Site list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Sites', href: PATH_DASHBOARD.garden.root },
+            { name: 'Site', href: PATH_DASHBOARD.site.root },
             { name: 'List' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.garden.newSite}
+              to={PATH_DASHBOARD.site.newSite}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Sites
+              New Site
             </Button>
           }
         />
         <Card>
-          <GardenOwnersListToolbar
+          <SiteListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -228,7 +232,7 @@ export default function UserList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <GardenOwnersListHead
+                <SiteListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -286,7 +290,7 @@ export default function UserList() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <GardenOwnersMoreMenu
+                            <SiteMoreMenu
                               onDelete={() => handleDeleteSite(id.toString())}
                               userName={id.toString()}
                             />

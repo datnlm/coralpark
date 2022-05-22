@@ -24,11 +24,8 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import ArrowForwardIosSharpIcon from '@material-ui/icons/ArrowForwardIosSharp';
-import MuiAccordion, { AccordionProps } from '@material-ui/core/Accordion';
-import MuiAccordionSummary, { AccordionSummaryProps } from '@material-ui/core/AccordionSummary';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import CoralTypeSort from 'components/_dashboard/coral/CoralTypeSort';
+import { coralLevelType } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import {
@@ -64,55 +61,7 @@ const TABLE_HEAD = [
   { id: '' }
 ];
 
-const SORT_OPTIONS = [
-  { value: '1', label: 'Class' },
-  { value: '2', label: 'Order' },
-  { value: '3', label: 'Family' },
-  { value: '4', label: 'Genus' },
-  { value: '5', label: 'Species' }
-];
-
 // ----------------------------------------------------------------------
-
-// const applySort = (coralType: CoralType[], sortBy: string) => {
-
-// console.log(sortBy);
-// if (sortBy == '1') {
-//   return orderBy(coralType, ['createdAt'], ['desc']);
-// }
-// if (sortBy == '2') {
-//   return orderBy(coralType, ['createdAt'], ['asc']);
-// }
-// if (sortBy == '3') {
-//   return orderBy(coralType, ['view'], ['desc']);
-// }
-// return coralType;
-// };
-// function applySort(array: CoralType[], comparator: (a: any, b: any) => number, query: string) {
-//   const stabilizedThis = array.map((el, index) => [el, index] as const);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   if (query) {
-//     return filter(array, (_coral) => _coral.levelType.indexOf(query) !== -1);
-//   }
-//   return stabilizedThis.map((el) => el[0]);
-// }
-function applySort(array: CoralType[], comparator: (a: any, b: any) => number, query: string) {
-  const stabilizedThis = array.map((el, index) => [el, index] as const);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_coral) => _coral.levelType == query);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
 type Anonymous = Record<string | number, string>;
 
 function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
@@ -129,40 +78,6 @@ function getComparator(order: string, orderBy: string) {
   return order === 'desc'
     ? (a: Anonymous, b: Anonymous) => descendingComparator(a, b, orderBy)
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
-}
-
-// function applySortFilter(
-//   array: CoralType[],
-//   comparator: (a: any, b: any) => number,
-//   query: string
-// ) {
-//   const stabilizedThis = array.map((el, index) => [el, index] as const);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   if (query) {
-//     return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-//   }
-//   return stabilizedThis.map((el) => el[0]);
-// }
-
-function applySortFilterCoral(
-  array: CoralType[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
-  const stabilizedThis = array.map((el, index) => [el, index] as const);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_coral) => _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
 }
 
 export default function UserList() {
@@ -189,6 +104,31 @@ export default function UserList() {
       setFilters(value);
     }
   };
+
+  function applySortFilterCoral(
+    array: CoralType[],
+    comparator: (a: any, b: any) => number,
+    query: string,
+    sort: string
+  ) {
+    const stabilizedThis = array.map((el, index) => [el, index] as const);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    if (query) {
+      return filter(
+        array,
+        (_coral) =>
+          _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 && _coral.levelType == sort
+      );
+    }
+    if (sort) {
+      return filter(array, (_coral) => _coral.levelType == sort);
+    }
+    return stabilizedThis.map((el) => el[0]);
+  }
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -254,13 +194,13 @@ export default function UserList() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - coralTypeList.length) : 0;
 
-  // const filteredUsers = applySortFilter(coralTypeList, getComparator(order, orderBy), filterName);
   const filteredCoralsType = applySortFilterCoral(
     coralTypeList,
     getComparator(order, orderBy),
-    filterName
+    filterName,
+    filters
   );
-  const sortCoralsType = applySort(coralTypeList, getComparator(order, orderBy), filters);
+  // const sortCoralsType = applySort(coralTypeList, getComparator(order, orderBy), filters);
 
   const isCoralTypeNotFound = filteredCoralsType.length === 0;
   // if (companiesList !== null) {
@@ -280,7 +220,7 @@ export default function UserList() {
           heading="Coral Type list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral Type', href: PATH_DASHBOARD.coral.root },
+            { name: 'Coral Type', href: PATH_DASHBOARD.coral.listType },
             { name: 'List' }
           ]}
           action={
@@ -295,13 +235,14 @@ export default function UserList() {
           }
         />
         <Card>
-          <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-            {/* <CoralTypeListToolbar
+          <Stack direction="row" alignItems="left">
+            {/* <Stack mb={5} direction="row" alignItems="left"> */}
+            <CoralTypeSort query={filters} options={coralLevelType} onSort={handleChangeSort} />
+            <CoralTypeListToolbar
               numSelected={selected.length}
               filterName={filterName}
               onFilterName={handleFilterByName}
-            /> */}
-            <CoralTypeSort query={filters} options={SORT_OPTIONS} onSort={handleChangeSort} />
+            />
           </Stack>
 
           <Scrollbar>
@@ -317,7 +258,7 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {sortCoralsType
+                  {filteredCoralsType
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const { id, name, parentId, levelType, parents, description } = row;
@@ -345,7 +286,7 @@ export default function UserList() {
                           <TableCell align="right">
                             <CoralTypeMoreMenu
                               onDelete={() => handleDeleteUser(id)}
-                              coralID={id.toString()}
+                              coralTypeId={id.toString()}
                             />
                           </TableCell>
                         </TableRow>

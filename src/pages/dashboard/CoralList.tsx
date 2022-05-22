@@ -25,7 +25,7 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-
+import AlertDialog from 'pages/components-overview/material-ui/dialog/AlertDialog';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
@@ -168,6 +168,7 @@ export default function UserList() {
   };
 
   const handleDeleteCoral = async (coralId: string) => {
+    AlertDialog();
     try {
       await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
@@ -209,7 +210,7 @@ export default function UserList() {
           heading="Coral list"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral', href: PATH_DASHBOARD.user.root },
+            { name: 'Coral', href: PATH_DASHBOARD.coral.root },
             { name: 'List' }
           ]}
           action={
@@ -280,10 +281,10 @@ export default function UserList() {
                               {status == 1 ? 'Available' : 'deleted'}
                             </Label>
                           </TableCell> */}
-
                           <TableCell align="right">
                             <CoralMoreMenu
                               onDelete={() => handleDeleteCoral(id.toString())}
+                              // onDelete={() => handleDeleteCoral(id.toString())}
                               coralID={id.toString()}
                             />
                           </TableCell>

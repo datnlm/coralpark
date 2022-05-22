@@ -51,95 +51,19 @@ const sidebarConfig = [
     subheader: 'management',
     items: [
       {
-        title: 'sites',
-        path: PATH_DASHBOARD.garden.root,
-        icon: ICONS.garden,
-        children: [
-          // { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-          // { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
-          { title: 'sites', path: PATH_DASHBOARD.garden.sitesList },
-          { title: 'garden', path: PATH_DASHBOARD.garden.list },
-          { title: 'garden types', path: PATH_DASHBOARD.garden.typesList }
-        ]
-      },
-      {
         title: 'diver',
         path: PATH_DASHBOARD.diver.root,
         icon: ICONS.diver,
-        children: [
-          { title: 'list', path: PATH_DASHBOARD.diver.list }
-          // { title: 'Create', path: PATH_DASHBOARD.diver.newDiver }
-        ]
+        children: [{ title: 'list', path: PATH_DASHBOARD.diver.list }]
       },
-      // MANAGEMENT : USER
       {
-        title: 'coral',
-        path: PATH_DASHBOARD.coral.root,
-        icon: ICONS.coral,
-        children: [
-          // { title: 'cards', path: PATH_DASHBOARD.user.cards },
-          { title: 'list', path: PATH_DASHBOARD.coral.list },
-          { title: 'list type', path: PATH_DASHBOARD.coral.listType }
-          // { title: 'type', path: PATH_DASHBOARD.coral.type }
-          // { title: 'edit', path: PATH_DASHBOARD.user.editById },
-          // { title: 'phases Type', path: PATH_DASHBOARD.user.phasesType },
-          // { title: 'phases', path: PATH_DASHBOARD.user.phases }
-        ]
-      },
-      // MANAGEMENT : Phases
-      {
-        title: 'phases',
-        path: PATH_DASHBOARD.phases.root,
-        icon: ICONS.phases,
-        children: [
-          { title: 'create', path: PATH_DASHBOARD.phases.new },
-          { title: 'phases type create', path: PATH_DASHBOARD.phases.typeNew }
-        ]
-      },
-      // MANAGEMENT : Coral Area
-      {
-        title: 'coral area',
-        path: PATH_DASHBOARD.coralArea.root,
-        icon: ICONS.coralArea,
-        children: [
-          { title: 'list', path: PATH_DASHBOARD.coralArea.list }
-          // { title: 'create', path: PATH_DASHBOARD.coralArea.new }
-        ]
-      },
-
-      // MANAGEMENT : Area
-      {
-        title: 'area',
-        path: PATH_DASHBOARD.area.root,
-        icon: ICONS.area,
-        children: [
-          { title: 'list', path: PATH_DASHBOARD.area.list }
-          // { title: 'create', path: PATH_DASHBOARD.area.new }
-        ]
+        title: 'sites',
+        path: PATH_DASHBOARD.site.root,
+        icon: ICONS.garden,
+        children: [{ title: 'list', path: PATH_DASHBOARD.site.list }]
       }
     ]
   }
-
-  // APP
-  // ----------------------------------------------------------------------
-  // {
-  //   subheader: 'app',
-  //   items: [
-  //     {
-  //       title: 'mail',
-  //       path: PATH_DASHBOARD.mail.root,
-  //       icon: ICONS.mail,
-  //       info: <Label color="error">2</Label>
-  //     },
-  //     { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
-  //     { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
-  //     {
-  //       title: 'kanban',
-  //       path: PATH_DASHBOARD.kanban,
-  //       icon: ICONS.kanban
-  //     }
-  //   ]
-  // }
 ];
 
 export default sidebarConfig;

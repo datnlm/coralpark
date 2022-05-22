@@ -4,7 +4,7 @@ import { Box, Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from '@
 
 // ----------------------------------------------------------------------
 
-type GardenListHeadProps = {
+type SiteListHeadProps = {
   order: 'asc' | 'desc';
   orderBy: string;
   rowCount: number;
@@ -14,7 +14,7 @@ type GardenListHeadProps = {
   onSelectAllClick: (checked: boolean) => void;
 };
 
-export default function GardenListHead({
+export default function SiteListHead({
   order,
   orderBy,
   rowCount,
@@ -22,7 +22,7 @@ export default function GardenListHead({
   numSelected,
   onRequestSort,
   onSelectAllClick
-}: GardenListHeadProps) {
+}: SiteListHeadProps) {
   return (
     <TableHead>
       <TableRow>

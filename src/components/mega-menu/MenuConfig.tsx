@@ -2,164 +2,108 @@ import { Icon } from '@iconify/react';
 import fileFill from '@iconify/icons-eva/file-fill';
 
 import { MegaMenuItemProps } from '../../@types/mega-menu';
-
+// routes
+import { PATH_DASHBOARD } from '../../routes/paths';
+import SvgIconStyle from '../SvgIconStyle';
 // ----------------------------------------------------------------------
+
+const getIcon = (name: string) => (
+  <SvgIconStyle src={`/static/icons/navbar/${name}.svg`} sx={{ width: '100%', height: '100%' }} />
+);
+
+const ICONS = {
+  blog: getIcon('ic_blog'),
+  cart: getIcon('ic_cart'),
+  chat: getIcon('ic_chat'),
+  mail: getIcon('ic_mail'),
+  coral: getIcon('ic_coral'),
+  coralArea: getIcon('ic_coral_area'),
+  garden: getIcon('ic_garden'),
+  diver: getIcon('ic_diver'),
+  area: getIcon('ic_area'),
+  phases: getIcon('ic_phases'),
+  user: getIcon('ic_user'),
+  calendar: getIcon('ic_calendar'),
+  ecommerce: getIcon('ic_ecommerce'),
+  analytics: getIcon('ic_analytics'),
+  dashboard: getIcon('ic_dashboard'),
+  kanban: getIcon('ic_kanban')
+};
 
 const ICON_SIZE = {
   width: '100%',
   height: '100%'
 };
 
-// const PRODUCTS = [...Array(10)].map((_, index) => {
-//   const setIndex = index + 1;
-//   return {
-//     name: `Product Phasellus volutpat metus eget egestas ${setIndex}`,
-//     image: `/static/mock-images/feeds/feed_${setIndex}.jpg`,
-//     path: '#'
-//   };
-// });
-
-// const TAGS = [
-//   { name: 'Paper Cup', path: '#' },
-//   { name: 'Lotion Pump', path: '#' },
-//   { name: 'Brush Cutter', path: '#' },
-//   { name: 'Display Rack', path: '#' },
-//   { name: 'Glass Bottle', path: '#' }
-// ];
-
 const menuConfig: MegaMenuItemProps[] = [
   {
-    title: 'Configuration',
-    path: '#',
-    icon: <Icon icon={fileFill} {...ICON_SIZE} />,
-    // more: { title: 'More Categories', path: '#' },
-    // products: PRODUCTS,
-    // tags: TAGS,
+    title: 'Garden',
+    path: PATH_DASHBOARD.garden.root,
+    icon: ICONS.garden,
     children: [
       {
-        subheader: 'Agriculture Machinery',
+        subheader: 'Garden',
         items: [
-          { title: 'Agriculture Machinery', path: '#' },
-          { title: 'Livestock MachineryFeed', path: '#' },
-          { title: 'Feed Processing Machinery', path: '#' },
-          { title: 'Tiller', path: '#' },
-          { title: 'Harvesting Machine', path: '#' }
+          { title: 'List', path: PATH_DASHBOARD.garden.list },
+          { title: 'Create', path: PATH_DASHBOARD.garden.newGarden }
         ]
       },
       {
-        subheader: 'Machine Tools',
+        subheader: 'Type',
         items: [
-          { title: 'CNC Machine Tools', path: '#' },
-          { title: 'Lathe', path: '#' },
-          { title: 'Grinding Machine ', path: '#' },
-          { title: 'Drilling Machine ', path: '#' },
-          { title: 'Milling Machine ', path: '#' }
+          { title: 'List', path: PATH_DASHBOARD.garden.typesList },
+          { title: 'Create', path: PATH_DASHBOARD.garden.newGardenType }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Coral',
+    path: PATH_DASHBOARD.coral.root,
+    icon: ICONS.coral,
+    children: [
+      {
+        subheader: 'Coral',
+        items: [
+          { title: 'List', path: PATH_DASHBOARD.coral.list },
+          { title: 'Create', path: PATH_DASHBOARD.coral.new }
         ]
       },
       {
-        subheader: 'Other Machinery & Parts',
+        subheader: 'Type',
         items: [
-          { title: 'Metallic Processing Machinery', path: '#' },
-          { title: 'Machinery for Food, Beverage & Cereal', path: '#' },
-          { title: 'Laser Equipment', path: '#' },
-          { title: 'Mould', path: '#' },
-          { title: 'Textile Machinery & Parts', path: '#' },
-          { title: 'Cutting & Fold-bend Machine', path: '#' },
-          { title: 'Paper Machinery', path: '#' },
-          { title: 'Rubber Machinery', path: '#' },
-          { title: 'Chemical Equipment & Machinery', path: '#' },
-          { title: 'Mixing Equipment', path: '#' },
-          { title: 'Machinery for Garment, Shoes & Accessories', path: '#' },
-          { title: 'Crushing & Culling Machine', path: '#' }
+          { title: 'List', path: PATH_DASHBOARD.coral.listType },
+          { title: 'Create', path: PATH_DASHBOARD.coral.type }
         ]
       },
       {
-        subheader: 'Plastic & Woodworking Machinery',
-        items: [
-          { title: 'Plastic Machinery', path: '#' },
-          { title: 'Woodworking Machinery', path: '#' },
-          { title: 'Blow Molding Machine', path: '#' },
-          { title: 'Plastic Recycling Machine', path: '#' },
-          { title: 'Injection Molding Machine', path: '#' }
-        ]
+        subheader: 'Phase',
+        items: [{ title: 'Create', path: PATH_DASHBOARD.phases.new }]
       },
       {
-        subheader: 'Construction Machinery',
+        subheader: 'Phase Type',
+        items: [{ title: 'Phase Type', path: PATH_DASHBOARD.phases.typeNew }]
+      },
+      {
+        subheader: 'Coral Area',
+        items: [{ title: 'list', path: PATH_DASHBOARD.coralArea.list }]
+      }
+    ]
+  },
+  {
+    title: 'Area',
+    path: PATH_DASHBOARD.area.root,
+    icon: ICONS.area,
+    children: [
+      {
+        subheader: 'Area',
         items: [
-          { title: 'Building Material Making Machinery', path: '#' },
-          { title: 'Lifting Equipment', path: '#' },
-          { title: 'Excavator', path: '#' },
-          { title: 'Concrete Machinery', path: '#' },
-          { title: 'Stone Processing Machinery', path: '#' }
+          { title: 'List', path: PATH_DASHBOARD.area.list },
+          { title: 'Create', path: PATH_DASHBOARD.area.new }
         ]
       }
     ]
   }
-  // },
-  // {
-  //   title: 'Parent 2',
-  //   path: '#',
-  //   icon: <Icon icon={fileFill} {...ICON_SIZE} />,
-  //   more: { title: 'More Categories', path: '#' },
-  //   products: PRODUCTS,
-  //   tags: TAGS,
-  //   children: [
-  //     {
-  //       subheader: 'Cellphone & Accessories',
-  //       items: [
-  //         { title: 'Mobile Phone Charger', path: '#' },
-  //         { title: 'Power Bank', path: '#' },
-  //         { title: 'Mobile Phone LCD', path: '#' },
-  //         { title: 'Bluetooth Headset', path: '#' },
-  //         { title: 'Mobile Phone', path: '#' }
-  //       ]
-  //     },
-  //     {
-  //       subheader: 'Audio & Video',
-  //       items: [
-  //         { title: 'Display & Accessories', path: '#' },
-  //         { title: 'Audio & Sets', path: '#' },
-  //         { title: 'Professional Audio', path: '#' },
-  //         { title: 'LCD Display', path: '#' },
-  //         { title: 'LCD Module', path: '#' },
-  //         { title: 'Video', path: '#' },
-  //         { title: 'TV & Parts', path: '#' },
-  //         { title: 'Amplifier', path: '#' },
-  //         { title: 'Portable Audio Appliance', path: '#' },
-  //         { title: 'Home Theatre System', path: '#' },
-  //         { title: 'HDMI Cable', path: '#' },
-  //         { title: 'Radio', path: '#' }
-  //       ]
-  //     },
-  //     {
-  //       subheader: 'Household Appliances',
-  //       items: [
-  //         { title: 'Air Conditioner, Purifier & Humidifier', path: '#' },
-  //         { title: 'Refrigerator, Freezer & Parts', path: '#' },
-  //         { title: 'Water Heater & Components', path: '#' },
-  //         { title: 'Electrical Fan & Exhaust Fan', path: '#' },
-  //         { title: 'Household Water Treatment Equipment', path: '#' },
-  //         { title: 'Solar Water Heater', path: '#' },
-  //         { title: 'Photographic Apparatus', path: '#' },
-  //         { title: 'Gas Burner & Gas Stove', path: '#' },
-  //         { title: 'Entertainment Electronics', path: '#' },
-  //         { title: 'Electrical Kettle', path: '#' },
-  //         { title: 'Food Blender', path: '#' },
-  //         { title: 'Dehumidifier', path: '#' }
-  //       ]
-  //     },
-  //     {
-  //       subheader: 'Digital Devices',
-  //       items: [
-  //         { title: 'Battery & Charger', path: '#' },
-  //         { title: 'Wearable Devices', path: '#' },
-  //         { title: 'Digital Photo Frame', path: '#' },
-  //         { title: 'Digital Camera', path: '#' },
-  //         { title: 'Smart Glasses', path: '#' }
-  //       ]
-  //     }
-  //   ]
-  // },
   // {
   //   title: 'Parent 3',
   //   path: '#',

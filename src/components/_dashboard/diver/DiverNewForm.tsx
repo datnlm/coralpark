@@ -70,7 +70,12 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     // username: Yup.string().required('Username is required'),
-    phone: Yup.string().required('Phone is required'),
+    phone: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, 'Phone must be only number')
+      .min(10, 'Phone must be 10 number')
+      .max(10, 'Phone must be 10 number')
+      .required('Phone is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     address: Yup.string().required('Address is required')
     // imageUrl: Yup.array().min(1, 'Images is required')
