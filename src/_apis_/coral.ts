@@ -133,8 +133,9 @@ export class Coral {
   };
 
   createCoralType = (coralType: CoralType) => {
+    console.log(coralType);
     let data = {};
-    if (coralType.levelType === '1') {
+    if (coralType.levelType == '1') {
       data = {
         name: coralType.name,
         levelType: coralType.levelType,

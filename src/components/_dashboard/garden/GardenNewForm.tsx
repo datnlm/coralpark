@@ -83,9 +83,14 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     latitude: Yup.string().required('Latitude is required'),
     longitude: Yup.string().required('Longitude is required'),
     address: Yup.string().required('Address is required'),
-    acreage: Yup.number().min(1, 'Acreage must be greater than 0').required('Acreage is required'),
-    quantityOfCells: Yup.number()
-      .min(1, 'Quantity of Cells  must be greater than 0')
+    // acreage: Yup.number().min(1, 'Acreage must be greater than 0').required('Acreage is required'),
+    acreage: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, 'Acreage must be only number')
+      .required('Acreage is required'),
+    quantityOfCells: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, 'Quantity of Cells must be only number')
       .required('Quantity of Cells is required'),
     areaID: Yup.object().required('Area is required').nullable(true),
     gardenTypeId: Yup.object().required('Garden Type is required').nullable(true),
@@ -100,12 +105,12 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       latitude: currentGarden?.latitude || '',
       longitude: currentGarden?.longitude || '',
       address: currentGarden?.address || '',
-      acreage: currentGarden?.acreage || 0,
-      quantityOfCells: currentGarden?.quantityOfCells || 0,
+      acreage: currentGarden?.acreage || '',
+      quantityOfCells: currentGarden?.quantityOfCells || '',
       areaID: currentGarden?.areaID || '',
       gardenTypeId: currentGarden?.gardenTypeId || '',
       siteId: currentGarden?.siteId || '',
-      status: currentGarden?.status || 0
+      status: currentGarden?.status || 1
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {

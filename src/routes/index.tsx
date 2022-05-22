@@ -102,6 +102,7 @@ export default function Router() {
             { path: 'new', element: <CoralCreate /> },
             { path: '/:name/edit', element: <CoralCreate /> },
             { path: 'type', element: <CoralType /> },
+            { path: 'type/:name/edit', element: <CoralType /> },
             { path: 'coral-type-list', element: <CoralTypeList /> }
           ]
         },

@@ -34,12 +34,12 @@ export default function GardenCreate() {
     latitude: '',
     longitude: '',
     address: '',
-    acreage: 0,
-    quantityOfCells: 0,
+    acreage: '',
+    quantityOfCells: '',
     areaID: '',
     gardenTypeId: '',
     siteId: '',
-    status: 0
+    status: 1
   });
 
   useEffect(() => {

@@ -27,7 +27,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 // utils
-import fakeRequest from '../../../utils/fakeRequest';
+import { OptionStatus, coralLevelTypeOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
@@ -61,12 +61,17 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   const [optionsOrder, setOptionsOrder] = useState([]);
   const [optionsFamily, setOptionsFamily] = useState([]);
   const [optionsGenus, setOptionsGenus] = useState([]);
-  const [currentLevel, setCurrenLevel] = useState(1);
-  const [currentClass, setCurrentClass] = useState<any>([]);
+  // old version
+  // const [currentLevel, setCurrenLevel] = useState(1);
+  // new current level
+  const [currentLevel, setCurrentLevel] = useState<OptionStatus | any>(coralLevelTypeOptions[0]);
+  const [currentClass, setCurrentClass] = useState<any>(null);
+  // old version
+  // const [currentClass, setCurrentClass] = useState<any>([]);
   // const [currentOrder, setCurrentOrder] = useState('');
-  const [currentOrder, setCurrentOrder] = useState<any>([]);
-  const [currentFamily, setCurrentFamily] = useState<any>([]);
-  const [currentGenus, setCurrentGenus] = useState<any>([]);
+  const [currentOrder, setCurrentOrder] = useState<any>(null);
+  const [currentFamily, setCurrentFamily] = useState<any>(null);
+  const [currentGenus, setCurrentGenus] = useState<any>(null);
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     parent: Yup.string().required('Parent is required'),
@@ -87,8 +92,11 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
 
   // call order name parent class id = ?
   useEffect(() => {
-    setCurrentOrder([]);
-    if (currentClass!.id != null) {
+    setCurrentOrder(null);
+    setOptionsOrder([]);
+    // setCurrentOrder([]);
+    if (currentClass != null) {
+      // if (currentClass!.id != null) {
       manageCoral.getCoralType(currentClass!.id).then((response) => {
         if (response.status == 200) {
           setOptionsOrder(response.data.items);
@@ -102,8 +110,9 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
 
   // call family name theo order id = ?
   useEffect(() => {
-    setCurrentFamily([]);
-    if (currentOrder!.id != null) {
+    setCurrentFamily(null);
+    setOptionsFamily([]);
+    if (currentOrder != null) {
       manageCoral.getCoralType(currentOrder!.id).then((response) => {
         if (response.status == 200) {
           setOptionsFamily(response.data.items);
@@ -116,8 +125,10 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
 
   // call Genus name theo family id = ?
   useEffect(() => {
-    setCurrentGenus([]);
-    if (currentFamily!.id != null) {
+    setCurrentGenus(null);
+    setOptionsGenus([]);
+    if (currentFamily != null) {
+      // if (currentFamily!.id != null) {
       manageCoral.getCoralType(currentFamily!.id).then((response) => {
         if (response.status == 200) {
           console.log(response.data.items);
@@ -152,12 +163,12 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
         // level 3 - family
         // level 4 - genus
         // level 5 - species
-        switch (currentLevel.toString()) {
+        switch (currentLevel!.id) {
           case '1':
             values.parentId = '';
             break;
           case '2':
-            values.parentId = currentClass;
+            values.parentId = currentClass!.id;
             break;
           case '3':
             values.parentId = currentOrder!.id;
@@ -175,7 +186,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
 
         let flag = false;
 
-        values.levelType = currentLevel.toString();
+        values.levelType = currentLevel!.id;
         !isEdit
           ? await manageCoral.createCoralType(values).then((response) => {
               if (response.status == 200) {
@@ -205,7 +216,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   });
 
   const onchangeLevel = (event: any) => {
-    setCurrenLevel(event.target.value);
+    setCurrentLevel(event.target.value);
   };
 
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
@@ -219,39 +230,29 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <FormControl fullWidth>
-                    <InputLabel>Level Type</InputLabel>
-                    <Select
-                      label="Level Type"
-                      native
-                      {...getFieldProps('level')}
-                      value={currentLevel}
-                      onChange={onchangeLevel}
-                    >
-                      {CATEGORY_OPTION.map((category) => (
-                        <optgroup key={category.group} label={category.group}>
-                          {category.classify.map((classify) => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    fullWidth
+                    disablePortal
+                    clearIcon
+                    id="levelType"
+                    value={currentLevel}
+                    options={coralLevelTypeOptions}
+                    getOptionLabel={(option: OptionStatus) => option.label}
+                    onChange={(e, values: OptionStatus | null) => setCurrentLevel(values)}
+                    renderInput={(params) => <TextField {...params} label="Level Type" />}
+                  />
                 </Stack>
-                {Number(currentLevel) > 1 && (
+                {currentLevel!.id > 1 && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <Autocomplete
                       fullWidth
                       disablePortal
                       clearIcon
                       id="class"
-                      inputValue={currentClass != '' ? currentClass!.name : ''}
-                      {...getFieldProps('class')}
+                      value={currentClass}
                       options={optionsClass}
-                      getOptionLabel={(option: any) => (option ? option.name : '')}
-                      onChange={(e, value: any) => (value ? setCurrentClass(value) : '')}
+                      getOptionLabel={(option: any) => option.name}
+                      onChange={(e, value: any) => setCurrentClass(value)}
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -261,53 +262,50 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                         />
                       )}
                     />
-                    {Number(currentLevel) > 2 && (
+                    {currentLevel!.id > 2 && (
                       <Autocomplete
                         fullWidth
                         disablePortal
                         clearIcon
-                        inputValue={currentOrder != '' ? currentOrder!.name : ''}
                         id="order"
-                        {...getFieldProps('order')}
+                        value={currentOrder}
                         options={optionsOrder}
-                        getOptionLabel={(option: any) => (option ? option.name : '')}
-                        onChange={(e, value: any) => (value ? setCurrentOrder(value) : '')}
+                        getOptionLabel={(option: any) => option.name}
+                        onChange={(e, value: any) => setCurrentOrder(value)}
                         renderInput={(params) => <TextField {...params} label="Order" />}
                       />
                     )}
                   </Stack>
                 )}
-                {Number(currentLevel) > 3 && (
+                {currentLevel!.id > 3 && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <Autocomplete
                       fullWidth
                       disablePortal
                       clearIcon
-                      inputValue={currentFamily != '' ? currentFamily!.name : ''}
                       id="family"
-                      {...getFieldProps('family')}
+                      value={currentFamily}
                       options={optionsFamily}
-                      getOptionLabel={(option) => (option ? option.name : '')}
-                      onChange={(e, value) => (value ? setCurrentFamily(value) : '')}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(e, value) => setCurrentFamily(value)}
                       renderInput={(params) => <TextField {...params} label="Family" />}
                     />
-                    {Number(currentLevel) > 4 && (
+                    {currentLevel!.id > 4 && (
                       <Autocomplete
                         fullWidth
                         disablePortal
                         clearIcon
-                        inputValue={currentGenus != '' ? currentGenus!.name : ''}
                         id="Genus"
-                        {...getFieldProps('genus')}
+                        value={currentGenus}
                         options={optionsGenus}
-                        getOptionLabel={(option) => (option ? option.name : '')}
-                        onChange={(e, value) => (value ? setCurrentGenus(value) : '')}
+                        getOptionLabel={(option) => option.name}
+                        onChange={(e, value) => setCurrentGenus(value)}
                         renderInput={(params) => <TextField {...params} label="Genus" />}
                       />
                     )}
                   </Stack>
                 )}
-                {Number(currentLevel) >= 1 && (
+                {currentLevel!.id >= 1 && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <TextField
                       fullWidth
@@ -318,23 +316,21 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                     />
                   </Stack>
                 )}
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <div>
-                    <LabelStyle>Description</LabelStyle>
-                    <QuillEditor
-                      simple
-                      id="description"
-                      value={values.description}
-                      onChange={(val) => setFieldValue('description', val)}
-                      error={Boolean(touched.description && errors.description)}
-                    />
-                    {touched.description && errors.description && (
-                      <FormHelperText error sx={{ px: 2 }}>
-                        {touched.description && errors.description}
-                      </FormHelperText>
-                    )}
-                  </div>
-                </Stack>
+                <div>
+                  <LabelStyle>Description</LabelStyle>
+                  <QuillEditor
+                    simple
+                    id="description"
+                    value={values.description}
+                    onChange={(val) => setFieldValue('description', val)}
+                    error={Boolean(touched.description && errors.description)}
+                  />
+                  {touched.description && errors.description && (
+                    <FormHelperText error sx={{ px: 2 }}>
+                      {touched.description && errors.description}
+                    </FormHelperText>
+                  )}
+                </div>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? 'Create Type' : 'Save Changes'}

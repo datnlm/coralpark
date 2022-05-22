@@ -86,10 +86,19 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
 
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    phone: Yup.string().required('Phone is required'),
+    phone: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, 'Phone must be only number')
+      .min(10, 'Phone must be 10 number')
+      .max(10, 'Phone must be 10 number')
+      .required('Phone is required'),
     latitude: Yup.string().required('Latitude is required'),
     longitude: Yup.string().required('Longitude is required'),
     address: Yup.string().required('Address is required'),
+    webUrl: Yup.string().matches(
+      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+      'Enter correct url!'
+    ),
     email: Yup.string().email('Email must be a valid email address').required('Email is required')
   });
 

@@ -19,8 +19,9 @@ import {
 const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
   display: 'flex',
-  justifyContent: 'space-between',
-  padding: theme.spacing(0, 1, 0, 3)
+  // justifyContent: 'space-between',
+  padding: theme.spacing(0, 0, 0, 0)
+  // padding: theme.spacing(0, 1, 0, 3)
 }));
 
 const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
@@ -64,7 +65,7 @@ export default function UserListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder="Search coral type..."
+        placeholder="Search type..."
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

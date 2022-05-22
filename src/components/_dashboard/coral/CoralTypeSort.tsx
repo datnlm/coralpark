@@ -7,12 +7,13 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
   display: 'flex',
   justifyContent: 'space-between',
-  padding: theme.spacing(0, 1, 0, 3)
+  padding: theme.spacing(0, 1, 0, 1)
+  // padding: theme.spacing(0, 1, 0, 3)
 }));
 
 type CoralTypeSortProps = {
   query: string;
-  options: { value: string; label: string }[];
+  options: { id: string; label: string }[];
   onSort: (value?: string) => void;
 };
 
@@ -29,7 +30,7 @@ export default function CoralTypeSortProps({ query, options, onSort }: CoralType
     >
       <TextField select size="small" value={query} onChange={(e) => onSort(e.target.value)}>
         {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.id} value={option.id}>
             {option.label}
           </MenuItem>
         ))}
