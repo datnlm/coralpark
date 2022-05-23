@@ -26,6 +26,14 @@ export class Coral {
       .catch((err) => err);
   };
 
+  // delete coral type
+  deleteCoralType = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/coral-types/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
   // create coral
   createCoral = (coral: any) => {
     return axios
@@ -53,6 +61,14 @@ export class Coral {
   getListCoralType = () => {
     return axios
       .get('/api/v1/admin/coral-types')
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // get coral type by id
+  getCoralTypeByID = (coralTypeId: string) => {
+    return axios
+      .get(`/api/v1/admin/coral-types/${coralTypeId}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -132,8 +148,8 @@ export class Coral {
       .catch((err) => err);
   };
 
+  // create coral type
   createCoralType = (coralType: CoralType) => {
-    console.log(coralType);
     let data = {};
     if (coralType.levelType == '1') {
       data = {
@@ -151,6 +167,31 @@ export class Coral {
     }
     return axios
       .post('/api/v1/admin/coral-types', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  //  update coral type
+  updateCoralType = (coralType: CoralType) => {
+    let data = {};
+    if (coralType.levelType == '1') {
+      data = {
+        id: coralType.id,
+        name: coralType.name,
+        levelType: coralType.levelType,
+        description: coralType.description
+      };
+    } else {
+      data = {
+        id: coralType.id,
+        name: coralType.name,
+        parentId: coralType.parentId,
+        levelType: coralType.levelType,
+        description: coralType.description
+      };
+    }
+    return axios
+      .put('/api/v1/admin/coral-types', data)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -187,7 +228,34 @@ export class Coral {
       current: habitat.current,
       coralId: habitat.id
     };
-    axios.post('/api/v1/admin/habitats', data);
+    return axios
+      .post('/api/v1/admin/habitats', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateHabitat = (habitat: any) => {
+    const data = {
+      id: habitat.habitatId,
+      bathymetry: habitat.bathymetry,
+      temperature: habitat.temperature,
+      brightness: habitat.brightness,
+      tides: habitat.tides,
+      current: habitat.current,
+      coralId: habitat.id
+    };
+    return axios
+      .put('/api/v1/admin/habitats', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // get habitat by coral id
+  getHabitatByCoralId = (coralId: string) => {
+    return axios
+      .get(`/api/v1/admin/habitats/coral/${coralId}`)
+      .then((res) => res)
+      .catch((err) => err);
   };
 }
 export const manageCoral = new Coral();

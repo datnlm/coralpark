@@ -32,12 +32,11 @@ import TabPanel from '@material-ui/lab/TabPanel';
 // utils
 import { manageCoral } from '_apis_/coral';
 import { OptionStatus, coralStatusOptions } from 'utils/constants';
-import { manageArea } from '_apis_/area';
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { UserManager, Coral } from '../../../@types/user';
+import { UserManager, Coral, Habitat } from '../../../@types/user';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
@@ -58,10 +57,11 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 type UserNewFormProps = {
   isEdit: boolean;
   // currentUser?: UserManager;
-  currentCoral: Coral;
+  currentCoral?: Coral;
+  currentHabitat?: Habitat | null;
 };
 
-export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) {
+export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: UserNewFormProps) {
   const [valueTab, setValueTab] = useState('coral');
   const [optionsGenus, setOptionsGenus] = useState([]);
   const [enumCoralStatus, setEnumCoralStatus] = useState<OptionStatus | null>(null);
@@ -107,62 +107,71 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
       description: currentCoral?.description || '',
       coralTypeId: currentCoral?.coralTypeId || null,
       statusEnum: currentCoral?.statusEnum || null,
-      bathymetry: '',
-      temperature: '',
-      brightness: '',
-      tides: '',
-      current: ''
+      habitatId: currentHabitat?.id || '',
+      bathymetry: currentHabitat?.bathymetry || '',
+      temperature: currentHabitat?.temperature || '',
+      brightness: currentHabitat?.brightness || '',
+      tides: currentHabitat?.tides || '',
+      current: currentHabitat?.current || ''
     },
     // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
-      console.log(enumCoralStatus!.id);
-      // try {
-      //   let flag = false;
-      //   if (valueTab === 'coral') {
-      //     const bodyFormData = new FormData();
-      //     if (isEdit) {
-      //       bodyFormData.append('Id', values.id);
-      //     }
-      //     bodyFormData.append('Name', values.name);
-      //     bodyFormData.append('ScientificName', values.scientificName);
-      //     bodyFormData.append('Longevity', values.longevity);
-      //     bodyFormData.append('ExhibitSocial', values.exhibitSocial);
-      //     bodyFormData.append('SexualBehaviors', values.sexualBehaviors);
-      //     bodyFormData.append('Nutrition', values.nutrition);
-      //     bodyFormData.append('Colour', values.colour);
-      //     bodyFormData.append('Description', values.description);
-      //     bodyFormData.append('CoralTypeId', values.coralTypeId.id);
-      //     bodyFormData.append('StatusEnum', enumCoralStatus!.id);
-      //     values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
-
-      //     !isEdit
-      //       ? await manageCoral.createCoral(bodyFormData).then((response) => {
-      //           if (response.status == 200) {
-      //             flag = true;
-      //           }
-      //         })
-      //       : await manageCoral.updateCoral(bodyFormData).then((response) => {
-      //           if (response.status == 200) {
-      //             flag = true;
-      //           }
-      //         });
-      //   } else {
-      //     await manageCoral.createHabitat(values);
-      //   }
-      //   if (flag) {
-      //     resetForm();
-      //     setSubmitting(false);
-      //     enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-      //       variant: 'success'
-      //     });
-      //     navigate(PATH_DASHBOARD.coral.list);
-      //   } else {
-      //     enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
-      //   }
-      // } catch (error) {
-      //   console.error(error);
-      //   setSubmitting(false);
-      // }
+      try {
+        let flag = false;
+        if (valueTab === 'coral') {
+          const bodyFormData = new FormData();
+          if (isEdit) {
+            bodyFormData.append('Id', values.id);
+          }
+          bodyFormData.append('Name', values.name);
+          bodyFormData.append('ScientificName', values.scientificName);
+          bodyFormData.append('Longevity', values.longevity);
+          bodyFormData.append('ExhibitSocial', values.exhibitSocial);
+          bodyFormData.append('SexualBehaviors', values.sexualBehaviors);
+          bodyFormData.append('Nutrition', values.nutrition);
+          bodyFormData.append('Colour', values.colour);
+          bodyFormData.append('Description', values.description);
+          bodyFormData.append('CoralTypeId', values.coralTypeId.id);
+          bodyFormData.append('StatusEnum', enumCoralStatus!.id);
+          values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
+          !isEdit
+            ? await manageCoral.createCoral(bodyFormData).then((response) => {
+                if (response.status == 200) {
+                  flag = true;
+                }
+              })
+            : await manageCoral.updateCoral(bodyFormData).then((response) => {
+                if (response.status == 200) {
+                  flag = true;
+                }
+              });
+        } else {
+          currentHabitat?.id == null
+            ? await manageCoral.createHabitat(values).then((response) => {
+                if (response.status == 200) {
+                  flag = true;
+                }
+              })
+            : await manageCoral.updateHabitat(values).then((response) => {
+                if (response.status == 200) {
+                  flag = true;
+                }
+              });
+        }
+        if (flag) {
+          resetForm();
+          setSubmitting(false);
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.coral.list);
+        } else {
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
+      } catch (error) {
+        console.error(error);
+        setSubmitting(false);
+      }
     }
   });
 
@@ -213,6 +222,11 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
       }
     });
   }, []);
+  useEffect(() => {
+    if (isEdit) {
+      setEnumCoralStatus(coralStatusOptions.find((e) => e.id == currentCoral?.statusEnum) || null);
+    }
+  }, [currentCoral]);
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -343,7 +357,7 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                           </FormHelperText>
                         )}
                       </div>
-                      {isEdit && (
+                      {currentCoral?.images && (
                         <>
                           <Card>
                             <Grid container>

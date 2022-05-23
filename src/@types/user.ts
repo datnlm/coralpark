@@ -89,11 +89,6 @@ export type CoralType = {
   levelType: string;
   description: string;
   parents: any;
-  class: any;
-  order: any;
-  family: any;
-  genus: any;
-  species: any;
 };
 
 export type UserData = {
@@ -186,6 +181,15 @@ export type Coral = {
   statusEnum: any;
 };
 
+export type Habitat = {
+  id: string;
+  bathymetry: string;
+  temperature: string;
+  brightness: string;
+  current: string;
+  tides: string;
+};
+
 export type PhasesType = {
   id: string;
   minWeight: string;
@@ -204,10 +208,4 @@ export type Phases = {
   name: string;
   imageUrl: string[];
   description: string;
-};
-
-export type Area = {
-  id: string;
-  address: string;
-  wardCode: string;
 };

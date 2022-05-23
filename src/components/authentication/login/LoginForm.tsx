@@ -34,6 +34,7 @@ type InitialValues = {
   password: string;
   remember: boolean;
   afterSubmit?: string;
+  failedLoginAttempts?: string;
 };
 export default function LoginForm() {
   const { login } = useAuth();
@@ -55,25 +56,55 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
-      try {
-        await login(values.email, values.password);
-        enqueueSnackbar('Login success', {
-          variant: 'success',
-          action: (key) => (
-            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-              <Icon icon={closeFill} />
-            </MIconButton>
-          )
-        });
-        if (isMountedRef.current) {
-          setSubmitting(false);
-        }
-      } catch (error) {
-        console.error(error);
+      let flag = false;
+      const failedLoginAttempts = localStorage.getItem('failedLoginAttempts');
+      if (failedLoginAttempts && Number(failedLoginAttempts) >= 5) {
         resetForm();
-        if (isMountedRef.current) {
-          setSubmitting(false);
-          setErrors({ afterSubmit: 'The email address or password are not valid.' });
+        setSubmitting(false);
+        setErrors({ failedLoginAttempts: 'Too many failed login attempts' });
+        if (localStorage.getItem('expiration')) {
+          const expiration = new Date(localStorage.getItem('expiration')!);
+          if (new Date().valueOf() - expiration.valueOf() == 0) {
+            localStorage.clear();
+            flag = true;
+          }
+        }
+      } else {
+        try {
+          await login(values.email, values.password);
+          enqueueSnackbar('Login success', {
+            variant: 'success',
+            action: (key) => (
+              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                <Icon icon={closeFill} />
+              </MIconButton>
+            )
+          });
+          if (isMountedRef.current) {
+            setSubmitting(false);
+          }
+        } catch (error) {
+          console.error(error);
+          resetForm();
+          if (isMountedRef.current) {
+            setSubmitting(false);
+            setErrors({ afterSubmit: 'The email address or password are not valid.' });
+
+            // set login 5 failed
+            // failedLoginAttempts
+            const failedLoginAttempts = localStorage.getItem('failedLoginAttempts');
+            if (failedLoginAttempts == null) {
+              localStorage.setItem('failedLoginAttempts', '1');
+            } else {
+              localStorage.setItem(
+                'failedLoginAttempts',
+                (Number(failedLoginAttempts) + 1).toString()
+              );
+              const event = new Date();
+              event.setMinutes(5);
+              localStorage.setItem('expiration', event.toDateString());
+            }
+          }
         }
       }
     }
@@ -90,6 +121,11 @@ export default function LoginForm() {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
+          {errors.failedLoginAttempts && (
+            <Alert variant="filled" severity="error" onClose={() => {}}>
+              {errors.failedLoginAttempts}
+            </Alert>
+          )}
 
           <TextField
             fullWidth

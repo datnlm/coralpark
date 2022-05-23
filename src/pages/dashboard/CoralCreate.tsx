@@ -16,7 +16,7 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import CoralNewForm from '../../components/_dashboard/coral/CoralNewForm';
-import { UserManager, Coral } from '../../@types/user';
+import { Coral, Habitat } from '../../@types/user';
 // ----------------------------------------------------------------------
 
 export default function UserCreate() {
@@ -28,30 +28,23 @@ export default function UserCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const currentUser = userList.find((user) => paramCase(user.name) === name);
-  const [currentCoral, setCurrentCoral] = useState({
-    id: '',
-    name: '',
-    imageUrl: [],
-    images: [],
-    scientificName: '',
-    longevity: '',
-    exhibitSocial: '',
-    sexualBehaviors: '',
-    nutrition: '',
-    colour: '',
-    description: '',
-    coralTypeId: '',
-    statusEnum: ''
-  });
+  const [currentCoral, setCurrentCoral] = useState<Coral>();
+  const [currentHabitat, setCurrentHabitat] = useState<Habitat | null>(null);
 
-  useEffect(() => {
+  const fetchData = async () => {
     if (isEdit) {
-      dispatch(getUserList());
-      manageCoral.getCoralByID(paramCase(name)).then((response) => {
+      await manageCoral.getCoralByID(paramCase(name)).then((response) => {
         setCurrentCoral(response.data);
+      });
+      await manageCoral.getHabitatByCoralId(paramCase(name)).then((response) => {
+        setCurrentHabitat(response.data);
         console.log(response.data);
       });
     }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [dispatch]);
 
   return (
@@ -66,7 +59,7 @@ export default function UserCreate() {
           ]}
         />
 
-        <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} />
+        <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} currentHabitat={currentHabitat} />
       </Container>
     </Page>
   );

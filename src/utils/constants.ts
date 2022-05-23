@@ -28,7 +28,7 @@ export type OptionStatus = {
 
 const status = ['Deleted', 'Available'];
 
-const coralStatus = [
+export const coralStatus = [
   { id: 'EX', label: 'Extinct' },
   { id: 'EW', label: 'Extinct in the wild' },
   { id: 'CR', label: 'Critically Endangered' },

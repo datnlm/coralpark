@@ -28,7 +28,6 @@ export default function DiverCreate() {
   const { diverList } = useSelector((state: RootState) => state.diver);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  // const currentDiver = diverList.find((diver) => paramCase(diver.name) === name);
   const [currentDiver, setcurrentDiver] = useState({
     id: '',
     username: '',

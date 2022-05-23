@@ -176,11 +176,11 @@ export default function UserList() {
   //   dispatch(deleteUser(userId));
   // };
 
-  const handleDeleteUser = async (coralId: string) => {
+  const handleDeleteCoralType = async (coralId: string) => {
     try {
-      await manageCoral.deleteCoral(coralId).then((respone) => {
+      await manageCoral.deleteCoralType(coralId).then((respone) => {
         if (respone.status === 200) {
-          dispatch(getListCoral());
+          dispatch(getListCoralType());
         }
       });
     } catch (error) {
@@ -282,10 +282,12 @@ export default function UserList() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{levelType}</TableCell>
+                          <TableCell align="left">
+                            {coralLevelType.find((e: any) => e.id == levelType)?.label}
+                          </TableCell>
                           <TableCell align="right">
                             <CoralTypeMoreMenu
-                              onDelete={() => handleDeleteUser(id)}
+                              onDelete={() => handleDeleteCoralType(id)}
                               coralTypeId={id.toString()}
                             />
                           </TableCell>

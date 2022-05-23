@@ -26,6 +26,7 @@ import {
   TablePagination
 } from '@material-ui/core';
 import AlertDialog from 'pages/components-overview/material-ui/dialog/AlertDialog';
+import { coralStatus } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
@@ -51,7 +52,6 @@ import {
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'scientific', label: 'Scientific Name', alignRight: false },
-  { id: 'type', label: 'Type', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -271,8 +271,10 @@ export default function UserList() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left">{scientificName}</TableCell>
-                          <TableCell align="left">{coralTypeId}</TableCell>
-                          <TableCell align="left">{statusEnum}</TableCell>
+                          <TableCell align="left">
+                            {coralStatus.find((e: any) => e.id == statusEnum)?.label}
+                          </TableCell>
+                          {/* <TableCell align="left">{statusEnum}</TableCell> */}
                           {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
