@@ -16,7 +16,7 @@ import {
   CreditCard,
   UserInvoice,
   AreaProvice
-} from '../@types/user';
+} from '../@types/coral';
 
 // ----------------------------------------------------------------------
 

@@ -89,9 +89,7 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
             { path: 'list', element: <AreaList /> },
             { path: 'new', element: <AreaCreate /> },
-            { path: '/:name/edit', element: <AreaCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
-            { path: 'invoice', element: <EcommerceInvoice /> }
+            { path: '/:name/edit', element: <AreaCreate /> }
           ]
         },
         {
@@ -119,8 +117,7 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
             { path: 'list', element: <CoraAreaList /> },
-            { path: 'new', element: <CoralAreaCreate /> },
-            { path: 'new-post', element: <BlogNewPost /> }
+            { path: 'new', element: <CoralAreaCreate /> }
           ]
         },
         {
@@ -212,9 +209,7 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
             { path: 'list', element: <AreaList /> },
             { path: 'new', element: <AreaCreate /> },
-            { path: '/:name/edit', element: <AreaCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
-            { path: 'invoice', element: <EcommerceInvoice /> }
+            { path: '/:name/edit', element: <AreaCreate /> }
           ]
         },
         {
@@ -240,8 +235,7 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
             { path: 'list', element: <CoraAreaList /> },
-            { path: 'new', element: <CoralAreaCreate /> },
-            { path: 'new-post', element: <BlogNewPost /> }
+            { path: 'new', element: <CoralAreaCreate /> }
           ]
         },
         {
@@ -296,11 +290,8 @@ const AreaList = Loadable(lazy(() => import('../pages/dashboard/AreaList')));
 const AreaCreate = Loadable(lazy(() => import('../pages/dashboard/AreaCreate')));
 const PhasesCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhases')));
 const PhasesTypeCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhasesType')));
-const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
-const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/EcommerceInvoice')));
-const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralArea')));
+const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralAreaList')));
 const CoralAreaCreate = Loadable(lazy(() => import('../pages/dashboard/CoralAreaCreate')));
-const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 const CoralList = Loadable(lazy(() => import('../pages/dashboard/CoralList')));
 const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')));
 const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));

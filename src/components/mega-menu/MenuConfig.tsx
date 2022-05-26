@@ -85,8 +85,11 @@ const menuConfig: MegaMenuItemProps[] = [
         items: [{ title: 'Phase Type', path: PATH_DASHBOARD.phases.typeNew }]
       },
       {
-        subheader: 'Coral Area',
-        items: [{ title: 'list', path: PATH_DASHBOARD.coralArea.list }]
+        subheader: 'Area',
+        items: [
+          { title: 'List', path: PATH_DASHBOARD.coralArea.list },
+          { title: 'Create', path: PATH_DASHBOARD.coralArea.new }
+        ]
       }
     ]
   },

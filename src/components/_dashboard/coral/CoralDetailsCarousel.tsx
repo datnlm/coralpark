@@ -7,7 +7,7 @@ import { Box } from '@material-ui/core';
 // @types
 import LightboxModal from 'components/LightboxModal';
 import { CarouselControlsArrowsIndex } from 'components/carousel/controls';
-import { Coral } from '../../../@types/user';
+import { Coral } from '../../../@types/coral';
 // ----------------------------------------------------------------------
 
 const THUMB_SIZE = 64;

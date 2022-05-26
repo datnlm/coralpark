@@ -37,7 +37,8 @@ export const coralStatus = [
   { id: 'NT', label: 'Near Threatened' },
   { id: 'LC', label: 'Least Concern' },
   { id: 'DD', label: 'Data deficient' },
-  { id: 'NE', label: 'Not evaluated' }
+  { id: 'NE', label: 'Not evaluated' },
+  { id: 'DE', label: 'Deleted' }
 ];
 // const optionsStatus = [
 //   { id: 'EX', name: 'Tuyệt chủng' },

@@ -187,7 +187,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       }
     });
 
-    manageArea.getArea().then((response) => {
+    manageArea.getListArea().then((response) => {
       if (response.status == 200) {
         setOptionsArea(response.data.items);
         // setFieldValue('areaID', { id: 1, wellKnownText: 'string', address: 'string' });

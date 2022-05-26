@@ -88,7 +88,7 @@ export default function LoginForm() {
           resetForm();
           if (isMountedRef.current) {
             setSubmitting(false);
-            setErrors({ afterSubmit: 'The email address or password are not valid.' });
+            setErrors({ afterSubmit: 'The username or password are not valid.' });
 
             // set login 5 failed
             // failedLoginAttempts

@@ -4,10 +4,10 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageCoral } from '_apis_/coral';
-import { CoralType } from '../../@types/user';
+import { CoralType } from '../../@types/coral';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/user';
+import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks

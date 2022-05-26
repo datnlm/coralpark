@@ -7,7 +7,7 @@ import { manageCoral } from '_apis_/coral';
 import { Container } from '@material-ui/core';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/user';
+import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -16,7 +16,7 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import CoralNewForm from '../../components/_dashboard/coral/CoralNewForm';
-import { Coral, Habitat } from '../../@types/user';
+import { Coral, Habitat } from '../../@types/coral';
 // ----------------------------------------------------------------------
 
 export default function UserCreate() {

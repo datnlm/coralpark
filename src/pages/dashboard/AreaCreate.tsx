@@ -7,7 +7,7 @@ import { Container } from '@material-ui/core';
 import { Area } from '../../@types/area';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts, getAreas } from '../../redux/slices/product';
+import { getListArea } from '../../redux/slices/area1';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -33,13 +33,15 @@ export default function AreaCreate() {
   const [currentArea, setCurrentArea] = useState<Area>();
 
   const fetchData = async () => {
-    // await manageArea.getAreaByID(paramCase(name)).then((response) => {
-    //   setCurrentArea(response.data);
-    // });
+    await manageArea.getAreaById(paramCase(name)).then((response) => {
+      setCurrentArea(response.data);
+    });
   };
 
   useEffect(() => {
-    fetchData();
+    if (isEdit) {
+      fetchData();
+    }
   }, [dispatch]);
 
   return (
@@ -57,7 +59,6 @@ export default function AreaCreate() {
           ]}
         />
         <AreaNewForm isEdit={isEdit} currentArea={currentArea} />
-        {/* currentArea={currentArea} */}
       </Container>
     </Page>
   );

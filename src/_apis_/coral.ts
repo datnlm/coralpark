@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CoralType, Phases, PhasesType } from '../@types/user';
+import { CoralType, Phases, PhasesType, CoralArea } from '../@types/coral';
 
 export class Coral {
   // get list coral
@@ -59,8 +59,11 @@ export class Coral {
 
   // get list coral type
   getListCoralType = () => {
+    const page_size = 50;
     return axios
-      .get('/api/v1/admin/coral-types')
+      .get('/api/v1/admin/coral-types', {
+        params: { page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };
@@ -120,8 +123,8 @@ export class Coral {
       timeFrom: phaseType.timeForm,
       timeTo: phaseType.timeTo,
       colour: phaseType.coulour,
-      coral: phaseType.coralID.id,
-      coralPhases: phaseType.phaseID.id
+      coral: { id: phaseType.coralID.id },
+      coralPhase: { id: phaseType.phaseID.id }
     };
     return axios
       .post('/api/v1/admin/coral-phase-types', data)
@@ -226,7 +229,7 @@ export class Coral {
       brightness: habitat.brightness,
       tides: habitat.tides,
       current: habitat.current,
-      coralId: habitat.id
+      coral: { id: habitat.coralId }
     };
     return axios
       .post('/api/v1/admin/habitats', data)
@@ -242,7 +245,7 @@ export class Coral {
       brightness: habitat.brightness,
       tides: habitat.tides,
       current: habitat.current,
-      coralId: habitat.id
+      coral: { id: habitat.coralId }
     };
     return axios
       .put('/api/v1/admin/habitats', data)
@@ -254,6 +257,36 @@ export class Coral {
   getHabitatByCoralId = (coralId: string) => {
     return axios
       .get(`/api/v1/admin/habitats/coral/${coralId}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  createCoralArea = (coralArea: CoralArea) => {
+    const data = {
+      coral: { id: coralArea.coral },
+      area: { id: coralArea.area }
+    };
+    return axios
+      .post('/api/v1/admin/coral-areas', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateCoralArea = (coralArea: CoralArea) => {
+    const data = {
+      id: coralArea.id,
+      coral: { id: coralArea.coral.id },
+      area: { id: coralArea.area.id }
+    };
+    return axios
+      .put('/api/v1/admin/coral-areas', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  deleteCoralArea = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/coral-areas/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };

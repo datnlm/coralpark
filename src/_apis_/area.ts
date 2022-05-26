@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { Area } from '../@types/area';
 // @types
-export class Area {
+export class AreaManager {
   // get list area
-  getArea = () => {
+  getListArea = () => {
     return axios
       .get('/api/v1/admin/areas')
       .then((res) => res)
@@ -22,6 +23,39 @@ export class Area {
       .then((res) => res)
       .catch((err) => err);
   };
+
+  createArea = (area: Area) => {
+    const data = {
+      name: area.name,
+      address: area.address,
+      wellKnownText: area.wellKnownText
+    };
+    return axios
+      .post('/api/v1/admin/areas', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateArea = (area: Area) => {
+    const data = {
+      id: area.id,
+      name: area.name,
+      address: area.address,
+      wellKnownText: area.wellKnownText
+    };
+    return axios
+      .put('/api/v1/admin/areas', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // delete
+  deleteArea = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/areas/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
 }
 
-export const manageArea = new Area();
+export const manageArea = new AreaManager();

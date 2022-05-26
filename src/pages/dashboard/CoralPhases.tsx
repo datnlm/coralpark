@@ -5,7 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/user';
+import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks

@@ -5,12 +5,13 @@ import storage from 'redux-persist/lib/storage';
 import mailReducer from './slices/mail';
 import chatReducer from './slices/chat';
 import blogReducer from './slices/blog';
-import userReducer from './slices/user';
+import userReducer from './slices/coral';
 import gardenReducer from './slices/garden';
 import diverReducer from './slices/diver';
-import productReducer from './slices/product';
+import productReducer from './slices/area1';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
+import areaReducer from './slices/area';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   blog: blogReducer,
   user: userReducer,
   diver: diverReducer,
+  area: areaReducer,
   garden: gardenReducer,
   calendar: calendarReducer,
   kanban: kanbanReducer,

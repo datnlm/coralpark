@@ -36,7 +36,7 @@ import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { UserManager, Coral, Habitat } from '../../../@types/user';
+import { UserManager, Coral, Habitat } from '../../../@types/coral';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
@@ -94,7 +94,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentCoral?.id || '',
+      coralId: currentCoral?.id || '',
       name: currentCoral?.name || '',
       imageUrl: [],
       images: currentCoral?.images || [],
@@ -105,7 +105,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       nutrition: currentCoral?.nutrition || '',
       colour: currentCoral?.colour || '',
       description: currentCoral?.description || '',
-      coralTypeId: currentCoral?.coralTypeId || null,
+      coralType: currentCoral?.coralType || null,
       statusEnum: currentCoral?.statusEnum || null,
       habitatId: currentHabitat?.id || '',
       bathymetry: currentHabitat?.bathymetry || '',
@@ -121,7 +121,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
         if (valueTab === 'coral') {
           const bodyFormData = new FormData();
           if (isEdit) {
-            bodyFormData.append('Id', values.id);
+            bodyFormData.append('Id', values.coralId);
           }
           bodyFormData.append('Name', values.name);
           bodyFormData.append('ScientificName', values.scientificName);
@@ -131,7 +131,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
           bodyFormData.append('Nutrition', values.nutrition);
           bodyFormData.append('Colour', values.colour);
           bodyFormData.append('Description', values.description);
-          bodyFormData.append('CoralTypeId', values.coralTypeId.id);
+          bodyFormData.append('CoralType.Id', values.coralType.id);
           bodyFormData.append('StatusEnum', enumCoralStatus!.id);
           values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
           !isEdit
@@ -327,17 +327,17 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           fullWidth
                           disablePortal
                           clearIcon
-                          id="coralTypeId"
-                          {...getFieldProps('coralTypeId')}
+                          id="coralType"
+                          {...getFieldProps('coralType')}
                           options={optionsGenus}
                           getOptionLabel={(option) => (option ? option.name : '')}
-                          onChange={(e, value) => setFieldValue('coralTypeId', value)}
+                          onChange={(e, value) => setFieldValue('coralType', value)}
                           renderInput={(params) => (
                             <TextField
                               {...params}
                               label="Species name"
-                              error={Boolean(touched.coralTypeId && errors.coralTypeId)}
-                              helperText={touched.coralTypeId && errors.coralTypeId}
+                              error={Boolean(touched.coralType && errors.coralType)}
+                              helperText={touched.coralType && errors.coralType}
                             />
                           )}
                         />
@@ -364,14 +364,6 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                               <Grid item xs={12} md={6} lg={7}>
                                 <CoralDetailsCarousel coral={currentCoral} />
                               </Grid>
-                              {/* <Grid item xs={12} md={6} lg={5}>
-                                <CoralDetailsSummary
-                                  product={product}
-                                  cart={checkout.cart}
-                                  onAddCart={handleAddCart}
-                                  onGotoStep={handleGotoStep}
-                                />
-                              </Grid> */}
                             </Grid>
                           </Card>
                         </>

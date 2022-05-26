@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { filter, orderBy } from 'lodash';
 import { Icon } from '@iconify/react';
+import { useSnackbar } from 'notistack5';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
@@ -28,19 +29,13 @@ import CoralTypeSort from 'components/_dashboard/coral/CoralTypeSort';
 import { coralLevelType } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import {
-  getUserList,
-  deleteUser,
-  getAreaProvice,
-  getListCoral,
-  getListCoralType
-} from '../../redux/slices/user';
+import { getListCoralType } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { CoralType } from '../../@types/user';
+import { CoralType } from '../../@types/coral';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -86,6 +81,7 @@ export default function UserList() {
   const [filters, setFilters] = useState('1');
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const coralTypeList = useSelector((state: RootState) => state.user.coralListType);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -181,9 +177,13 @@ export default function UserList() {
       await manageCoral.deleteCoralType(coralId).then((respone) => {
         if (respone.status === 200) {
           dispatch(getListCoralType());
+          enqueueSnackbar('Delete success', { variant: 'success' });
+        } else {
+          enqueueSnackbar('Delete error', { variant: 'error' });
         }
       });
     } catch (error) {
+      enqueueSnackbar('Delete error', { variant: 'error' });
       console.log(error);
     }
   };

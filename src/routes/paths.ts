@@ -86,9 +86,7 @@ export const PATH_DASHBOARD = {
   coralArea: {
     root: path(ROOTS_DASHBOARD, '/coralarea'),
     list: path(ROOTS_DASHBOARD, '/coralarea/list'),
-    new: path(ROOTS_DASHBOARD, '/coralarea/new'),
-    postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
-    newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
+    new: path(ROOTS_DASHBOARD, '/coralarea/new')
   },
   site: {
     root: path(ROOTS_DASHBOARD, '/site'),

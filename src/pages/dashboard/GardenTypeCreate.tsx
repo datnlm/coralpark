@@ -8,7 +8,7 @@ import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/user';
+import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -17,7 +17,7 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import GardenTypeNewForm from '../../components/_dashboard/garden/GardenTypeNewForm';
-import { UserManager, Coral } from '../../@types/user';
+import { UserManager, Coral } from '../../@types/coral';
 // ----------------------------------------------------------------------
 
 export default function GardenCreate() {

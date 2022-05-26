@@ -31,7 +31,7 @@ import { OptionStatus, coralLevelTypeOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { CoralType } from '../../../@types/user';
+import { CoralType } from '../../../@types/coral';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';

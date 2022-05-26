@@ -4,37 +4,19 @@ import { createSlice } from '@reduxjs/toolkit';
 import { manageDiver } from '_apis_/diver';
 import { dispatch } from '../store';
 // utils
-import axios from '../../utils/axios';
 import { Diver } from '../../@types/diver';
-import {
-  Friend,
-  Gallery,
-  Profile,
-  UserPost,
-  Follower,
-  UserData,
-  CreditCard,
-  UserInvoice,
-  UserManager,
-  UserAddressBook,
-  NotificationSettings,
-  AreaProvice,
-  Coral
-} from '../../@types/user';
 
 // ----------------------------------------------------------------------
 
 type DiverState = {
   isLoading: boolean;
   error: boolean;
-  followers: Follower[];
   diverList: Diver[];
 };
 
 const initialState: DiverState = {
   isLoading: false,
   error: false,
-  followers: [],
   diverList: []
 };
 
@@ -51,12 +33,6 @@ const slice = createSlice({
     hasError(state, action) {
       state.isLoading = false;
       state.error = action.payload;
-    },
-
-    // GET FOLLOWERS
-    getFollowersSuccess(state, action) {
-      state.isLoading = false;
-      state.followers = action.payload;
     },
 
     // GET LIST Diver
@@ -85,7 +61,7 @@ export function getListDiver() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageDiver.getListDiver().then((response) => {
+      await manageDiver.getListDiver().then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getListDiver(response.data.items));
         }

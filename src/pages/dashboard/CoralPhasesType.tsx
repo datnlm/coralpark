@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
-import { Container } from '@material-ui/core';
+import { Container, Paper, Stack } from '@material-ui/core';
+import LinearAlternativeLabel from 'pages/components-overview/material-ui/stepper/LinearAlternativeLabel';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/user';
+import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -41,8 +42,18 @@ export default function PhasesTypeCreate() {
             { name: !isEdit ? 'New type' : name }
           ]}
         />
-
-        <CoralPhasesTypeNewForm isEdit={isEdit} />
+        <Stack spacing={5}>
+          <Paper
+            sx={{
+              p: 3,
+              width: '100%',
+              boxShadow: (theme) => theme.customShadows.z8
+            }}
+          >
+            <LinearAlternativeLabel />
+          </Paper>
+        </Stack>
+        {/* <CoralPhasesTypeNewForm isEdit={isEdit} /> */}
       </Container>
     </Page>
   );
