@@ -33,7 +33,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // import { MIconButton } from '../../../@material-extend';
 // import ColorSinglePicker from '../../../ColorSinglePicker';
 // import { Product, CartItem } from '../../../../@types/products';
-import { Coral } from '../../../@types/user';
+import { Coral } from '../../../@types/coral';
 
 // ----------------------------------------------------------------------
 

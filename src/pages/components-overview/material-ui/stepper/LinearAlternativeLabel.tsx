@@ -1,12 +1,27 @@
 import { useState } from 'react';
 // material
-import { Box, Step, Paper, Button, Stepper, StepLabel, Typography } from '@material-ui/core';
-
+import {
+  Box,
+  Step,
+  Paper,
+  Button,
+  Stepper,
+  StepLabel,
+  Typography,
+  IconButton,
+  Stack,
+  TextField,
+  Grid,
+  Card
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import CoralPhasesTypeNewForm from 'components/_dashboard/coral/CoralPhasesTypeNewForm';
 // ----------------------------------------------------------------------
 
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+// const steps = ['Phase 1'];
 
 export default function LinearAlternativeLabel() {
+  const [steps, setSteps] = useState(['Phase 1']);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
 
@@ -48,6 +63,17 @@ export default function LinearAlternativeLabel() {
     setActiveStep(0);
   };
 
+  const handleAddMore = () => {
+    const s = steps;
+    s.push('New Phase');
+    setSteps(s);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
   return (
     <>
       <Stepper activeStep={activeStep} alternativeLabel>
@@ -66,6 +92,9 @@ export default function LinearAlternativeLabel() {
             </Step>
           );
         })}
+        <IconButton aria-label="add" onClick={handleAddMore}>
+          <AddIcon />
+        </IconButton>
       </Stepper>
       {activeStep === steps.length ? (
         <>
@@ -81,7 +110,12 @@ export default function LinearAlternativeLabel() {
       ) : (
         <>
           <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-            <Typography sx={{ my: 1 }}> Step {activeStep + 1}</Typography>
+            {/* <Typography sx={{ my: 1 }}> Step {activeStep + 1}</Typography> */}
+            <CoralPhasesTypeNewForm isEdit={false} />
+            {/* {activeStep === 2 && <CoralPhasesTypeNewForm isEdit={false} />} */}
+            {/* {activeStep === 0 && <CheckoutCart />}
+            {activeStep === 1 && <CheckoutBillingAddress />}
+            {activeStep === 2 && <CheckoutPayment />} */}
           </Paper>
           <Box sx={{ display: 'flex' }}>
             <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>

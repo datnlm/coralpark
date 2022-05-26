@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CoralType, Phases, PhasesType } from '../@types/user';
+import { CoralType, Phases, PhasesType, CoralArea } from '../@types/coral';
 
 export class Coral {
   // get list coral
@@ -22,6 +22,14 @@ export class Coral {
   getCoralByID = (id: string) => {
     return axios
       .get(`/api/v1/admin/corals/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // delete coral type
+  deleteCoralType = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/coral-types/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -51,8 +59,19 @@ export class Coral {
 
   // get list coral type
   getListCoralType = () => {
+    const page_size = 50;
     return axios
-      .get('/api/v1/admin/coral-types')
+      .get('/api/v1/admin/coral-types', {
+        params: { page_size }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // get coral type by id
+  getCoralTypeByID = (coralTypeId: string) => {
+    return axios
+      .get(`/api/v1/admin/coral-types/${coralTypeId}`)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -104,8 +123,8 @@ export class Coral {
       timeFrom: phaseType.timeForm,
       timeTo: phaseType.timeTo,
       colour: phaseType.coulour,
-      coral: phaseType.coralID.id,
-      coralPhases: phaseType.phaseID.id
+      coral: { id: phaseType.coralID.id },
+      coralPhase: { id: phaseType.phaseID.id }
     };
     return axios
       .post('/api/v1/admin/coral-phase-types', data)
@@ -132,8 +151,8 @@ export class Coral {
       .catch((err) => err);
   };
 
+  // create coral type
   createCoralType = (coralType: CoralType) => {
-    console.log(coralType);
     let data = {};
     if (coralType.levelType == '1') {
       data = {
@@ -151,6 +170,31 @@ export class Coral {
     }
     return axios
       .post('/api/v1/admin/coral-types', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  //  update coral type
+  updateCoralType = (coralType: CoralType) => {
+    let data = {};
+    if (coralType.levelType == '1') {
+      data = {
+        id: coralType.id,
+        name: coralType.name,
+        levelType: coralType.levelType,
+        description: coralType.description
+      };
+    } else {
+      data = {
+        id: coralType.id,
+        name: coralType.name,
+        parentId: coralType.parentId,
+        levelType: coralType.levelType,
+        description: coralType.description
+      };
+    }
+    return axios
+      .put('/api/v1/admin/coral-types', data)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -185,9 +229,66 @@ export class Coral {
       brightness: habitat.brightness,
       tides: habitat.tides,
       current: habitat.current,
-      coralId: habitat.id
+      coral: { id: habitat.coralId }
     };
-    axios.post('/api/v1/admin/habitats', data);
+    return axios
+      .post('/api/v1/admin/habitats', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateHabitat = (habitat: any) => {
+    const data = {
+      id: habitat.habitatId,
+      bathymetry: habitat.bathymetry,
+      temperature: habitat.temperature,
+      brightness: habitat.brightness,
+      tides: habitat.tides,
+      current: habitat.current,
+      coral: { id: habitat.coralId }
+    };
+    return axios
+      .put('/api/v1/admin/habitats', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // get habitat by coral id
+  getHabitatByCoralId = (coralId: string) => {
+    return axios
+      .get(`/api/v1/admin/habitats/coral/${coralId}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  createCoralArea = (coralArea: CoralArea) => {
+    const data = {
+      coral: { id: coralArea.coral },
+      area: { id: coralArea.area }
+    };
+    return axios
+      .post('/api/v1/admin/coral-areas', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateCoralArea = (coralArea: CoralArea) => {
+    const data = {
+      id: coralArea.id,
+      coral: { id: coralArea.coral.id },
+      area: { id: coralArea.area.id }
+    };
+    return axios
+      .put('/api/v1/admin/coral-areas', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  deleteCoralArea = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/coral-areas/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
   };
 }
 export const manageCoral = new Coral();

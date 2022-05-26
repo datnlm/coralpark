@@ -4,9 +4,10 @@ import { useParams, useLocation } from 'react-router-dom';
 import { manageArea } from '_apis_/area';
 // material
 import { Container } from '@material-ui/core';
+import { Area } from '../../@types/area';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts, getAreas } from '../../redux/slices/product';
+import { getListArea } from '../../redux/slices/area1';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -16,7 +17,7 @@ import { ProductState } from '../../@types/products';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import ProductNewForm from '../../components/_dashboard/area/ProductNewForm';
+import AreaNewForm from '../../components/_dashboard/area/AreaNewForm';
 
 // ----------------------------------------------------------------------
 
@@ -29,27 +30,22 @@ export default function AreaCreate() {
   const arealist = useSelector((state: { product: ProductState }) => state.product.areas);
   const isEdit = pathname.includes('edit');
   // const currentProduct = products.find((product) => paramCase(product.name) === name);
-  const currentArea = arealist.find((area) => paramCase(area.id.toString()) === name);
-  // const [currentArea, setCurrentArea] = useState({
-  //   id: 'string',
-  //   location: 'string',
-  //   address: 'string',
-  //   provinceName: 'string',
-  //   provinceID: 'string'
-  // });
+  const [currentArea, setCurrentArea] = useState<Area>();
 
   const fetchData = async () => {
-    // await manageArea.getAreaByID(paramCase(name)).then((response) => {
-    //   setCurrentArea(response.data);
-    // });
+    await manageArea.getAreaById(paramCase(name)).then((response) => {
+      setCurrentArea(response.data);
+    });
   };
 
   useEffect(() => {
-    fetchData();
+    if (isEdit) {
+      fetchData();
+    }
   }, [dispatch]);
 
   return (
-    <Page title="Area: Create a new area">
+    <Page title={!isEdit ? 'Area: Create a new area' : 'Area: Edit area'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new area' : 'Edit area'}
@@ -62,8 +58,7 @@ export default function AreaCreate() {
             { name: !isEdit ? 'New area' : name }
           ]}
         />
-        <ProductNewForm isEdit={isEdit} currentArea={currentArea} />
-        {/* currentArea={currentArea} */}
+        <AreaNewForm isEdit={isEdit} currentArea={currentArea} />
       </Container>
     </Page>
   );

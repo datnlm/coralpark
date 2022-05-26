@@ -97,7 +97,7 @@ export function getListGarden() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageGarden.getListGarden().then((response) => {
+      await manageGarden.getListGarden().then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getListGarden(response.data.items));
         }
@@ -147,7 +147,7 @@ export function deleteGardenTypes(gardenTypeID: string) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageGarden.deleteGardenType(gardenTypeID);
+      await manageGarden.deleteGardenType(gardenTypeID);
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

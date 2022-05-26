@@ -1,4 +1,5 @@
 import { FormikProps } from 'formik';
+import { Area } from './area';
 
 // ----------------------------------------------------------------------
 
@@ -77,18 +78,6 @@ export type BillingAddress = {
   fullAddress: string;
   addressType: string;
   isDefault: boolean;
-};
-
-export type Area = {
-  // id: string;
-  // location: string;
-  // address: string;
-  // provinceName: string;
-  // provinceId: string;
-
-  id: string;
-  address: string;
-  wardCode: string;
 };
 
 export type ProductState = {

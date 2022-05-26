@@ -1,4 +1,5 @@
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
@@ -27,8 +28,8 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import axiosInstance from 'utils/axios';
 import axios from 'axios';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts, getAreas } from '../../redux/slices/product';
+import { RootState, useDispatch, useSelector } from '../../redux/store';
+import { getListArea } from '../../redux/slices/area';
 // utils
 // import { fDate } from '../../utils/formatTime';
 import { fCurrency } from '../../utils/formatNumber';
@@ -37,7 +38,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { Product, ProductState, Area } from '../../@types/products';
+import { Area } from '../../@types/area';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -49,10 +50,8 @@ import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../../components/_d
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Address', alignRight: false },
-  { id: 'createdAt', label: 'Ward Code', alignRight: false },
-  // { id: 'inventoryType', label: 'Status', alignRight: false },
-  // { id: 'price', label: 'Address', alignRight: true },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'address', label: 'Address', alignRight: false },
   { id: '' }
 ];
 
@@ -108,9 +107,8 @@ export default function EcommerceProductList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
-
-  const { products } = useSelector((state: { product: ProductState }) => state.product);
-  const arealist = useSelector((state: { product: ProductState }) => state.product.areas);
+  const { enqueueSnackbar } = useSnackbar();
+  const areaList = useSelector((state: RootState) => state.area.areaList);
   // const arealist = useSelector((state: ProductState) => state.areas);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -120,7 +118,7 @@ export default function EcommerceProductList() {
   const [orderBy, setOrderBy] = useState('createdAt');
   useEffect(() => {
     // dispatch(getProducts());
-    dispatch(getAreas());
+    dispatch(getListArea());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -131,7 +129,7 @@ export default function EcommerceProductList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const selected = products.map((n) => n.name);
+      const selected = areaList.map((n) => n.name);
       setSelected(selected);
       return;
     }
@@ -165,24 +163,26 @@ export default function EcommerceProductList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = async (areaID: string) => {
-    console.log('167 handleDelete');
+  const handleDeleteArea = async (areaId: string) => {
     try {
-      // await manageArea.deleteArea(areaID).then((respone) => {
-      //   if (respone.status === 200) {
-      //     dispatch(getAreas());
-      //   }
-      // });
+      await manageArea.deleteArea(areaId).then((respone) => {
+        if (respone.status == 200) {
+          enqueueSnackbar('Delete success', { variant: 'success' });
+          dispatch(getListArea());
+        } else {
+          enqueueSnackbar('Delete fail', { variant: 'error' });
+        }
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - areaList.length) : 0;
 
-  const filteredProducts = applySortFilter(arealist, getComparator(order, orderBy), filterName);
+  const filteredArea = applySortFilter(areaList, getComparator(order, orderBy), filterName);
 
-  const isProductNotFound = filteredProducts.length === 0;
+  const isProductNotFound = filteredArea.length === 0;
   return (
     <Page title="Area: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -222,16 +222,16 @@ export default function EcommerceProductList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={arealist.length}
+                  rowCount={areaList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredProducts
+                  {filteredArea
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const { id, address, wardCode } = row;
+                      const { id, name, address } = row;
 
                       const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -248,14 +248,12 @@ export default function EcommerceProductList() {
                           <TableCell padding="checkbox">
                             {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
-                          {/* <TableCell align="left"></TableCell> */}
+                          <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{address}</TableCell>
-                          <TableCell align="left">{wardCode}</TableCell>
-                          {/* <TableCell align="right"></TableCell> */}
                           <TableCell align="right">
                             <AreaMoreMenu
-                              onDelete={() => handleDeleteUser(id.toString())}
-                              areaID={id.toString()}
+                              onDelete={() => handleDeleteArea(id.toString())}
+                              areaId={id.toString()}
                             />
                           </TableCell>
                         </TableRow>
@@ -285,7 +283,7 @@ export default function EcommerceProductList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={products.length}
+            count={areaList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(event, value) => setPage(value)}

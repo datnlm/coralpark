@@ -1,10 +1,6 @@
 // ----------------------------------------------------------------------
 
 import { FormikProps } from 'formik';
-import { type } from 'os';
-import internal from 'stream';
-import { StringLocale } from 'yup/lib/locale';
-
 // export type CoralType = {
 //   name: string;
 //   parent: string;
@@ -23,6 +19,7 @@ export type AccountBillingFormikProps = FormikProps<{
 
 export type Area = {
   id: string;
+  name: string;
   address: string;
-  wardCode: string;
+  wellKnownText: string;
 };

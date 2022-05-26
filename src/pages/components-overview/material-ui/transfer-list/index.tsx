@@ -8,7 +8,7 @@ import Page from '../../../../components/Page';
 import HeaderBreadcrumbs from '../../../../components/HeaderBreadcrumbs';
 //
 import { Block } from '../../Block';
-import SimpleTransferList from './SimpleTransferList';
+// import SimpleTransferList from './SimpleTransferList';
 import EnhancedTransferList from './EnhancedTransferList';
 
 // ----------------------------------------------------------------------
@@ -49,9 +49,9 @@ export default function TransferListComponent() {
 
       <Container maxWidth="lg">
         <Stack spacing={5}>
-          <Block title="Simple" sx={style}>
-            <SimpleTransferList />
-          </Block>
+          {/* <Block title="Simple" sx={style}> */}
+            {/* <SimpleTransferList /> */}
+          {/* </Block> */}
 
           <Block title="Enhanced" sx={style}>
             <EnhancedTransferList />

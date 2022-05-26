@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 
-import CoralAreaNewForm from 'components/_dashboard/blog/CoralAreaNewForm';
+import CoralAreaNewForm from 'components/_dashboard/coral_area/CoralAreaNewForm';
+import { manageCoral } from '_apis_/coral';
+
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/user';
+import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -15,7 +17,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-
+import { CoralArea } from '../../@types/coral';
 // ----------------------------------------------------------------------
 
 export default function UserCreate() {
@@ -23,26 +25,33 @@ export default function UserCreate() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { name } = useParams();
-  const { userList } = useSelector((state: RootState) => state.user);
   const isEdit = pathname.includes('edit');
-  // const currentUser = userList.find((user) => paramCase(user.name) === name);
+  const [currentCoralArea, setCurrentCoralArea] = useState<CoralArea>();
+
+  const fetchData = async () => {
+    if (isEdit) {
+      await manageCoral.getCoralByID(paramCase(name)).then((response) => {
+        setCurrentCoralArea(response.data);
+      });
+    }
+  };
 
   useEffect(() => {
-    dispatch(getUserList());
+    fetchData();
   }, [dispatch]);
 
   return (
-    <Page title="Coral: Create a new list | Minimal-UI">
+    <Page title={!isEdit ? 'Coral Area: Create a new coral area' : 'Coral Area: Edit coral area'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new coral type' : 'Edit coral type'}
+          heading={!isEdit ? 'Create a new coral area' : 'Edit coral area'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Type', href: PATH_DASHBOARD.user.root },
-            { name: !isEdit ? 'New coral type' : name }
+            { name: 'Coral Area', href: PATH_DASHBOARD.user.root },
+            { name: !isEdit ? 'New' : name }
           ]}
         />
-        <CoralAreaNewForm isEdit={isEdit} />
+        <CoralAreaNewForm isEdit={isEdit} currentCoralArea={currentCoralArea} />
       </Container>
     </Page>
   );

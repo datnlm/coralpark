@@ -6,7 +6,7 @@ import chevronDownFill from '@iconify/icons-eva/chevron-down-fill';
 import { Menu, Button, MenuItem, Typography } from '@material-ui/core';
 // redux
 import { useDispatch, useSelector } from '../../../../redux/store';
-import { sortByProducts } from '../../../../redux/slices/product';
+import { sortByProducts } from '../../../../redux/slices/area1';
 // @types
 import { ProductState } from '../../../../@types/products';
 

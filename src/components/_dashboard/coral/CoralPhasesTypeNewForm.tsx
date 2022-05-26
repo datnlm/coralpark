@@ -6,13 +6,20 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { manageCoral } from '_apis_/coral';
 // material
 import { LoadingButton } from '@material-ui/lab';
-import { Box, Card, Grid, Stack, TextField, Autocomplete } from '@material-ui/core';
-// utils
-import fakeRequest from '../../../utils/fakeRequest';
+import {
+  Box,
+  Card,
+  Grid,
+  Stack,
+  TextField,
+  Autocomplete,
+  Paper,
+  Container
+} from '@material-ui/core';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { PhasesType } from '../../../@types/user';
+import { PhasesType } from '../../../@types/coral';
 
 // ----------------------------------------------------------------------
 
@@ -125,118 +132,110 @@ export default function CoralPhasesTypeNewForm({
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3 }}>
-              <Stack spacing={3}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+        <Card sx={{ p: 3 }}>
+          <Stack spacing={3}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+              <TextField
+                fullWidth
+                label="Min Weight"
+                {...getFieldProps('minWeight')}
+                error={Boolean(touched.minWeight && errors.minWeight)}
+                helperText={touched.minWeight && errors.minWeight}
+              />
+              <TextField
+                fullWidth
+                label="Max Weight"
+                {...getFieldProps('maxWeight')}
+                error={Boolean(touched.maxWeight && errors.maxWeight)}
+                helperText={touched.maxWeight && errors.maxWeight}
+              />
+            </Stack>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+              <TextField
+                fullWidth
+                label="Min High"
+                {...getFieldProps('minHigh')}
+                error={Boolean(touched.minHigh && errors.minHigh)}
+                helperText={touched.minHigh && errors.minHigh}
+              />
+              <TextField
+                fullWidth
+                label="Max High"
+                {...getFieldProps('maxHigh')}
+                error={Boolean(touched.maxHigh && errors.maxHigh)}
+                helperText={touched.maxHigh && errors.maxHigh}
+              />
+            </Stack>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+              <TextField
+                fullWidth
+                label="Time From"
+                {...getFieldProps('timeForm')}
+                error={Boolean(touched.timeForm && errors.timeForm)}
+                helperText={touched.timeForm && errors.timeForm}
+              />
+              <TextField
+                fullWidth
+                label="Time To"
+                {...getFieldProps('timeTo')}
+                error={Boolean(touched.timeTo && errors.timeTo)}
+                helperText={touched.timeTo && errors.timeTo}
+              />
+            </Stack>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+              <TextField
+                fullWidth
+                label="Colour"
+                {...getFieldProps('coulour')}
+                error={Boolean(touched.coulour && errors.coulour)}
+                helperText={touched.coulour && errors.coulour}
+              />
+              <Autocomplete
+                fullWidth
+                disablePortal
+                clearIcon
+                id="coral"
+                {...getFieldProps('coralID')}
+                options={optionCoral}
+                getOptionLabel={(option: any) => (option ? option.name : '')}
+                onChange={(e, value: any) => (value ? { ...setFieldValue('coralID', value) } : '')}
+                renderInput={(params) => (
                   <TextField
-                    fullWidth
-                    label="Min Weight"
-                    {...getFieldProps('minWeight')}
-                    error={Boolean(touched.minWeight && errors.minWeight)}
-                    helperText={touched.minWeight && errors.minWeight}
+                    {...params}
+                    label="Coral"
+                    error={Boolean(touched.coralID && errors.coralID)}
+                    helperText={touched.coralID && errors.coralID}
                   />
+                )}
+              />
+            </Stack>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+              <Autocomplete
+                fullWidth
+                disablePortal
+                clearIcon
+                id="coral"
+                {...getFieldProps('phaseID')}
+                options={optionCoralPhases}
+                getOptionLabel={(option: any) => (option ? option.name : '')}
+                onChange={(e, value: any) => (value ? { ...setFieldValue('phaseID', value) } : '')}
+                renderInput={(params) => (
                   <TextField
-                    fullWidth
-                    label="Max Weight"
-                    {...getFieldProps('maxWeight')}
-                    error={Boolean(touched.maxWeight && errors.maxWeight)}
-                    helperText={touched.maxWeight && errors.maxWeight}
+                    {...params}
+                    label="Phases"
+                    error={Boolean(touched.phaseID && errors.phaseID)}
+                    helperText={touched.phaseID && errors.phaseID}
                   />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Min High"
-                    {...getFieldProps('minHigh')}
-                    error={Boolean(touched.minHigh && errors.minHigh)}
-                    helperText={touched.minHigh && errors.minHigh}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Max High"
-                    {...getFieldProps('maxHigh')}
-                    error={Boolean(touched.maxHigh && errors.maxHigh)}
-                    helperText={touched.maxHigh && errors.maxHigh}
-                  />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Time From"
-                    {...getFieldProps('timeForm')}
-                    error={Boolean(touched.timeForm && errors.timeForm)}
-                    helperText={touched.timeForm && errors.timeForm}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Time To"
-                    {...getFieldProps('timeTo')}
-                    error={Boolean(touched.timeTo && errors.timeTo)}
-                    helperText={touched.timeTo && errors.timeTo}
-                  />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Colour"
-                    {...getFieldProps('coulour')}
-                    error={Boolean(touched.coulour && errors.coulour)}
-                    helperText={touched.coulour && errors.coulour}
-                  />
-                  <Autocomplete
-                    fullWidth
-                    disablePortal
-                    clearIcon
-                    id="coral"
-                    {...getFieldProps('coralID')}
-                    options={optionCoral}
-                    getOptionLabel={(option: any) => (option ? option.name : '')}
-                    onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('coralID', value) } : ''
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Coral"
-                        error={Boolean(touched.coralID && errors.coralID)}
-                        helperText={touched.coralID && errors.coralID}
-                      />
-                    )}
-                  />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <Autocomplete
-                    fullWidth
-                    disablePortal
-                    clearIcon
-                    id="coral"
-                    {...getFieldProps('phaseID')}
-                    options={optionCoralPhases}
-                    getOptionLabel={(option: any) => (option ? option.name : '')}
-                    onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('phaseID', value) } : ''
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Phases"
-                        error={Boolean(touched.phaseID && errors.phaseID)}
-                        helperText={touched.phaseID && errors.phaseID}
-                      />
-                    )}
-                  />
-                </Stack>
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Type' : 'Save Changes'}
-                  </LoadingButton>
-                </Box>
-              </Stack>
-            </Card>
-          </Grid>
-        </Grid>
+                )}
+              />
+            </Stack>
+            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                {!isEdit ? 'Create Type' : 'Save Changes'}
+              </LoadingButton>
+            </Box>
+          </Stack>
+        </Card>
       </Form>
     </FormikProvider>
   );

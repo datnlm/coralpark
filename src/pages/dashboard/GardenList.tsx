@@ -33,7 +33,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { UserManager, Coral } from '../../@types/user';
+import { UserManager, Coral } from '../../@types/coral';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';

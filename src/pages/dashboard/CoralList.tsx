@@ -26,15 +26,16 @@ import {
   TablePagination
 } from '@material-ui/core';
 import AlertDialog from 'pages/components-overview/material-ui/dialog/AlertDialog';
+import { coralStatus } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser, getAreaProvice, getListCoral } from '../../redux/slices/user';
+import { getListCoral } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { UserManager, Coral } from '../../@types/user';
+import { UserManager, Coral } from '../../@types/coral';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -51,7 +52,6 @@ import {
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'scientific', label: 'Scientific Name', alignRight: false },
-  { id: 'type', label: 'Type', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -168,7 +168,6 @@ export default function UserList() {
   };
 
   const handleDeleteCoral = async (coralId: string) => {
-    AlertDialog();
     try {
       await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
@@ -179,6 +178,7 @@ export default function UserList() {
         }
       });
     } catch (error) {
+      enqueueSnackbar('Delete fail', { variant: 'error' });
       console.log(error);
     }
   };
@@ -247,7 +247,7 @@ export default function UserList() {
                   {filteredCorals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, scientificName, statusEnum, coralTypeId } = row;
+                      const { id, name, scientificName, statusEnum, coralType } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       console.log(AreaProvice);
                       return (
@@ -271,8 +271,10 @@ export default function UserList() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left">{scientificName}</TableCell>
-                          <TableCell align="left">{coralTypeId}</TableCell>
-                          <TableCell align="left">{statusEnum}</TableCell>
+                          <TableCell align="left">
+                            {coralStatus.find((e: any) => e.id == statusEnum)?.label}
+                          </TableCell>
+                          {/* <TableCell align="left">{statusEnum}</TableCell> */}
                           {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}

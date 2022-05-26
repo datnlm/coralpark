@@ -23,7 +23,7 @@ import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { Phases } from '../../../@types/user';
+import { Phases } from '../../../@types/coral';
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
 // ----------------------------------------------------------------------

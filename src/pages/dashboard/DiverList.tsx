@@ -149,7 +149,7 @@ export default function UserList() {
   const handleDeleteDiver = async (id: string) => {
     try {
       await manageDiver.deleteDiver(id).then((respone) => {
-        if (respone.status === 200) {
+        if (respone.status == 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
           dispatch(getListDiver());
         }

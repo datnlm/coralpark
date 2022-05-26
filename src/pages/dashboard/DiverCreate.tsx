@@ -8,7 +8,7 @@ import { Container } from '@material-ui/core';
 import { manageDiver } from '_apis_/diver';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/user';
+import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -28,7 +28,6 @@ export default function DiverCreate() {
   const { diverList } = useSelector((state: RootState) => state.diver);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  // const currentDiver = diverList.find((diver) => paramCase(diver.name) === name);
   const [currentDiver, setcurrentDiver] = useState({
     id: '',
     username: '',
