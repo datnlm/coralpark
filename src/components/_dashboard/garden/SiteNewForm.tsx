@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState, useEffect, useRef, lazy } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled as styled } from '@material-ui/core/styles';
@@ -9,22 +9,12 @@ import { LoadingButton } from '@material-ui/lab';
 import {
   Card,
   Box,
-  Chip,
   Grid,
   Stack,
-  Radio,
-  Switch,
-  Select,
   TextField,
-  InputLabel,
   Typography,
-  RadioGroup,
-  FormControl,
   Autocomplete,
-  InputAdornment,
   FormHelperText,
-  FormControlLabel,
-  CardHeader,
   CardContent
 } from '@material-ui/core';
 // utils
@@ -32,16 +22,14 @@ import { OptionStatus, statusOptions } from 'utils/constants';
 import { manageGarden } from '_apis_/garden';
 import mapboxgl from 'mapbox-gl';
 import './Map.css';
-import MapGL, { Source, Layer, MapEvent, MapRef, LayerProps } from 'react-map-gl';
-import { MapMarkersPopups } from 'components/map';
-// import { countries as COUNTRIES } from 'components/map/assets/countries';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { Site } from '../../../@types/garden';
 //
 import { UploadAvatar } from '../../upload';
-import { fData } from '../../../utils/formatNumber';
 // ----------------------------------------------------------------------
 
 const MapWrapperStyle = styled('div')(({ theme }) => ({
@@ -54,14 +42,6 @@ const MapWrapperStyle = styled('div')(({ theme }) => ({
     display: 'none'
   }
 }));
-// const THEMES = {
-//   streets: 'mapbox://styles/mapbox/streets-v11',
-//   outdoors: 'mapbox://styles/mapbox/outdoors-v11',
-//   light: 'mapbox://styles/mapbox/light-v10',
-//   dark: 'mapbox://styles/mapbox/dark-v10',
-//   satellite: 'mapbox://styles/mapbox/satellite-v9',
-//   satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v11'
-// };
 
 // ----------------------------------------------------------------------
 
@@ -69,11 +49,10 @@ type SiteNewFormProps = {
   isEdit: boolean;
   currentSite?: Site;
 };
-
-mapboxgl.accessToken =
-  'pk.eyJ1IjoiZGF0bmxtIiwiYSI6ImNsM2E3amtyaDAydzUzZHAxMTFtaWx4ZHcifQ.eLx8xZ0KfftAAekyFCVJEQ';
+mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
 
 export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [gardenList, setGardenList] = useState([]);
@@ -218,15 +197,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
             <Card sx={{ py: 10, px: 3 }}>
-              {/* {isEdit && (
-                <Label
-                  color={values.status !== 'active' ? 'error' : 'success'}
-                  sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
-                >
-                  {values.status}
-                </Label>
-              )} */}
-
               <Box sx={{ mb: 5 }}>
                 <UploadAvatar
                   accept="image/*"
@@ -245,7 +215,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                         color: 'text.secondary'
                       }}
                     >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                      {translate('site.message.allow-type-image')}
                     </Typography>
                   }
                 />
@@ -261,14 +231,14 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Name"
+                    label={translate('site.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
-                    label="Phone"
+                    label={translate('site.form.phone')}
                     {...getFieldProps('phone')}
                     error={Boolean(touched.phone && errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -278,7 +248,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Email"
+                    label={translate('site.form.email')}
                     type="email"
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
@@ -286,7 +256,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                   />
                   <TextField
                     fullWidth
-                    label="Address"
+                    label={translate('site.form.address')}
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
@@ -295,7 +265,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Website"
+                    label={translate('site.form.website')}
                     {...getFieldProps('webUrl')}
                     error={Boolean(touched.webUrl && errors.webUrl)}
                     helperText={touched.webUrl && errors.webUrl}
@@ -316,14 +286,14 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Longitude"
+                    label={translate('site.form.longitude')}
                     {...getFieldProps('longitude')}
                     error={Boolean(touched.longitude && errors.longitude)}
                     helperText={touched.longitude && errors.longitude}
                   />
                   <TextField
                     fullWidth
-                    label="Latitude"
+                    label={translate('site.form.latitude')}
                     {...getFieldProps('latitude')}
                     error={Boolean(touched.latitude && errors.latitude)}
                     helperText={touched.latitude && errors.latitude}
@@ -341,7 +311,11 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                       defaultValue={gardenList}
                       limitTags={2}
                       renderInput={(params) => (
-                        <TextField {...params} label="Garden List" placeholder="Garden List" />
+                        <TextField
+                          {...params}
+                          label={translate('site.form.garden-list')}
+                          placeholder={translate('site.form.garden-list')}
+                        />
                       )}
                     />
                     <Autocomplete
@@ -356,7 +330,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Status"
+                          label={translate('site.form.status')}
                           error={Boolean(touched.status && errors.status)}
                           helperText={touched.status && errors.status}
                         />
@@ -366,7 +340,9 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 )}
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Site' : 'Save Changes'}
+                    {!isEdit
+                      ? translate('site.button.save.add')
+                      : translate('site.button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

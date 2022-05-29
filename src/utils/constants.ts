@@ -54,6 +54,7 @@ export const coralStatus = [
 // ];
 
 export const coralLevelType = [
+  { id: '0', label: 'All' },
   { id: '1', label: 'Class' },
   { id: '2', label: 'Order' },
   { id: '3', label: 'Family' },

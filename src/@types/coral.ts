@@ -210,3 +210,9 @@ export type Phases = {
   imageUrl: string[];
   description: string;
 };
+
+export type PhaseForm = {
+  id: string;
+  coralId: string;
+  phaseType: PhasesType[];
+};

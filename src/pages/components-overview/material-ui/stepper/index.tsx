@@ -10,7 +10,6 @@ import HeaderBreadcrumbs from '../../../../components/HeaderBreadcrumbs';
 import { Block } from '../../Block';
 import CustomizedStepper from './CustomizedStepper';
 import VerticalLinearStepper from './VerticalLinearStepper';
-import LinearAlternativeLabel from './LinearAlternativeLabel';
 import HorizontalLinearStepper from './HorizontalLinearStepper';
 
 // ----------------------------------------------------------------------
@@ -53,18 +52,6 @@ export default function StepperComponent() {
               }}
             >
               <HorizontalLinearStepper />
-            </Paper>
-          </Block>
-
-          <Block title="Linear Alternative Label">
-            <Paper
-              sx={{
-                p: 3,
-                width: '100%',
-                boxShadow: (theme) => theme.customShadows.z8
-              }}
-            >
-              <LinearAlternativeLabel />
             </Paper>
           </Block>
 

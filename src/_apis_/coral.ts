@@ -114,7 +114,7 @@ export class Coral {
       .catch((err) => err);
   };
 
-  createCoralPhasesType = (phaseType: PhasesType) => {
+  createCoralPhasesType = (phaseType: any) => {
     const data = {
       minWeight: phaseType.maxWeight,
       maxWeight: phaseType.maxWeight,
@@ -263,11 +263,11 @@ export class Coral {
 
   createCoralArea = (coralArea: CoralArea) => {
     const data = {
-      coral: { id: coralArea.coral },
-      area: { id: coralArea.area }
+      corals: coralArea.coral,
+      id: coralArea.area.id
     };
     return axios
-      .post('/api/v1/admin/coral-areas', data)
+      .post('/api/v1/admin/coral-areas/corals', data)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -275,8 +275,8 @@ export class Coral {
   updateCoralArea = (coralArea: CoralArea) => {
     const data = {
       id: coralArea.id,
-      coral: { id: coralArea.coral.id },
-      area: { id: coralArea.area.id }
+      coral: coralArea.coral,
+      area: { id: coralArea.id }
     };
     return axios
       .put('/api/v1/admin/coral-areas', data)

@@ -3,7 +3,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Label from '../../components/Label';
 import SvgIconStyle from '../../components/SvgIconStyle';
-
+import useLocales from '../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
 const getIcon = (name: string) => (
@@ -29,41 +29,32 @@ const ICONS = {
   kanban: getIcon('ic_kanban')
 };
 
-const sidebarConfig = [
-  // GENERAL
-  // ----------------------------------------------------------------------
-  // {
-  //   subheader: 'general',
-  //   items: [
-  //     {
-  //       title: 'app',
-  //       path: PATH_DASHBOARD.general.app,
-  //       icon: ICONS.dashboard
-  //     },
-  //     { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-  //     { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics }
-  //   ]
-  // },
-
-  // MANAGEMENT
-  // ----------------------------------------------------------------------
-  {
-    subheader: 'management',
-    items: [
-      {
-        title: 'diver',
-        path: PATH_DASHBOARD.diver.root,
-        icon: ICONS.diver,
-        children: [{ title: 'list', path: PATH_DASHBOARD.diver.list }]
-      },
-      {
-        title: 'sites',
-        path: PATH_DASHBOARD.site.root,
-        icon: ICONS.garden,
-        children: [{ title: 'list', path: PATH_DASHBOARD.site.list }]
-      }
-    ]
-  }
-];
-
-export default sidebarConfig;
+export default function SidebarConfig() {
+  const { translate } = useLocales();
+  const sidebarConfig = [
+    // MANAGEMENT
+    // ----------------------------------------------------------------------
+    {
+      subheader: translate('menu.sidebarConfig.subheader.management'),
+      items: [
+        {
+          title: translate('menu.sidebarConfig.title.diver'),
+          path: PATH_DASHBOARD.diver.root,
+          icon: ICONS.diver,
+          children: [
+            { title: translate('menu.sidebarConfig.diver.list'), path: PATH_DASHBOARD.diver.list }
+          ]
+        },
+        {
+          title: translate('menu.sidebarConfig.title.site'),
+          path: PATH_DASHBOARD.site.root,
+          icon: ICONS.garden,
+          children: [
+            { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
+          ]
+        }
+      ]
+    }
+  ];
+  return sidebarConfig;
+}

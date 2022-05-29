@@ -1,0 +1,73 @@
+{
+  "site": {
+    "title": {
+      "list": "Khu vực : Danh sách khu vực",
+      "create": "Khu vực: Thêm mới khu vực",
+      "update": "Khu vực: Cập nhật khu vực"
+    },
+    "heading1": {
+      "list": "Danh sách khu vực",
+      "create": "Thêm mới khu vực",
+      "update": "Chỉnh sửa khu vực"
+    },
+    "heading2": "Bảng điều khiểu",
+    "heading3": "Khu vực",
+    "heading4": {
+      "list": "Danh sách",
+      "new": "Khu vực mới"
+    },
+    "button": {
+      "save": {
+        "add": "Thêm mới khu vực",
+        "update": "Lưu thay đổi",
+        "confirm": "Xác nhận",
+        "cancel": "Huỷ"
+      },
+      "menu": {
+        "edit": "Chỉnh sửa thông",
+        "delete": "Xoá thông tin"
+      }
+    },
+    "search": "Tìm kiếm theo địa điểm",
+    "message": {
+      "title": {
+        "confirm-delete": "Xác nhận xoá"
+      },
+      "allow-type-image": "Cho phép *.jpeg, *.jpg, *.png, *.gif",
+      "confirm-delete": "Bạn có chắc chắn muốn xoá?"
+    },
+    "form": {
+      "name": "Tên",
+      "phone": "Số điện thoại",
+      "email": "Địa chỉ email",
+      "address": "Địa chỉ",
+      "website": "Địa chỉ trang web",
+      "longitude": "Kinh độ",
+      "latitude": "Vĩ độ",
+      "garden-list": "Danh sách vườn",
+      "status": "Trạng thái"
+    }
+  },
+  "menu": {
+    "sidebarConfig": {
+      "subheader": {
+        "management": "ban quản trị"
+      },
+      "title": {
+        "diver": "thợ lặn",
+        "site": "khu vực"
+      },
+      "diver": {
+        "list": "danh sách"
+      },
+      "site": {
+        "list": "danh sách"
+      }
+    },
+    "mega": {
+      "button": {
+        "more": "Cấu hình khác"
+      }
+    }
+  }
+}

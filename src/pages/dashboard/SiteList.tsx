@@ -28,16 +28,16 @@ import {
   DialogContent
 } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
-import AlertDialog from 'pages/components-overview/material-ui/dialog/AlertDialog';
 // @types
 import { Site } from '../../@types/garden';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListSites, deleteSite } from '../../redux/slices/garden';
+import { getListSites } from '../../redux/slices/garden';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -49,18 +49,6 @@ import {
   SiteListToolbar,
   SiteMoreMenu
 } from '../../components/_dashboard/garden/siteList';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'webUrl', label: 'Website', alignRight: false },
-  { id: 'phone', label: 'Phone', alignRight: false },
-  { id: 'address', label: 'Email', alignRight: false },
-  { id: 'email', label: 'Address', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
-];
 
 // ----------------------------------------------------------------------
 
@@ -113,6 +101,7 @@ function applySortFilterCoral(
 }
 
 export default function UserList() {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -201,15 +190,25 @@ export default function UserList() {
   //   });
   // }
 
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('site.form.name'), alignRight: false },
+    { id: 'webUrl', label: translate('site.form.website'), alignRight: false },
+    { id: 'phone', label: translate('site.form.phone'), alignRight: false },
+    { id: 'address', label: translate('site.form.email'), alignRight: false },
+    { id: 'email', label: translate('site.form.address'), alignRight: false },
+    { id: 'status', label: translate('site.form.status'), alignRight: false },
+    { id: '' }
+  ];
+
   return (
-    <Page title="Site: List">
+    <Page title={translate('site.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Site list"
+          heading={translate('site.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Site', href: PATH_DASHBOARD.site.root },
-            { name: 'List' }
+            { name: translate('site.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('site.heading3'), href: PATH_DASHBOARD.site.root },
+            { name: translate('site.heading4.list') }
           ]}
           action={
             <Button
@@ -218,7 +217,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.site.newSite}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Site
+              {translate('site.button.save.add')}
             </Button>
           }
         />
@@ -285,7 +284,7 @@ export default function UserList() {
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status == '0' && 'error') || 'success'}
                             >
-                              {status == '1' ? 'Available' : 'deleted'}
+                              {status}
                             </Label>
                           </TableCell>
 

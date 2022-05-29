@@ -68,6 +68,7 @@ export const PATH_DASHBOARD = {
   },
   phases: {
     root: path(ROOTS_DASHBOARD, '/phases'),
+    list: path(ROOTS_DASHBOARD, '/phases/list'),
     new: path(ROOTS_DASHBOARD, '/phases/new'),
     typeNew: path(ROOTS_DASHBOARD, '/phases/type/new')
   },

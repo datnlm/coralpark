@@ -146,8 +146,12 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
     // validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        values.coral = right;
-        values.area = currentArea.id;
+        // number.map((v) => arr.push({id: v}));
+        values.coral = right.map((v: any) => ({
+          id: v
+        }));
+        values.area = currentArea;
+
         let flag = false;
 
         !isEdit
@@ -167,14 +171,10 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
           enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
             variant: 'success'
           });
-          navigate(PATH_DASHBOARD.coral.listType);
+          navigate(PATH_DASHBOARD.coralArea.list);
         } else {
           enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
         }
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.coralArea.list);
       } catch (error) {
         console.error(error);
         setSubmitting(false);
@@ -200,15 +200,6 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
 
   // fetch list coral
   useEffect(() => {
-    manageCoral.getListCoral().then((response) => {
-      if (response.status == 200) {
-        const data = response.data.items;
-        setCoralList(data);
-        const mapId: number[] = [];
-        data.map((v: Coral) => mapId.push(Number(v.id)));
-        setLeft(mapId);
-      }
-    });
     manageArea.getListArea().then((response) => {
       if (response.status == 200) {
         setOptionsArea(response.data.items);
@@ -217,6 +208,37 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
       }
     });
   }, []);
+
+  useEffect(() => {
+    const mapCoralAreaId: number[] = [];
+    if (currentArea != null) {
+      setRight([]);
+      setLeft([]);
+      // set coral id left
+      manageArea.getAreaById(currentArea.id).then((response) => {
+        if (response.status == 200) {
+          const data = response.data.corals;
+          if (data != null) {
+            console.log(data);
+            data.map((v: Coral) => mapCoralAreaId.push(Number(v.id)));
+            setRight(mapCoralAreaId);
+          }
+        }
+      });
+
+      // set coral id right
+      manageCoral.getListCoral().then((response) => {
+        if (response.status == 200) {
+          const data = response.data.items;
+          setCoralList(data);
+          const mapId: number[] = [];
+          data.map((v: Coral) => mapId.push(Number(v.id)));
+          const mapCoralId: number[] = mapId.filter((i) => !mapCoralAreaId.includes(i));
+          setLeft(mapCoralId);
+        }
+      });
+    }
+  }, [currentArea]);
 
   // define
   const customList = (title: React.ReactNode, items: number[]) => (

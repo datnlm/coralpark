@@ -1,6 +1,74 @@
 {
-  "demo": {
-    "title": "English",
-    "introduction": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  "site": {
+    "title": {
+      "list": "Site: Site List",
+      "create": "Site: create a new site",
+      "update": "Site: Update site"
+    },
+    "heading1": {
+      "list": "Site List",
+      "create": "Create a new site",
+      "update": "Update site"
+    },
+    "heading2": "Dashboard",
+    "heading3": "Site",
+    "heading4": {
+      "list": "List",
+      "new": "New Site"
+    },
+    "button": {
+      "save": {
+        "add": "Create site",
+        "update": "Save change",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "menu": {
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "search": "Search site",
+    "message": {
+      "title": {
+        "confirm-delete": "Confirm delete"
+      },
+      "allow-type-image": "Allowed *.jpeg, *.jpg, *.png, *.gif",
+      "confirm-delete": "Are you sure to delete this?"
+    },
+    "form": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "website": "Website",
+      "longitude": "Longitude",
+      "latitude": "Latitude",
+      "garden-list": "Garden List",
+      "status": "Status"
+    }
+  },
+  "menu": {
+    "sidebarConfig": {
+      "subheader": {
+        "management": "management"
+      },
+      "title": {
+        "diver": "diver",
+        "site": "site"
+      },
+      "diver": {
+        "list": "List"
+      },
+      "site": {
+        "list": "List"
+      }
+    },
+    "mega": {
+      "button": {
+        "more": "More Configuration"
+      }
+    }
   }
+  
 }

@@ -47,7 +47,7 @@ export default function UserCreate() {
           heading={!isEdit ? 'Create a new coral area' : 'Edit coral area'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral Area', href: PATH_DASHBOARD.user.root },
+            { name: 'Coral Area', href: PATH_DASHBOARD.coralArea.root },
             { name: !isEdit ? 'New' : name }
           ]}
         />

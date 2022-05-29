@@ -170,10 +170,11 @@ export default function EcommerceProductList() {
           enqueueSnackbar('Delete success', { variant: 'success' });
           dispatch(getListArea());
         } else {
-          enqueueSnackbar('Delete fail', { variant: 'error' });
+          enqueueSnackbar('Delete error', { variant: 'error' });
         }
       });
     } catch (error) {
+      enqueueSnackbar('Delete error', { variant: 'error' });
       console.log(error);
     }
   };
