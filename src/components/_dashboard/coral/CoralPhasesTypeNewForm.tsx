@@ -14,27 +14,35 @@ import {
   TextField,
   Autocomplete,
   Paper,
-  Container
+  Container,
+  Button
 } from '@material-ui/core';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
 import { PhasesType } from '../../../@types/coral';
+import CreatePhaseNewFormDialog from './CreatePhaseNewFormDialog';
 
 // ----------------------------------------------------------------------
 
 type CoralPhasesTypeNewFormProps = {
   isEdit: boolean;
   currentPhasesType?: PhasesType;
+  onSubmit: any;
+  submitRef: any;
 };
 
 export default function CoralPhasesTypeNewForm({
   isEdit,
-  currentPhasesType
+  currentPhasesType,
+  onSubmit,
+  submitRef
 }: CoralPhasesTypeNewFormProps) {
+  // Then inside the component body
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [optionCoral, setOptionCoral] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [phaseId, setPhaseId] = useState('');
   const [optionCoralPhases, setOptionCoralPhases] = useState([]);
 
   const NewUserSchema = Yup.object().shape({
@@ -45,7 +53,6 @@ export default function CoralPhasesTypeNewForm({
     timeForm: Yup.string().required('TimeForm is required'),
     timeTo: Yup.string().required('TimeTo is required'),
     coulour: Yup.string().required('Coulour is required'),
-    coralID: Yup.object().required('CoralID is required').nullable(true),
     phaseID: Yup.object().required('PhaseID is required').nullable(true)
   });
 
@@ -64,40 +71,30 @@ export default function CoralPhasesTypeNewForm({
       phaseID: currentPhasesType?.phaseID || ''
     },
     validationSchema: NewUserSchema,
-    onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
-      try {
-        let flag = false;
-        !isEdit
-          ? await manageCoral.createCoralPhasesType(values).then((response) => {
-              if (response.status == 200) {
-                flag = true;
-              }
-            })
-          : await manageCoral.updateCoralPhasesType(values).then((response) => {
-              if (response.status == 200) {
-                flag = true;
-              }
-            });
-        if (flag) {
-          resetForm();
-          setSubmitting(false);
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
-          navigate(PATH_DASHBOARD.phases.typeNew);
-        } else {
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
-        }
-      } catch (error) {
-        console.error(error);
-        setSubmitting(false);
-        // setErrors(error);
-      }
+    onSubmit: async (values) => {
+      onSubmit(values);
     }
   });
 
-  const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
-    formik;
+  const {
+    errors,
+    values,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    setFieldValue,
+    getFieldProps,
+    setSubmitting
+  } = formik;
+
+  const handleClose = (params: string) => {
+    setPhaseId(params);
+    setOpen(false);
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
+    console.log(open);
+  };
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -113,27 +110,47 @@ export default function CoralPhasesTypeNewForm({
   );
 
   useEffect(() => {
-    manageCoral.getListCoral().then((response) => {
-      if (response.status == 200) {
-        setOptionCoral(response.data.items);
-      } else {
-        setOptionCoral([]);
-      }
-    });
     manageCoral.getListCoralPhases().then((response) => {
       if (response.status == 200) {
         setOptionCoralPhases(response.data.items);
+        if (phaseId != '') {
+          setFieldValue(
+            'phaseID',
+            optionCoralPhases.find((e: any) => e.id == phaseId)
+          );
+        }
       } else {
         setOptionCoralPhases([]);
       }
     });
-  }, []);
+  }, [handleClose]);
 
   return (
     <FormikProvider value={formik}>
-      <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+      <Form id="1" noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Card sx={{ p: 3 }}>
           <Stack spacing={3}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+              <Autocomplete
+                fullWidth
+                disablePortal
+                clearIcon
+                id="phase"
+                {...getFieldProps('phaseID')}
+                options={optionCoralPhases}
+                getOptionLabel={(option: any) => (option ? option.name : '')}
+                onChange={(e, value: any) => (value ? { ...setFieldValue('phaseID', value) } : '')}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Phases"
+                    error={Boolean(touched.phaseID && errors.phaseID)}
+                    helperText={touched.phaseID && errors.phaseID}
+                  />
+                )}
+                noOptionsText={<Button onMouseDown={handleClickOpen}>No results! Click me</Button>}
+              />
+            </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
               <TextField
                 fullWidth
@@ -190,52 +207,11 @@ export default function CoralPhasesTypeNewForm({
                 error={Boolean(touched.coulour && errors.coulour)}
                 helperText={touched.coulour && errors.coulour}
               />
-              <Autocomplete
-                fullWidth
-                disablePortal
-                clearIcon
-                id="coral"
-                {...getFieldProps('coralID')}
-                options={optionCoral}
-                getOptionLabel={(option: any) => (option ? option.name : '')}
-                onChange={(e, value: any) => (value ? { ...setFieldValue('coralID', value) } : '')}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Coral"
-                    error={Boolean(touched.coralID && errors.coralID)}
-                    helperText={touched.coralID && errors.coralID}
-                  />
-                )}
-              />
             </Stack>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-              <Autocomplete
-                fullWidth
-                disablePortal
-                clearIcon
-                id="coral"
-                {...getFieldProps('phaseID')}
-                options={optionCoralPhases}
-                getOptionLabel={(option: any) => (option ? option.name : '')}
-                onChange={(e, value: any) => (value ? { ...setFieldValue('phaseID', value) } : '')}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Phases"
-                    error={Boolean(touched.phaseID && errors.phaseID)}
-                    helperText={touched.phaseID && errors.phaseID}
-                  />
-                )}
-              />
-            </Stack>
-            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!isEdit ? 'Create Type' : 'Save Changes'}
-              </LoadingButton>
-            </Box>
+            <LoadingButton ref={submitRef} type="submit" loading={isSubmitting} />
           </Stack>
         </Card>
+        <CreatePhaseNewFormDialog open={open} onClose={handleClose} />
       </Form>
     </FormikProvider>
   );

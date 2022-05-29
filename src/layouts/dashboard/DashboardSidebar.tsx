@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import listFill from '@iconify/icons-eva/list-fill';
@@ -18,10 +18,11 @@ import {
   Container,
   AppBar
 } from '@material-ui/core';
-import MenuConfig from 'components/mega-menu/MenuConfig';
-import { MegaMenuMobile } from 'components/mega-menu';
+import menuConfig from 'layouts/main/MenuConfig';
+import MegaMenuMobile from './MegaMenuMobile';
 // hooks
 import useAuth from '../../hooks/useAuth';
+import useLocales from '../../hooks/useLocales';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // routes
 import { PATH_DASHBOARD, PATH_DOCS } from '../../routes/paths';
@@ -32,8 +33,7 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
-import sidebarConfig from './SidebarConfig';
-import { DocIcon } from '../../assets';
+import SidebarConfig from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -117,9 +117,9 @@ type DashboardSidebarProps = {
 };
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
+  const { allLang, currentLang, translate, onChangeLang } = useLocales();
   const { pathname } = useLocation();
   const { user } = useAuth();
-
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
 
@@ -183,12 +183,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         )}
       </Stack>
 
-      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+      <NavSection navConfig={SidebarConfig()} isShow={!isCollapse} />
       <Box sx={{ flexGrow: 1 }} />
 
       {!isCollapse && (
         <Box sx={{ px: 2.5, pb: 3, mt: 10, width: 1 }}>
-          <MegaMenuMobile navConfig={MenuConfig} />
+          <MegaMenuMobile navConfig={menuConfig} />
         </Box>
       )}
     </Scrollbar>

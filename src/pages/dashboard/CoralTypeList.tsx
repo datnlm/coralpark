@@ -78,7 +78,7 @@ function getComparator(order: string, orderBy: string) {
 export default function UserList() {
   const { themeStretch } = useSettings();
   // 1 - class
-  const [filters, setFilters] = useState('1');
+  const [filters, setFilters] = useState('0');
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -114,14 +114,23 @@ export default function UserList() {
       return a[1] - b[1];
     });
     if (query) {
+      if (sort != '0') {
+        return filter(
+          array,
+          (_coral) =>
+            _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
+            _coral.levelType == sort
+        );
+      }
       return filter(
         array,
-        (_coral) =>
-          _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 && _coral.levelType == sort
+        (_coral) => _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     }
     if (sort) {
-      return filter(array, (_coral) => _coral.levelType == sort);
+      if (sort != '0') {
+        return filter(array, (_coral) => _coral.levelType == sort);
+      }
     }
     return stabilizedThis.map((el) => el[0]);
   }

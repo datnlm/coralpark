@@ -3,7 +3,7 @@ import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container, Paper, Stack } from '@material-ui/core';
-import LinearAlternativeLabel from 'pages/components-overview/material-ui/stepper/LinearAlternativeLabel';
+import LinearAlternativeLabel from 'components/_dashboard/coral/LinearAlternativeLabel';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 import { getUserList } from '../../redux/slices/coral';
@@ -53,7 +53,6 @@ export default function PhasesTypeCreate() {
             <LinearAlternativeLabel />
           </Paper>
         </Stack>
-        {/* <CoralPhasesTypeNewForm isEdit={isEdit} /> */}
       </Container>
     </Page>
   );

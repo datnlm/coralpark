@@ -13,6 +13,7 @@ import { getUserList } from '../../redux/slices/coral';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -20,6 +21,7 @@ import SiteNewForm from '../../components/_dashboard/garden/SiteNewForm';
 // ----------------------------------------------------------------------
 
 export default function GardenCreate() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -68,14 +70,14 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? 'Site: Create a new site' : 'Site: Edit site'}>
+    <Page title={!isEdit ? translate('site.title.create') : translate('site.title.update')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new site' : 'Edit site'}
+          heading={!isEdit ? translate('site.heading1.create') : translate('site.heading1.update')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Site', href: PATH_DASHBOARD.site.root },
-            { name: !isEdit ? 'New site' : name }
+            { name: translate('site.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('site.heading3'), href: PATH_DASHBOARD.site.root },
+            { name: !isEdit ? translate('site.heading4.new') : name }
           ]}
         />
         <SiteNewForm isEdit={isEdit} currentSite={currentSite} />
