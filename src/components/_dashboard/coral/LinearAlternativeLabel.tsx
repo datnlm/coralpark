@@ -24,6 +24,7 @@ import { manageCoral } from '_apis_/coral';
 import { Coral, PhaseForm, PhasesType } from '../../../@types/coral';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import useLocales from '../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 const phase: PhasesType = {
@@ -32,11 +33,11 @@ const phase: PhasesType = {
   maxWeight: '',
   minHigh: '',
   maxHigh: '',
-  timeForm: '',
+  timeFrom: '',
   timeTo: '',
-  coulour: '',
-  coralID: '',
-  phaseID: ''
+  colour: '',
+  coralId: '',
+  coralPhase: ''
 };
 
 export type OptionStatus = {
@@ -47,10 +48,52 @@ export type OptionStatus = {
 // const steps = ['Phase 1'];
 
 export default function LinearAlternativeLabel() {
+  const { translate } = useLocales();
+  const [isEdit, setIsEdit] = useState<Boolean>(false);
   const callback = (params: PhasesType) => {
     const dt = data;
     dt[activeStep] = params;
     setData(dt);
+    console.log(steps);
+    if (activeStep == steps.length - 1) {
+      try {
+        const formPhase = {
+          id: coral!.id,
+          coralPhaseTypes: data
+        };
+        let flag = false;
+        !isEdit
+          ? manageCoral.createCoralPhasesType(formPhase).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            })
+          : manageCoral.updateCoralPhasesType(formPhase).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            });
+        if (flag) {
+          // resetForm();
+          // setSubmitting(false);
+          enqueueSnackbar('Create success', {
+            variant: 'success'
+          });
+          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
+            variant: 'success'
+          });
+          navigate(PATH_DASHBOARD.phases.typeNew);
+        } else {
+          enqueueSnackbar('Create error', { variant: 'error' });
+          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+        }
+      } catch (error) {
+        console.log(error);
+        // console.error(error);
+        // setSubmitting(false);
+        // setErrors(error);
+      }
+    }
   };
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -62,7 +105,6 @@ export default function LinearAlternativeLabel() {
   const [data, setData] = useState<PhasesType[]>([phase]);
   const submitRef = useRef<HTMLInputElement>(null);
   const [coral, setCoral] = useState<any>(null);
-
   // const [formCoralPhaseType, setFormCoralPhaseType] = useState<any>([
   //   <CoralPhasesTypeNewForm
   //     key={0}
@@ -78,57 +120,9 @@ export default function LinearAlternativeLabel() {
 
   const handleNext = async () => {
     // call api
-    if (activeStep == steps.length - 1) {
-      try {
-        // let flag = false;
-
-        const formPhase = {
-          coralId: coral!.id,
-          phase: data
-        };
-        console.log(formPhase);
-        // await manageCoral.createCoralPhasesType(formPhase).then((response) => {
-        //   if (response.status == 200) {
-        //     flag = true;
-        //   }
-        // });
-        // !isEdit
-        // ? await manageCoral.createCoralPhasesType(values).then((response) => {
-        //     if (response.status == 200) {
-        //       flag = true;
-        //     }
-        //   })
-        // : await manageCoral.updateCoralPhasesType(values).then((response) => {
-        //     if (response.status == 200) {
-        //       flag = true;
-        //     }
-        //   });
-        // if (flag) {
-        // resetForm();
-        // setSubmitting(false);
-        // enqueueSnackbar('Create success', {
-        // variant: 'success'
-        // });
-        // enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-        //   variant: 'success'
-        // });
-        // navigate(PATH_DASHBOARD.phases.typeNew);
-        // } else {
-        // enqueueSnackbar('Create error', { variant: 'error' });
-        // enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
-        // }
-      } catch (error) {
-        console.log(error);
-        // console.error(error);
-        // setSubmitting(false);
-        // setErrors(error);
-      }
-      return;
-    }
     if (submitRef && submitRef.current) {
       submitRef.current?.click();
     }
-
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -171,11 +165,11 @@ export default function LinearAlternativeLabel() {
       maxWeight: '',
       minHigh: '',
       maxHigh: '',
-      timeForm: '',
+      timeFrom: '',
       timeTo: '',
-      coulour: '',
-      coralID: '',
-      phaseID: ''
+      colour: '',
+      coralId: '',
+      coralPhase: ''
     };
     dt.push(phase);
     setData(dt);
@@ -198,6 +192,31 @@ export default function LinearAlternativeLabel() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (coral != null) {
+      manageCoral.getCoralByID(coral.id).then((response) => {
+        if (response.status == 200) {
+          const phaseType = response.data.coralPhaseTypes;
+          if (phaseType != []) {
+            setIsEdit(true);
+            setData(phaseType);
+            const s: any[] = [];
+            let flag = false;
+            phaseType.map((v: any) => {
+              if (v.coralPhase.name != null) {
+                s.push(v.coralPhase.name);
+                flag = true;
+              }
+            });
+            if (flag) {
+              setSteps(s);
+            }
+          }
+        }
+      });
+    }
+  }, [coral]);
 
   return (
     <>
@@ -223,9 +242,9 @@ export default function LinearAlternativeLabel() {
       </Stepper>
       {activeStep === steps.length ? (
         <>
-          {/* <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
+          <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
             <Typography sx={{ my: 1 }}>All steps completed - you&apos;re finished</Typography>
-          </Paper> */}
+          </Paper>
 
           <Box sx={{ display: 'flex' }}>
             <Box sx={{ flexGrow: 1 }} />
@@ -248,14 +267,14 @@ export default function LinearAlternativeLabel() {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Coral"
+                    label={translate('page.coral-phase.form.coral')}
                     // error={Boolean(touched.phaseID && errors.phaseID)}
                     // helperText={touched.phaseID && errors.phaseID}
                   />
                 )}
               />
             </Stack>
-            <Typography sx={{ my: 1 }}> Phases Type </Typography>
+            <Typography sx={{ my: 1 }}> {translate('page.coral-phase.form.header')} </Typography>
 
             <CoralPhasesTypeNewForm
               key={activeStep}
@@ -267,16 +286,18 @@ export default function LinearAlternativeLabel() {
           </Paper>
           <Box sx={{ display: 'flex' }}>
             <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-              Back
+              {translate('button.back')}
             </Button>
             <Box sx={{ flexGrow: 1 }} />
             {isStepOptional(activeStep) && (
               <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Skip
+                {translate('button.skip')}
               </Button>
             )}
             <Button variant="contained" onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+              {activeStep === steps.length - 1
+                ? translate('button.save.finish')
+                : translate('button.save.next')}
             </Button>
           </Box>
         </>

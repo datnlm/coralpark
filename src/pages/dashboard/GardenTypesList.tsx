@@ -32,6 +32,7 @@ import { getListGardenTypes, deleteGardenTypes, deleteGardenType } from '../../r
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // @types
 import { GardenType } from '../../@types/garden';
 // components
@@ -45,15 +46,6 @@ import {
   GardenTypesListToolbar,
   GardenTypesMoreMenu
 } from '../../components/_dashboard/garden/typesList';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Description', alignRight: false },
-  { id: '' }
-];
-
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -95,6 +87,7 @@ function applySortFilter(
 }
 
 export default function UserList() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
@@ -187,15 +180,20 @@ export default function UserList() {
   //   });
   // }
 
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.garden-type.form.name'), alignRight: false },
+    { id: 'description', label: translate('page.garden-type.form.description'), alignRight: false },
+    { id: '' }
+  ];
   return (
-    <Page title="Garden Type: List">
+    <Page title={translate('page.garden-type.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Garden Type list"
+          heading={translate('page.garden-type.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden Type', href: PATH_DASHBOARD.garden.typesList },
-            { name: 'List' }
+            { name: translate('page.garden-type.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.garden-type.heading3'), href: PATH_DASHBOARD.garden.typesList },
+            { name: translate('page.site.heading4.list') }
           ]}
           action={
             <Button
@@ -204,7 +202,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.garden.newGardenType}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Garden Type
+              {translate('button.save.add')}
             </Button>
           }
         />

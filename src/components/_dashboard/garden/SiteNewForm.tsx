@@ -177,7 +177,9 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     // Add navigation control (the +/- zoom buttons)
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     const marker = new mapboxgl.Marker({ color: 'red' });
-    marker.setLngLat([Number(currentSite?.longitude), Number(currentSite?.latitude)]).addTo(map);
+    if (currentSite) {
+      marker.setLngLat([Number(currentSite?.longitude), Number(currentSite?.latitude)]).addTo(map);
+    }
 
     map.on('click', (e) => {
       marker.remove();
@@ -215,7 +217,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                         color: 'text.secondary'
                       }}
                     >
-                      {translate('site.message.allow-type-image')}
+                      {translate('message.allow-type-image')}
                     </Typography>
                   }
                 />
@@ -231,14 +233,14 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('site.form.name')}
+                    label={translate('page.site.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
-                    label={translate('site.form.phone')}
+                    label={translate('page.site.form.phone')}
                     {...getFieldProps('phone')}
                     error={Boolean(touched.phone && errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -248,7 +250,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('site.form.email')}
+                    label={translate('page.site.form.email')}
                     type="email"
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
@@ -256,7 +258,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                   />
                   <TextField
                     fullWidth
-                    label={translate('site.form.address')}
+                    label={translate('page.site.form.address')}
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
@@ -265,7 +267,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('site.form.website')}
+                    label={translate('page.site.form.website')}
                     {...getFieldProps('webUrl')}
                     error={Boolean(touched.webUrl && errors.webUrl)}
                     helperText={touched.webUrl && errors.webUrl}
@@ -286,14 +288,14 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('site.form.longitude')}
+                    label={translate('page.site.form.longitude')}
                     {...getFieldProps('longitude')}
                     error={Boolean(touched.longitude && errors.longitude)}
                     helperText={touched.longitude && errors.longitude}
                   />
                   <TextField
                     fullWidth
-                    label={translate('site.form.latitude')}
+                    label={translate('page.site.form.latitude')}
                     {...getFieldProps('latitude')}
                     error={Boolean(touched.latitude && errors.latitude)}
                     helperText={touched.latitude && errors.latitude}
@@ -313,7 +315,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={translate('site.form.garden-list')}
+                          label={translate('page.site.form.garden-list')}
                           placeholder={translate('site.form.garden-list')}
                         />
                       )}
@@ -330,7 +332,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={translate('site.form.status')}
+                          label={translate('page.site.form.status')}
                           error={Boolean(touched.status && errors.status)}
                           helperText={touched.status && errors.status}
                         />
@@ -340,9 +342,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 )}
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit
-                      ? translate('site.button.save.add')
-                      : translate('site.button.save.update')}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

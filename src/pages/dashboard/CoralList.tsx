@@ -2,7 +2,6 @@ import axios from 'axios';
 import { filter } from 'lodash';
 import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
@@ -14,9 +13,7 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -25,7 +22,6 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import AlertDialog from 'pages/components-overview/material-ui/dialog/AlertDialog';
 import { coralStatus } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
@@ -34,11 +30,11 @@ import { getListCoral } from '../../redux/slices/coral';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // @types
 import { UserManager, Coral } from '../../@types/coral';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -47,15 +43,6 @@ import {
   CoralListToolbar,
   CoralMoreMenu
 } from '../../components/_dashboard/coral/list';
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'scientific', label: 'Scientific Name', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
-];
-
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -111,13 +98,12 @@ function applySortFilterCoral(
 }
 
 export default function UserList() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const { userList } = useSelector((state: RootState) => state.user);
-  const coralList = useSelector((state: RootState) => state.user.coralList);
-  const AreaProvice = useSelector((state: RootState) => state.user.proviceList);
+  const coralList = useSelector((state: RootState) => state.coral.coralList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -133,7 +119,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = userList.map((n) => n.name);
+      const newSelecteds = coralList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -167,6 +153,8 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - coralList.length) : 0;
+
   const handleDeleteCoral = async (coralId: string) => {
     try {
       await manageCoral.deleteCoral(coralId).then((respone) => {
@@ -186,10 +174,6 @@ export default function UserList() {
   useEffect(() => {
     dispatch(getListCoral());
   }, [dispatch]);
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
-
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
   const filteredCorals = applySortFilterCoral(coralList, getComparator(order, orderBy), filterName);
 
   const isCoralNotFound = filteredCorals.length === 0;
@@ -202,16 +186,22 @@ export default function UserList() {
   //     );
   //   });
   // }
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.coral.form.name'), alignRight: false },
+    { id: 'scientific', label: translate('page.coral.form.scientific'), alignRight: false },
+    { id: 'status', label: translate('page.coral.form.status-enum'), alignRight: false },
+    { id: '' }
+  ];
 
   return (
-    <Page title="Coral: List">
+    <Page title={translate('page.coral.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral list"
+          heading={translate('page.coral.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral', href: PATH_DASHBOARD.coral.root },
-            { name: 'List' }
+            { name: translate('page.coral.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.coral.heading3'), href: PATH_DASHBOARD.coral.root },
+            { name: translate('page.coral.heading4.list') }
           ]}
           action={
             <Button
@@ -220,7 +210,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.coral.new}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Coral
+              {translate('button.save.add')}
             </Button>
           }
         />
@@ -238,7 +228,7 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
+                  rowCount={coralList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -249,7 +239,7 @@ export default function UserList() {
                     .map((row) => {
                       const { id, name, scientificName, statusEnum, coralType } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-                      console.log(AreaProvice);
+
                       return (
                         <TableRow
                           hover

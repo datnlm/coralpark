@@ -1,46 +1,31 @@
 import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
-// coral api
-import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // redux
-import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/coral';
+import { useDispatch } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import GardenNewForm from '../../components/_dashboard/garden/GardenNewForm';
+import { Garden } from '../../@types/garden';
 // ----------------------------------------------------------------------
 
 export default function GardenCreate() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-
-  const { gardenList } = useSelector((state: RootState) => state.garden);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  // const currentGarden = gardenList.find((garden) => paramCase(garden.name) === name);
-  const [currentGarden, setcurrentGarden] = useState({
-    id: '',
-    name: '',
-    latitude: '',
-    longitude: '',
-    address: '',
-    acreage: '',
-    quantityOfCells: '',
-    areaID: '',
-    gardenTypeId: '',
-    siteId: '',
-    status: 1
-  });
+  const [currentGarden, setCurrentGarden] = useState<Garden>();
 
   useEffect(() => {
     if (isEdit) {
@@ -59,21 +44,29 @@ export default function GardenCreate() {
             siteId: response.data.site,
             status: response.data.status
           };
-          setcurrentGarden(data);
+          setCurrentGarden(data);
         }
       });
     }
   }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? 'Garden: Create a new garden' : 'Garden: Edit garden'}>
+    <Page
+      title={
+        !isEdit ? translate('page.garden.title.create') : translate('page.garden.title.update')
+      }
+    >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new garden' : 'Edit garden'}
+          heading={
+            !isEdit
+              ? translate('page.garden.heading1.create')
+              : translate('page.garden.heading1.update')
+          }
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden', href: PATH_DASHBOARD.garden.root },
-            { name: !isEdit ? 'New garden' : name }
+            { name: translate('page.site.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.site.heading3'), href: PATH_DASHBOARD.garden.root },
+            { name: !isEdit ? translate('page.site.heading4.new') : name }
           ]}
         />
 

@@ -7,6 +7,8 @@ import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
 import { alpha, Theme, styled } from '@material-ui/core/styles';
 import { Box, Typography, Paper } from '@material-ui/core';
 import { SxProps } from '@material-ui/system';
+// hook
+import useLocales from '../../hooks/useLocales';
 // utils
 import { fData } from '../../utils/formatNumber';
 
@@ -71,6 +73,7 @@ interface UploadAvatarProps extends DropzoneOptions {
 }
 
 export default function UploadAvatar({ error, file, caption, sx, ...other }: UploadAvatarProps) {
+  const { translate } = useLocales();
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
     ...other
@@ -142,7 +145,9 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }: Upl
             }}
           >
             <Box component={Icon} icon={roundAddAPhoto} sx={{ width: 24, height: 24, mb: 1 }} />
-            <Typography variant="caption">{file ? 'Update photo' : 'Upload photo'}</Typography>
+            <Typography variant="caption">
+              {file ? translate('message.update-photo') : translate('message.upload-photo')}
+            </Typography>
           </PlaceholderStyle>
         </DropZoneStyle>
       </RootStyle>

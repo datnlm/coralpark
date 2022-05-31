@@ -13,32 +13,23 @@ import { getUserList } from '../../redux/slices/coral';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import DiverNewForm from '../../components/_dashboard/diver/DiverNewForm';
+import { Diver } from '../../@types/diver';
 
 // ----------------------------------------------------------------------
 
 export default function DiverCreate() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-
-  const { diverList } = useSelector((state: RootState) => state.diver);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const [currentDiver, setcurrentDiver] = useState({
-    id: '',
-    username: '',
-    name: '',
-    phone: '',
-    email: '',
-    address: '',
-    password: '',
-    imageUrl: '',
-    status: 0
-  });
+  const [currentDiver, setCurrentDiver] = useState<Diver>();
 
   useEffect(() => {
     if (isEdit) {
@@ -55,24 +46,29 @@ export default function DiverCreate() {
             imageUrl: response.data.imageUrl,
             status: response.data.status
           };
-          setcurrentDiver(data);
+          setCurrentDiver(data);
         }
       });
     }
   }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? 'Diver: Create a new diver' : 'Diver: Edit diver'}>
+    <Page
+      title={!isEdit ? translate('page.diver.title.create') : translate('page.diver.title.update')}
+    >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new diver' : 'Edit diver'}
+          heading={
+            !isEdit
+              ? translate('page.diver.heading1.create')
+              : translate('page.diver.heading1.update')
+          }
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Diver', href: PATH_DASHBOARD.diver.root },
-            { name: !isEdit ? 'New diver' : name }
+            { name: translate('page.diver.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.diver.heading3'), href: PATH_DASHBOARD.diver.root },
+            { name: !isEdit ? translate('page.diver.heading4.new') : name }
           ]}
         />
-
         <DiverNewForm isEdit={isEdit} currentDiver={currentDiver} />
       </Container>
     </Page>

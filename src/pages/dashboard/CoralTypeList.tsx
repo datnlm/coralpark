@@ -34,6 +34,7 @@ import { getListCoralType } from '../../redux/slices/coral';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // @types
 import { CoralType } from '../../@types/coral';
 // components
@@ -47,15 +48,6 @@ import {
   CoralTypeListToolbar,
   CoralTypeMoreMenu
 } from '../../components/_dashboard/coral/list_type';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Type Name', alignRight: false },
-  { id: 'role', label: 'Level Type', alignRight: false },
-  { id: '' }
-];
-
 // ----------------------------------------------------------------------
 type Anonymous = Record<string | number, string>;
 
@@ -76,13 +68,14 @@ function getComparator(order: string, orderBy: string) {
 }
 
 export default function UserList() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   // 1 - class
   const [filters, setFilters] = useState('0');
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const coralTypeList = useSelector((state: RootState) => state.user.coralListType);
+  const coralTypeList = useSelector((state: RootState) => state.coral.coralListType);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -221,16 +214,20 @@ export default function UserList() {
   //     );
   //   });
   // }
-
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.coral-type.form.name'), alignRight: false },
+    { id: 'level', label: translate('page.coral-type.form.level'), alignRight: false },
+    { id: '' }
+  ];
   return (
-    <Page title="Coral Type: List">
+    <Page title={translate('page.coral-type.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral Type list"
+          heading={translate('page.coral-type.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral Type', href: PATH_DASHBOARD.coral.listType },
-            { name: 'List' }
+            { name: translate('page.coral-type.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.coral-type.heading3'), href: PATH_DASHBOARD.coral.listType },
+            { name: translate('page.coral-type.heading4.list') }
           ]}
           action={
             <Button
@@ -239,7 +236,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.coral.type}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Coral Type
+              {translate('button.save.add')}
             </Button>
           }
         />

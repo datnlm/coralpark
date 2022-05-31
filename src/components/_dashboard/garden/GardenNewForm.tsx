@@ -6,72 +6,27 @@ import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
-import {
-  Card,
-  Box,
-  Chip,
-  Grid,
-  Stack,
-  Radio,
-  Switch,
-  Select,
-  TextField,
-  InputLabel,
-  Typography,
-  RadioGroup,
-  FormControl,
-  Autocomplete,
-  InputAdornment,
-  FormHelperText,
-  FormControlLabel
-} from '@material-ui/core';
+import { Card, Box, Grid, Stack, TextField, Typography, Autocomplete } from '@material-ui/core';
 // utils
 import { manageArea } from '_apis_/area';
 import { manageGarden } from '_apis_/garden';
 import { OptionStatus, statusOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { Garden } from '../../../@types/garden';
-//
-import { QuillEditor } from '../../editor';
-import { UploadMultiFile } from '../../upload';
-
-// ----------------------------------------------------------------------
-
-const GENDER_OPTION = ['Men', 'Women', 'Kids'];
-
-const TAGS_OPTION = [
-  'Toy Story 3',
-  'Logan',
-  'Full Metal Jacket',
-  'Dangal',
-  'The Sting',
-  '2001: A Space Odyssey',
-  "Singin' in the Rain",
-  'Toy Story',
-  'Bicycle Thieves',
-  'The Kid',
-  'Inglourious Basterds',
-  'Snatch',
-  '3 Idiots'
-];
-
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
 
 // ----------------------------------------------------------------------
 
 type GardenNewFormProps = {
   isEdit: boolean;
-  // currentUser?: UserManager;
   currentGarden?: Garden;
 };
 
 export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [optionsGardenType, setOptionsGardenType] = useState([]);
@@ -152,28 +107,6 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  // const handleDrop = useCallback(
-  //   (acceptedFiles) => {
-  //     setFieldValue(
-  //       'images',
-  //       acceptedFiles.map((file: File | string) =>
-  //         Object.assign(file, {
-  //           preview: URL.createObjectURL(file)
-  //         })
-  //       )
-  //     );
-  //   },
-  //   [setFieldValue]
-  // );
-
-  // const handleRemoveAll = () => {
-  //   setFieldValue('images', []);
-  // };
-
-  // const handleRemove = (file: File | string) => {
-  //   const filteredItems = values.imageUrl.filter((_file: string | File) => _file !== file);
-  //   setFieldValue('images', filteredItems);
-  // };
   useEffect(() => {
     setEnumStatus(statusOptions.find((e) => e.id == currentGarden?.status) || null);
   }, [currentGarden]);
@@ -214,14 +147,14 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Garden Name"
+                    label={translate('page.garden.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
-                    label="Address"
+                    label={translate('page.garden.form.address')}
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
@@ -230,31 +163,31 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Latitude"
-                    {...getFieldProps('latitude')}
-                    error={Boolean(touched.latitude && errors.latitude)}
-                    helperText={touched.latitude && errors.latitude}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Longitude"
+                    label={translate('page.garden.form.longitude')}
                     {...getFieldProps('longitude')}
                     error={Boolean(touched.longitude && errors.longitude)}
                     helperText={touched.longitude && errors.longitude}
+                  />
+                  <TextField
+                    fullWidth
+                    label={translate('page.garden.form.latitude')}
+                    {...getFieldProps('latitude')}
+                    error={Boolean(touched.latitude && errors.latitude)}
+                    helperText={touched.latitude && errors.latitude}
                   />
                 </Stack>
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Acreage"
+                    label={translate('page.garden.form.acreage')}
                     {...getFieldProps('acreage')}
                     error={Boolean(touched.acreage && errors.acreage)}
                     helperText={touched.acreage && errors.acreage}
                   />
                   <TextField
                     fullWidth
-                    label="Quantity of Cells"
+                    label={translate('page.garden.form.quantity-of-cells')}
                     {...getFieldProps('quantityOfCells')}
                     error={Boolean(touched.quantityOfCells && errors.quantityOfCells)}
                     helperText={touched.quantityOfCells && errors.quantityOfCells}
@@ -266,7 +199,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     fullWidth
                     disablePortal
                     clearIcon
-                    id="areaID"
+                    id="areaId"
                     {...getFieldProps('areaID')}
                     options={optionsArea}
                     getOptionLabel={(option: any) => (option ? option.address : '')}
@@ -276,7 +209,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Area"
+                        label={translate('page.garden.form.area')}
                         error={Boolean(touched.areaID && errors.areaID)}
                         helperText={touched.areaID && errors.areaID}
                       />
@@ -297,7 +230,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Type"
+                        label={translate('page.garden.form.garden-type')}
                         error={Boolean(touched.gardenTypeId && errors.gardenTypeId)}
                         helperText={touched.gardenTypeId && errors.gardenTypeId}
                       />
@@ -319,7 +252,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Sites"
+                        label={translate('page.garden.form.site')}
                         error={Boolean(touched.siteId && errors.siteId)}
                         helperText={touched.siteId && errors.siteId}
                       />
@@ -339,7 +272,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Status"
+                          label={translate('page.garden.form.status')}
                           error={Boolean(touched.status && errors.status)}
                           helperText={touched.status && errors.status}
                         />
@@ -350,7 +283,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Garden' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

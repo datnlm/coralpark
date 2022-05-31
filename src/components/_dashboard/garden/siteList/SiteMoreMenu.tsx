@@ -74,16 +74,14 @@ export default function SiteMoreMenu({ onDelete, userName }: SiteMoreMenuProps) 
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-              {translate('site.button.message.title.confirm-delete')}
+              {translate('button.message.title.confirm-delete')}
             </DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                {translate('site.button.message.confirm-delete')}
-              </DialogContentText>
+              <DialogContentText>{translate('button.message.confirm-delete')}</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button autoFocus onClick={handleClose}>
-                {translate('site.button.save.cancel')}
+                {translate('button.save.cancel')}
               </Button>
               <Button
                 onClick={(event) => {

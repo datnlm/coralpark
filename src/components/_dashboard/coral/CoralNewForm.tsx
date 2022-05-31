@@ -9,21 +9,12 @@ import { LoadingButton } from '@material-ui/lab';
 import {
   Card,
   Box,
-  Chip,
   Grid,
   Stack,
-  Radio,
-  Switch,
-  Select,
   TextField,
-  InputLabel,
   Typography,
-  RadioGroup,
-  FormControl,
   Autocomplete,
-  InputAdornment,
   FormHelperText,
-  FormControlLabel,
   Tab
 } from '@material-ui/core';
 import TabContext from '@material-ui/lab/TabContext';
@@ -32,36 +23,32 @@ import TabPanel from '@material-ui/lab/TabPanel';
 // utils
 import { manageCoral } from '_apis_/coral';
 import { OptionStatus, coralStatusOptions } from 'utils/constants';
-import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
-import { UserManager, Coral, Habitat } from '../../../@types/coral';
+import { Coral, Habitat } from '../../../@types/coral';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
-
-// ----------------------------------------------------------------------
-import countries from './countries';
 import CoralDetailsCarousel from './CoralDetailsCarousel';
-import CoralDetailsSummary from './CoralDetailsSummary';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
   marginBottom: theme.spacing(1)
 }));
-
 // ----------------------------------------------------------------------
 
 type UserNewFormProps = {
   isEdit: boolean;
-  // currentUser?: UserManager;
   currentCoral?: Coral;
   currentHabitat?: Habitat | null;
 };
 
 export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: UserNewFormProps) {
+  const { translate } = useLocales();
   const [valueTab, setValueTab] = useState('coral');
   const [optionsGenus, setOptionsGenus] = useState([]);
   const [enumCoralStatus, setEnumCoralStatus] = useState<OptionStatus | null>(null);
@@ -233,8 +220,12 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       <TabContext value={valueTab}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
-            <Tab label="Coral" value="coral" />
-            <Tab label="Habitat" value="habitat" disabled={!isEdit} />
+            <Tab label={translate('page.coral.form.label.coral')} value="coral" />
+            <Tab
+              label={translate('page.coral.form.label.habitat')}
+              value="habitat"
+              disabled={!isEdit}
+            />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
@@ -248,14 +239,14 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
                           fullWidth
-                          label="Full Name"
+                          label={translate('page.coral.form.name')}
                           {...getFieldProps('name')}
                           error={Boolean(touched.name && errors.name)}
                           helperText={touched.name && errors.name}
                         />
                         <TextField
                           fullWidth
-                          label="Scientific Name"
+                          label={translate('page.coral.form.scientific')}
                           {...getFieldProps('scientificName')}
                           error={Boolean(touched.scientificName && errors.scientificName)}
                           helperText={touched.scientificName && errors.scientificName}
@@ -265,14 +256,14 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
                           fullWidth
-                          label="Longevity"
+                          label={translate('page.coral.form.longevity')}
                           {...getFieldProps('longevity')}
                           error={Boolean(touched.longevity && errors.longevity)}
                           helperText={touched.longevity && errors.longevity}
                         />
                         <TextField
                           fullWidth
-                          label="Exhibit Social"
+                          label={translate('page.coral.form.exhibit-social')}
                           {...getFieldProps('exhibitSocial')}
                           error={Boolean(touched.exhibitSocial && errors.exhibitSocial)}
                           helperText={touched.exhibitSocial && errors.exhibitSocial}
@@ -282,14 +273,14 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
                           fullWidth
-                          label="Sexual Behaviors"
+                          label={translate('page.coral.form.sexual-behaviors')}
                           {...getFieldProps('sexualBehaviors')}
                           error={Boolean(touched.sexualBehaviors && errors.sexualBehaviors)}
                           helperText={touched.sexualBehaviors && errors.sexualBehaviors}
                         />
                         <TextField
                           fullWidth
-                          label="Nutrition"
+                          label={translate('page.coral.form.nutrition')}
                           {...getFieldProps('nutrition')}
                           error={Boolean(touched.nutrition && errors.nutrition)}
                           helperText={touched.nutrition && errors.nutrition}
@@ -298,7 +289,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
                           fullWidth
-                          label="Colour"
+                          label={translate('page.coral.form.colour')}
                           {...getFieldProps('colour')}
                           error={Boolean(touched.colour && errors.colour)}
                           helperText={touched.colour && errors.colour}
@@ -315,7 +306,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Status"
+                              label={translate('page.coral.form.status-enum')}
                               error={Boolean(touched.statusEnum && errors.statusEnum)}
                               helperText={touched.statusEnum && errors.statusEnum}
                             />
@@ -335,7 +326,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Species name"
+                              label={translate('page.coral.form.coral-type')}
                               error={Boolean(touched.coralType && errors.coralType)}
                               helperText={touched.coralType && errors.coralType}
                             />
@@ -343,7 +334,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                         />
                       </Stack>
                       <div>
-                        <LabelStyle>Description</LabelStyle>
+                        <LabelStyle>{translate('page.coral.form.description')}</LabelStyle>
                         <QuillEditor
                           simple
                           id="product-description"
@@ -369,7 +360,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                         </>
                       )}
                       <div>
-                        <LabelStyle>Add Images</LabelStyle>
+                        <LabelStyle>{translate('page.coral.form.image')}</LabelStyle>
                         <UploadMultiFile
                           showPreview
                           accept="image/*"
@@ -388,7 +379,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
 
                       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                         <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                          {!isEdit ? 'Create Coral' : 'Save Changes'}
+                          {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                         </LoadingButton>
                       </Box>
                     </Stack>
@@ -408,14 +399,14 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
                           fullWidth
-                          label="Bathymetry"
+                          label={translate('page.coral-habitat.form.bathymetry')}
                           {...getFieldProps('bathymetry')}
                           error={Boolean(touched.bathymetry && errors.bathymetry)}
                           helperText={touched.bathymetry && errors.bathymetry}
                         />
                         <TextField
                           fullWidth
-                          label="Temperature"
+                          label={translate('page.coral-habitat.form.temperature')}
                           {...getFieldProps('temperature')}
                           error={Boolean(touched.temperature && errors.temperature)}
                           helperText={touched.temperature && errors.temperature}
@@ -425,14 +416,14 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
                           fullWidth
-                          label="Brightness"
+                          label={translate('page.coral-habitat.form.brightness')}
                           {...getFieldProps('brightness')}
                           error={Boolean(touched.brightness && errors.brightness)}
                           helperText={touched.brightness && errors.brightness}
                         />
                         <TextField
                           fullWidth
-                          label="Current"
+                          label={translate('page.coral-habitat.form.current')}
                           {...getFieldProps('current')}
                           error={Boolean(touched.current && errors.current)}
                           helperText={touched.current && errors.current}
@@ -441,7 +432,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
                           fullWidth
-                          label="Tides"
+                          label={translate('page.coral-habitat.form.tides')}
                           {...getFieldProps('tides')}
                           error={Boolean(touched.tides && errors.tides)}
                           helperText={touched.tides && errors.tides}
@@ -456,7 +447,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                       </Stack>
                       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                         <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                          {!isEdit ? 'Create Habitat' : 'Save Changes'}
+                          {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                         </LoadingButton>
                       </Box>
                     </Stack>
@@ -466,7 +457,6 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
             </Form>
           </FormikProvider>
         </TabPanel>
-        {/* <TabPanel value="3">Item Three</TabPanel> */}
       </TabContext>
     </Box>
   );

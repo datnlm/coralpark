@@ -40,6 +40,7 @@ import { manageArea } from '_apis_/area';
 import { Area } from '../../../@types/area';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { Coral, CoralArea } from '../../../@types/coral';
 
@@ -60,15 +61,15 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 }));
 
 type CoralAreaNewFormProps = {
-  isEdit: boolean;
   currentCoralArea?: CoralArea;
 };
 
-export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralAreaNewFormProps) {
+export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   // -------------------
-  const [currentArea, setCurrentArea] = useState<any>();
+  const [currentArea, setCurrentArea] = useState<any>(null);
   const [optionsArea, setOptionsArea] = useState<Area[]>([]);
   const [coralList, setCoralList] = useState<Coral[]>([]);
   const [checked, setChecked] = useState<number[]>([]);
@@ -76,6 +77,7 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
   const [right, setRight] = useState<number[]>([]);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
+  const [isEdit, setIsEdit] = useState<Boolean>(false);
   // -------------------
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required')
@@ -166,12 +168,11 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
               }
             });
         if (flag) {
-          resetForm();
+          setCurrentArea(null);
           setSubmitting(false);
           enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
             variant: 'success'
           });
-          navigate(PATH_DASHBOARD.coralArea.list);
         } else {
           enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
         }
@@ -211,17 +212,19 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
 
   useEffect(() => {
     const mapCoralAreaId: number[] = [];
+    console.log(currentArea);
+    setRight([]);
+    setLeft([]);
+    setIsEdit(false);
     if (currentArea != null) {
-      setRight([]);
-      setLeft([]);
       // set coral id left
       manageArea.getAreaById(currentArea.id).then((response) => {
         if (response.status == 200) {
           const data = response.data.corals;
           if (data != null) {
-            console.log(data);
             data.map((v: Coral) => mapCoralAreaId.push(Number(v.id)));
             setRight(mapCoralAreaId);
+            setIsEdit(true);
           }
         }
       });
@@ -311,7 +314,9 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
                     options={optionsArea}
                     getOptionLabel={(option: Area) => option.name}
                     onChange={(e, values: Area | null) => setCurrentArea(values)}
-                    renderInput={(params) => <TextField {...params} label="Area" />}
+                    renderInput={(params) => (
+                      <TextField {...params} label={translate('page.coral-area.form.area')} />
+                    )}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -321,7 +326,7 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
                     alignItems="center"
                     sx={{ width: 'auto', py: 3 }}
                   >
-                    <Grid item>{customList('Choices', left)}</Grid>
+                    <Grid item>{customList(translate('page.coral-area.form.choices'), left)}</Grid>
                     <Grid item>
                       <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
                         <Button
@@ -370,12 +375,12 @@ export default function CoralAreaNewForm({ isEdit, currentCoralArea }: CoralArea
                         </Button>
                       </Grid>
                     </Grid>
-                    <Grid item>{customList('Chosen', right)}</Grid>
+                    <Grid item>{customList(translate('page.coral-area.form.chosen'), right)}</Grid>
                   </Grid>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Coral Area' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

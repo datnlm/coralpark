@@ -1,52 +1,339 @@
 {
-  "site": {
-    "title": {
-      "list": "Site: Site List",
-      "create": "Site: create a new site",
-      "update": "Site: Update site"
-    },
-    "heading1": {
-      "list": "Site List",
-      "create": "Create a new site",
-      "update": "Update site"
-    },
-    "heading2": "Dashboard",
-    "heading3": "Site",
-    "heading4": {
-      "list": "List",
-      "new": "New Site"
-    },
-    "button": {
-      "save": {
-        "add": "Create site",
-        "update": "Save change",
-        "confirm": "Confirm",
-        "cancel": "Cancel"
+  "page": {
+    "site": {
+      "title": {
+        "list": "Site: Site List",
+        "create": "Site: Create a new site",
+        "update": "Site: Update site"
       },
-      "menu": {
-        "edit": "Edit",
-        "delete": "Delete"
+      "heading1": {
+        "list": "Site List",
+        "create": "Create a new site",
+        "update": "Update site"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Site",
+      "heading4": {
+        "list": "List",
+        "new": "New Site"
+      },
+      "search": "Search site",
+      "form": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "website": "Website",
+        "longitude": "Longitude",
+        "latitude": "Latitude",
+        "garden-list": "Garden List",
+        "status": "Status"
       }
     },
-    "search": "Search site",
-    "message": {
+    "diver": {
       "title": {
-        "confirm-delete": "Confirm delete"
+        "list": "Diver: Diver List",
+        "create": "Diver: Create a new diver",
+        "update": "Diver: Update diver"
       },
-      "allow-type-image": "Allowed *.jpeg, *.jpg, *.png, *.gif",
-      "confirm-delete": "Are you sure to delete this?"
+      "heading1": {
+        "list": "Diver List",
+        "create": "Create diver",
+        "update": "Update diver"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Diver",
+      "heading4": {
+        "list": "List",
+        "new": "New diver"
+      },
+      "search": "Search diver",
+      "form": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "status": "Status"
+      }
     },
-    "form": {
-      "name": "Name",
-      "phone": "Phone",
-      "email": "Email",
-      "address": "Address",
-      "website": "Website",
-      "longitude": "Longitude",
-      "latitude": "Latitude",
-      "garden-list": "Garden List",
-      "status": "Status"
+    "partner": {
+      "title": {
+        "list": "Partner: Partner List",
+        "create": "Partner: create a new partner",
+        "update": "Partner: Update partner"
+      },
+      "heading1": {
+        "list": "Partner List",
+        "create": "Create a new partner",
+        "update": "Update partner"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Partner",
+      "heading4": {
+        "list": "List",
+        "new": "New Partner"
+      },
+      "search": "Search partner",
+      "form": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "website": "Website",
+        "partner-type": "Partner Type",
+        "status": "Status"
+      }
+    },
+    "partner-type": {
+      "title": {
+        "list": "Partner: Partner Type List",
+        "create": "Partner: Create a new partner type",
+        "update": "Partner: Update partner type"
+      },
+      "heading1": {
+        "list": "Partner Type List",
+        "create": "Create a new partner type",
+        "update": "Update partner type"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Partner Type",
+      "heading4": {
+        "list": "List",
+        "new": "New Partner Type"
+      },
+      "search": "Search partner Type",
+      "form": {
+        "name": "Name"
+      }
+    },
+    "garden": {
+      "title": {
+        "list": "Garden: Garden List",
+        "create": "Garden: Create a new garden",
+        "update": "Garden: Update Garden"
+      },
+      "heading1": {
+        "list": "Garden List",
+        "create": "Create a new garden",
+        "update": "Update garden"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Garden",
+      "heading4": {
+        "list": "List",
+        "new": "New Garden"
+      },
+      "search": "Search garden",
+      "form": {
+        "name": "Name",
+        "address": "Address",
+        "longitude": "Longitude",
+        "latitude": "Latitude",
+        "acreage": "Acreage",
+        "quantity-of-cells": "Quantity of cells",
+        "area": "Area",
+        "garden-type": "Garden Type",
+        "site": "Site",
+        "status": "Status"
+      }
+    },
+    "garden-type": {
+      "title": {
+        "list": "Garden: Garden Type List",
+        "create": "Garden: Create a new garden type",
+        "update": "Garden: Update garden type"
+      },
+      "heading1": {
+        "list": "Garden Type List",
+        "create": "Create a new garden type",
+        "update": "Update garden type"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Garden Type",
+      "heading4": {
+        "list": "List",
+        "new": "New Garden Type"
+      },
+      "search": "Search garden type",
+      "form": {
+        "name": "Name",
+        "description": "Description"
+      }
+    },
+    "coral": {
+      "title": {
+        "list": "Coral: Coral List",
+        "create": "Coral: Create a new coral",
+        "update": "Coral: Update coral"
+      },
+      "heading1": {
+        "list": "Coral List",
+        "create": "Create a new coral",
+        "update": "Update coral"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Coral",
+      "heading4": {
+        "list": "List",
+        "new": "New Coral"
+      },
+      "search": "Search coral",
+      "form": {
+        "label": {
+          "coral": "Coral",
+          "habitat": "Habitat"
+        },
+        "name": "Name",
+        "scientific": "Scientific Name",
+        "longevity": "Longevity",
+        "exhibit-social": "Exhibit Social",
+        "sexual-behaviors": "Sexual Behaviors",
+        "nutrition": "Nutrition",
+        "colour": "Colour",
+        "status-enum": "Status",
+        "coral-type": "Coral Type",
+        "description": "Description",
+        "image": "Add Image"
+      }
+    },
+    "coral-habitat": {
+      "form": {
+        "bathymetry": "Bathymetry",
+        "temperature": "Temperature",
+        "brightness": "Brightness",
+        "tides": "Tides",
+        "current": "Current"
+      }
+    },
+    "coral-type": {
+      "title": {
+        "list": "Coral: Coral Type List",
+        "create": "Coral: Create a new coral type",
+        "update": "Coral: Update coral type"
+      },
+      "heading1": {
+        "list": "Coral Type List",
+        "create": "Create a new coral type",
+        "update": "Update coral type"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Coral Type",
+      "heading4": {
+        "list": "List",
+        "new": "New Coral Type"
+      },
+      "search": "Search coral type",
+      "form": {
+        "name": "Name",
+        "level": "Level Type",
+        "class": "Class",
+        "order": "Order",
+        "family": "Family",
+        "genus": "Genus",
+        "species": "Species",
+        "description": "Description"
+      }
+    },
+    "coral-phase": {
+      "title": {
+        "create": "Coral: Create a coral phase",
+        "update": "Coral: Update coral phase"
+      },
+      "heading1": {
+        "list": "Coral Phase",
+        "create": "Create a coral phase",
+        "update": "Update coral phase"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Coral Phase",
+      "heading4": {
+        "list": "List",
+        "new": "Phase"
+      },
+      "form": {
+        "header": "Phase Type",
+        "coral": "Coral",
+        "phase": "Phase",
+        "min-weight": "Min Weight",
+        "max-weight": "Max Weight",
+        "min-high": "Min High",
+        "max-high": "Max High",
+        "time-from": "Time From",
+        "time-to": "Time To",
+        "colour": "Colour"
+      }
+    },
+    "coral-area": {
+      "title": {
+        "list": "Coral: Coral Area List",
+        "create": "Coral: Create a new coral area",
+        "update": "Coral: Update coral area"
+      },
+      "heading1": {
+        "list": "Coral Area List",
+        "create": "Create a new coral area",
+        "update": "Update coral area"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Coral Area",
+      "heading4": {
+        "list": "List",
+        "new": "New Coral Area"
+      },
+      "search": "Search coral area",
+      "form": {
+        "choices": "Choices",
+        "chosen": "Chosen",
+        "area": "Area"
+      }
+    },
+    "area": {
+      "title": {
+        "create": "Area: Create a new area",
+        "update": "Area: Update area"
+      },
+      "heading1": {
+        "list": "Area",
+        "create": "Create area",
+        "update": "Update area"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Area",
+      "heading4": {
+        "list": "List",
+        "new": "New area"
+      },
+      "form": {
+        "name": "Name",
+        "province": "Province",
+        "district": "District",
+        "ward": "Ward" 
+      }
     }
+  }, 
+  "button": {
+    "save": {
+      "add": "Create",
+      "update": "Save change",
+      "next": "Next",
+      "confirm": "Confirm",
+      "finish": "Finish",
+      "cancel": "Cancel"
+    },
+    "back": "Back",
+    "menu": {
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+  "message": {
+    "title": {
+      "confirm-delete": "Confirm delete"
+    },
+    "allow-type-image": "Allowed *.jpeg, *.jpg, *.png, *.gif",
+    "confirm-delete": "Are you sure to delete this?",
+    "update-photo": "Update photo",
+    "upload-photo": "Upload photo"
   },
   "menu": {
     "sidebarConfig": {
@@ -55,20 +342,66 @@
       },
       "title": {
         "diver": "diver",
-        "site": "site"
+        "partner": "partner"
       },
       "diver": {
         "list": "List"
       },
-      "site": {
+      "partner": {
         "list": "List"
       }
     },
     "mega": {
       "button": {
         "more": "More Configuration"
+      },
+      "header": "Configuration",
+      "title": {
+        "site": "Site",
+        "garden": "Garden",
+        "partner": "Partner",
+        "coral": "Coral",
+        "area": "Area",
+        "account": "Account"
+      },
+      "subheader": {
+        "site": "Site",
+        "garden": "Garden",
+        "type": "Type",
+        "coral-type": "Type",
+        "coral": "Coral",
+        "phase": "Phase",
+        "phase-type": "Phase type",
+        "area": "Area",
+        "account": "Account"
+      },
+      "site": {
+        "list": "List",
+        "create": "Create"
+      },
+      "garden": {
+        "list": "List",
+        "create": "Create"
+      },
+      "partner": {
+        "list": "List",
+        "create": "Create"
+      },
+      "coral": {
+        "list": "List",
+        "create": "Create",
+        "phase": "Phase",
+        "area": "Area"
+      },
+      "area": {
+        "list": "List",
+        "create": "Create"
+      },
+      "account": {
+        "list": "List",
+        "create": "Create"
       }
     }
   }
-  
 }
+  

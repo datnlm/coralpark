@@ -6,12 +6,12 @@ import { Container } from '@material-ui/core';
 import { manageCoral } from '_apis_/coral';
 import { CoralType } from '../../@types/coral';
 // redux
-import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/coral';
+import { useDispatch } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -20,6 +20,7 @@ import CoralTypeNewForm from '../../components/_dashboard/coral/CoralTypeNewForm
 // ----------------------------------------------------------------------
 
 export default function UserCreate() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -44,21 +45,28 @@ export default function UserCreate() {
         }
       });
     }
-  }, []);
+  }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? 'Coral Type: Create a new coral type' : 'Coral Type: Edit coral type'}>
+    <Page
+      title={
+        !isEdit ? translate('page.coral-type.title.create') : translate('page.site.title.update')
+      }
+    >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new coral type' : 'Edit coral type'}
+          heading={
+            !isEdit
+              ? translate('page.coral-type.heading1.create')
+              : translate('page.coral-type.heading1.update')
+          }
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral Type', href: PATH_DASHBOARD.coral.listType },
-            { name: !isEdit ? 'New coral type' : name }
+            { name: translate('page.coral-type.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.coral-type.heading3'), href: PATH_DASHBOARD.coral.listType },
+            { name: !isEdit ? translate('page.coral-type.heading4.new') : name }
           ]}
         />
         <CoralTypeNewForm isEdit={isEdit} currentType={currentType} />
-        {/* <CoralTypeNewForm isEdit={isEdit} currentUser={currentUser} /> */}
       </Container>
     </Page>
   );

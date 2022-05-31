@@ -30,13 +30,11 @@ import axios from 'axios';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListArea } from '../../redux/slices/area';
-// utils
-// import { fDate } from '../../utils/formatTime';
-import { fCurrency } from '../../utils/formatNumber';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // @types
 import { Area } from '../../@types/area';
 // components
@@ -48,12 +46,6 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../../components/_dashboard/area/list';
 
 // ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'address', label: 'Address', alignRight: false },
-  { id: '' }
-];
 
 const ThumbImgStyle = styled('img')(({ theme }) => ({
   width: 64,
@@ -104,6 +96,7 @@ function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, 
 // ----------------------------------------------------------------------
 
 export default function EcommerceProductList() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -183,19 +176,26 @@ export default function EcommerceProductList() {
 
   const filteredArea = applySortFilter(areaList, getComparator(order, orderBy), filterName);
 
-  const isProductNotFound = filteredArea.length === 0;
+  const isAreaNotFound = filteredArea.length === 0;
+
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.area.form.name'), alignRight: false },
+    { id: 'address', label: translate('page.area.form.address'), alignRight: false },
+    { id: '' }
+  ];
+
   return (
-    <Page title="Area: List">
+    <Page title={translate('page.area.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Area List"
+          heading={translate('page.area.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: translate('page.area.heading2'), href: PATH_DASHBOARD.root },
             {
-              name: 'Area',
+              name: translate('page.area.heading3'),
               href: PATH_DASHBOARD.area.root
             },
-            { name: 'List' }
+            { name: translate('page.area.heading4.list') }
           ]}
           action={
             <Button
@@ -204,7 +204,7 @@ export default function EcommerceProductList() {
               to={PATH_DASHBOARD.area.new}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Area
+              {translate('button.save.add')}
             </Button>
           }
         />
@@ -237,15 +237,7 @@ export default function EcommerceProductList() {
                       const isItemSelected = selected.indexOf(id) !== -1;
 
                       return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
-                          // onClick={() => handleClick(location)}
-                        >
+                        <TableRow hover key={id} tabIndex={-1} role="checkbox">
                           <TableCell padding="checkbox">
                             {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
@@ -266,7 +258,7 @@ export default function EcommerceProductList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {/* {isProductNotFound && (
+                {isAreaNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6}>
@@ -276,7 +268,7 @@ export default function EcommerceProductList() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )} */}
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>

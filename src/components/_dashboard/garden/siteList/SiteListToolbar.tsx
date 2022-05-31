@@ -65,7 +65,7 @@ export default function SiteListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder={translate('site.search')}
+        placeholder={translate('page.site.search')}
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

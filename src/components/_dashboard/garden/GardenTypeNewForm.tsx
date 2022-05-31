@@ -6,29 +6,13 @@ import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
-import {
-  Card,
-  Box,
-  Chip,
-  Grid,
-  Stack,
-  Radio,
-  Switch,
-  Select,
-  TextField,
-  InputLabel,
-  Typography,
-  RadioGroup,
-  FormControl,
-  Autocomplete,
-  InputAdornment,
-  FormHelperText,
-  FormControlLabel
-} from '@material-ui/core';
+import { Card, Box, Grid, Stack, TextField, Typography, FormHelperText } from '@material-ui/core';
 // utils
 import { manageGarden } from '_apis_/garden';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { GardenType } from '../../../@types/garden';
 //
@@ -46,11 +30,11 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 type GardenNewFormProps = {
   isEdit: boolean;
-  // currentUser?: UserManager;
   currentGardenType?: GardenType;
 };
 
 export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -112,7 +96,7 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Name"
+                    label={translate('page.garden-type.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
@@ -120,7 +104,7 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <div>
-                    <LabelStyle>Description</LabelStyle>
+                    <LabelStyle>{translate('page.garden-type.form.description')}</LabelStyle>
                     <QuillEditor
                       simple
                       id="description"
@@ -138,7 +122,7 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Garden Type' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

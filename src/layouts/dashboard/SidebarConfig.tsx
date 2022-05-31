@@ -18,6 +18,7 @@ const ICONS = {
   coral: getIcon('ic_coral'),
   coralArea: getIcon('ic_coral_area'),
   garden: getIcon('ic_garden'),
+  partner: getIcon('ic_partner'),
   diver: getIcon('ic_diver'),
   area: getIcon('ic_area'),
   phases: getIcon('ic_phases'),
@@ -46,11 +47,14 @@ export default function SidebarConfig() {
           ]
         },
         {
-          title: translate('menu.sidebarConfig.title.site'),
-          path: PATH_DASHBOARD.site.root,
-          icon: ICONS.garden,
+          title: translate('menu.sidebarConfig.title.partner'),
+          path: PATH_DASHBOARD.partner.root,
+          icon: ICONS.partner,
           children: [
-            { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
+            {
+              title: translate('menu.sidebarConfig.partner.list'),
+              path: PATH_DASHBOARD.partner.list
+            }
           ]
         }
       ]

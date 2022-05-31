@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { Icon } from '@iconify/react';
-import listFill from '@iconify/icons-eva/list-fill';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import {
@@ -12,17 +10,12 @@ import {
   Drawer,
   Tooltip,
   Typography,
-  CardActionArea,
-  Card,
-  Paper,
-  Container,
-  AppBar
+  CardActionArea
 } from '@material-ui/core';
-import menuConfig from 'layouts/main/MenuConfig';
+import menuConfig from './MenuConfig';
 import MegaMenuMobile from './MegaMenuMobile';
 // hooks
 import useAuth from '../../hooks/useAuth';
-import useLocales from '../../hooks/useLocales';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // routes
 import { PATH_DASHBOARD, PATH_DOCS } from '../../routes/paths';
@@ -117,7 +110,6 @@ type DashboardSidebarProps = {
 };
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
-  const { allLang, currentLang, translate, onChangeLang } = useLocales();
   const { pathname } = useLocation();
   const { user } = useAuth();
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
@@ -167,7 +159,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         {isCollapse ? (
           <MyAvatar sx={{ mx: 'auto', mb: 2 }} />
         ) : (
-          <Link underline="none" component={RouterLink} to={PATH_DASHBOARD.user.account}>
+          <Link underline="none" component={RouterLink} to={PATH_DASHBOARD.account.editById}>
             <AccountStyle>
               <MyAvatar />
               <Box sx={{ ml: 2 }}>
@@ -188,7 +180,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
 
       {!isCollapse && (
         <Box sx={{ px: 2.5, pb: 3, mt: 10, width: 1 }}>
-          <MegaMenuMobile navConfig={menuConfig} />
+          <MegaMenuMobile navConfig={menuConfig()} />
         </Box>
       )}
     </Scrollbar>
