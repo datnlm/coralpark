@@ -1,52 +1,340 @@
 {
-  "site": {
-    "title": {
-      "list": "Khu vực : Danh sách khu vực",
-      "create": "Khu vực: Thêm mới khu vực",
-      "update": "Khu vực: Cập nhật khu vực"
-    },
-    "heading1": {
-      "list": "Danh sách khu vực",
-      "create": "Thêm mới khu vực",
-      "update": "Chỉnh sửa khu vực"
-    },
-    "heading2": "Bảng điều khiểu",
-    "heading3": "Khu vực",
-    "heading4": {
-      "list": "Danh sách",
-      "new": "Khu vực mới"
-    },
-    "button": {
-      "save": {
-        "add": "Thêm mới khu vực",
-        "update": "Lưu thay đổi",
-        "confirm": "Xác nhận",
-        "cancel": "Huỷ"
+  "page": {
+    "site": {
+      "title": {
+        "list": "Khu vực: Danh sách khu vực",
+        "create": "Khu vực: Thêm mới khu vực",
+        "update": "Khu vực: Cập nhật khu vực"
       },
-      "menu": {
-        "edit": "Chỉnh sửa thông",
-        "delete": "Xoá thông tin"
+      "heading1": {
+        "list": "Danh sách khu vực",
+        "create": "Thêm mới khu vực",
+        "update": "Chỉnh sửa khu vực"
+      },
+      "heading2": "Bảng điều khiểu",
+      "heading3": "Khu vực",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Khu vực mới"
+      },
+      "search": "Tìm kiếm theo địa điểm",
+      "form": {
+        "name": "Tên",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ email",
+        "address": "Địa chỉ",
+        "website": "Địa chỉ trang web",
+        "longitude": "Kinh độ",
+        "latitude": "Vĩ độ",
+        "garden-list": "Danh sách vườn",
+        "status": "Trạng thái"
       }
     },
-    "search": "Tìm kiếm theo địa điểm",
-    "message": {
+    "diver": {
       "title": {
-        "confirm-delete": "Xác nhận xoá"
+        "list": "Thợ lặn: Danh sách thợ lặn",
+        "create": "Thợ lặn: Thêm mới thông tin thợ lặn",
+        "update": "Thợ lặn: Cập nhật thông tin thợ lặn"
       },
-      "allow-type-image": "Cho phép *.jpeg, *.jpg, *.png, *.gif",
-      "confirm-delete": "Bạn có chắc chắn muốn xoá?"
+      "heading1": {
+        "list": "Danh sách thợ lặn",
+        "create": "Thêm mới thông tin thợ lặn",
+        "update": "Chỉnh sửa thông tin thợ lặn"
+      },
+      "heading2": "Bảng điều khiểu",
+      "heading3": "Thợ lặn",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thợ lặn mới"
+      },
+      "search": "Tìm kiếm theo tên thợ lặn",
+      "form": {
+        "name": "Tên đầy đủ",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ email",
+        "address": "Địa chỉ",
+        "status": "Trạng thái"
+      }
     },
-    "form": {
-      "name": "Tên",
-      "phone": "Số điện thoại",
-      "email": "Địa chỉ email",
-      "address": "Địa chỉ",
-      "website": "Địa chỉ trang web",
-      "longitude": "Kinh độ",
-      "latitude": "Vĩ độ",
-      "garden-list": "Danh sách vườn",
-      "status": "Trạng thái"
+    "partner": {
+      "title": {
+        "list": "Đối tác: Danh sách đối tác",
+        "create": "Đối tác: Thêm mới đối tác",
+        "update": "Đối tác: Cập nhật thông tin đối tác"
+      },
+      "heading1": {
+        "list": "Danh sách đối tác",
+        "create": "Thêm mới đối tác",
+        "update": "Chỉnh sửa thông tin đối tác"
+      },
+      "heading2": "Bảng điều khiểu",
+      "heading3": "Đối tác",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới"
+      },
+      "search": "Search partner",
+      "form": {
+        "name": "Tên đối tác",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ Email",
+        "address": "Địa chỉ",
+        "website": "Địa chỉ Website",
+        "partner-type": "Loại đối tác",
+        "status": "Status"
+      }
+    },
+    "partner-type": {
+      "title": {
+        "list": "Đối tác: Danh sách loại đối tác",
+        "create": "Đối tác: Thêm mới loại đối tác",
+        "update": "Đối tác: Cập nhật loại đối tác"
+      },
+      "heading1": {
+        "list": "Danh sách loại đối tác",
+        "create": "Thêm mới loại đối tác",
+        "update": "Cập nhật loại đối tác"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Loại đối tác",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới loại đối tác"
+      },
+      "search": "Tìm kiếm loại đối tác",
+      "form": {
+        "name": "Tên"
+      }
+    },
+    "garden": {
+      "title": {
+        "list": "Vườn: Danh sách vườn",
+        "create": "Vườn: Thêm mới một vườn",
+        "update": "Vườn: Cập nhật vườn"
+      },
+      "heading1": {
+        "list": "Danh sách vườn",
+        "create": "Thêm mới vườn",
+        "update": "Cập nhật vườn"
+      },
+      "heading2": "Bảng điểu khiển",
+      "heading3": "Vườn",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Vườn mới"
+      },
+      "search": "Tìm kiếm theo vườn",
+      "form": {
+        "name": "Tên",
+        "address": "Địa chỉ",
+        "longitude": "Kinh độ",
+        "latitude": "Vĩ độ",
+        "acreage": "Diện tích",
+        "quantity-of-cells": "Số cell",
+        "area": "Địa điểm",
+        "garden-type": "Loại vườn",
+        "site": "Khu vực ",
+        "status": "Trạng thái"
+      }
+    },
+    "garden-type": {
+      "title": {
+        "list": "Vườn: Danh sách loại vườn",
+        "create": "Vườn: Tạo mới loại vườn",
+        "update": "Vườn: Cập nhật loại vườn"
+      },
+      "heading1": {
+        "list": "Danh sách loại vườn",
+        "create": "Thêm mới loại vườn",
+        "update": "Cập nhật loại vườn"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Loại vườn",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới loại vườn"
+      },
+      "search": "Tìm kiếm theo loại vườn",
+      "form": {
+        "name": "Tên",
+        "description": "Mô ta"
+      }
+    },
+    "coral": {
+      "title": {
+        "list": "San hô: Danh sách san hô",
+        "create": "San hô: Thêm mới san hô",
+        "update": "San hô: Cập nhật san hô"
+      },
+      "heading1": {
+        "list": "Danh sách san hô",
+        "create": "Thêm mới san hô",
+        "update": "Cập nhật san hô"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "San hô",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới san hô"
+      },
+      "search": "Tìm kiếm theo san hô",
+      "form": {
+        "label": {
+          "coral": "San hô",
+          "habitat": "Môi trường sống"
+        },
+        "name": "Tên",
+        "scientific": "Tên khoa học",
+        "longevity": "Tuổi thọ",
+        "exhibit-social": "Hành vi xã hội",
+        "sexual-behaviors": "Sinh sản",
+        "nutrition": "Dinh dưỡng",
+        "colour": "Màu sắc",
+        "status-enum": "Trạng thái",
+        "coral-type": "Loại",
+        "description": "Mô tả",
+        "image": "Thêm mới hình"
+      }
+    },
+    "coral-habitat": {
+      "form": {
+        "bathymetry": "Độ sâu",
+        "temperature": "Nhiệt độ",
+        "brightness": "Ánh sáng",
+        "tides": "Thuỷ triều",
+        "current": "DÒng chải"
+      }
+    },
+    "coral-type": {
+      "title": {
+        "list": "San hô: Danh sách loài",
+        "create": "San hô: Thêm mới loài",
+        "update": "San hô: Cập nhật loài"
+      },
+      "heading1": {
+        "list": "Danh sách loài",
+        "create": "Thêm mới loài",
+        "update": "Cập nhật loài"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Loài san hô",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới loài san hô"
+      },
+      "search": "Tìm kiếm loài",
+      "form": {
+        "name": "Tên",
+        "level": "Cấp bậc loài",
+        "class": "Lớp",
+        "order": "Bộ",
+        "family": "Họ",
+        "genus": "Chi",
+        "species": "Loài",
+        "description": "Mô tả"
+      }
+    },
+    "coral-phase": {
+      "title": {
+        "create": "San hô: Thêm mới giai đoạn",
+        "update": "San hô: Cập nhật giai đoạn"
+      },
+      "heading1": {
+        "list": "Giai đoạn",
+        "create": "Tạo mới giai đoạn",
+        "update": "Cập nhật giai đoạn"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Giai đoạn",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Giai đoạn"
+      },
+      "form": {
+        "header": "Giai đoạn",
+        "coral": "San hô",
+        "phase": "Giai đoạn",
+        "min-weight": "Trọng lượng tối thiểu",
+        "max-weight": "Trọng lượng tối đa",
+        "min-high": "Chiều cao tối thiểu",
+        "max-high": "Chiều cao tối đa",
+        "time-from": "Thời gian bắt đầu",
+        "time-to": "Thời gian kết thúc",
+        "colour": "Màu sắc"
+      }
+    },
+    "coral-area": {
+      "title": {
+        "list": "San hô: Khu vực san hô",
+        "create": "San hô: Thêm san hô vào khu vực",
+        "update": "San hô: Cập nhật san hô vào khu vực"
+      },
+      "heading1": {
+        "list": "Danh sách khu vực san hô",
+        "create": "Thêm san hô vào khu vực",
+        "update": "Cập nhật san hô vào khu vực"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Khu vực san hô",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm san hô vào khu vực"
+      },
+      "search": "Tìm kiếm san hô trong khu vực",
+      "form": {
+        "choices": "Chưa chọn",
+        "chosen": "Đã chọn",
+        "area": "Khu vực"
+      }
+    },
+    "area": {
+      "title": {
+        "create": "Địa điểm: Thêm mới địa điểm",
+        "update": "Địa điểm: Cập nhật địa điểm"
+      },
+      "heading1": {
+        "list": "Địa điểm",
+        "create": "Tạo mới địa điểm",
+        "update": "Cập nhật địa điểm"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Địa điểm",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới địa điểm"
+      },
+      "form": {
+        "name": "Tên khu vực",
+        "province": "Tỉnh/Thành phố",
+        "district": "Quận/Huyện",
+        "ward": "Phường/xã" 
+      }
     }
+  },
+
+  "button": {
+    "save": {
+      "add": "Thêm mới",
+      "update": "Lưu thay đổi",
+      "next": "Bước tiếp theo",
+      "confirm": "Xác nhận",
+      "finish": "Hoàn thành",
+      "cancel": "Huỷ"
+    },
+    "back": "Trở lại",
+    "menu": {
+      "edit": "Chỉnh sửa thông",
+      "delete": "Xoá thông tin"
+    }
+  },
+  "message": {
+    "title": {
+      "confirm-delete": "Xác nhận xoá"
+    },
+    "allow-type-image": "Cho phép *.jpeg, *.jpg, *.png, *.gif",
+    "confirm-delete": "Bạn có chắc chắn muốn xoá?",
+    "update-photo": "Cập nhật ảnh",
+    "upload-photo": "Tải lên ảnh"
   },
   "menu": {
     "sidebarConfig": {
@@ -54,19 +342,65 @@
         "management": "ban quản trị"
       },
       "title": {
-        "diver": "thợ lặn",
-        "site": "khu vực"
+        "diver": "Thợ lặn",
+        "partner": "Đối tác"
       },
       "diver": {
-        "list": "danh sách"
+        "list": "Danh sách"
       },
-      "site": {
-        "list": "danh sách"
+      "partner": {
+        "list": "Danh sách"
       }
     },
     "mega": {
       "button": {
         "more": "Cấu hình khác"
+      },
+      "header": "Cấu hình",
+      "title": {
+        "site": "Địa điểm",
+        "garden": "Vườn",
+        "partner": "Đối tác",
+        "coral": "San hô",
+        "area": "Khu vực",
+        "account": "Tài khoảng"
+      },
+      "subheader": {
+        "site": "Địa điểm",
+        "garden": "Vườn",
+        "type": "Loại",
+        "coral-type": "Loài",
+        "coral": "San hô",
+        "phase": "Giai đoạn",
+        "phase-type": "Từng giai đoạn",
+        "area": "Khu vực",
+        "account": "Tài khoảng"
+      },
+      "site": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
+      },
+      "garden": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
+      },
+      "partner": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
+      },
+      "coral": {
+        "list": "Danh sách",
+        "create": "Thêm mới",
+        "phase": "Giai đoạn",
+        "area": "Khu vực"
+      },
+      "area": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
+      },
+      "account": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
       }
     }
   }

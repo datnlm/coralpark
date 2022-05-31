@@ -13,29 +13,26 @@ import { getUserList } from '../../redux/slices/coral';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import GardenTypeNewForm from '../../components/_dashboard/garden/GardenTypeNewForm';
 import { UserManager, Coral } from '../../@types/coral';
+import { GardenType } from '../../@types/garden';
 // ----------------------------------------------------------------------
 
 export default function GardenCreate() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-
-  const { gardenTypesList } = useSelector((state: RootState) => state.garden);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   // const currentGardenType = gardenTypesList.find(
   //   (gardenType) => paramCase(gardenType.name) === name
   // );
-  const [currentGardenType, setcurrentGardenType] = useState({
-    id: '',
-    name: '',
-    description: ''
-  });
+  const [currentGardenType, setCurrentGardenType] = useState<GardenType>();
 
   useEffect(() => {
     if (isEdit) {
@@ -46,21 +43,31 @@ export default function GardenCreate() {
             name: response.data.name,
             description: response.data.description
           };
-          setcurrentGardenType(data);
+          setCurrentGardenType(data);
         }
       });
     }
   }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? 'Garden: Create a new garden type' : 'Garden: Edit garden type'}>
+    <Page
+      title={
+        !isEdit
+          ? translate('page.garden-type.title.create')
+          : translate('page.garden-type.title.update')
+      }
+    >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new garden type' : 'Edit garden type'}
+          heading={
+            !isEdit
+              ? translate('page.garden-type.heading1.create')
+              : translate('page.garden-type.heading1.update')
+          }
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden type', href: PATH_DASHBOARD.garden.typesList },
-            { name: !isEdit ? 'New type garden' : name }
+            { name: translate('page.garden-type.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.garden-type.heading3'), href: PATH_DASHBOARD.garden.typesList },
+            { name: !isEdit ? translate('page.garden-type.heading4.new') : name }
           ]}
         />
 

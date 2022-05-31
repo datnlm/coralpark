@@ -11,6 +11,7 @@ import { getUserList } from '../../redux/slices/coral';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -19,27 +20,36 @@ import CoralPhasesTypeNewForm from '../../components/_dashboard/coral/CoralPhase
 // ----------------------------------------------------------------------
 
 export default function PhasesTypeCreate() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { name } = useParams();
-  const { userList } = useSelector((state: RootState) => state.user);
   const isEdit = pathname.includes('edit');
-  const currentUser = userList.find((user) => paramCase(user.name) === name);
 
   useEffect(() => {
     dispatch(getUserList());
   }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? 'Coral: Create a new phase type' : 'Coral: Edit phase type'}>
+    <Page
+      title={
+        !isEdit
+          ? translate('page.coral-phase.title.create')
+          : translate('page.coral-phase.title.update')
+      }
+    >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new phase type' : 'Edit phases type'}
+          heading={
+            !isEdit
+              ? translate('page.coral-phase.heading1.create')
+              : translate('page.coral-phase.heading1.update')
+          }
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Phase Type', href: PATH_DASHBOARD.user.root },
-            { name: !isEdit ? 'New type' : name }
+            { name: translate('page.coral-phase.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.coral-phase.heading3'), href: PATH_DASHBOARD.phases.root },
+            { name: !isEdit ? translate('page.coral-phase.heading4.new') : name }
           ]}
         />
         <Stack spacing={5}>

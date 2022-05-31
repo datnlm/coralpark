@@ -32,6 +32,7 @@ import { getListDiver, deleteDiver } from '../../redux/slices/diver';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
+import useLocales from '../../hooks/useLocales';
 import useSettings from '../../hooks/useSettings';
 // @types
 import { Diver } from '../../@types/diver';
@@ -46,17 +47,6 @@ import {
   DiverListToolbar,
   DiverMoreMenu
 } from '../../components/_dashboard/diver/list';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Phone', alignRight: false },
-  { id: 'role', label: 'Email', alignRight: false },
-  { id: 'isVerified', label: 'Address', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
-];
 
 // ----------------------------------------------------------------------
 
@@ -92,6 +82,7 @@ function applySortFilter(array: Diver[], comparator: (a: any, b: any) => number,
 }
 
 export default function UserList() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
@@ -177,16 +168,23 @@ export default function UserList() {
   //     );
   //   });
   // }
-
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.diver.form.name'), alignRight: false },
+    { id: 'phone', label: translate('page.diver.form.phone'), alignRight: false },
+    { id: 'email', label: translate('page.diver.form.email'), alignRight: false },
+    { id: 'address', label: translate('page.diver.form.address'), alignRight: false },
+    { id: 'status', label: translate('page.diver.form.status'), alignRight: false },
+    { id: '' }
+  ];
   return (
-    <Page title="Diver: List">
+    <Page title={translate('page.diver.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Diver list"
+          heading={translate('page.diver.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Diver', href: PATH_DASHBOARD.diver.root },
-            { name: 'List' }
+            { name: translate('page.diver.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.diver.heading3'), href: PATH_DASHBOARD.diver.root },
+            { name: translate('page.diver.heading4.list') }
           ]}
           action={
             <Button
@@ -195,7 +193,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.diver.newDiver}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Diver
+              {translate('button.save.add')}
             </Button>
           }
         />
@@ -252,7 +250,7 @@ export default function UserList() {
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status === 0 && 'error') || 'success'}
                             >
-                              {status == 1 ? 'Available' : 'deleted'}
+                              {status}
                             </Label>
                           </TableCell>
                           {/* <TableCell align="left">

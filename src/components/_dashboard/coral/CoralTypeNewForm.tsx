@@ -30,6 +30,8 @@ import {
 import { OptionStatus, coralLevelTypeOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { CoralType } from '../../../@types/coral';
 //
@@ -52,6 +54,7 @@ type CoralTypeNewFromProps = {
 };
 
 export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFromProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [optionsClass, setOptionsClass] = useState([]);
@@ -271,7 +274,9 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                     options={coralLevelTypeOptions}
                     getOptionLabel={(option: OptionStatus) => option.label}
                     onChange={(e, values: OptionStatus | null) => setCurrentLevel(values)}
-                    renderInput={(params) => <TextField {...params} label="Level Type" />}
+                    renderInput={(params) => (
+                      <TextField {...params} label={translate('page.coral-type.form.level')} />
+                    )}
                   />
                 </Stack>
                 {currentLevel!.id > 1 && (
@@ -292,7 +297,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Class"
+                          label={translate('page.coral-type.form.class')}
                           error={Boolean(touched.class && errors.class)}
                           helperText={touched.class && errors.class}
                         />
@@ -315,7 +320,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="Order"
+                            label={translate('page.coral-type.form.order')}
                             error={Boolean(touched.order && errors.order)}
                             helperText={touched.order && errors.order}
                           />
@@ -342,7 +347,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Family"
+                          label={translate('page.coral-type.form.family')}
                           error={Boolean(touched.family && errors.family)}
                           helperText={touched.family && errors.family}
                         />
@@ -365,7 +370,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="Genus"
+                            label={translate('page.coral-type.form.genus')}
                             error={Boolean(touched.genus && errors.genus)}
                             helperText={touched.genus && errors.genus}
                           />
@@ -378,7 +383,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <TextField
                       fullWidth
-                      label="Name"
+                      label={translate('page.coral-type.form.name')}
                       {...getFieldProps('name')}
                       error={Boolean(touched.name && errors.name)}
                       helperText={touched.name && errors.name}
@@ -386,7 +391,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                   </Stack>
                 )}
                 <div>
-                  <LabelStyle>Description</LabelStyle>
+                  <LabelStyle>{translate('page.coral-type.form.description')}</LabelStyle>
                   <QuillEditor
                     simple
                     id="description"
@@ -402,7 +407,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                 </div>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Type' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

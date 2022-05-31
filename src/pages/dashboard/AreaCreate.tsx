@@ -12,6 +12,7 @@ import { getListArea } from '../../redux/slices/area1';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // @types
 import { ProductState } from '../../@types/products';
 // components
@@ -22,6 +23,7 @@ import AreaNewForm from '../../components/_dashboard/area/AreaNewForm';
 // ----------------------------------------------------------------------
 
 export default function AreaCreate() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -45,17 +47,23 @@ export default function AreaCreate() {
   }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? 'Area: Create a new area' : 'Area: Edit area'}>
+    <Page
+      title={!isEdit ? translate('page.area.title.create') : translate('page.area.title.update')}
+    >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new area' : 'Edit area'}
+          heading={
+            !isEdit
+              ? translate('page.area.heading1.create')
+              : translate('page.area.heading1.update')
+          }
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: translate('page.area.heading2'), href: PATH_DASHBOARD.root },
             {
-              name: 'Area',
+              name: translate('page.area.heading3'),
               href: PATH_DASHBOARD.area.root
             },
-            { name: !isEdit ? 'New area' : name }
+            { name: !isEdit ? translate('page.area.heading4.new') : name }
           ]}
         />
         <AreaNewForm isEdit={isEdit} currentArea={currentArea} />

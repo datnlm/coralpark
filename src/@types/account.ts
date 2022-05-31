@@ -2,6 +2,7 @@
 
 export type User = {
   id: string;
+  name: string;
   displayName: string;
   email: string;
   password: string;
@@ -15,4 +16,12 @@ export type User = {
   about: string | null;
   role: string;
   isPublic: boolean;
+  status: string;
+};
+
+export type Account = {
+  userName: string;
+  email: string;
+  roleId: string;
+  roleName: string;
 };

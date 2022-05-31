@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
-// coral api
-import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // redux
-import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/coral';
+import { useDispatch } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -18,6 +15,7 @@ import useLocales from '../../hooks/useLocales';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import SiteNewForm from '../../components/_dashboard/garden/SiteNewForm';
+import { Site } from '../../@types/garden';
 // ----------------------------------------------------------------------
 
 export default function GardenCreate() {
@@ -25,26 +23,9 @@ export default function GardenCreate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-
-  const { siteList } = useSelector((state: RootState) => state.garden);
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  // const currentGardenOwner = gardenOwnersList.find((garden) => paramCase(garden.name) === name);
-  const [currentSite, setCurrentSite] = useState({
-    id: '',
-    name: '',
-    imageUrl: '',
-    createTime: '',
-    phone: '',
-    email: '',
-    address: '',
-    webUrl: '',
-    latitude: '',
-    longitude: '',
-    status: '',
-    listGarden: ''
-  });
-
+  const [currentSite, setCurrentSite] = useState<Site>();
   useEffect(() => {
     if (isEdit) {
       manageGarden.getSiteByID(paramCase(name)).then((response) => {
@@ -70,14 +51,20 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page title={!isEdit ? translate('site.title.create') : translate('site.title.update')}>
+    <Page
+      title={!isEdit ? translate('page.site.title.create') : translate('page.site.title.update')}
+    >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? translate('site.heading1.create') : translate('site.heading1.update')}
+          heading={
+            !isEdit
+              ? translate('page.site.heading1.create')
+              : translate('page.site.heading1.update')
+          }
           links={[
-            { name: translate('site.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('site.heading3'), href: PATH_DASHBOARD.site.root },
-            { name: !isEdit ? translate('site.heading4.new') : name }
+            { name: translate('page.site.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.site.heading3'), href: PATH_DASHBOARD.site.root },
+            { name: !isEdit ? translate('page.site.heading4.new') : name }
           ]}
         />
         <SiteNewForm isEdit={isEdit} currentSite={currentSite} />

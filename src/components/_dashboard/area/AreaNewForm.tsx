@@ -7,33 +7,14 @@ import { manageArea } from '_apis_/area';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import * as turf from '@turf/turf';
 import './Map.css';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
-import {
-  Card,
-  Chip,
-  Grid,
-  Stack,
-  Radio,
-  Switch,
-  Select,
-  TextField,
-  InputLabel,
-  Typography,
-  RadioGroup,
-  FormControl,
-  Autocomplete,
-  InputAdornment,
-  FormHelperText,
-  FormControlLabel,
-  Box,
-  CardContent
-} from '@material-ui/core';
+import { Card, Grid, Stack, TextField, Autocomplete, Box, CardContent } from '@material-ui/core';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { Area } from '../../../@types/area';
 
@@ -48,13 +29,6 @@ const MapWrapperStyle = styled('div')(({ theme }) => ({
     display: 'none'
   }
 }));
-
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
-
 // ----------------------------------------------------------------------
 type ProvinceAPI = {
   id: any;
@@ -69,6 +43,7 @@ type AreaNewFormProps = {
 mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
 
 export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
+  const { translate } = useLocales();
   const [optionsProvince, setOptionsProvince] = useState([]);
   const [optionsDistrict, setOptionsDistrict] = useState([]);
   const [optionsWard, setOptionsWard] = useState([]);
@@ -252,16 +227,6 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       zoom: zoomMap
     });
 
-    // const mapstr = [
-    //   [
-    //     [109.61106466670947, 15.292900397971053],
-    //     [111.47674746960342, 15.292900397971053],
-    //     [111.01032676887996, 13.938955522966083],
-    //     [109.3934016730392, 13.938955522966083],
-    //     [109.61106466670947, 15.292900397971053]
-    //   ]
-    // ];
-
     // polygon
     map.on('load', () => {
       // Add a data source containing GeoJSON data.
@@ -373,7 +338,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Name"
+                    label={translate('page.area.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
@@ -387,7 +352,9 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
                     options={optionsProvince}
                     getOptionLabel={(option: ProvinceAPI) => option.name}
                     onChange={(e, value: ProvinceAPI | null) => setCurrentProvince(value)}
-                    renderInput={(params) => <TextField {...params} label="Province" />}
+                    renderInput={(params) => (
+                      <TextField {...params} label={translate('page.area.form.province')} />
+                    )}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -400,7 +367,9 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
                     options={optionsDistrict}
                     getOptionLabel={(option: ProvinceAPI) => option.name}
                     onChange={(e, value: ProvinceAPI | null) => setCurrentDistrict(value)}
-                    renderInput={(params) => <TextField {...params} label="District" />}
+                    renderInput={(params) => (
+                      <TextField {...params} label={translate('page.area.form.district')} />
+                    )}
                   />
                   <Autocomplete
                     fullWidth
@@ -411,7 +380,9 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
                     options={optionsWard}
                     getOptionLabel={(option: ProvinceAPI) => option.name}
                     onChange={(e, value: ProvinceAPI | null) => setCurrentWard(value)}
-                    renderInput={(params) => <TextField {...params} label="Ward" />}
+                    renderInput={(params) => (
+                      <TextField {...params} label={translate('page.area.form.ward')} />
+                    )}
                   />
                 </Stack>
                 <Grid item xs={12}>
@@ -427,7 +398,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
                 </Grid>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Area' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

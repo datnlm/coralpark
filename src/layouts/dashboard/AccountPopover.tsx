@@ -27,14 +27,9 @@ const MENU_OPTIONS = [
     linkTo: '/'
   },
   {
-    label: 'Profile',
+    label: 'Account',
     icon: personFill,
-    linkTo: PATH_DASHBOARD.user.profile
-  },
-  {
-    label: 'Settings',
-    icon: settings2Fill,
-    linkTo: PATH_DASHBOARD.user.account
+    linkTo: PATH_DASHBOARD.account.editById
   }
 ];
 

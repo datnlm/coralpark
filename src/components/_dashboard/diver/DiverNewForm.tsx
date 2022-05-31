@@ -10,51 +10,23 @@ import { LoadingButton } from '@material-ui/lab';
 import {
   Card,
   Box,
-  Chip,
   Grid,
   Stack,
-  Radio,
-  Switch,
-  Select,
   TextField,
-  InputLabel,
   Typography,
-  RadioGroup,
-  FormControl,
   Autocomplete,
-  InputAdornment,
-  FormHelperText,
-  FormControlLabel
+  FormHelperText
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { Diver } from '../../../@types/diver';
-//
-import { QuillEditor } from '../../editor';
 import { UploadAvatar } from '../../upload';
 
-// ----------------------------------------------------------------------
-
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
-
-// type OptionStatus = {
-//   id: number;
-//   label: string;
-// };
-
-// const status = ['Deleted', 'Available'];
-
-// const statusOptions = status.map((v, index) => ({
-//   id: index,
-//   label: v
-// }));
 // ----------------------------------------------------------------------
 
 type DiverNewFormProps = {
@@ -63,6 +35,7 @@ type DiverNewFormProps = {
 };
 
 export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
@@ -183,7 +156,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                         color: 'text.secondary'
                       }}
                     >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                      {translate('message.allow-type-image')}
                     </Typography>
                   }
                 />
@@ -199,14 +172,14 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Full Name"
+                    label={translate('page.diver.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
-                    label="Phone"
+                    label={translate('page.diver.form.phone')}
                     {...getFieldProps('phone')}
                     error={Boolean(touched.phone && errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -216,14 +189,14 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Email"
+                    label={translate('page.diver.form.email')}
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
                   <TextField
                     fullWidth
-                    label="Address"
+                    label={translate('page.diver.form.address')}
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
@@ -244,7 +217,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Status"
+                          label={translate('page.diver.form.status')}
                           error={Boolean(touched.status && errors.status)}
                           helperText={touched.status && errors.status}
                         />
@@ -254,7 +227,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                 )}
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Diver' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

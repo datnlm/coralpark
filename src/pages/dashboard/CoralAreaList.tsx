@@ -1,24 +1,16 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack5';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useTheme, styled } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import {
-  Box,
-  Collapse,
   Card,
-  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
-  Typography,
-  Paper,
   Button,
-  Stack,
   Container,
   TablePagination
 } from '@material-ui/core';
@@ -30,6 +22,7 @@ import Page from '../../components/Page';
 
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import useLocales from '../../hooks/useLocales';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import useSettings from '../../hooks/useSettings';
@@ -41,8 +34,6 @@ import {
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListArea } from '../../redux/slices/area';
 import { Area } from '../../@types/area';
-
-const TABLE_HEAD = [{ id: 'name', label: 'Name', alignRight: false }, { id: '' }];
 
 function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
   if (b[orderBy] < a[orderBy]) {
@@ -81,6 +72,7 @@ function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, 
 }
 
 export default function CoralAreaList() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
@@ -160,18 +152,23 @@ export default function CoralAreaList() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - areaList.length) : 0;
 
-  const filteredProducts = applySortFilter(areaList, getComparator(order, orderBy), filterName);
+  const filteredArea = applySortFilter(areaList, getComparator(order, orderBy), filterName);
 
-  const isProductNotFound = filteredProducts.length === 0;
+  const isAreaNotFound = filteredArea.length === 0;
+
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.coral-area.form.name'), alignRight: false },
+    { id: '' }
+  ];
   return (
-    <Page title="Coral Area: List">
+    <Page title={translate('page.coral-area.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Coral Area"
+          heading={translate('page.coral-area.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Coral Area', href: PATH_DASHBOARD.coralArea.root },
-            { name: 'List' }
+            { name: translate('page.coral-area.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.coral-area.heading3'), href: PATH_DASHBOARD.coralArea.root },
+            { name: translate('page.coral-area.heading4.list') }
           ]}
           action={
             <Button
@@ -180,7 +177,7 @@ export default function CoralAreaList() {
               to={PATH_DASHBOARD.coralArea.new}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Coral Area
+              {translate('button.save.add')}
             </Button>
           }
         />
@@ -203,7 +200,7 @@ export default function CoralAreaList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredProducts
+                  {filteredArea
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const { id, name, address } = row;
@@ -237,7 +234,7 @@ export default function CoralAreaList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isProductNotFound && (
+                {isAreaNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>

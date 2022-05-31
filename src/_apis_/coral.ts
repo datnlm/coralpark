@@ -114,39 +114,50 @@ export class Coral {
       .catch((err) => err);
   };
 
-  createCoralPhasesType = (phaseType: any) => {
+  createCoralPhasesType = (phaseForm: any) => {
+    const phaseType: any[] = [];
+    phaseForm.coralPhaseTypes.map((v: any) => {
+      phaseType.push({
+        minWeight: v.maxWeight,
+        maxWeight: v.maxWeight,
+        minHigh: v.minHigh,
+        maxHigh: v.maxHigh,
+        timeFrom: v.timeForm,
+        timeTo: v.timeTo,
+        colour: v.colour,
+        coralPhase: { id: v.coralPhase.id }
+      });
+    });
     const data = {
-      minWeight: phaseType.maxWeight,
-      maxWeight: phaseType.maxWeight,
-      minHigh: phaseType.minHigh,
-      maxHigh: phaseType.maxHigh,
-      timeFrom: phaseType.timeForm,
-      timeTo: phaseType.timeTo,
-      colour: phaseType.coulour,
-      coral: { id: phaseType.coralID.id },
-      coralPhase: { id: phaseType.phaseID.id }
+      id: phaseForm.id,
+      coralPhaseTypes: phaseType
     };
     return axios
-      .post('/api/v1/admin/coral-phase-types', data)
+      .post('/api/v1/admin/coral-phase-types/phasetypes', data)
       .then((res) => res)
       .catch((err) => err);
   };
 
-  updateCoralPhasesType = (phaseType: PhasesType) => {
+  updateCoralPhasesType = (phaseForm: any) => {
+    const phaseType: any[] = [];
+    phaseForm.coralPhaseTypes.map((v: any) => {
+      phaseType.push({
+        minWeight: v.maxWeight,
+        maxWeight: v.maxWeight,
+        minHigh: v.minHigh,
+        maxHigh: v.maxHigh,
+        timeFrom: v.timeForm,
+        timeTo: v.timeTo,
+        colour: v.colour,
+        coralPhase: { id: v.coralPhase.id }
+      });
+    });
     const data = {
-      id: phaseType.phaseID,
-      minWeight: phaseType.maxWeight,
-      maxWeight: phaseType.maxWeight,
-      minHigh: phaseType.minHigh,
-      maxHigh: phaseType.maxHigh,
-      timeFrom: phaseType.timeForm,
-      timeTo: phaseType.timeTo,
-      colour: phaseType.coulour,
-      coral: phaseType.coralID,
-      coralPhases: phaseType.phaseID
+      id: phaseForm.id,
+      coralPhaseTypes: phaseType
     };
     return axios
-      .post('/api/v1/admin/coral-phase-types', data)
+      .put('/api/v1/admin/coral-phase-types/phasetypes', data)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -274,12 +285,11 @@ export class Coral {
 
   updateCoralArea = (coralArea: CoralArea) => {
     const data = {
-      id: coralArea.id,
-      coral: coralArea.coral,
-      area: { id: coralArea.id }
+      corals: coralArea.coral,
+      id: coralArea.area.id
     };
     return axios
-      .put('/api/v1/admin/coral-areas', data)
+      .put('/api/v1/admin/coral-areas/corals', data)
       .then((res) => res)
       .catch((err) => err);
   };

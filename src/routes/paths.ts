@@ -57,14 +57,11 @@ export const PATH_DASHBOARD = {
     type: path(ROOTS_DASHBOARD, '/coral/type'),
     listType: path(ROOTS_DASHBOARD, '/coral/coral-type-list')
   },
-  user: {
-    root: path(ROOTS_DASHBOARD, '/user'),
-    profile: path(ROOTS_DASHBOARD, '/user/profile'),
-    cards: path(ROOTS_DASHBOARD, '/user/cards'),
-    list: path(ROOTS_DASHBOARD, '/user/list'),
-    newUser: path(ROOTS_DASHBOARD, '/user/new'),
-    editById: path(ROOTS_DASHBOARD, '/user/ada-lindgren/edit'),
-    account: path(ROOTS_DASHBOARD, '/user/account')
+  account: {
+    root: path(ROOTS_DASHBOARD, '/account'),
+    list: path(ROOTS_DASHBOARD, '/account/list'),
+    newUser: path(ROOTS_DASHBOARD, '/account/new'),
+    editById: path(ROOTS_DASHBOARD, '/account/:name/edit')
   },
   phases: {
     root: path(ROOTS_DASHBOARD, '/phases'),
@@ -103,6 +100,17 @@ export const PATH_DASHBOARD = {
     newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
     editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
     editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
+  },
+  partner: {
+    root: path(ROOTS_DASHBOARD, '/partner'),
+    list: path(ROOTS_DASHBOARD, '/partner/list'),
+    new: path(ROOTS_DASHBOARD, '/partner/new'),
+    editById: path(ROOTS_DASHBOARD, '/partner/:name/edit'),
+    typeList: path(ROOTS_DASHBOARD, '/partner/types'),
+    typeNew: path(ROOTS_DASHBOARD, '/partner/type-new')
+    // newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
+    // editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
+    // editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
   },
   diver: {
     root: path(ROOTS_DASHBOARD, '/diver'),

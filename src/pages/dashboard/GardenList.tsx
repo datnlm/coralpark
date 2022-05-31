@@ -32,6 +32,7 @@ import { getListGarden } from '../../redux/slices/garden';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // @types
 import { UserManager, Coral } from '../../@types/coral';
 // components
@@ -45,18 +46,6 @@ import {
   GardenListToolbar,
   GardenMoreMenu
 } from '../../components/_dashboard/garden/list';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Address', alignRight: false },
-  { id: 'role', label: 'Acreage', alignRight: false },
-  { id: 'isVerified', label: 'Quantity of cells', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
-];
-
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -94,6 +83,7 @@ function applySortFilter(array: Garden[], comparator: (a: any, b: any) => number
 }
 
 export default function UserList() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
@@ -182,15 +172,23 @@ export default function UserList() {
   //   });
   // }
 
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.garden.form.name'), alignRight: false },
+    { id: 'address', label: translate('page.garden.form.address'), alignRight: false },
+    { id: 'acreage', label: translate('page.garden.form.acreage'), alignRight: false },
+    { id: 'quantity', label: translate('page.garden.form.quantity'), alignRight: false },
+    { id: 'status', label: translate('page.garden.form.status'), alignRight: false },
+    { id: '' }
+  ];
   return (
-    <Page title="Garden: List">
+    <Page title={translate('page.garden.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Garden list"
+          heading={translate('page.garden.heading1.list')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Garden', href: PATH_DASHBOARD.garden.root },
-            { name: 'List' }
+            { name: translate('page.garden.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.garden.heading3'), href: PATH_DASHBOARD.garden.root },
+            { name: translate('page.garden.heading4.list') }
           ]}
           action={
             <Button
@@ -199,7 +197,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.garden.newGarden}
               startIcon={<Icon icon={plusFill} />}
             >
-              New Garden
+              {translate('button.save.add')}
             </Button>
           }
         />

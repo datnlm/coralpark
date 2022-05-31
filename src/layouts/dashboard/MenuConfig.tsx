@@ -1,10 +1,11 @@
 import { Icon } from '@iconify/react';
 import fileFill from '@iconify/icons-eva/file-fill';
 
+import SvgIconStyle from 'components/SvgIconStyle';
 import { MegaMenuItemProps } from '../../@types/mega-menu';
+import useLocales from '../../hooks/useLocales';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
-import SvgIconStyle from 'components/SvgIconStyle';
 // import SvgIconStyle from '../SvgIconStyle';
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,8 @@ const ICONS = {
   coralArea: getIcon('ic_coral_area'),
   garden: getIcon('ic_garden'),
   diver: getIcon('ic_diver'),
+  site: getIcon('ic_site'),
+  partner: getIcon('ic_partner'),
   area: getIcon('ic_area'),
   phases: getIcon('ic_phases'),
   user: getIcon('ic_user'),
@@ -36,92 +39,132 @@ const ICON_SIZE = {
   height: '100%'
 };
 
-const menuConfig: MegaMenuItemProps[] = [
-  {
-    title: 'Garden',
-    path: PATH_DASHBOARD.garden.root,
-    icon: ICONS.garden,
-    children: [
-      {
-        subheader: 'Garden',
-        items: [
-          { title: 'List', path: PATH_DASHBOARD.garden.list },
-          { title: 'Create', path: PATH_DASHBOARD.garden.newGarden }
-        ]
-      },
-      {
-        subheader: 'Type',
-        items: [
-          { title: 'List', path: PATH_DASHBOARD.garden.typesList },
-          { title: 'Create', path: PATH_DASHBOARD.garden.newGardenType }
-        ]
-      }
-    ]
-  },
-  {
-    title: 'Coral',
-    path: PATH_DASHBOARD.coral.root,
-    icon: ICONS.coral,
-    children: [
-      {
-        subheader: 'Coral',
-        items: [
-          { title: 'List', path: PATH_DASHBOARD.coral.list },
-          { title: 'Create', path: PATH_DASHBOARD.coral.new }
-        ]
-      },
-      {
-        subheader: 'Type',
-        items: [
-          { title: 'List', path: PATH_DASHBOARD.coral.listType },
-          { title: 'Create', path: PATH_DASHBOARD.coral.type }
-        ]
-      },
-      {
-        subheader: 'Phase',
-        items: [
-          { title: 'List', path: PATH_DASHBOARD.phases.list },
-          // { title: 'Create', path: PATH_DASHBOARD.phases.new },
-          { title: 'Phase Type', path: PATH_DASHBOARD.phases.typeNew }
-        ]
-      },
-      // {
-      //   subheader: 'Phase Type',
-      //   items: [{ title: 'Phase Type', path: PATH_DASHBOARD.phases.typeNew }]
-      // },
-      {
-        subheader: 'Area',
-        items: [
-          { title: 'List', path: PATH_DASHBOARD.coralArea.list },
-          { title: 'Create', path: PATH_DASHBOARD.coralArea.new }
-        ]
-      }
-    ]
-  },
-  {
-    title: 'Area',
-    path: PATH_DASHBOARD.area.root,
-    icon: ICONS.area,
-    children: [
-      {
-        subheader: 'Area',
-        items: [
-          { title: 'List', path: PATH_DASHBOARD.area.list },
-          { title: 'Create', path: PATH_DASHBOARD.area.new }
-        ]
-      }
-    ]
-  }
-  // {
-  //   title: 'Parent 3',
-  //   path: '#',
-  //   icon: <Icon icon={fileFill} {...ICON_SIZE} />
-  // },
-  // {
-  //   title: 'Parent 4',
-  //   path: '#',
-  //   icon: <Icon icon={fileFill} {...ICON_SIZE} />
-  // }
-];
+export default function MegaMenuConfig() {
+  const { translate } = useLocales();
+  const menuConfig: MegaMenuItemProps[] = [
+    {
+      title: translate('menu.mega.title.site'),
+      path: PATH_DASHBOARD.garden.root,
+      icon: ICONS.site,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.site'),
+          items: [
+            { title: translate('menu.mega.site.list'), path: PATH_DASHBOARD.site.list },
+            { title: translate('menu.mega.site.create'), path: PATH_DASHBOARD.site.newSite }
+            // { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
+          ]
+        }
+      ]
+    },
+    {
+      title: translate('menu.mega.title.garden'),
+      path: PATH_DASHBOARD.garden.root,
+      icon: ICONS.garden,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.garden'),
+          items: [
+            { title: translate('menu.mega.garden.list'), path: PATH_DASHBOARD.garden.list },
+            { title: translate('menu.mega.garden.create'), path: PATH_DASHBOARD.garden.newGarden }
+          ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.type'),
+          items: [
+            { title: translate('menu.mega.garden.list'), path: PATH_DASHBOARD.garden.typesList },
+            {
+              title: translate('menu.mega.garden.create'),
+              path: PATH_DASHBOARD.garden.newGardenType
+            }
+          ]
+        }
+      ]
+    },
+    {
+      title: translate('menu.mega.title.partner'),
+      path: PATH_DASHBOARD.partner.root,
+      icon: ICONS.partner,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.type'),
+          items: [
+            { title: translate('menu.mega.partner.list'), path: PATH_DASHBOARD.partner.typeList },
+            { title: translate('menu.mega.partner.create'), path: PATH_DASHBOARD.partner.typeNew }
+            // { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
+          ]
+        }
+      ]
+    },
+    {
+      title: translate('menu.mega.title.coral'),
+      path: PATH_DASHBOARD.coral.root,
+      icon: ICONS.coral,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.coral'),
+          items: [
+            { title: translate('menu.mega.coral.list'), path: PATH_DASHBOARD.coral.list },
+            { title: translate('menu.mega.coral.create'), path: PATH_DASHBOARD.coral.new }
+          ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.coral-type'),
+          items: [
+            { title: translate('menu.mega.coral.list'), path: PATH_DASHBOARD.coral.listType },
+            { title: translate('menu.mega.coral.create'), path: PATH_DASHBOARD.coral.type }
+          ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.phase'),
+          items: [
+            { title: translate('menu.mega.coral.list'), path: PATH_DASHBOARD.phases.list },
+            // { title: 'Create', path: PATH_DASHBOARD.phases.new },
+            { title: translate('menu.mega.coral.phase'), path: PATH_DASHBOARD.phases.typeNew }
+          ]
+        },
+        // {
+        //   subheader: 'Phase Type',
+        //   items: [{ title: 'Phase Type', path: PATH_DASHBOARD.phases.typeNew }]
+        // },
+        {
+          subheader: translate('menu.mega.subheader.area'),
+          items: [
+            // { title: translate('menu.mega.area.list'), path: PATH_DASHBOARD.coralArea.list },
+            { title: translate('menu.mega.area.create'), path: PATH_DASHBOARD.coralArea.new }
+          ]
+        }
+      ]
+    },
+    {
+      title: translate('menu.mega.title.area'),
+      path: PATH_DASHBOARD.area.root,
+      icon: ICONS.area,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.area'),
+          items: [
+            { title: translate('menu.mega.area.list'), path: PATH_DASHBOARD.area.list },
+            { title: translate('menu.mega.area.create'), path: PATH_DASHBOARD.area.new }
+          ]
+        }
+      ]
+    },
+    {
+      title: translate('menu.mega.title.account'),
+      path: PATH_DASHBOARD.account.root,
+      icon: ICONS.user,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.account'),
+          items: [
+            { title: translate('menu.mega.account.list'), path: PATH_DASHBOARD.account.list },
+            { title: translate('menu.mega.account.create'), path: PATH_DASHBOARD.account.newUser }
+          ]
+        }
+      ]
+    }
+  ];
 
-export default menuConfig;
+  return menuConfig;
+}

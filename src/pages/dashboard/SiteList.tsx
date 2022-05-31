@@ -2,7 +2,6 @@ import axios from 'axios';
 import { filter } from 'lodash';
 import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -14,7 +13,6 @@ import {
   Stack,
   Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -22,10 +20,7 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  Link,
-  Dialog,
-  DialogTitle,
-  DialogContent
+  Link
 } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // @types
@@ -191,24 +186,24 @@ export default function UserList() {
   // }
 
   const TABLE_HEAD = [
-    { id: 'name', label: translate('site.form.name'), alignRight: false },
-    { id: 'webUrl', label: translate('site.form.website'), alignRight: false },
-    { id: 'phone', label: translate('site.form.phone'), alignRight: false },
-    { id: 'address', label: translate('site.form.email'), alignRight: false },
-    { id: 'email', label: translate('site.form.address'), alignRight: false },
-    { id: 'status', label: translate('site.form.status'), alignRight: false },
+    { id: 'name', label: translate('page.site.form.name'), alignRight: false },
+    { id: 'webUrl', label: translate('page.site.form.website'), alignRight: false },
+    { id: 'phone', label: translate('page.site.form.phone'), alignRight: false },
+    { id: 'address', label: translate('page.site.form.email'), alignRight: false },
+    { id: 'email', label: translate('page.site.form.address'), alignRight: false },
+    { id: 'status', label: translate('page.site.form.status'), alignRight: false },
     { id: '' }
   ];
 
   return (
-    <Page title={translate('site.title.list')}>
+    <Page title={translate('page.site.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('site.heading1.list')}
+          heading={translate('page.site.heading1.list')}
           links={[
-            { name: translate('site.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('site.heading3'), href: PATH_DASHBOARD.site.root },
-            { name: translate('site.heading4.list') }
+            { name: translate('page.site.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.site.heading3'), href: PATH_DASHBOARD.site.root },
+            { name: translate('page.site.heading4.list') }
           ]}
           action={
             <Button
@@ -217,7 +212,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.site.newSite}
               startIcon={<Icon icon={plusFill} />}
             >
-              {translate('site.button.save.add')}
+              {translate('button.save.add')}
             </Button>
           }
         />

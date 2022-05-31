@@ -93,6 +93,15 @@ export default function Router() {
           ]
         },
         {
+          path: 'account',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/account/list" replace /> },
+            { path: 'list', element: <AccountList /> },
+            { path: 'new', element: <AccountCreate /> },
+            { path: '/:name/edit', element: <AccountCreate /> }
+          ]
+        },
+        {
           path: 'coral',
           children: [
             { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
@@ -108,7 +117,7 @@ export default function Router() {
           path: 'phases',
           children: [
             { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
-            { path: 'list', element: <PhaseList /> },
+            // { path: 'list', element: <PhaseList /> },
             { path: 'new', element: <PhasesCreate /> },
             { path: '/type/new', element: <PhasesTypeCreate /> }
           ]
@@ -121,26 +130,6 @@ export default function Router() {
             { path: 'new', element: <CoralAreaCreate /> }
           ]
         },
-        // {
-        //   path: 'mail',
-        //   children: [
-        //     { path: '/', element: <Navigate to="/dashboard/mail/all" replace /> },
-        //     { path: 'label/:customLabel', element: <Mail /> },
-        //     { path: 'label/:customLabel/:mailId', element: <Mail /> },
-        //     { path: ':systemLabel', element: <Mail /> },
-        //     { path: ':systemLabel/:mailId', element: <Mail /> }
-        //   ]
-        // },
-        // {
-        //   path: 'chat',
-        //   children: [
-        //     { path: '/', element: <Chat /> },
-        //     { path: 'new', element: <Chat /> },
-        //     { path: ':conversationKey', element: <Chat /> }
-        //   ]
-        // },
-        // { path: 'calendar', element: <Calendar /> },
-        // { path: 'kanban', element: <Kanban /> },
         {
           path: 'site',
           children: [
@@ -161,6 +150,18 @@ export default function Router() {
             { path: 'type-new', element: <GardenTypeCreate /> },
             { path: 'types/:name/edit', element: <GardenTypeCreate /> },
             { path: '/:name/edit', element: <GardenCreate /> }
+          ]
+        },
+        {
+          path: 'partner',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/partner/list" replace /> },
+            { path: 'list', element: <PartnerList /> },
+            { path: 'new', element: <PartnerCreate /> },
+            { path: '/:name/edit', element: <PartnerCreate /> },
+            { path: 'types', element: <PartnerTypeList /> },
+            { path: 'type-new', element: <PartnerTypeCreate /> },
+            { path: 'type/:name/edit', element: <PartnerTypeCreate /> }
           ]
         },
         {
@@ -227,7 +228,7 @@ export default function Router() {
           path: 'phases',
           children: [
             { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
-            { path: 'list', element: <PhaseList /> },
+            // { path: 'list', element: <PhaseList /> },
             { path: 'new', element: <PhasesCreate /> },
             { path: '/type/new', element: <PhasesTypeCreate /> }
           ]
@@ -289,8 +290,10 @@ const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')))
 const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
 const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
 const AreaList = Loadable(lazy(() => import('../pages/dashboard/AreaList')));
+const AccountList = Loadable(lazy(() => import('../pages/dashboard/AccountList')));
+const AccountCreate = Loadable(lazy(() => import('../pages/dashboard/AccountCreate')));
 const AreaCreate = Loadable(lazy(() => import('../pages/dashboard/AreaCreate')));
-const PhaseList = Loadable(lazy(() => import('../pages/dashboard/CoralPhaseList')));
+// const PhaseList = Loadable(lazy(() => import('../pages/dashboard/CoralPhaseList')));
 const PhasesCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhases')));
 const PhasesTypeCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhasesType')));
 const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralAreaList')));
@@ -302,6 +305,10 @@ const CoralTypeList = Loadable(lazy(() => import('../pages/dashboard/CoralTypeLi
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
 const SiteList = Loadable(lazy(() => import('../pages/dashboard/SiteList')));
 const GardenTypesList = Loadable(lazy(() => import('../pages/dashboard/GardenTypesList')));
+const PartnerTypeList = Loadable(lazy(() => import('../pages/dashboard/PartnerTypeList')));
+const PartnerList = Loadable(lazy(() => import('../pages/dashboard/PartnerList')));
+const PartnerTypeCreate = Loadable(lazy(() => import('../pages/dashboard/PartnerTypeCreate')));
+const PartnerCreate = Loadable(lazy(() => import('../pages/dashboard/PartnerCreate')));
 const GardenCreate = Loadable(lazy(() => import('../pages/dashboard/GardenCreate')));
 const SiteCreate = Loadable(lazy(() => import('../pages/dashboard/SiteCreate')));
 const GardenTypeCreate = Loadable(lazy(() => import('../pages/dashboard/GardenTypeCreate')));

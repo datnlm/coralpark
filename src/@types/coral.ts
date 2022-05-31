@@ -197,11 +197,11 @@ export type PhasesType = {
   maxWeight: string;
   minHigh: string;
   maxHigh: string;
-  timeForm: string;
+  timeFrom: string;
   timeTo: string;
-  coulour: string;
-  coralID: any;
-  phaseID: any;
+  colour: string;
+  coralId: any;
+  coralPhase: any;
 };
 
 export type Phases = {
