@@ -24,14 +24,6 @@ const SOCIALS = [
 
 const LINKS = [
   {
-    headline: 'Minimal',
-    children: [
-      { name: 'About us', href: PATH_PAGE.about },
-      { name: 'Contact us', href: PATH_PAGE.contact },
-      { name: 'FAQs', href: PATH_PAGE.faqs }
-    ]
-  },
-  {
     headline: 'Legal',
     children: [
       { name: 'Terms and Condition', href: '#' },

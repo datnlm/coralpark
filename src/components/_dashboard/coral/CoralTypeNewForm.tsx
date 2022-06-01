@@ -203,12 +203,18 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
         if (flag) {
           resetForm();
           setSubmitting(false);
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-success') : translate('message.update-success'),
+            {
+              variant: 'success'
+            }
+          );
           navigate(PATH_DASHBOARD.coral.listType);
         } else {
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+          enqueueSnackbar(
+            !isEdit ? translate('message.error-success') : translate('message.error-success'),
+            { variant: 'error' }
+          );
         }
       } catch (error) {
         console.error(error);

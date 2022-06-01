@@ -13,7 +13,7 @@ import {
   InputAdornment,
   OutlinedInput
 } from '@material-ui/core';
-
+import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Toolbar)(({ theme }) => ({
@@ -49,6 +49,7 @@ export default function ProductListToolbar({
   filterName,
   onFilterName
 }: ProductListToolbarProps) {
+  const { translate } = useLocales();
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
 
@@ -69,7 +70,7 @@ export default function ProductListToolbar({
         <SearchStyle
           value={filterName}
           onChange={(e) => onFilterName(e.target.value)}
-          placeholder="Search area..."
+          placeholder={translate('page.area.search')}
           startAdornment={
             <InputAdornment position="start">
               <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

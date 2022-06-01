@@ -1,58 +1,53 @@
-import axios from 'axios';
 import { filter } from 'lodash';
 import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
+import { Link as RouterLink } from 'react-router-dom';
+import { manageGroupMode } from '_apis_/group-mode';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, styled } from '@material-ui/core/styles';
 import {
+  Box,
   Card,
   Table,
-  Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
+  Checkbox,
   TableBody,
   TableCell,
   Container,
+  IconButton,
   Typography,
   TableContainer,
-  TablePagination,
-  Link,
-  Dialog,
-  DialogTitle,
-  DialogContent
+  TablePagination
 } from '@material-ui/core';
-import { manageAccount } from '_apis_/account';
-// @types
-import { Account } from '../../@types/account';
+
+import plusFill from '@iconify/icons-eva/plus-fill';
+import axiosInstance from 'utils/axios';
+import axios from 'axios';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getAccounts } from '../../redux/slices/account';
+import { getListGroupMode } from '../../redux/slices/groupMode';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import useLocales from '../../hooks/useLocales';
+// @types
+import { GroupMode } from '../../@types/group-mode';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  AccountListHead,
-  AccountListToolbar,
-  AccountMoreMenu
-} from '../../components/_dashboard/account/list';
-
+  GroupModeListHead,
+  GroupModeListToolbar,
+  GroupModeMoreMenu
+} from '../../components/_dashboard/group-mode/list';
 // ----------------------------------------------------------------------
-
-type Anonymous = Record<string | number, string>;
 
 function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
   if (b[orderBy] < a[orderBy]) {
@@ -64,42 +59,55 @@ function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
   return 0;
 }
 
+type Anonymous = Record<string | number, string>;
+
 function getComparator(order: string, orderBy: string) {
   return order === 'desc'
     ? (a: Anonymous, b: Anonymous) => descendingComparator(a, b, orderBy)
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Account[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(
+  array: GroupMode[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
+
   if (query) {
     return filter(
       array,
-      (_user) => _user.userName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_groupMode) => _groupMode.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
+
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+// ----------------------------------------------------------------------
+
+export default function EcommerceProductList() {
   const { translate } = useLocales();
-  const navigate = useNavigate();
   const { themeStretch } = useSettings();
-  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const accountList = useSelector((state: RootState) => state.account.accountList);
+  const { enqueueSnackbar } = useSnackbar();
+  const groupModeList = useSelector((state: RootState) => state.groupMode.groupModeList);
+  // const arealist = useSelector((state: ProductState) => state.areas);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
-  const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [orderBy, setOrderBy] = useState('createdAt');
+  useEffect(() => {
+    dispatch(getListGroupMode());
+  }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -109,8 +117,8 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = accountList.map((n) => n.userName);
-      setSelected(newSelecteds);
+      const selected = groupModeList.map((n) => n.name);
+      setSelected(selected);
       return;
     }
     setSelected([]);
@@ -143,12 +151,14 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleAccount = async (email: string, roleName: string) => {
+  const handleDeleteGroup = async (id: string) => {
     try {
-      await manageAccount.deleteAccount(email, roleName).then((respone) => {
-        if (respone.status === 200) {
+      await manageGroupMode.deleteGroupMode(id).then((respone) => {
+        if (respone.status == 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getAccounts());
+          dispatch(getListGroupMode());
+        } else {
+          enqueueSnackbar('Delete error', { variant: 'error' });
         }
       });
     } catch (error) {
@@ -157,55 +167,53 @@ export default function UserList() {
     }
   };
 
-  useEffect(() => {
-    dispatch(getAccounts());
-  }, [dispatch]);
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - groupModeList.length) : 0;
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - accountList.length) : 0;
+  const filteredGroupMode = applySortFilter(
+    groupModeList,
+    getComparator(order, orderBy),
+    filterName
+  );
 
-  const filteredAccount = applySortFilter(accountList, getComparator(order, orderBy), filterName);
-
-  const isAccountNotFound = filteredAccount.length === 0;
-  // if (companiesList !== null) {
-  //   companiesList.map((item, index) => {
-  //     return (
-  //       <div key={index}>
-  //         <h1>{item[index]}</h1>
-  //       </div>
-  //     );
-  //   });
-  // }
+  const isGroupModeNotFound = filteredGroupMode.length === 0;
 
   const TABLE_HEAD = [
-    { id: 'user-name', label: translate('page.account.form.user-name'), alignRight: false },
-    { id: 'email', label: translate('page.account.form.email'), alignRight: false },
-    { id: 'roleName', label: translate('page.account.form.role-name'), alignRight: false },
+    { id: 'name', label: translate('page.group-mode.form.name'), alignRight: false },
+    {
+      id: 'contribution',
+      label: translate('page.group-mode.form.contribution'),
+      alignRight: false
+    },
     { id: '' }
   ];
 
   return (
-    <Page title={translate('page.account.title.list')}>
+    <Page title={translate('page.group-mode.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.account.heading1.list')}
+          heading={translate('page.group-mode.heading1.list')}
           links={[
-            { name: translate('page.account.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.account.heading3'), href: PATH_DASHBOARD.account.root },
-            { name: translate('page.account.heading4.list') }
+            { name: translate('page.group-mode.heading2'), href: PATH_DASHBOARD.root },
+            {
+              name: translate('page.group-mode.heading3'),
+              href: PATH_DASHBOARD.group.root
+            },
+            { name: translate('page.group-mode.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.account.newUser}
+              to={PATH_DASHBOARD.group.newGroupMode}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}
             </Button>
           }
         />
+
         <Card>
-          <AccountListToolbar
+          <GroupModeListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -214,47 +222,35 @@ export default function UserList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <AccountListHead
+                <GroupModeListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={accountList.length}
+                  rowCount={groupModeList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredAccount
+                  {filteredGroupMode
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { userName, email, roleName } = row;
-                      const isItemSelected = selected.indexOf(userName) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={userName}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          <TableCell align="left">{userName}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{roleName}</TableCell>
-                          {/* <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == '0' && 'error') || 'success'}
-                            >
-                              {status}
-                            </Label>
-                          </TableCell> */}
+                    .map((row, index) => {
+                      const { id, name, contribute } = row;
 
+                      const isItemSelected = selected.indexOf(id) !== -1;
+
+                      return (
+                        <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} /> */}
+                          </TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{contribute}</TableCell>
                           <TableCell align="right">
-                            <AccountMoreMenu onDelete={() => handleAccount(email, roleName)} />
+                            <GroupModeMoreMenu
+                              onDelete={() => handleDeleteGroup(id.toString())}
+                              id={id.toString()}
+                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -265,11 +261,13 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isAccountNotFound && (
+                {isGroupModeNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
+                      <TableCell align="center" colSpan={6}>
+                        <Box sx={{ py: 3 }}>
+                          <SearchNotFound searchQuery={filterName} />
+                        </Box>
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -281,11 +279,11 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={accountList.length}
+            count={groupModeList.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            onPageChange={(event, value) => setPage(value)}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
       </Container>

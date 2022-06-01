@@ -24,8 +24,8 @@ import {
   Typography
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-
 import { manageCoral } from '_apis_/coral';
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
@@ -43,6 +43,7 @@ type CreatePhaseNewFormDialogProps = {
 };
 
 export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseNewFormDialogProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -70,12 +71,12 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
           if (response.status == 200) {
             resetForm();
             setSubmitting(false);
-            enqueueSnackbar('Create success', {
+            enqueueSnackbar(translate('message.create-success'), {
               variant: 'success'
             });
             onClose(response.data);
           } else {
-            enqueueSnackbar('Create error', { variant: 'error' });
+            enqueueSnackbar(translate('message.create-error'), { variant: 'error' });
           }
         });
 

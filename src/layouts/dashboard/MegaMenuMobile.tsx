@@ -201,7 +201,7 @@ export default function MegaMenuMobile({ navConfig }: MegaMenuMobileProps) {
           </Link>
           <Typography variant="h6" sx={{ px: 2, mb: 2, display: 'flex', alignItems: 'center' }}>
             <Box component={Icon} icon={listFill} sx={{ mr: 1, width: 24, height: 24 }} />{' '}
-            Configuration
+            {translate('menu.mega.header')}
           </Typography>
 
           {navConfig.map((parent) => (

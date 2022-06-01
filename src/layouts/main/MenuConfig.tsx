@@ -20,27 +20,10 @@ const menuConfig = [
     path: '/'
   },
   {
-    title: 'Components',
-    icon: <Icon icon={roundGrain} {...ICON_SIZE} />,
-    path: PATH_PAGE.components
-  },
-  {
     title: 'Pages',
     path: '/pages',
     icon: <Icon icon={fileFill} {...ICON_SIZE} />,
     children: [
-      {
-        subheader: 'Other',
-        items: [
-          { title: 'About us', path: PATH_PAGE.about },
-          { title: 'Contact us', path: PATH_PAGE.contact },
-          { title: 'FAQs', path: PATH_PAGE.faqs },
-          { title: 'Pricing', path: PATH_PAGE.pricing },
-          { title: 'Payment', path: PATH_PAGE.payment },
-          { title: 'Maintenance', path: PATH_PAGE.maintenance },
-          { title: 'Coming Soon', path: PATH_PAGE.comingSoon }
-        ]
-      },
       {
         subheader: 'Authentication',
         items: [

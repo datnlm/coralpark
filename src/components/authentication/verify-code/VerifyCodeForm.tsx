@@ -7,8 +7,6 @@ import { OutlinedInput, FormHelperText, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
-// utils
-import fakeRequest from '../../../utils/fakeRequest';
 
 // ----------------------------------------------------------------------
 
@@ -52,7 +50,6 @@ export default function VerifyCodeForm() {
     },
     validationSchema: VerifyCodeSchema,
     onSubmit: async () => {
-      await fakeRequest(500);
       enqueueSnackbar('Verify success', { variant: 'success' });
       navigate(PATH_DASHBOARD.root);
     }

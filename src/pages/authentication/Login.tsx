@@ -3,17 +3,18 @@ import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@material-ui/core';
+import DashboardNavbarLogin from 'layouts/dashboard/DashboardNavbarLogin';
 // routes
 import { PATH_AUTH } from '../../routes/paths';
 // hooks
 import useAuth from '../../hooks/useAuth';
+import useLocales from '../../hooks/useLocales';
 // layouts
 import AuthLayout from '../../layouts/AuthLayout';
 // components
 import Page from '../../components/Page';
 import { MHidden } from '../../components/@material-extend';
 import { LoginForm } from '../../components/authentication/login';
-
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -45,9 +46,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Login() {
   const { method } = useAuth();
-
+  const { translate } = useLocales();
   return (
-    <RootStyle title="Login | Coral Garden">
+    <RootStyle title={translate('page.login.title.list')}>
       <AuthLayout>
         <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.register} />
         {/* </Link> */}
@@ -55,24 +56,20 @@ export default function Login() {
 
       <MHidden width="mdDown">
         <SectionStyle>
-          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Hi, Welcome Back
-          </Typography>
           <img src="/static/illustrations/illustration_login.png" alt="login" />
         </SectionStyle>
       </MHidden>
-
       <Container maxWidth="sm">
+        <DashboardNavbarLogin />
         <ContentStyle>
           <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Sign in to CGMS
+                {translate('page.login.title.list')}
               </Typography>
               {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
             </Box>
           </Stack>
-
           <LoginForm />
         </ContentStyle>
       </Container>

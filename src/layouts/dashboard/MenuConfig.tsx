@@ -137,6 +137,23 @@ export default function MegaMenuConfig() {
       ]
     },
     {
+      title: translate('menu.mega.title.group-mode'),
+      path: PATH_DASHBOARD.group.root,
+      icon: ICONS.ecommerce,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.group-mode'),
+          items: [
+            { title: translate('menu.mega.group-mode.list'), path: PATH_DASHBOARD.group.list },
+            {
+              title: translate('menu.mega.group-mode.create'),
+              path: PATH_DASHBOARD.group.newGroupMode
+            }
+          ]
+        }
+      ]
+    },
+    {
       title: translate('menu.mega.title.area'),
       path: PATH_DASHBOARD.area.root,
       icon: ICONS.area,

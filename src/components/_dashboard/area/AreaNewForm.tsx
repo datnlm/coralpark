@@ -61,7 +61,8 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
+    name: Yup.string().required('Name is required'),
+    address: Yup.string().required('Province is required')
   });
 
   const checkSelected = (provice: string) => {
@@ -112,12 +113,18 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
         if (flag) {
           resetForm();
           setSubmitting(false);
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-success') : translate('message.update-success'),
+            {
+              variant: 'success'
+            }
+          );
           navigate(PATH_DASHBOARD.area.list);
         } else {
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-error') : translate('message.create-error'),
+            { variant: 'error' }
+          );
         }
       } catch (error) {
         console.error(error);
@@ -351,9 +358,17 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
                     value={currentProvince}
                     options={optionsProvince}
                     getOptionLabel={(option: ProvinceAPI) => option.name}
-                    onChange={(e, value: ProvinceAPI | null) => setCurrentProvince(value)}
+                    onChange={(e, value: ProvinceAPI | null) => {
+                      setCurrentProvince(value);
+                      setFieldValue('address', value);
+                    }}
                     renderInput={(params) => (
-                      <TextField {...params} label={translate('page.area.form.province')} />
+                      <TextField
+                        {...params}
+                        label={translate('page.area.form.province')}
+                        error={Boolean(touched.address && errors.address)}
+                        helperText={touched.address && errors.address}
+                      />
                     )}
                   />
                 </Stack>

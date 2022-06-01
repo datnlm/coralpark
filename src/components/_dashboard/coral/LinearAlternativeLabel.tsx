@@ -76,16 +76,18 @@ export default function LinearAlternativeLabel() {
         if (flag) {
           // resetForm();
           // setSubmitting(false);
-          enqueueSnackbar('Create success', {
-            variant: 'success'
-          });
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-success') : translate('message.update-success'),
+            {
+              variant: 'success'
+            }
+          );
           navigate(PATH_DASHBOARD.phases.typeNew);
         } else {
-          enqueueSnackbar('Create error', { variant: 'error' });
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+          enqueueSnackbar(
+            !isEdit ? translate('message.error-success') : translate('message.error-success'),
+            { variant: 'error' }
+          );
         }
       } catch (error) {
         console.log(error);

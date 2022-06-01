@@ -19,9 +19,10 @@ import {
   FormControlLabel,
   Autocomplete
 } from '@material-ui/core';
-import fakeRequest from '../../../utils/fakeRequest';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { Phases } from '../../../@types/coral';
 import { QuillEditor } from '../../editor';
@@ -40,12 +41,12 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 }));
 
 export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhasesNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
     imageUrl: Yup.array().min(1, 'Images is required')
   });
 
@@ -82,12 +83,18 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
         if (flag) {
           resetForm();
           setSubmitting(false);
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-success') : translate('message.update-success'),
+            {
+              variant: 'success'
+            }
+          );
           navigate(PATH_DASHBOARD.phases.new);
         } else {
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+          enqueueSnackbar(
+            !isEdit ? translate('message.error-success') : translate('message.update-success'),
+            { variant: 'error' }
+          );
         }
       } catch (error) {
         console.error(error);
@@ -132,7 +139,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Phases name"
+                    label={translate('page.phases.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
@@ -140,7 +147,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                 </Stack>
 
                 <div>
-                  <LabelStyle>Description</LabelStyle>
+                  <LabelStyle>{translate('page.phase.form.description')}</LabelStyle>
                   <QuillEditor
                     simple
                     id="product-description"
@@ -156,7 +163,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                 </div>
 
                 <div>
-                  <LabelStyle>Add Images</LabelStyle>
+                  <LabelStyle>{translate('page.phase.form.image')}</LabelStyle>
                   <UploadMultiFile
                     showPreview
                     maxSize={3145728}
@@ -176,7 +183,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create Phases' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

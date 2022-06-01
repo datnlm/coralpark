@@ -6,51 +6,29 @@ import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
-import {
-  Card,
-  Box,
-  Chip,
-  Grid,
-  Stack,
-  Radio,
-  Switch,
-  Select,
-  TextField,
-  InputLabel,
-  Typography,
-  RadioGroup,
-  FormControl,
-  Autocomplete,
-  InputAdornment,
-  FormHelperText,
-  FormControlLabel
-} from '@material-ui/core';
+import { Card, Box, Grid, Stack, TextField, Autocomplete } from '@material-ui/core';
 // utils
 import { manageAccount } from '_apis_/account';
 import { OptionStatus, statusOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { User } from '../../../@types/account';
-//
-import { QuillEditor } from '../../editor';
-import { UploadMultiFile } from '../../upload';
 
 // ----------------------------------------------------------------------
 
 type AccountNewFormProps = {
   isEdit: boolean;
-  // currentUser?: UserManager;
   currentAccount?: User;
 };
 
 export default function GardenNewForm({ isEdit, currentAccount }: AccountNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [optionsGardenType, setOptionsGardenType] = useState([]);
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
-  const [optionsSite, setOptionsSite] = useState([]);
-  const [optionsArea, setOptionsArea] = useState([]);
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     latitude: Yup.string().required('Latitude is required'),
