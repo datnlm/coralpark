@@ -2,7 +2,6 @@ import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Typography, Button, Card, CardContent, CardProps } from '@material-ui/core';
-import { SeoIllustration } from '../../../assets';
 
 // ----------------------------------------------------------------------
 
@@ -39,23 +38,7 @@ export default function AppWelcome({ displayName }: AppWelcomeProps) {
           Welcome back,
           <br /> {!displayName ? '...' : displayName}!
         </Typography>
-
-        <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
-          If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything
-        </Typography>
-
-        <Button variant="contained" to="#" component={RouterLink}>
-          Go Now
-        </Button>
       </CardContent>
-
-      <SeoIllustration
-        sx={{
-          p: 3,
-          width: 360,
-          margin: { xs: 'auto', md: 'inherit' }
-        }}
-      />
     </RootStyle>
   );
 }

@@ -12,6 +12,7 @@ import { Button, Box, Divider, MenuItem, Typography } from '@material-ui/core';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useAuth from '../../hooks/useAuth';
+import useLocales from '../../hooks/useLocales';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import { MIconButton } from '../../components/@material-extend';
@@ -36,6 +37,7 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const anchorRef = useRef(null);
   const { user, logout } = useAuth();
@@ -54,7 +56,7 @@ export default function AccountPopover() {
     try {
       await logout?.();
       if (isMountedRef.current) {
-        navigate('/');
+        navigate('/auth/login');
         handleClose();
       }
     } catch (error) {
@@ -96,7 +98,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            Signed in as
+            {translate('page.login.label.signed')}
           </Typography>
           <Typography variant="subtitle1" noWrap>
             {user?.username}
@@ -129,7 +131,7 @@ export default function AccountPopover() {
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button fullWidth color="inherit" variant="outlined" onClick={handleLogout}>
-            Logout
+            {translate('page.button.logout')}
           </Button>
         </Box>
       </MenuPopover>

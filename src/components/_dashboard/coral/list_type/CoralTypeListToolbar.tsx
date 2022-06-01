@@ -13,7 +13,7 @@ import {
   OutlinedInput,
   InputAdornment
 } from '@material-ui/core';
-
+import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Toolbar)(({ theme }) => ({
@@ -50,6 +50,7 @@ export default function UserListToolbar({
   filterName,
   onFilterName
 }: UserListToolbarProps) {
+  const { translate } = useLocales();
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
 
@@ -65,7 +66,7 @@ export default function UserListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder="Search coral type name..."
+        placeholder={translate('page.coral-type.search')}
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

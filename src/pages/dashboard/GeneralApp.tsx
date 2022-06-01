@@ -31,13 +31,13 @@ export default function GeneralApp() {
     <Page title="Dashboard: App | CGMS">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
+          {/* <Grid item xs={12} md={8}>
             <AppWelcome displayName={user?.displayName} />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={4}>
+          {/* <Grid item xs={12} md={4}>
             <AppFeatured />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={4}>
             <AppTotalActiveUsers />

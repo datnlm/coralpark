@@ -26,10 +26,10 @@ import useLocales from '../../../../hooks/useLocales';
 
 type DiverMoreMenuProps = {
   onDelete: VoidFunction;
-  diverID: string;
+  id: string;
 };
 
-export default function DiverMoreMenu({ onDelete, diverID }: DiverMoreMenuProps) {
+export default function DiverMoreMenu({ onDelete, id }: DiverMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +95,7 @@ export default function DiverMoreMenu({ onDelete, diverID }: DiverMoreMenuProps)
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.diver.root}/${paramCase(diverID)}/edit`}
+          to={`${PATH_DASHBOARD.group.root}/${paramCase(id)}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

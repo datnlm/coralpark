@@ -19,7 +19,7 @@ import {
   ListItemSecondaryAction
 } from '@material-ui/core';
 import { SxProps } from '@material-ui/system';
-
+import useLocales from '../../hooks/useLocales';
 // utils
 import { fData } from '../../utils/formatNumber';
 //
@@ -83,7 +83,7 @@ export default function UploadMultiFile({
   ...other
 }: UploadMultiFileProps) {
   const hasFile = files.length > 0;
-
+  const { translate } = useLocales();
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     ...other
   });
@@ -136,19 +136,19 @@ export default function UploadMultiFile({
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Drop or Select file
+            {translate('message.select-file')}
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Drop files here or click&nbsp;
+            {translate('message.drop-file')}&nbsp;
             <Typography
               variant="body2"
               component="span"
               sx={{ color: 'primary.main', textDecoration: 'underline' }}
             >
-              browse
+              {translate('message.browser')}
             </Typography>
-            &nbsp;thorough your machine
+            &nbsp;{translate('message.thorough')}
           </Typography>
         </Box>
       </DropZoneStyle>
@@ -240,7 +240,7 @@ export default function UploadMultiFile({
       {hasFile && (
         <Stack direction="row" justifyContent="flex-end">
           <Button onClick={onRemoveAll} sx={{ mr: 1.5 }}>
-            Remove all
+            {translate('button.remove-all')}
           </Button>
           {/* <Button variant="contained">Upload files</Button> */}
         </Stack>

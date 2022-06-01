@@ -22,14 +22,8 @@ export const PATH_AUTH = {
 export const PATH_PAGE = {
   comingSoon: '/coming-soon',
   maintenance: '/maintenance',
-  pricing: '/pricing',
-  payment: '/payment',
-  about: '/about-us',
-  contact: '/contact-us',
-  faqs: '/faqs',
   page404: '/404',
-  page500: '/500',
-  components: '/components'
+  page500: '/500'
 };
 
 export const PATH_DASHBOARD = {
@@ -101,6 +95,12 @@ export const PATH_DASHBOARD = {
     editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
     editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
   },
+  group: {
+    root: path(ROOTS_DASHBOARD, '/group-mode'),
+    list: path(ROOTS_DASHBOARD, '/group-mode/list'),
+    newGroupMode: path(ROOTS_DASHBOARD, '/group-mode/new'),
+    editByIdGroupMode: path(ROOTS_DASHBOARD, '/group-mode/:name/edit')
+  },
   partner: {
     root: path(ROOTS_DASHBOARD, '/partner'),
     list: path(ROOTS_DASHBOARD, '/partner/list'),
@@ -108,9 +108,6 @@ export const PATH_DASHBOARD = {
     editById: path(ROOTS_DASHBOARD, '/partner/:name/edit'),
     typeList: path(ROOTS_DASHBOARD, '/partner/types'),
     typeNew: path(ROOTS_DASHBOARD, '/partner/type-new')
-    // newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
-    // editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
-    // editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
   },
   diver: {
     root: path(ROOTS_DASHBOARD, '/diver'),

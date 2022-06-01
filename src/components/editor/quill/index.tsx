@@ -6,6 +6,7 @@ import { Box, BoxProps } from '@material-ui/core';
 import typography from '../../../theme/typography';
 //
 import EditorToolbar, { formats, redoChange, undoChange } from './QuillEditorToolbar';
+import useLocales from '../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +51,7 @@ export default function QuillEditor({
   sx,
   ...other
 }: QuillEditorProps) {
+  const { translate } = useLocales();
   const modules = {
     toolbar: {
       container: `#${id}`,
@@ -81,7 +83,7 @@ export default function QuillEditor({
         onChange={onChange}
         modules={modules}
         formats={formats}
-        placeholder="Write something awesome..."
+        placeholder={translate('message.description')}
         {...other}
       />
     </RootStyle>

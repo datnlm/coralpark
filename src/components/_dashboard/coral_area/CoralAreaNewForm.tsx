@@ -170,11 +170,19 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
         if (flag) {
           setCurrentArea(null);
           setSubmitting(false);
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-success') : translate('message.update-success'),
+            {
+              variant: 'success'
+            }
+          );
         } else {
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-error') : translate('message.create-error'),
+            {
+              variant: 'error'
+            }
+          );
         }
       } catch (error) {
         console.error(error);

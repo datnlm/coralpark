@@ -1,66 +1,68 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { manageGroupMode } from '_apis_/group-mode';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
-import { Card, Box, Grid, Stack, TextField, Typography, FormHelperText } from '@material-ui/core';
+import {
+  Card,
+  Box,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+  Autocomplete,
+  FormHelperText
+} from '@material-ui/core';
 // utils
-import { manageGarden } from '_apis_/garden';
+import { OptionStatus, statusOptions } from 'utils/constants';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { GardenType } from '../../../@types/garden';
-//
-import { QuillEditor } from '../../editor';
+import { GroupMode } from '../../../@types/group-mode';
+import { UploadAvatar } from '../../upload';
 
 // ----------------------------------------------------------------------
 
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
-
-// ----------------------------------------------------------------------
-
-type GardenNewFormProps = {
+type GroupModeNewFormProps = {
   isEdit: boolean;
-  currentGardenType?: GardenType;
+  currentGroupMode?: GroupMode;
 };
 
-export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFormProps) {
+export default function GroupModeNewForm({ isEdit, currentGroupMode }: GroupModeNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-
-  const NewGardenSchema = Yup.object().shape({
+  const [imageFILE, setImageFILE] = useState('');
+  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
+  const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    imageUrl: Yup.array().min(1, 'Images is required')
+    contribute: Yup.string().required('Contribute is required')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentGardenType?.id || '',
-      name: currentGardenType?.name || '',
-      description: currentGardenType?.description || ''
+      id: currentGroupMode?.id || '',
+      name: currentGroupMode?.name || '',
+      contribute: currentGroupMode?.contribute || ''
     },
-    validationSchema: NewGardenSchema,
+    validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+      let flag = false;
       try {
-        let flag = false;
         !isEdit
-          ? await manageGarden.createGardenType(values).then((response) => {
+          ? await manageGroupMode.createGroupMode(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageGarden.updateGardenType(values).then((response) => {
+          : await manageGroupMode.updateUpdateMode(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
@@ -74,7 +76,7 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.garden.typesList);
+          navigate(PATH_DASHBOARD.group.list);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),
@@ -82,10 +84,6 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
           );
         }
       } catch (error) {
-        enqueueSnackbar(
-          !isEdit ? translate('message.create-error') : translate('message.create-error'),
-          { variant: 'error' }
-        );
         console.error(error);
         setSubmitting(false);
       }
@@ -94,6 +92,20 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
 
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
+
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      setImageFILE(file);
+      if (file) {
+        setFieldValue('imageUrl', {
+          ...file,
+          preview: URL.createObjectURL(file)
+        });
+      }
+    },
+    [setFieldValue]
+  );
 
   return (
     <FormikProvider value={formik}>
@@ -105,28 +117,18 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.garden-type.form.name')}
+                    label={translate('page.group-mode.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <div>
-                    <LabelStyle>{translate('page.garden-type.form.description')}</LabelStyle>
-                    <QuillEditor
-                      simple
-                      id="description"
-                      value={values.description}
-                      onChange={(val) => setFieldValue('description', val)}
-                      error={Boolean(touched.description && errors.description)}
-                    />
-                    {touched.description && errors.description && (
-                      <FormHelperText error sx={{ px: 2 }}>
-                        {touched.description && errors.description}
-                      </FormHelperText>
-                    )}
-                  </div>
+                  <TextField
+                    fullWidth
+                    label={translate('page.group-mode.form.contribute')}
+                    {...getFieldProps('contribute')}
+                    error={Boolean(touched.contribute && errors.contribute)}
+                    helperText={touched.contribute && errors.contribute}
+                  />
                 </Stack>
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

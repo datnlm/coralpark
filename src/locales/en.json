@@ -289,6 +289,7 @@
     },
     "area": {
       "title": {
+        "list": "Area: Area List",
         "create": "Area: Create a new area",
         "update": "Area: Update area"
       },
@@ -303,15 +304,51 @@
         "list": "List",
         "new": "New area"
       },
+      "search": "Search area",
       "form": {
         "name": "Name",
+        "address": "Address",
         "province": "Province",
         "district": "District",
         "ward": "Ward" 
       }
+    },
+    "group-mode": {
+      "title": {
+        "list": "Group Mode: Group Mode List",
+        "create": "Group Mode: Create a new group mode",
+        "update": "Group Mode: Update group mode"
+      },
+      "heading1": {
+        "list": "Group Mode",
+        "create": "Create group mode",
+        "update": "Update group mode"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Group Mode",
+      "heading4": {
+        "list": "List",
+        "new": "New group mode"
+      },
+      "search": "Search group mode",
+      "form": {
+        "name": "Name",
+        "contribution": "Contribution"
+      }
+    },
+    "login": {
+      "label": {
+        "signed": "Signed in as"
+      },
+      "form": {
+        "user": "User name",
+        "password": "Password"
+      }
     }
   }, 
   "button": {
+    "login": "Login",
+    "logout": "Logout",
     "save": {
       "add": "Create",
       "update": "Save change",
@@ -321,6 +358,7 @@
       "cancel": "Cancel"
     },
     "back": "Back",
+    "remove-all": "Remove all",
     "menu": {
       "edit": "Edit",
       "delete": "Delete"
@@ -333,7 +371,21 @@
     "allow-type-image": "Allowed *.jpeg, *.jpg, *.png, *.gif",
     "confirm-delete": "Are you sure to delete this?",
     "update-photo": "Update photo",
-    "upload-photo": "Upload photo"
+    "upload-photo": "Upload photo",
+    "not-found": "Not found",
+    "not-found-result": "No result found for ",
+    "try-check": "Try checking for typos or using complete words.",
+    "select-file": "Drop or Select file",
+    "drop-file": "Drop files here or click",
+    "browser": "browser",
+    "thorough": "thorough your machine",
+    "description": "Write description...",
+    "create-success": "Create success",
+    "update-success": "Update success",
+    "delete-success": "Delete success",
+    "create-error": "Create error",
+    "update-error": "Update error",
+    "delete-error": "Delete error"
   },
   "menu": {
     "sidebarConfig": {
@@ -362,6 +414,7 @@
         "partner": "Partner",
         "coral": "Coral",
         "area": "Area",
+        "group-mode": "Group Mode",
         "account": "Account"
       },
       "subheader": {
@@ -373,7 +426,8 @@
         "phase": "Phase",
         "phase-type": "Phase type",
         "area": "Area",
-        "account": "Account"
+        "account": "Account",
+        "group-mode": "Group Mode"
       },
       "site": {
         "list": "List",
@@ -398,6 +452,10 @@
         "create": "Create"
       },
       "account": {
+        "list": "List",
+        "create": "Create"
+      },
+      "group-mode": {
         "list": "List",
         "create": "Create"
       }

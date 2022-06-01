@@ -38,17 +38,17 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type GardenListToolbarProps = {
+type DiverListToolbarProps = {
   numSelected: number;
   filterName: string;
   onFilterName: (value: string) => void;
 };
 
-export default function GardenListToolbar({
+export default function DiverListToolbar({
   numSelected,
   filterName,
   onFilterName
-}: GardenListToolbarProps) {
+}: DiverListToolbarProps) {
   const { translate } = useLocales();
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
@@ -65,7 +65,7 @@ export default function GardenListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder={translate('page.garden.search')}
+        placeholder={translate('page.group-mode.search')}
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

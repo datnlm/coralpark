@@ -42,10 +42,10 @@ export class AccountManager {
       .catch((err) => err);
   };
 
-  // delete diver
-  deleteAccount = (id: string, roleName: string) => {
+  // delete account
+  deleteAccount = (email: string, roleName: string) => {
     return axios
-      .delete(`/api/v1/admin/accounts/${id}`)
+      .delete(`/api/v1/admin/accounts?email=${email}&roleName=${roleName}`)
       .then((res) => res)
       .catch((err) => err);
   };

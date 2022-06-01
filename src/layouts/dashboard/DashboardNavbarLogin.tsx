@@ -15,8 +15,8 @@ import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
-const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 102;
+const DRAWER_WIDTH = 1100;
+const COLLAPSE_WIDTH = 1100;
 
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
@@ -41,12 +41,9 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type DashboardNavbarProps = {
-  onOpenSidebar: VoidFunction;
-};
-
-export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
+export default function DashboardNavbarLogin() {
   const { isCollapse } = useCollapseDrawer();
+
   return (
     <RootStyle
       sx={{
@@ -56,18 +53,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
       }}
     >
       <ToolbarStyle>
-        <MHidden width="lgUp">
-          <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
-            <Icon icon={menu2Fill} />
-          </IconButton>
-        </MHidden>
-
-        {/* <Searchbar /> */}
-        <Box sx={{ flexGrow: 1 }} />
-
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <LanguagePopover />
-          <AccountPopover />
         </Stack>
       </ToolbarStyle>
     </RootStyle>

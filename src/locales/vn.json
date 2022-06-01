@@ -289,6 +289,7 @@
     },
     "area": {
       "title": {
+        "list": "Địa điểm: Danh sách khu vực",
         "create": "Địa điểm: Thêm mới địa điểm",
         "update": "Địa điểm: Cập nhật địa điểm"
       },
@@ -303,16 +304,51 @@
         "list": "Danh sách",
         "new": "Thêm mới địa điểm"
       },
+      "search": "Tìm kiếm theo khu vực",
       "form": {
         "name": "Tên khu vực",
+        "address": "Địa chỉ",
         "province": "Tỉnh/Thành phố",
         "district": "Quận/Huyện",
         "ward": "Phường/xã" 
       }
+    },
+    "group-mode": {
+      "title": {
+        "list": "Group Mode: Group Mode List",
+        "create": "Group Mode: Thêm mới group mode",
+        "update": "Group Mode: Cập nhật group mode"
+      },
+      "heading1": {
+        "list": "Group Mode",
+        "create": "Thêm mới group mode",
+        "update": "Cập nhật group mode"
+      },
+      "heading2": "Bảng điều kiển",
+      "heading3": "Group Mode",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Group Mode mới"
+      },
+      "search": "Tìm kiếm group mode",
+      "form": {
+        "name": "Tên",
+        "contribution": "Đóng góp"
+      }
+    },
+    "login": {
+      "label": {
+        "signed": "Signed in as"
+      },
+      "form": {
+        "user": "User name",
+        "password": "Password"
+      }
     }
   },
-
   "button": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
     "save": {
       "add": "Thêm mới",
       "update": "Lưu thay đổi",
@@ -322,6 +358,7 @@
       "cancel": "Huỷ"
     },
     "back": "Trở lại",
+    "remove-all": "Xoá tất cả",
     "menu": {
       "edit": "Chỉnh sửa thông",
       "delete": "Xoá thông tin"
@@ -334,7 +371,21 @@
     "allow-type-image": "Cho phép *.jpeg, *.jpg, *.png, *.gif",
     "confirm-delete": "Bạn có chắc chắn muốn xoá?",
     "update-photo": "Cập nhật ảnh",
-    "upload-photo": "Tải lên ảnh"
+    "upload-photo": "Tải lên ảnh",
+    "not-found": "Không tìm thấy",
+    "not-found-result": "Không có kết quả tìm kiếm cho ",
+    "try-check": "Thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh.",
+    "select-file": "Thả hoặc chọn tệp",
+    "drop-file": "Thả tệp vào đây hoặc nhấp vào",
+    "browser": "duyệt",
+    "thorough": "qua máy",
+    "description": "Mô tả...",
+    "create-success": "Thêm mới thành công",
+    "update-success": "Cập nhật thành công",
+    "delete-success": "Xoá thành công",
+    "create-error": "Thêm mới thất bại",
+    "update-error": "Cập nhật thất bại",
+    "delete-error": "Xoá thất bại"
   },
   "menu": {
     "sidebarConfig": {
@@ -363,6 +414,7 @@
         "partner": "Đối tác",
         "coral": "San hô",
         "area": "Khu vực",
+        "group-mode": "Group Mode",
         "account": "Tài khoảng"
       },
       "subheader": {
@@ -374,7 +426,8 @@
         "phase": "Giai đoạn",
         "phase-type": "Từng giai đoạn",
         "area": "Khu vực",
-        "account": "Tài khoảng"
+        "account": "Tài khoảng",
+        "group-mode": "Group Mode"
       },
       "site": {
         "list": "Danh sách",
@@ -401,6 +454,10 @@
       "account": {
         "list": "Danh sách",
         "create": "Thêm mới"
+      },
+      "group-mode": {
+        "list": "List",
+        "create": "Create"
       }
     }
   }

@@ -78,11 +78,6 @@ export default function Router() {
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
-        {
-          path: 'analytics',
-          element: <GeneralAnalytics />
-        },
         {
           path: 'area',
           children: [
@@ -140,6 +135,15 @@ export default function Router() {
           ]
         },
         {
+          path: 'group-mode',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/group-mode/list" replace /> },
+            { path: 'list', element: <GroupModeList /> },
+            { path: 'new', element: <GroupModeCreate /> },
+            { path: '/:name/edit', element: <GroupModeCreate /> }
+          ]
+        },
+        {
           path: 'garden',
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
@@ -181,10 +185,7 @@ export default function Router() {
       path: '*',
       element: <LogoOnlyLayout />,
       children: [
-        { path: 'coming-soon', element: <ComingSoon /> },
         { path: 'maintenance', element: <Maintenance /> },
-        { path: 'pricing', element: <Pricing /> },
-        { path: 'payment', element: <Payment /> },
         { path: '500', element: <Page500 /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" replace /> }
@@ -200,11 +201,6 @@ export default function Router() {
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
-        {
-          path: 'analytics',
-          element: <GeneralAnalytics />
-        },
         {
           path: 'area',
           children: [
@@ -287,8 +283,6 @@ const ResetPassword = Loadable(lazy(() => import('../pages/authentication/ResetP
 const VerifyCode = Loadable(lazy(() => import('../pages/authentication/VerifyCode')));
 // Dashboard
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
-const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
-const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
 const AreaList = Loadable(lazy(() => import('../pages/dashboard/AreaList')));
 const AccountList = Loadable(lazy(() => import('../pages/dashboard/AccountList')));
 const AccountCreate = Loadable(lazy(() => import('../pages/dashboard/AccountCreate')));
@@ -303,6 +297,8 @@ const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')
 const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));
 const CoralTypeList = Loadable(lazy(() => import('../pages/dashboard/CoralTypeList')));
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
+const GroupModeList = Loadable(lazy(() => import('../pages/dashboard/GroupModeList')));
+const GroupModeCreate = Loadable(lazy(() => import('../pages/dashboard/GroupModeCreate')));
 const SiteList = Loadable(lazy(() => import('../pages/dashboard/SiteList')));
 const GardenTypesList = Loadable(lazy(() => import('../pages/dashboard/GardenTypesList')));
 const PartnerTypeList = Loadable(lazy(() => import('../pages/dashboard/PartnerTypeList')));
@@ -314,13 +310,6 @@ const SiteCreate = Loadable(lazy(() => import('../pages/dashboard/SiteCreate')))
 const GardenTypeCreate = Loadable(lazy(() => import('../pages/dashboard/GardenTypeCreate')));
 const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));
-// const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
-// const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
-// const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
-// const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
-const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
-const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
-const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
