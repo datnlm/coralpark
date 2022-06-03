@@ -68,7 +68,7 @@ export function getListGroupMode(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageGroupMode.getListGroupMode(page, rowsPerPage).then((response) => {
+      await manageGroupMode.getListGroupMode(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListGroupMode(response.data.items));

@@ -25,7 +25,8 @@ import {
   Link,
   Dialog,
   DialogTitle,
-  DialogContent
+  DialogContent,
+  CircularProgress
 } from '@material-ui/core';
 import { manageAccount } from '_apis_/account';
 // @types
@@ -95,6 +96,7 @@ export default function UserList() {
   const dispatch = useDispatch();
   const accountList = useSelector((state: RootState) => state.account.accountList);
   const totalCount = useSelector((state: RootState) => state.account.totalCount);
+  const isLoading = useSelector((state: RootState) => state.account.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -162,11 +164,11 @@ export default function UserList() {
     dispatch(getAccounts(page, rowsPerPage));
   }, [dispatch]);
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - accountList.length) : 0;
+  const emptyRows = !isLoading && !accountList;
 
   const filteredAccount = applySortFilter(accountList, getComparator(order, orderBy), filterName);
 
-  const isAccountNotFound = filteredAccount.length === 0;
+  const isAccountNotFound = filteredAccount.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -225,39 +227,55 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredAccount.map((row) => {
-                    const { userName, email, roleName } = row;
-                    const isItemSelected = selected.indexOf(userName) !== -1;
-                    return (
-                      <TableRow
-                        hover
-                        key={userName}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                        </TableCell>
-                        <TableCell align="left">{userName}</TableCell>
-                        <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">{roleName}</TableCell>
-                        {/* <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == '0' && 'error') || 'success'}
-                            >
-                              {status}
-                            </Label>
-                          </TableCell> */}
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredAccount.map((row) => {
+                      const { userName, email, roleName } = row;
+                      const isItemSelected = selected.indexOf(userName) !== -1;
+                      return (
+                        <TableRow
+                          hover
+                          key={userName}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                          </TableCell>
+                          <TableCell align="left">{userName}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{roleName}</TableCell>
+                          {/* <TableCell align="left">
+                          <Label
+                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                            color={(status == '0' && 'error') || 'success'}
+                          >
+                            {status}
+                          </Label>
+                        </TableCell> */}
 
-                        <TableCell align="right">
-                          <AccountMoreMenu onDelete={() => handleAccount(email, roleName)} />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                          <TableCell align="right">
+                            <AccountMoreMenu onDelete={() => handleAccount(email, roleName)} />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+
+                  {emptyRows && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                        <Typography gutterBottom align="center" variant="subtitle1">
+                          {translate('message.not-found')}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
                 {isAccountNotFound && (
                   <TableBody>

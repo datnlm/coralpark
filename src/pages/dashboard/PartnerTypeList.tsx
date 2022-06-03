@@ -232,35 +232,42 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredPartner.map((row) => {
-                    const { id, name } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {name}
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="right">
-                          <PartnerTypeMoreMenu
-                            onDelete={() => handleDeletePartnerType(id.toString())}
-                            partnerTypeId={id.toString()}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredPartner.map((row) => {
+                      const { id, name } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              {name}
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="right">
+                            <PartnerTypeMoreMenu
+                              onDelete={() => handleDeletePartnerType(id.toString())}
+                              partnerTypeId={id.toString()}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -271,11 +278,6 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isLoading && (
-                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                    <CircularProgress />
-                  </TableCell>
-                )}
                 {isPartnerNotFound && (
                   <TableBody>
                     <TableRow>

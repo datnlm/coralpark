@@ -109,7 +109,7 @@ export function getListGarden(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageGarden.getListGarden(page, rowsPerPage).then((response) => {
+      await manageGarden.getListGarden(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListGarden(response.data.items));
@@ -128,7 +128,7 @@ export function getListSites(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageGarden.getListSites(page, rowsPerPage).then((response) => {
+      await manageGarden.getListSites(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListGardenOwners(response.data.items));
@@ -147,7 +147,7 @@ export function getListGardenTypes(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageGarden.getListGardenType(page, rowsPerPage).then((response) => {
+      await manageGarden.getListGardenType(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListGardenType(response.data.items));

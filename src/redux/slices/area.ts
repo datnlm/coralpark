@@ -68,7 +68,7 @@ export function getListArea(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageArea.getListArea(page, rowsPerPage).then((response) => {
+      await manageArea.getListArea(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListDiver(response.data.items));

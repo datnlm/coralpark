@@ -89,7 +89,7 @@ export function getListCoral(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageCoral.getListCoral(page, rowsPerPage).then((response) => {
+      await manageCoral.getListCoral(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCoral(response.data.items));
@@ -105,7 +105,7 @@ export function getListCoralType(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageCoral.getListCoralType(page, rowsPerPage).then((response) => {
+      await manageCoral.getListCoralType(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCoralType(response.data.items));

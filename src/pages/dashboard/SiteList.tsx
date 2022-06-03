@@ -24,6 +24,7 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
+import { statusOptions } from 'utils/constants';
 // @types
 import { Site } from '../../@types/garden';
 // redux
@@ -239,60 +240,67 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredGardenOwners.map((row) => {
-                    const { id, name, phone, email, address, webUrl, imageUrl, status } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={imageUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">
-                          <Link
-                            href={webUrl}
-                            underline="hover"
-                            target="_blank"
-                            style={{ color: '#0000ff' }}
-                          >
-                            {webUrl}
-                          </Link>
-                        </TableCell>
-                        <TableCell align="left">{phone}</TableCell>
-                        <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">{address}</TableCell>
-                        <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={(status == '0' && 'error') || 'success'}
-                          >
-                            {status}
-                          </Label>
-                        </TableCell>
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredGardenOwners.map((row) => {
+                      const { id, name, phone, email, address, webUrl, imageUrl, status } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar alt={name} src={imageUrl} />
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Link
+                              href={webUrl}
+                              underline="hover"
+                              target="_blank"
+                              style={{ color: '#0000ff' }}
+                            >
+                              {webUrl}
+                            </Link>
+                          </TableCell>
+                          <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={(status == '0' && 'error') || 'success'}
+                            >
+                              {statusOptions.find((v: any) => v.id == status)?.label}
+                            </Label>
+                          </TableCell>
 
-                        <TableCell align="right">
-                          <SiteMoreMenu
-                            onDelete={() => handleDeleteSite(id.toString())}
-                            userName={id.toString()}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                          <TableCell align="right">
+                            <SiteMoreMenu
+                              onDelete={() => handleDeleteSite(id.toString())}
+                              userName={id.toString()}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -303,11 +311,6 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isLoading && (
-                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                    <CircularProgress />
-                  </TableCell>
-                )}
                 {isGardenOwnerNotFound && (
                   <TableBody>
                     <TableRow>
