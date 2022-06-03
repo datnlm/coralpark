@@ -102,7 +102,7 @@ export default function EcommerceProductList() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const areaList = useSelector((state: RootState) => state.area.areaList);
-  // const arealist = useSelector((state: ProductState) => state.areas);
+  const totalCount = useSelector((state: RootState) => state.area.totalCount);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -110,8 +110,7 @@ export default function EcommerceProductList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('createdAt');
   useEffect(() => {
-    // dispatch(getProducts());
-    dispatch(getListArea());
+    dispatch(getListArea(page, rowsPerPage));
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -161,7 +160,7 @@ export default function EcommerceProductList() {
       await manageArea.deleteArea(areaId).then((respone) => {
         if (respone.status == 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getListArea());
+          dispatch(getListArea(page, rowsPerPage));
         } else {
           enqueueSnackbar('Delete error', { variant: 'error' });
         }
@@ -229,34 +228,32 @@ export default function EcommerceProductList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredArea
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      const { id, name, address } = row;
+                  {filteredArea.map((row, index) => {
+                    const { id, name, address } = row;
 
-                      const isItemSelected = selected.indexOf(id) !== -1;
+                    const isItemSelected = selected.indexOf(id) !== -1;
 
-                      return (
-                        <TableRow hover key={id} tabIndex={-1} role="checkbox">
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} /> */}
-                          </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{address}</TableCell>
-                          <TableCell align="right">
-                            <AreaMoreMenu
-                              onDelete={() => handleDeleteArea(id.toString())}
-                              areaId={id.toString()}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
+                    return (
+                      <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} /> */}
+                        </TableCell>
+                        <TableCell align="left">{name}</TableCell>
+                        <TableCell align="left">{address}</TableCell>
+                        <TableCell align="right">
+                          <AreaMoreMenu
+                            onDelete={() => handleDeleteArea(id.toString())}
+                            areaId={id.toString()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
                 {isAreaNotFound && (
                   <TableBody>
@@ -274,9 +271,9 @@ export default function EcommerceProductList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
             component="div"
-            count={areaList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(event, value) => setPage(value)}

@@ -72,10 +72,10 @@ export default function DiverMoreMenu({ onDelete, diverID }: DiverMoreMenuProps)
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-              {translate('button.message.title.confirm-delete')}
+              {translate('message.title.confirm-delete')}
             </DialogTitle>
             <DialogContent>
-              <DialogContentText>{translate('button.message.confirm-delete')}</DialogContentText>
+              <DialogContentText>{translate('message.confirm-delete')}</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button autoFocus onClick={handleClose}>

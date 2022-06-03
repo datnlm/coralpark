@@ -6,7 +6,6 @@ import { Container, Paper, Stack } from '@material-ui/core';
 import LinearAlternativeLabel from 'components/_dashboard/coral/LinearAlternativeLabel';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -27,9 +26,9 @@ export default function PhasesTypeCreate() {
   const { name } = useParams();
   const isEdit = pathname.includes('edit');
 
-  useEffect(() => {
-    dispatch(getUserList());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getUserList());
+  // }, [dispatch]);
 
   return (
     <Page

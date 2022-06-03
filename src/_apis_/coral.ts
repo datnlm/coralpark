@@ -3,9 +3,11 @@ import { CoralType, Phases, PhasesType, CoralArea } from '../@types/coral';
 
 export class Coral {
   // get list coral
-  getListCoral = () => {
+  getListCoral = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/corals')
+      .get('/api/v1/admin/corals', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };
@@ -58,11 +60,10 @@ export class Coral {
   };
 
   // get list coral type
-  getListCoralType = () => {
-    const page_size = 50;
+  getListCoralType = (page_number: number, page_size: number) => {
     return axios
       .get('/api/v1/admin/coral-types', {
-        params: { page_size }
+        params: { page_number, page_size }
       })
       .then((res) => res)
       .catch((err) => err);
@@ -77,9 +78,11 @@ export class Coral {
   };
 
   // get list coral phases
-  getListCoralPhases = () => {
+  getListCoralPhases = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/coral-phases')
+      .get('/api/v1/admin/coral-phases', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };
@@ -107,9 +110,11 @@ export class Coral {
   };
 
   // get list coral phases
-  getListCoralPhasesTypes = () => {
+  getListCoralPhasesTypes = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/coral-phase-types')
+      .get('/api/v1/admin/coral-phase-types', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };
@@ -122,7 +127,7 @@ export class Coral {
         maxWeight: v.maxWeight,
         minHigh: v.minHigh,
         maxHigh: v.maxHigh,
-        timeFrom: v.timeForm,
+        timeFrom: v.timeFrom,
         timeTo: v.timeTo,
         colour: v.colour,
         coralPhase: { id: v.coralPhase.id }
@@ -146,7 +151,7 @@ export class Coral {
         maxWeight: v.maxWeight,
         minHigh: v.minHigh,
         maxHigh: v.maxHigh,
-        timeFrom: v.timeForm,
+        timeFrom: v.timeFrom,
         timeTo: v.timeTo,
         colour: v.colour,
         coralPhase: { id: v.coralPhase.id }

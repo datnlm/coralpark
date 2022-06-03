@@ -8,7 +8,6 @@ import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks

@@ -11,12 +11,14 @@ import { Area } from '../../@types/area';
 type AreaState = {
   isLoading: boolean;
   error: boolean;
+  totalCount: number;
   areaList: Area[];
 };
 
 const initialState: AreaState = {
   isLoading: false,
   error: false,
+  totalCount: 0,
   areaList: []
 };
 
@@ -27,6 +29,11 @@ const slice = createSlice({
     // START LOADING
     startLoading(state) {
       state.isLoading = true;
+    },
+
+    // TOTOAL COUNT
+    totalCount(state, action) {
+      state.totalCount = action.payload;
     },
 
     // HAS ERROR
@@ -57,12 +64,13 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get area
-export function getListArea() {
+export function getListArea(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageArea.getListArea().then((response) => {
+      await manageArea.getListArea(page, rowsPerPage).then((response) => {
         if (response.status == 200) {
+          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListDiver(response.data.items));
         }
       });

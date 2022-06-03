@@ -85,7 +85,7 @@ export default function LinearAlternativeLabel() {
           navigate(PATH_DASHBOARD.phases.typeNew);
         } else {
           enqueueSnackbar(
-            !isEdit ? translate('message.error-success') : translate('message.error-success'),
+            !isEdit ? translate('message.create-error') : translate('message.update-error'),
             { variant: 'error' }
           );
         }
@@ -125,14 +125,14 @@ export default function LinearAlternativeLabel() {
     if (submitRef && submitRef.current) {
       submitRef.current?.click();
     }
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
+    // let newSkipped = skipped;
+    // if (isStepSkipped(activeStep)) {
+    //   newSkipped = new Set(newSkipped.values());
+    //   newSkipped.delete(activeStep);
+    // }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    // setSkipped(newSkipped);
   };
 
   const handleBack = () => {
@@ -186,7 +186,7 @@ export default function LinearAlternativeLabel() {
 
   // get combobox
   useEffect(() => {
-    manageCoral.getListCoral().then((response) => {
+    manageCoral.getListCoral(1, 100000).then((response) => {
       if (response.status == 200) {
         setOptionCoral(response.data.items);
       } else {
@@ -291,11 +291,11 @@ export default function LinearAlternativeLabel() {
               {translate('button.back')}
             </Button>
             <Box sx={{ flexGrow: 1 }} />
-            {isStepOptional(activeStep) && (
+            {/* {isStepOptional(activeStep) && (
               <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
                 {translate('button.skip')}
               </Button>
-            )}
+            )} */}
             <Button variant="contained" onClick={handleNext}>
               {activeStep === steps.length - 1
                 ? translate('button.save.finish')

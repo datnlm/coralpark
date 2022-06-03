@@ -76,6 +76,7 @@ export default function UserList() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const coralTypeList = useSelector((state: RootState) => state.coral.coralListType);
+  const totalCount = useSelector((state: RootState) => state.coral.totalCount);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -85,7 +86,7 @@ export default function UserList() {
   const [expanded, setExpanded] = useState<string | false>('panel1');
 
   useEffect(() => {
-    dispatch(getListCoralType());
+    dispatch(getListCoralType(page, rowsPerPage));
   }, [dispatch]);
 
   const handleChangeSort = (value?: string) => {
@@ -178,7 +179,7 @@ export default function UserList() {
     try {
       await manageCoral.deleteCoralType(coralId).then((respone) => {
         if (respone.status === 200) {
-          dispatch(getListCoralType());
+          dispatch(getListCoralType(page, rowsPerPage));
           enqueueSnackbar('Delete success', { variant: 'success' });
         } else {
           enqueueSnackbar('Delete error', { variant: 'error' });
@@ -264,47 +265,45 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredCoralsType
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, parentId, levelType, parents, description } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">
-                            {coralLevelType.find((e: any) => e.id == levelType)?.label}
-                          </TableCell>
-                          <TableCell align="right">
-                            <CoralTypeMoreMenu
-                              onDelete={() => handleDeleteCoralType(id)}
-                              coralTypeId={id.toString()}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
+                  {filteredCoralsType.map((row) => {
+                    const { id, name, parentId, levelType, parents, description } = row;
+                    const isItemSelected = selected.indexOf(name) !== -1;
+                    return (
+                      <TableRow
+                        hover
+                        key={id}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={isItemSelected}
+                        aria-checked={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            <Typography variant="subtitle2" noWrap>
+                              {name}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
+                        <TableCell align="left">
+                          {coralLevelType.find((e: any) => e.id == levelType)?.label}
+                        </TableCell>
+                        <TableCell align="right">
+                          <CoralTypeMoreMenu
+                            onDelete={() => handleDeleteCoralType(id)}
+                            coralTypeId={id.toString()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
                 {isCoralTypeNotFound && (
                   <TableBody>
@@ -320,13 +319,13 @@ export default function UserList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
             component="div"
-            count={coralTypeList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
       </Container>

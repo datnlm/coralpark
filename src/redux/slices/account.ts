@@ -8,12 +8,14 @@ import { dispatch } from '../store';
 type AccountState = {
   isLoading: boolean;
   error: boolean;
+  totalCount: number;
   accountList: Account[];
 };
 
 const initialState: AccountState = {
   isLoading: false,
   error: false,
+  totalCount: 0,
   accountList: []
 };
 
@@ -24,6 +26,11 @@ const slice = createSlice({
     // START LOADING
     startLoading(state) {
       state.isLoading = true;
+    },
+
+    // TOTOAL COUNT
+    totalCount(state, action) {
+      state.totalCount = action.payload;
     },
 
     // HAS ERROR
@@ -44,12 +51,14 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function getAccounts() {
+export function getAccounts(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
+    dispatch(slice.actions.getListAccount(null));
     try {
-      await manageAccount.getListAccount().then((response) => {
+      await manageAccount.getListAccount(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
+          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListAccount(response.data.items));
         }
       });

@@ -6,7 +6,9 @@ import { useState, useEffect, useRef } from 'react';
 import { manageArea } from '_apis_/area';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import './Map.css';
 // material
 import { styled } from '@material-ui/core/styles';
@@ -43,7 +45,7 @@ type AreaNewFormProps = {
 mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
 
 export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
-  const { translate } = useLocales();
+  const { currentLang, translate } = useLocales();
   const [optionsProvince, setOptionsProvince] = useState([]);
   const [optionsDistrict, setOptionsDistrict] = useState([]);
   const [optionsWard, setOptionsWard] = useState([]);
@@ -62,7 +64,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   const { enqueueSnackbar } = useSnackbar();
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    address: Yup.string().required('Province is required')
+    address: Yup.object().required('Province is required')
   });
 
   const checkSelected = (provice: string) => {
@@ -228,6 +230,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
 
   useEffect(() => {
     const map = new mapboxgl.Map({
+      accessToken: mapboxgl.accessToken,
       container: mapContainerRef.current || '',
       style: 'mapbox://styles/mapbox/satellite-v9',
       center: [lng, lat],
@@ -278,6 +281,14 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
         }
       });
     });
+
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      placeholder: ''
+    });
+    geocoder.setLanguage(currentLang.value);
+    // Add the control to the map.
+    map.addControl(geocoder);
 
     const draw = new MapboxDraw({
       displayControlsDefault: false,

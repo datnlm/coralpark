@@ -25,7 +25,8 @@ import {
   Link,
   Dialog,
   DialogTitle,
-  DialogContent
+  DialogContent,
+  CircularProgress
 } from '@material-ui/core';
 import { getListPartnerType } from 'redux/slices/partner';
 import { managePartner } from '_apis_/partner';
@@ -94,6 +95,8 @@ export default function UserList() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const partnerTypeList = useSelector((state: RootState) => state.partner.partnerTypeList);
+  const totalCount = useSelector((state: RootState) => state.partner.totalCount);
+  const isLoading = useSelector((state: RootState) => state.partner.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -148,7 +151,7 @@ export default function UserList() {
       await managePartner.deletePartnerType(siteId).then((respone) => {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getListPartnerType());
+          dispatch(getListPartnerType(page, rowsPerPage));
         }
       });
     } catch (error) {
@@ -158,10 +161,10 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(getListPartnerType());
+    dispatch(getListPartnerType(page, rowsPerPage));
   }, [dispatch]);
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - partnerTypeList.length) : 0;
+  const emptyRows = !isLoading && !partnerTypeList;
 
   const filteredPartner = applySortFilter(
     partnerTypeList,
@@ -169,7 +172,7 @@ export default function UserList() {
     filterName
   );
 
-  const isPartnerNotFound = filteredPartner.length === 0;
+  const isPartnerNotFound = filteredPartner.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -229,43 +232,50 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredPartner
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              {name}
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="right">
-                            <PartnerTypeMoreMenu
-                              onDelete={() => handleDeletePartnerType(id.toString())}
-                              partnerTypeId={id.toString()}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
+                  {filteredPartner.map((row) => {
+                    const { id, name } = row;
+                    const isItemSelected = selected.indexOf(name) !== -1;
+                    return (
+                      <TableRow
+                        hover
+                        key={id}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={isItemSelected}
+                        aria-checked={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            {name}
+                          </Stack>
+                        </TableCell>
+                        <TableCell align="right">
+                          <PartnerTypeMoreMenu
+                            onDelete={() => handleDeletePartnerType(id.toString())}
+                            partnerTypeId={id.toString()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <Typography gutterBottom align="center" variant="subtitle1">
+                          {translate('message.not-found')}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
+                {isLoading && (
+                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                    <CircularProgress />
+                  </TableCell>
+                )}
                 {isPartnerNotFound && (
                   <TableBody>
                     <TableRow>
@@ -282,11 +292,11 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={partnerTypeList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
       </Container>

@@ -67,17 +67,17 @@ export default function SiteMoreMenu({ onDelete, userName }: SiteMoreMenuProps) 
             <Icon icon={trash2Outline} width={24} height={24} />
           </ListItemIcon>
           <ListItemText
-            primary={translate('site.button.menu.delete')}
+            primary={translate('button.menu.delete')}
             primaryTypographyProps={{ variant: 'body2' }}
           />
         </MenuItem>
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-              {translate('button.message.title.confirm-delete')}
+              {translate('message.title.confirm-delete')}
             </DialogTitle>
             <DialogContent>
-              <DialogContentText>{translate('button.message.confirm-delete')}</DialogContentText>
+              <DialogContentText>{translate('message.confirm-delete')}</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button autoFocus onClick={handleClose}>
@@ -89,7 +89,7 @@ export default function SiteMoreMenu({ onDelete, userName }: SiteMoreMenuProps) 
                   handleClose();
                 }}
               >
-                {translate('site.button.save.confirm')}
+                {translate('button.save.confirm')}
               </Button>
             </DialogActions>
           </Dialog>
@@ -104,7 +104,7 @@ export default function SiteMoreMenu({ onDelete, userName }: SiteMoreMenuProps) 
             <Icon icon={editFill} width={24} height={24} />
           </ListItemIcon>
           <ListItemText
-            primary={translate('site.button.menu.edit')}
+            primary={translate('button.menu.edit')}
             primaryTypographyProps={{ variant: 'body2' }}
           />
         </MenuItem>

@@ -25,7 +25,8 @@ import {
   Link,
   Dialog,
   DialogTitle,
-  DialogContent
+  DialogContent,
+  CircularProgress
 } from '@material-ui/core';
 import { managePartner } from '_apis_/partner';
 // @types
@@ -108,6 +109,8 @@ export default function UserList() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const partnerList = useSelector((state: RootState) => state.partner.partnerList);
+  const totalCount = useSelector((state: RootState) => state.partner.totalCount);
+  const isLoading = useSelector((state: RootState) => state.partner.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -162,7 +165,7 @@ export default function UserList() {
       await managePartner.deletePartner(id).then((respone) => {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getListPartner());
+          dispatch(getListPartner(page, rowsPerPage));
         }
       });
     } catch (error) {
@@ -172,14 +175,14 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(getListPartner());
+    dispatch(getListPartner(page, rowsPerPage));
   }, [dispatch]);
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - partnerList.length) : 0;
+  const emptyRows = !isLoading && !partnerList;
 
   const filteredPartner = applySortFilter(partnerList, getComparator(order, orderBy), filterName);
 
-  const isPartnerListNotFound = filteredPartner.length === 0;
+  const isPartnerListNotFound = filteredPartner.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -241,63 +244,70 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredPartner
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, phone, email, address, webUrl, status } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            {name}
-                          </TableCell>
-                          <TableCell align="left">
-                            <Link
-                              href={webUrl}
-                              underline="hover"
-                              target="_blank"
-                              style={{ color: '#0000ff' }}
-                            >
-                              {webUrl}
-                            </Link>
-                          </TableCell>
-                          <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{address}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == '0' && 'error') || 'success'}
-                            >
-                              {status}
-                            </Label>
-                          </TableCell>
+                  {filteredPartner.map((row) => {
+                    const { id, name, phone, email, address, webUrl, status } = row;
+                    const isItemSelected = selected.indexOf(name) !== -1;
+                    return (
+                      <TableRow
+                        hover
+                        key={id}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={isItemSelected}
+                        aria-checked={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {name}
+                        </TableCell>
+                        <TableCell align="left">
+                          <Link
+                            href={webUrl}
+                            underline="hover"
+                            target="_blank"
+                            style={{ color: '#0000ff' }}
+                          >
+                            {webUrl}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="left">{phone}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
+                        <TableCell align="left">{address}</TableCell>
+                        <TableCell align="left">
+                          <Label
+                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                            color={(status == '0' && 'error') || 'success'}
+                          >
+                            {status}
+                          </Label>
+                        </TableCell>
 
-                          <TableCell align="right">
-                            <PartnerMoreMenu
-                              onDelete={() => handleDeletePartner(id.toString())}
-                              partnerId={id.toString()}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
+                        <TableCell align="right">
+                          <PartnerMoreMenu
+                            onDelete={() => handleDeletePartner(id.toString())}
+                            partnerId={id.toString()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <Typography gutterBottom align="center" variant="subtitle1">
+                          {translate('message.not-found')}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
+                {isLoading && (
+                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                    <CircularProgress />
+                  </TableCell>
+                )}
                 {isPartnerListNotFound && (
                   <TableBody>
                     <TableRow>
@@ -312,13 +322,13 @@ export default function UserList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
             component="div"
-            count={partnerList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
       </Container>

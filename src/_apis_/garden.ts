@@ -3,9 +3,11 @@ import { Garden, Site, GardenType } from '../@types/garden';
 
 export class GardenManager {
   // get list garden
-  getListGarden = () => {
+  getListGarden = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/gardens')
+      .get('/api/v1/admin/divers', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };
@@ -69,9 +71,12 @@ export class GardenManager {
   //-----------------------------------------------
 
   // get garden owners
-  getListSites = () => {
+  getListSites = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/sites')
+      .get('/api/v1/admin/sites', {
+        params: { page_number, page_size }
+      })
+
       .then((res) => res)
       .catch((err) => err);
   };
@@ -118,9 +123,11 @@ export class GardenManager {
   //-----------------------------------------------
 
   // get garden type
-  getListGardenType = () => {
+  getListGardenType = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/garden-types')
+      .get('/api/v1/admin/divers', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };

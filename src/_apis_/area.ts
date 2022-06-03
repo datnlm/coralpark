@@ -3,9 +3,11 @@ import { Area } from '../@types/area';
 // @types
 export class AreaManager {
   // get list area
-  getListArea = () => {
+  getListArea = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/areas')
+      .get('/api/v1/admin/areas', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };
