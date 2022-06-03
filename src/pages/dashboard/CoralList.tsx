@@ -104,6 +104,7 @@ export default function UserList() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const coralList = useSelector((state: RootState) => state.coral.coralList);
+  const totalCount = useSelector((state: RootState) => state.coral.totalCount);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -160,7 +161,7 @@ export default function UserList() {
       await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getListCoral());
+          dispatch(getListCoral(page, rowsPerPage));
         } else {
           enqueueSnackbar('Delete fail', { variant: 'error' });
         }
@@ -172,7 +173,7 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(getListCoral());
+    dispatch(getListCoral(page, rowsPerPage));
   }, [dispatch]);
   const filteredCorals = applySortFilterCoral(coralList, getComparator(order, orderBy), filterName);
 
@@ -234,38 +235,36 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredCorals
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, scientificName, statusEnum, coralType } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                  {filteredCorals.map((row) => {
+                    const { id, name, scientificName, statusEnum, coralType } = row;
+                    const isItemSelected = selected.indexOf(name) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              {/* <Avatar alt={name} src={imageUrl[0]} /> */}
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{scientificName}</TableCell>
-                          <TableCell align="left">
-                            {coralStatus.find((e: any) => e.id == statusEnum)?.label}
-                          </TableCell>
-                          {/* <TableCell align="left">{statusEnum}</TableCell> */}
-                          {/* <TableCell align="left">
+                    return (
+                      <TableRow
+                        hover
+                        key={id}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={isItemSelected}
+                        aria-checked={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            {/* <Avatar alt={name} src={imageUrl[0]} /> */}
+                            <Typography variant="subtitle2" noWrap>
+                              {name}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
+                        <TableCell align="left">{scientificName}</TableCell>
+                        <TableCell align="left">
+                          {coralStatus.find((e: any) => e.id == statusEnum)?.label}
+                        </TableCell>
+                        {/* <TableCell align="left">{statusEnum}</TableCell> */}
+                        {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status === 0 && 'error') || 'success'}
@@ -273,21 +272,21 @@ export default function UserList() {
                               {status == 1 ? 'Available' : 'deleted'}
                             </Label>
                           </TableCell> */}
-                          <TableCell align="right">
-                            <CoralMoreMenu
-                              onDelete={() => handleDeleteCoral(id.toString())}
-                              // onDelete={() => handleDeleteCoral(id.toString())}
-                              coralID={id.toString()}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
+                        <TableCell align="right">
+                          <CoralMoreMenu
+                            onDelete={() => handleDeleteCoral(id.toString())}
+                            // onDelete={() => handleDeleteCoral(id.toString())}
+                            coralID={id.toString()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
                 {isCoralNotFound && (
                   <TableBody>
@@ -305,11 +304,11 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={coralList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
       </Container>

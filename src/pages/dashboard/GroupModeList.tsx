@@ -21,7 +21,8 @@ import {
   IconButton,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  CircularProgress
 } from '@material-ui/core';
 
 import plusFill from '@iconify/icons-eva/plus-fill';
@@ -98,7 +99,8 @@ export default function EcommerceProductList() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const groupModeList = useSelector((state: RootState) => state.groupMode.groupModeList);
-  // const arealist = useSelector((state: ProductState) => state.areas);
+  const totalCount = useSelector((state: RootState) => state.groupMode.totalCount);
+  const isLoading = useSelector((state: RootState) => state.groupMode.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -106,7 +108,7 @@ export default function EcommerceProductList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('createdAt');
   useEffect(() => {
-    dispatch(getListGroupMode());
+    dispatch(getListGroupMode(page, rowsPerPage));
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -156,7 +158,7 @@ export default function EcommerceProductList() {
       await manageGroupMode.deleteGroupMode(id).then((respone) => {
         if (respone.status == 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getListGroupMode());
+          dispatch(getListGroupMode(page, rowsPerPage));
         } else {
           enqueueSnackbar('Delete error', { variant: 'error' });
         }
@@ -167,7 +169,7 @@ export default function EcommerceProductList() {
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - groupModeList.length) : 0;
+  const emptyRows = !isLoading && !groupModeList;
 
   const filteredGroupMode = applySortFilter(
     groupModeList,
@@ -175,7 +177,7 @@ export default function EcommerceProductList() {
     filterName
   );
 
-  const isGroupModeNotFound = filteredGroupMode.length === 0;
+  const isGroupModeNotFound = filteredGroupMode.length === 0 && !isLoading;
 
   const TABLE_HEAD = [
     { id: 'name', label: translate('page.group-mode.form.name'), alignRight: false },
@@ -232,35 +234,42 @@ export default function EcommerceProductList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredGroupMode
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      const { id, name, contribute } = row;
+                  {filteredGroupMode.map((row, index) => {
+                    const { id, name, contribute } = row;
 
-                      const isItemSelected = selected.indexOf(id) !== -1;
+                    const isItemSelected = selected.indexOf(id) !== -1;
 
-                      return (
-                        <TableRow hover key={id} tabIndex={-1} role="checkbox">
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} /> */}
-                          </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{contribute}</TableCell>
-                          <TableCell align="right">
-                            <GroupModeMoreMenu
-                              onDelete={() => handleDeleteGroup(id.toString())}
-                              id={id.toString()}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
+                    return (
+                      <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} /> */}
+                        </TableCell>
+                        <TableCell align="left">{name}</TableCell>
+                        <TableCell align="left">{contribute}</TableCell>
+                        <TableCell align="right">
+                          <GroupModeMoreMenu
+                            onDelete={() => handleDeleteGroup(id.toString())}
+                            id={id.toString()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <Typography gutterBottom align="center" variant="subtitle1">
+                          {translate('message.not-found')}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
+                {isLoading && (
+                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                    <CircularProgress />
+                  </TableCell>
+                )}
                 {isGroupModeNotFound && (
                   <TableBody>
                     <TableRow>
@@ -277,9 +286,9 @@ export default function EcommerceProductList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
             component="div"
-            count={groupModeList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(event, value) => setPage(value)}

@@ -3,9 +3,11 @@ import { Diver } from '../@types/diver';
 
 export class DiverManager {
   // get list diver
-  getListDiver = () => {
+  getListDiver = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/divers')
+      .get('/api/v1/admin/divers', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };

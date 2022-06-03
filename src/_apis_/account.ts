@@ -3,9 +3,11 @@ import { User } from '../@types/account';
 
 export class AccountManager {
   // get list account
-  getListAccount = () => {
+  getListAccount = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/accounts')
+      .get('/api/v1/admin/accounts', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };

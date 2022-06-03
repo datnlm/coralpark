@@ -11,7 +11,7 @@
         "create": "Thêm mới khu vực",
         "update": "Chỉnh sửa khu vực"
       },
-      "heading2": "Bảng điều khiểu",
+      "heading2": "Bảng điều khiển",
       "heading3": "Khu vực",
       "heading4": {
         "list": "Danh sách",
@@ -41,7 +41,7 @@
         "create": "Thêm mới thông tin thợ lặn",
         "update": "Chỉnh sửa thông tin thợ lặn"
       },
-      "heading2": "Bảng điều khiểu",
+      "heading2": "Bảng điều khiển",
       "heading3": "Thợ lặn",
       "heading4": {
         "list": "Danh sách",
@@ -67,13 +67,13 @@
         "create": "Thêm mới đối tác",
         "update": "Chỉnh sửa thông tin đối tác"
       },
-      "heading2": "Bảng điều khiểu",
+      "heading2": "Bảng điều khiển",
       "heading3": "Đối tác",
       "heading4": {
         "list": "Danh sách",
         "new": "Thêm mới"
       },
-      "search": "Search partner",
+      "search": "Tìm kiếm theo tên đối tác",
       "form": {
         "name": "Tên đối tác",
         "phone": "Số điện thoại",
@@ -81,7 +81,7 @@
         "address": "Địa chỉ",
         "website": "Địa chỉ Website",
         "partner-type": "Loại đối tác",
-        "status": "Status"
+        "status": "Trạng thái"
       }
     },
     "partner-type": {
@@ -202,7 +202,7 @@
         "temperature": "Nhiệt độ",
         "brightness": "Ánh sáng",
         "tides": "Thuỷ triều",
-        "current": "DÒng chải"
+        "current": "Dòng chảy"
       }
     },
     "coral-type": {
@@ -415,7 +415,7 @@
         "coral": "San hô",
         "area": "Khu vực",
         "group-mode": "Group Mode",
-        "account": "Tài khoảng"
+        "account": "Tài khoản"
       },
       "subheader": {
         "site": "Địa điểm",
@@ -426,7 +426,7 @@
         "phase": "Giai đoạn",
         "phase-type": "Từng giai đoạn",
         "area": "Khu vực",
-        "account": "Tài khoảng",
+        "account": "Tài khoản",
         "group-mode": "Group Mode"
       },
       "site": {

@@ -94,6 +94,7 @@ export default function UserList() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const accountList = useSelector((state: RootState) => state.account.accountList);
+  const totalCount = useSelector((state: RootState) => state.account.totalCount);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -148,7 +149,7 @@ export default function UserList() {
       await manageAccount.deleteAccount(email, roleName).then((respone) => {
         if (respone.status === 200) {
           enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getAccounts());
+          dispatch(getAccounts(page, rowsPerPage));
         }
       });
     } catch (error) {
@@ -158,7 +159,7 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(getAccounts());
+    dispatch(getAccounts(page, rowsPerPage));
   }, [dispatch]);
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - accountList.length) : 0;
@@ -224,27 +225,25 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredAccount
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { userName, email, roleName } = row;
-                      const isItemSelected = selected.indexOf(userName) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={userName}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          <TableCell align="left">{userName}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{roleName}</TableCell>
-                          {/* <TableCell align="left">
+                  {filteredAccount.map((row) => {
+                    const { userName, email, roleName } = row;
+                    const isItemSelected = selected.indexOf(userName) !== -1;
+                    return (
+                      <TableRow
+                        hover
+                        key={userName}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={isItemSelected}
+                        aria-checked={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                        </TableCell>
+                        <TableCell align="left">{userName}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
+                        <TableCell align="left">{roleName}</TableCell>
+                        {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status == '0' && 'error') || 'success'}
@@ -253,17 +252,12 @@ export default function UserList() {
                             </Label>
                           </TableCell> */}
 
-                          <TableCell align="right">
-                            <AccountMoreMenu onDelete={() => handleAccount(email, roleName)} />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
+                        <TableCell align="right">
+                          <AccountMoreMenu onDelete={() => handleAccount(email, roleName)} />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
                 {isAccountNotFound && (
                   <TableBody>
@@ -279,13 +273,13 @@ export default function UserList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
             component="div"
-            count={accountList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
       </Container>

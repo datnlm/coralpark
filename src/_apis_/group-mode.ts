@@ -3,9 +3,11 @@ import { GroupMode } from '../@types/group-mode';
 
 export class GroupModeManager {
   // get list update mode
-  getListGroupMode = () => {
+  getListGroupMode = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/group-modes')
+      .get('/api/v1/admin/divers', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };

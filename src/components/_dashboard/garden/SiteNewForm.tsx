@@ -309,23 +309,25 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 </Stack>
                 {isEdit && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <Autocomplete
-                      fullWidth
-                      multiple
-                      id="tags-readOnly"
-                      value={gardenList}
-                      options={gardenList}
-                      getOptionLabel={(option: any) => (option ? option.name : '')}
-                      defaultValue={gardenList}
-                      limitTags={2}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={translate('page.site.form.garden-list')}
-                          placeholder={translate('site.form.garden-list')}
-                        />
-                      )}
-                    />
+                    {gardenList && (
+                      <Autocomplete
+                        fullWidth
+                        multiple
+                        id="tags-readOnly"
+                        value={gardenList}
+                        options={gardenList}
+                        getOptionLabel={(option: any) => (option ? option.name : '')}
+                        defaultValue={gardenList}
+                        limitTags={2}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label={translate('page.site.form.garden-list')}
+                            placeholder={translate('site.form.garden-list')}
+                          />
+                        )}
+                      />
+                    )}
                     <Autocomplete
                       fullWidth
                       disablePortal

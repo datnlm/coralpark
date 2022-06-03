@@ -11,6 +11,7 @@ import { Partner, PartnerType } from '../../@types/partner';
 type PartnerState = {
   isLoading: boolean;
   error: boolean;
+  totalCount: number;
   partnerList: Partner[];
   partnerTypeList: PartnerType[];
 };
@@ -18,6 +19,7 @@ type PartnerState = {
 const initialState: PartnerState = {
   isLoading: false,
   error: false,
+  totalCount: 0,
   partnerList: [],
   partnerTypeList: []
 };
@@ -29,6 +31,16 @@ const slice = createSlice({
     // START LOADING
     startLoading(state) {
       state.isLoading = true;
+    },
+
+    // START LOADING
+    endLoading(state) {
+      state.isLoading = false;
+    },
+
+    // TOTOAL COUNT
+    totalCount(state, action) {
+      state.totalCount = action.payload;
     },
 
     // HAS ERROR
@@ -64,13 +76,15 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get partner
-export function getListPartner() {
+export function getListPartner(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await managePartner.getListPartner().then((response) => {
+      await managePartner.getListPartner(page, rowsPerPage).then((response) => {
         if (response.status == 200) {
+          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListPartner(response.data.items));
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -80,13 +94,15 @@ export function getListPartner() {
 }
 
 // get partner
-export function getListPartnerType() {
+export function getListPartnerType(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await managePartner.getListPartnerType().then((response) => {
+      await managePartner.getListPartnerType(page, rowsPerPage).then((response) => {
         if (response.status == 200) {
+          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListPartnerType(response.data.items));
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {

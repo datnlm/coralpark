@@ -114,7 +114,7 @@ export default function CoralPhasesTypeNewForm({
   );
 
   useEffect(() => {
-    manageCoral.getListCoralPhases().then((response) => {
+    manageCoral.getListCoralPhases(-1, 100000).then((response) => {
       if (response.status == 200) {
         setOptionCoralPhases(response.data.items);
       } else {
@@ -127,7 +127,7 @@ export default function CoralPhasesTypeNewForm({
   }, []);
 
   useEffect(() => {
-    manageCoral.getListCoralPhases().then((response) => {
+    manageCoral.getListCoralPhases(-1, 10000000).then((response) => {
       if (response.status == 200) {
         setOptionCoralPhases(response.data.items);
         if (phaseId != '') {

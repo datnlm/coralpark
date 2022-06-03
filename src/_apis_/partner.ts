@@ -3,9 +3,11 @@ import { Partner, PartnerType } from '../@types/partner';
 
 export class PartnerManager {
   // get list garden
-  getListPartner = () => {
+  getListPartner = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/partner')
+      .get('/api/v1/admin/partner', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };
@@ -61,9 +63,11 @@ export class PartnerManager {
   //-----------------------------------------------
 
   // get garden type
-  getListPartnerType = () => {
+  getListPartnerType = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/partner-types')
+      .get('/api/v1/admin/partner-types', {
+        params: { page_number, page_size }
+      })
       .then((res) => res)
       .catch((err) => err);
   };

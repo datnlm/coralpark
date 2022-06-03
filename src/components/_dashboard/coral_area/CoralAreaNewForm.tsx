@@ -209,7 +209,7 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
 
   // fetch list coral
   useEffect(() => {
-    manageArea.getListArea().then((response) => {
+    manageArea.getListArea(1, 10000).then((response) => {
       if (response.status == 200) {
         setOptionsArea(response.data.items);
       } else {
@@ -220,12 +220,11 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
 
   useEffect(() => {
     const mapCoralAreaId: number[] = [];
-    console.log(currentArea);
     setRight([]);
     setLeft([]);
     setIsEdit(false);
     if (currentArea != null) {
-      // set coral id left
+      // set coral id right
       manageArea.getAreaById(currentArea.id).then((response) => {
         if (response.status == 200) {
           const data = response.data.corals;
@@ -234,18 +233,21 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
             setRight(mapCoralAreaId);
             setIsEdit(true);
           }
-        }
-      });
-
-      // set coral id right
-      manageCoral.getListCoral().then((response) => {
-        if (response.status == 200) {
-          const data = response.data.items;
-          setCoralList(data);
-          const mapId: number[] = [];
-          data.map((v: Coral) => mapId.push(Number(v.id)));
-          const mapCoralId: number[] = mapId.filter((i) => !mapCoralAreaId.includes(i));
-          setLeft(mapCoralId);
+          // set coral id left
+          manageCoral.getListCoral(1, 100000).then((response) => {
+            if (response.status == 200) {
+              const data = response.data.items;
+              setCoralList(data);
+              const mapId: number[] = [];
+              data.map((v: Coral) => mapId.push(Number(v.id)));
+              console.log('mapId');
+              console.log(mapId);
+              const mapCoralId: number[] = mapId.filter((i) => !mapCoralAreaId.includes(i));
+              console.log('mapCoralId');
+              console.log(mapCoralId);
+              setLeft(mapCoralId);
+            }
+          });
         }
       });
     }

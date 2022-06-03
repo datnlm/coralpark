@@ -118,7 +118,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   }, [currentGarden]);
 
   useEffect(() => {
-    manageGarden.getListGardenType().then((response) => {
+    manageGarden.getListGardenType(1, 100000).then((response) => {
       if (response.status == 200) {
         setOptionsGardenType(response.data.items);
       } else {
@@ -126,7 +126,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       }
     });
 
-    manageArea.getListArea().then((response) => {
+    manageArea.getListArea(1, 1000000).then((response) => {
       if (response.status == 200) {
         setOptionsArea(response.data.items);
         // setFieldValue('areaID', { id: 1, wellKnownText: 'string', address: 'string' });
@@ -135,7 +135,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       }
     });
 
-    manageGarden.getListSites().then((response) => {
+    manageGarden.getListSites(1, 100000).then((response) => {
       if (response.status == 200) {
         setOptionsSite(response.data.items);
       } else {

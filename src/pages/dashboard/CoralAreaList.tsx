@@ -78,15 +78,16 @@ export default function CoralAreaList() {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const areaList = useSelector((state: RootState) => state.area.areaList);
-  // const arealist = useSelector((state: ProductState) => state.areas);
+  const totalCount = useSelector((state: RootState) => state.area.totalCount);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('createdAt');
+
   useEffect(() => {
-    dispatch(getListArea());
+    dispatch(getListArea(page, rowsPerPage));
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -136,7 +137,7 @@ export default function CoralAreaList() {
         await manageCoral.deleteCoralArea(id).then((respone) => {
           if (respone.status == 200) {
             enqueueSnackbar('Delete success', { variant: 'success' });
-            dispatch(getListArea());
+            dispatch(getListArea(page, rowsPerPage));
           } else {
             enqueueSnackbar('Delete error', { variant: 'error' });
           }
@@ -200,39 +201,37 @@ export default function CoralAreaList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredArea
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, address } = row;
-                      const isItemSelected = selected.indexOf(address) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          <TableCell align="left">{name}</TableCell>
+                  {filteredArea.map((row) => {
+                    const { id, name, address } = row;
+                    const isItemSelected = selected.indexOf(address) !== -1;
+                    return (
+                      <TableRow
+                        hover
+                        key={id}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={isItemSelected}
+                        aria-checked={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                        </TableCell>
+                        <TableCell align="left">{name}</TableCell>
 
-                          <TableCell align="right">
-                            <CoralAreaMoreMenu
-                              onDelete={() => handleDeleteCoralArea(id.toString())}
-                              areaId={id.toString()}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
+                        <TableCell align="right">
+                          <CoralAreaMoreMenu
+                            onDelete={() => handleDeleteCoralArea(id.toString())}
+                            areaId={id.toString()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
                 {isAreaNotFound && (
                   <TableBody>
@@ -250,7 +249,7 @@ export default function CoralAreaList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={areaList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

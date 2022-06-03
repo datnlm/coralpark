@@ -7,13 +7,13 @@ import { enUS, deDE, frFR, viVN } from '@material-ui/core/locale';
 const LANGS = [
   {
     label: 'Vietnamese',
-    value: 'vn',
+    value: 'vi-Vn',
     systemValue: viVN,
     icon: '/static/icons/ic_flag_vn.svg'
   },
   {
     label: 'English',
-    value: 'en',
+    value: 'en-US',
     systemValue: enUS,
     icon: '/static/icons/ic_flag_en.svg'
   }

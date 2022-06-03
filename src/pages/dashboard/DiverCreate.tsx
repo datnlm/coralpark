@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
-// coral api
-import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
 import { manageDiver } from '_apis_/diver';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
-import { getUserList } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks

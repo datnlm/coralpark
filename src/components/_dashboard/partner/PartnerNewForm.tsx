@@ -121,7 +121,7 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
   );
 
   useEffect(() => {
-    managePartner.getListPartnerType().then((response) => {
+    managePartner.getListPartnerType(1, 100000).then((response) => {
       if (response.status == 200) {
         setOptionsPartnerType(response.data.items);
       } else {
