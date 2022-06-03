@@ -80,7 +80,7 @@ export function getListPartner(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await managePartner.getListPartner(page, rowsPerPage).then((response) => {
+      await managePartner.getListPartner(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListPartner(response.data.items));
@@ -98,7 +98,7 @@ export function getListPartnerType(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await managePartner.getListPartnerType(page, rowsPerPage).then((response) => {
+      await managePartner.getListPartnerType(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListPartnerType(response.data.items));

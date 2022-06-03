@@ -21,7 +21,8 @@ import {
   IconButton,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  CircularProgress
 } from '@material-ui/core';
 
 import plusFill from '@iconify/icons-eva/plus-fill';
@@ -103,6 +104,7 @@ export default function EcommerceProductList() {
   const { enqueueSnackbar } = useSnackbar();
   const areaList = useSelector((state: RootState) => state.area.areaList);
   const totalCount = useSelector((state: RootState) => state.area.totalCount);
+  const isLoading = useSelector((state: RootState) => state.area.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -171,11 +173,11 @@ export default function EcommerceProductList() {
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - areaList.length) : 0;
+  const emptyRows = !isLoading && !areaList;
 
   const filteredArea = applySortFilter(areaList, getComparator(order, orderBy), filterName);
 
-  const isAreaNotFound = filteredArea.length === 0;
+  const isAreaNotFound = filteredArea.length === 0 && !isLoading;
 
   const TABLE_HEAD = [
     { id: 'name', label: translate('page.area.form.name'), alignRight: false },
@@ -228,33 +230,45 @@ export default function EcommerceProductList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredArea.map((row, index) => {
-                    const { id, name, address } = row;
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredArea.map((row, index) => {
+                      const { id, name, address } = row;
 
-                    const isItemSelected = selected.indexOf(id) !== -1;
+                      const isItemSelected = selected.indexOf(id) !== -1;
 
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox">
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} /> */}
-                        </TableCell>
-                        <TableCell align="left">{name}</TableCell>
-                        <TableCell align="left">{address}</TableCell>
-                        <TableCell align="right">
-                          <AreaMoreMenu
-                            onDelete={() => handleDeleteArea(id.toString())}
-                            areaId={id.toString()}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {/* {emptyRows > 0 && (
+                      return (
+                        <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} /> */}
+                          </TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="right">
+                            <AreaMoreMenu
+                              onDelete={() => handleDeleteArea(id.toString())}
+                              areaId={id.toString()}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+
+                  {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                        <Typography gutterBottom align="center" variant="subtitle1">
+                          {translate('message.not-found')}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
-                  )} */}
+                  )}
                 </TableBody>
+
                 {isAreaNotFound && (
                   <TableBody>
                     <TableRow>

@@ -23,7 +23,8 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  CircularProgress
 } from '@material-ui/core';
 import CoralTypeSort from 'components/_dashboard/coral/CoralTypeSort';
 import { coralLevelType } from 'utils/constants';
@@ -77,6 +78,7 @@ export default function UserList() {
   const { enqueueSnackbar } = useSnackbar();
   const coralTypeList = useSelector((state: RootState) => state.coral.coralListType);
   const totalCount = useSelector((state: RootState) => state.coral.totalCount);
+  const isLoading = useSelector((state: RootState) => state.coral.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -195,7 +197,7 @@ export default function UserList() {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - coralTypeList.length) : 0;
+  const emptyRows = !isLoading && !coralTypeList;
 
   const filteredCoralsType = applySortFilterCoral(
     coralTypeList,
@@ -205,7 +207,7 @@ export default function UserList() {
   );
   // const sortCoralsType = applySort(coralTypeList, getComparator(order, orderBy), filters);
 
-  const isCoralTypeNotFound = filteredCoralsType.length === 0;
+  const isCoralTypeNotFound = filteredCoralsType.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -265,46 +267,58 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredCoralsType.map((row) => {
-                    const { id, name, parentId, levelType, parents, description } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">
-                          {coralLevelType.find((e: any) => e.id == levelType)?.label}
-                        </TableCell>
-                        <TableCell align="right">
-                          <CoralTypeMoreMenu
-                            onDelete={() => handleDeleteCoralType(id)}
-                            coralTypeId={id.toString()}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {/* {emptyRows > 0 && (
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredCoralsType.map((row) => {
+                      const { id, name, parentId, levelType, parents, description } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">
+                            {coralLevelType.find((e: any) => e.id == levelType)?.label}
+                          </TableCell>
+                          <TableCell align="right">
+                            <CoralTypeMoreMenu
+                              onDelete={() => handleDeleteCoralType(id)}
+                              coralTypeId={id.toString()}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+
+                  {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                        <Typography gutterBottom align="center" variant="subtitle1">
+                          {translate('message.not-found')}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
-                  )} */}
+                  )}
                 </TableBody>
+
                 {isCoralTypeNotFound && (
                   <TableBody>
                     <TableRow>

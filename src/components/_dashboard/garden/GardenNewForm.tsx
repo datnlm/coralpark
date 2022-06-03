@@ -65,7 +65,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       areaID: currentGarden?.areaID || '',
       gardenTypeId: currentGarden?.gardenTypeId || '',
       siteId: currentGarden?.siteId || '',
-      status: currentGarden?.status || 1
+      status: currentGarden?.status || ''
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {

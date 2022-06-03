@@ -229,53 +229,60 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredGardenTypes.map((row) => {
-                    const { id, name, description } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={name} src={imageUrl} /> */}
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">
-                          {description && (
-                            <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
-                          )}
-                        </TableCell>
-                        {/* <TableCell align="left">{description}</TableCell> */}
-                        {/* <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status === 0 && 'error') || 'success'}
-                            >
-                              {status == 1 ? 'Available' : 'deleted'}
-                            </Label>
-                          </TableCell> */}
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredGardenTypes.map((row) => {
+                      const { id, name, description } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              {/* <Avatar alt={name} src={imageUrl} /> */}
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">
+                            {description && (
+                              <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
+                            )}
+                          </TableCell>
+                          {/* <TableCell align="left">{description}</TableCell> */}
+                          {/* <TableCell align="left">
+                          <Label
+                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                            color={(status === 0 && 'error') || 'success'}
+                          >
+                            {status == 1 ? 'Available' : 'deleted'}
+                          </Label>
+                        </TableCell> */}
 
-                        <TableCell align="right">
-                          <GardenTypesMoreMenu
-                            onDelete={() => handleDeleteGardenType(id.toString())}
-                            userName={id.toString()}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                          <TableCell align="right">
+                            <GardenTypesMoreMenu
+                              onDelete={() => handleDeleteGardenType(id.toString())}
+                              userName={id.toString()}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -286,11 +293,6 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isLoading && (
-                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                    <CircularProgress />
-                  </TableCell>
-                )}
                 {isGardenTypesNotFound && (
                   <TableBody>
                     <TableRow>

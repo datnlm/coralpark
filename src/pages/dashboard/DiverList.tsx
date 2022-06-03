@@ -25,7 +25,7 @@ import {
   TablePagination,
   CircularProgress
 } from '@material-ui/core';
-
+import { statusOptions } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListDiver } from '../../redux/slices/diver';
@@ -48,7 +48,6 @@ import {
   DiverListToolbar,
   DiverMoreMenu
 } from '../../components/_dashboard/diver/list';
-
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -220,58 +219,56 @@ export default function UserList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredDiver.map((row) => {
-                    const { id, name, phone, status, email, address, imageUrl } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={imageUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">{phone}</TableCell>
-                        <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">{address}</TableCell>
-                        <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={(status === 0 && 'error') || 'success'}
-                          >
-                            {status}
-                          </Label>
-                        </TableCell>
-                        {/* <TableCell align="left">
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredDiver.map((row) => {
+                      const { id, name, phone, status, email, address, imageUrl } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar alt={name} src={imageUrl} />
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == 0 && 'error') || 'success'}
+                              color={(status === 0 && 'error') || 'success'}
                             >
-                              {status == 1 ? 'Available' : 'deleted'}
+                              {statusOptions.find((v: any) => v.id == status)?.label}
                             </Label>
-                          </TableCell> */}
+                          </TableCell>
+                          <TableCell align="right">
+                            <DiverMoreMenu
+                              onDelete={() => handleDeleteDiver(id.toString())}
+                              diverID={id.toString()}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
 
-                        <TableCell align="right">
-                          <DiverMoreMenu
-                            onDelete={() => handleDeleteDiver(id.toString())}
-                            diverID={id.toString()}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
@@ -282,11 +279,6 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isLoading && (
-                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                    <CircularProgress />
-                  </TableCell>
-                )}
                 {isDiverNotFound && (
                   <TableBody>
                     <TableRow>

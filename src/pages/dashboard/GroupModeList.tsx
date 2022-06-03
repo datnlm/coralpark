@@ -234,27 +234,34 @@ export default function EcommerceProductList() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredGroupMode.map((row, index) => {
-                    const { id, name, contribute } = row;
+                  {isLoading ? (
+                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <CircularProgress />
+                    </TableCell>
+                  ) : (
+                    filteredGroupMode.map((row, index) => {
+                      const { id, name, contribute } = row;
 
-                    const isItemSelected = selected.indexOf(id) !== -1;
+                      const isItemSelected = selected.indexOf(id) !== -1;
 
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox">
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} /> */}
-                        </TableCell>
-                        <TableCell align="left">{name}</TableCell>
-                        <TableCell align="left">{contribute}</TableCell>
-                        <TableCell align="right">
-                          <GroupModeMoreMenu
-                            onDelete={() => handleDeleteGroup(id.toString())}
-                            id={id.toString()}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                      return (
+                        <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} /> */}
+                          </TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{contribute}</TableCell>
+                          <TableCell align="right">
+                            <GroupModeMoreMenu
+                              onDelete={() => handleDeleteGroup(id.toString())}
+                              id={id.toString()}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -265,11 +272,6 @@ export default function EcommerceProductList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isLoading && (
-                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                    <CircularProgress />
-                  </TableCell>
-                )}
                 {isGroupModeNotFound && (
                   <TableBody>
                     <TableRow>

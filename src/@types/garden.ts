@@ -14,7 +14,7 @@ export type Garden = {
   areaID: any;
   gardenTypeId: any;
   siteId: any;
-  status: number;
+  status: any;
 };
 export type GardenType = {
   id: string;

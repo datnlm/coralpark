@@ -61,7 +61,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   const [optionsOrder, setOptionsOrder] = useState([]);
   const [optionsFamily, setOptionsFamily] = useState([]);
   const [optionsGenus, setOptionsGenus] = useState([]);
-  const [currentLevel, setCurrentLevel] = useState<OptionStatus | any>(coralLevelTypeOptions[0]);
+  const [currentLevel, setCurrentLevel] = useState<OptionStatus | any>(coralLevelTypeOptions[1]);
   const [currentClass, setCurrentClass] = useState<any>(null);
   const [currentOrder, setCurrentOrder] = useState<any>(null);
   const [currentFamily, setCurrentFamily] = useState<any>(null);
@@ -273,6 +273,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                     fullWidth
                     disableClearable
                     disablePortal
+                    getOptionDisabled={(option: OptionStatus) => option.id == 0}
                     clearIcon
                     id="levelType"
                     disabled={isEdit}
