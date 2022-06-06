@@ -99,7 +99,6 @@ export default function CoralPhasesTypeNewForm({
   };
   const handleClickOpen = () => {
     setOpen(true);
-    console.log(open);
   };
 
   const handleDrop = useCallback(

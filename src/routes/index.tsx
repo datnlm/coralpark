@@ -174,7 +174,8 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
             { path: 'list', element: <DiverList /> },
             { path: 'new', element: <DiverCreate /> },
-            { path: '/:name/edit', element: <DiverCreate /> }
+            { path: '/:name/edit', element: <DiverCreate /> },
+            { path: 'team', element: <DiverTeamList /> }
           ]
         }
       ]
@@ -264,7 +265,8 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
             { path: 'list', element: <DiverList /> },
             { path: 'new', element: <DiverCreate /> },
-            { path: '/:name/edit', element: <DiverCreate /> }
+            { path: '/:name/edit', element: <DiverCreate /> },
+            { path: 'team', element: <DiverTeamList /> }
           ]
         }
       ]
@@ -310,6 +312,7 @@ const SiteCreate = Loadable(lazy(() => import('../pages/dashboard/SiteCreate')))
 const GardenTypeCreate = Loadable(lazy(() => import('../pages/dashboard/GardenTypeCreate')));
 const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));
+const DiverTeamList = Loadable(lazy(() => import('../pages/dashboard/DiverTeamList')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
