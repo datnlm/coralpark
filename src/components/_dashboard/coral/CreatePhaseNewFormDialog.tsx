@@ -29,7 +29,6 @@ import useLocales from '../../../hooks/useLocales';
 // @types
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
-
 // ----------------------------------------------------------------------
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -115,7 +114,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
 
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
-      <DialogTitle>Add new phase</DialogTitle>
+      <DialogTitle>{translate('page.phases.form.name')}</DialogTitle>
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <DialogContent>
@@ -125,7 +124,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <TextField
                       fullWidth
-                      label="Phases name"
+                      label={translate('page.phases.form.name')}
                       {...getFieldProps('name')}
                       error={Boolean(touched.name && errors.name)}
                       helperText={touched.name && errors.name}
@@ -133,7 +132,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
                   </Stack>
 
                   <div>
-                    <LabelStyle>Description</LabelStyle>
+                    <LabelStyle>{translate('page.phase.form.description')}</LabelStyle>
                     <QuillEditor
                       simple
                       id="product-description"
@@ -149,7 +148,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
                   </div>
 
                   <div>
-                    <LabelStyle>Add Images</LabelStyle>
+                    <LabelStyle>{translate('page.phase.form.image')}</LabelStyle>
                     <UploadMultiFile
                       showPreview
                       maxSize={3145728}
@@ -169,10 +168,10 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
 
                   <DialogActions>
                     <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                      Create new
+                      {translate('button.save.add')}
                     </LoadingButton>
                     <Button type="button" color="inherit" variant="outlined" onClick={onClose}>
-                      Cancel
+                      {translate('button.save.cancel')}
                     </Button>
                   </DialogActions>
                 </Stack>

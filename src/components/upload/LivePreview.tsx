@@ -47,19 +47,6 @@ type LivePreviewProps = {
 };
 
 export default function LivePreview({ files, onRemove }: LivePreviewProps) {
-  const ShowRejectionItems = () => (
-    <Paper
-      variant="outlined"
-      sx={{
-        py: 1,
-        px: 2,
-        mt: 3,
-        borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
-      }}
-    />
-  );
-
   return (
     <Box sx={{ width: '100%' }}>
       <List disablePadding sx={{ my: 3 }}>
@@ -105,37 +92,6 @@ export default function LivePreview({ files, onRemove }: LivePreviewProps) {
                 </Box>
               </ListItem>
             );
-
-            // return (
-            //   <ListItem
-            //     key={key}
-            //     component={motion.div}
-            //     {...varFadeInRight}
-            //     sx={{
-            //       my: 1,
-            //       py: 0.75,
-            //       px: 2,
-            //       borderRadius: 1,
-            //       border: (theme) => `solid 1px ${theme.palette.divider}`,
-            //       bgcolor: 'background.paper'
-            //     }}
-            //   >
-            //     <ListItemIcon>
-            //       <Icon icon={fileFill} width={28} height={28} />
-            //     </ListItemIcon>
-            //     <ListItemText
-            //       primary={isString(file) ? file : name}
-            //       secondary={isString(file) ? '' : fData(size || 0)}
-            //       primaryTypographyProps={{ variant: 'subtitle2' }}
-            //       secondaryTypographyProps={{ variant: 'caption' }}
-            //     />
-            //     <ListItemSecondaryAction>
-            //       <MIconButton edge="end" size="small" onClick={() => {}}>
-            //         <Icon icon={closeFill} />
-            //       </MIconButton>
-            //     </ListItemSecondaryAction>
-            //   </ListItem>
-            // );
           })}
         </AnimatePresence>
       </List>

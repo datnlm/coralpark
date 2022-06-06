@@ -124,7 +124,7 @@ export default function GroupModeNewForm({ isEdit, currentGroupMode }: GroupMode
                   />
                   <TextField
                     fullWidth
-                    label={translate('page.group-mode.form.contribute')}
+                    label={translate('page.group-mode.form.contribution')}
                     {...getFieldProps('contribute')}
                     error={Boolean(touched.contribute && errors.contribute)}
                     helperText={touched.contribute && errors.contribute}

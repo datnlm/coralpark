@@ -112,7 +112,8 @@ export const PATH_DASHBOARD = {
   diver: {
     root: path(ROOTS_DASHBOARD, '/diver'),
     list: path(ROOTS_DASHBOARD, '/diver/list'),
-    newDiver: path(ROOTS_DASHBOARD, '/diver/new')
+    newDiver: path(ROOTS_DASHBOARD, '/diver/new'),
+    team: path(ROOTS_DASHBOARD, '/diver/team')
   }
 };
 
