@@ -1,16 +1,16 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import { Card, Box, Grid, Stack, TextField, Typography, Autocomplete } from '@material-ui/core';
 // utils
-import { manageArea } from '_apis_/area';
 import { manageGarden } from '_apis_/garden';
 import { OptionStatus, statusOptions } from 'utils/constants';
+
+import { RootState, useSelector } from 'redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
@@ -29,16 +29,15 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [optionsGardenType, setOptionsGardenType] = useState([]);
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
-  const [optionsSite, setOptionsSite] = useState([]);
-  const [optionsArea, setOptionsArea] = useState([]);
+  const gardenTypesList = useSelector((state: RootState) => state.garden.gardenTypesList);
+  const siteList = useSelector((state: RootState) => state.garden.siteList);
+  const areaList = useSelector((state: RootState) => state.area.areaList);
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     latitude: Yup.string().required('Latitude is required'),
     longitude: Yup.string().required('Longitude is required'),
     address: Yup.string().required('Address is required'),
-    // acreage: Yup.number().min(1, 'Acreage must be greater than 0').required('Acreage is required'),
     acreage: Yup.string()
       .required()
       .matches(/^[0-9]+$/, 'Acreage must be only number')
@@ -47,9 +46,9 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       .required()
       .matches(/^[0-9]+$/, 'Quantity of Cells must be only number')
       .required('Quantity of Cells is required'),
-    areaID: Yup.object().required('Area is required').nullable(true),
-    gardenTypeId: Yup.object().required('Garden Type is required').nullable(true),
-    siteId: Yup.object().required('Garden Type is required').nullable(true)
+    areaId: Yup.object().required('Area is required'),
+    gardenTypeId: Yup.object().required('Garden Type is required'),
+    siteId: Yup.object().required('Site is required')
   });
 
   const formik = useFormik({
@@ -60,9 +59,9 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       latitude: currentGarden?.latitude || '',
       longitude: currentGarden?.longitude || '',
       address: currentGarden?.address || '',
-      acreage: currentGarden?.acreage || '',
-      quantityOfCells: currentGarden?.quantityOfCells || '',
-      areaID: currentGarden?.areaID || '',
+      acreage: currentGarden?.acreage || 0,
+      quantityOfCells: currentGarden?.quantityOfCells || 0,
+      areaId: currentGarden?.areaId || '',
       gardenTypeId: currentGarden?.gardenTypeId || '',
       siteId: currentGarden?.siteId || '',
       status: currentGarden?.status || ''
@@ -71,6 +70,9 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         let flag = false;
+        values.areaId = values.areaId.id;
+        values.siteId = values.siteId.id;
+        values.gardenTypeId = values.gardenTypeId.id;
 
         if (isEdit) {
           values.status = enumStatus!.id;
@@ -114,35 +116,23 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     formik;
 
   useEffect(() => {
-    setEnumStatus(statusOptions.find((e) => e.id == currentGarden?.status) || null);
+    if (isEdit) {
+      setFieldValue(
+        'areaId',
+        areaList.find((v) => v.id == currentGarden?.areaId)
+      );
+      setFieldValue(
+        'gardenTypeId',
+        gardenTypesList.find((v) => v.id == currentGarden?.gardenTypeId)
+      );
+      setFieldValue(
+        'siteId',
+        siteList.find((v) => v.id == currentGarden?.siteId)
+      );
+      setEnumStatus(statusOptions.find((v) => v.id == currentGarden?.status) || null);
+    }
   }, [currentGarden]);
 
-  useEffect(() => {
-    manageGarden.getListGardenType(1, 100000).then((response) => {
-      if (response.status == 200) {
-        setOptionsGardenType(response.data.items);
-      } else {
-        setOptionsGardenType([]);
-      }
-    });
-
-    manageArea.getListArea(1, 1000000).then((response) => {
-      if (response.status == 200) {
-        setOptionsArea(response.data.items);
-        // setFieldValue('areaID', { id: 1, wellKnownText: 'string', address: 'string' });
-      } else {
-        setOptionsArea([]);
-      }
-    });
-
-    manageGarden.getListSites(1, 100000).then((response) => {
-      if (response.status == 200) {
-        setOptionsSite(response.data.items);
-      } else {
-        setOptionsSite([]);
-      }
-    });
-  }, []);
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -206,18 +196,18 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     disablePortal
                     clearIcon
                     id="areaId"
-                    {...getFieldProps('areaID')}
-                    options={optionsArea}
-                    getOptionLabel={(option: any) => (option ? option.address : '')}
+                    {...getFieldProps('areaId')}
+                    options={areaList}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('areaID', value) } : ''
+                      value ? { ...setFieldValue('areaId', value) } : ''
                     }
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label={translate('page.garden.form.area')}
-                        error={Boolean(touched.areaID && errors.areaID)}
-                        helperText={touched.areaID && errors.areaID}
+                        error={Boolean(touched.areaId && errors.areaId)}
+                        helperText={touched.areaId && errors.areaId}
                       />
                     )}
                   />
@@ -228,10 +218,10 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     clearIcon
                     id="gardenTypeId"
                     {...getFieldProps('gardenTypeId')}
-                    options={optionsGardenType}
+                    options={gardenTypesList}
                     getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('gardenTypeId', value) } : ''
+                      value ? { ...setFieldValue('gardenTypeId', value) } : null
                     }
                     renderInput={(params) => (
                       <TextField
@@ -250,7 +240,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                     clearIcon
                     id="sites"
                     {...getFieldProps('siteId')}
-                    options={optionsSite}
+                    options={siteList}
                     getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
                       value ? { ...setFieldValue('siteId', value) } : ''

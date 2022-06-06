@@ -29,21 +29,25 @@ export default function UserCreate() {
 
   const [currentType, setCurrentType] = useState<CoralType | null>(null);
 
+  const fetchData = async () => {
+    await manageCoral.getCoralTypeByID(paramCase(name)).then((response) => {
+      if (response.status == 200) {
+        const data = {
+          id: response.data.id,
+          name: response.data.name,
+          parentId: response.data.parentId,
+          levelType: response.data.levelType,
+          description: response.data.description,
+          parents: response.data.parents
+        };
+        setCurrentType(data);
+      }
+    });
+  };
+
   useEffect(() => {
     if (isEdit) {
-      manageCoral.getCoralTypeByID(paramCase(name)).then((response) => {
-        if (response.status == 200) {
-          const data = {
-            id: response.data.id,
-            name: response.data.name,
-            parentId: response.data.parentId,
-            levelType: response.data.levelType,
-            description: response.data.description,
-            parents: response.data.parents
-          };
-          setCurrentType(data);
-        }
-      });
+      fetchData();
     }
   }, [dispatch]);
 

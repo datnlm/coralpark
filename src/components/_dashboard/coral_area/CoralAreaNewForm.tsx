@@ -12,14 +12,8 @@ import {
   Card,
   Grid,
   Stack,
-  Switch,
   TextField,
   Typography,
-  InputLabel,
-  FormControl,
-  Select,
-  FormHelperText,
-  FormControlLabel,
   Autocomplete,
   CardHeader,
   Checkbox,
@@ -35,14 +29,13 @@ import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
 import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
+import { RootState, useSelector } from 'redux/store';
 import { manageCoral } from '_apis_/coral';
 import { manageArea } from '_apis_/area';
 import { Area } from '../../../@types/area';
-// routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Coral, CoralArea } from '../../../@types/coral';
+import { Coral } from '../../../@types/coral';
 
 //
 
@@ -60,17 +53,13 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1)
 }));
 
-type CoralAreaNewFormProps = {
-  currentCoralArea?: CoralArea;
-};
-
-export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormProps) {
+export default function CoralAreaNewForm() {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   // -------------------
+  const areaList = useSelector((state: RootState) => state.area.areaList);
   const [currentArea, setCurrentArea] = useState<any>(null);
-  const [optionsArea, setOptionsArea] = useState<Area[]>([]);
   const [coralList, setCoralList] = useState<Coral[]>([]);
   const [checked, setChecked] = useState<number[]>([]);
   const [left, setLeft] = useState<number[] | any>([]);
@@ -79,9 +68,6 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
   const rightChecked = intersection(checked, right);
   const [isEdit, setIsEdit] = useState<Boolean>(false);
   // -------------------
-  const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
-  });
 
   function not(a: number[], b: number[]) {
     return a.filter((value) => b.indexOf(value) === -1);
@@ -207,17 +193,6 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
     [setFieldValue]
   );
 
-  // fetch list coral
-  useEffect(() => {
-    manageArea.getListArea(1, 10000).then((response) => {
-      if (response.status == 200) {
-        setOptionsArea(response.data.items);
-      } else {
-        setOptionsArea([]);
-      }
-    });
-  }, []);
-
   useEffect(() => {
     const mapCoralAreaId: number[] = [];
     setRight([]);
@@ -240,11 +215,7 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
               setCoralList(data);
               const mapId: number[] = [];
               data.map((v: Coral) => mapId.push(Number(v.id)));
-              console.log('mapId');
-              console.log(mapId);
               const mapCoralId: number[] = mapId.filter((i) => !mapCoralAreaId.includes(i));
-              console.log('mapCoralId');
-              console.log(mapCoralId);
               setLeft(mapCoralId);
             }
           });
@@ -321,7 +292,7 @@ export default function CoralAreaNewForm({ currentCoralArea }: CoralAreaNewFormP
                     clearIcon
                     id="area"
                     value={currentArea}
-                    options={optionsArea}
+                    options={areaList}
                     getOptionLabel={(option: Area) => option.name}
                     onChange={(e, values: Area | null) => setCurrentArea(values)}
                     renderInput={(params) => (

@@ -5,10 +5,10 @@ export type Partner = {
   email: string;
   address: string;
   webUrl: string;
-  partnerType: any;
-  status: string;
+  partnerTypeId: any;
+  status: any;
 };
 export type PartnerType = {
-  id: string;
+  id: any;
   name: string;
 };

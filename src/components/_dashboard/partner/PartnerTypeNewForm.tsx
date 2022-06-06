@@ -29,6 +29,8 @@ import {
 import { managePartner } from '_apis_/partner';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+// hook
+import useLocales from '../../../hooks/useLocales';
 // @types
 import { PartnerType } from '../../../@types/partner';
 //
@@ -53,6 +55,7 @@ export default function PartnerTypeNewForm({
   isEdit,
   currentPartnerType
 }: PartnerTypeNewFormProps) {
+  const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -112,7 +115,7 @@ export default function PartnerTypeNewForm({
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Name"
+                    label={translate('page.partner-type.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
@@ -120,7 +123,7 @@ export default function PartnerTypeNewForm({
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? 'Create' : 'Save Changes'}
+                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
                   </LoadingButton>
                 </Box>
               </Stack>

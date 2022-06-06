@@ -174,7 +174,7 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getListCoral(page, rowsPerPage));
-  }, [dispatch]);
+  }, [dispatch, page, rowsPerPage]);
 
   const emptyRows = !isLoading && !coralList;
 
@@ -244,7 +244,7 @@ export default function UserList() {
                     </TableCell>
                   ) : (
                     filteredCorals.map((row) => {
-                      const { id, name, scientificName, statusEnum, coralType } = row;
+                      const { id, name, scientificName, statusEnum, coralTypeId } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -317,7 +317,7 @@ export default function UserList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
             component="div"
             count={totalCount}
             rowsPerPage={rowsPerPage}

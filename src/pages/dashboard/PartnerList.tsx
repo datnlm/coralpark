@@ -177,7 +177,7 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getListPartner(page, rowsPerPage));
-  }, [dispatch]);
+  }, [dispatch, page, rowsPerPage]);
 
   const emptyRows = !isLoading && !partnerList;
 
@@ -284,7 +284,7 @@ export default function UserList() {
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == '0' && 'error') || 'success'}
+                              color={(status === 0 && 'error') || 'success'}
                             >
                               {statusOptions.find((v: any) => v.id == status)?.label}
                             </Label>
@@ -294,6 +294,7 @@ export default function UserList() {
                             <PartnerMoreMenu
                               onDelete={() => handleDeletePartner(id.toString())}
                               partnerId={id.toString()}
+                              status={status}
                             />
                           </TableCell>
                         </TableRow>

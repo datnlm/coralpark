@@ -29,9 +29,10 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 type SiteMoreMenuProps = {
   onDelete: VoidFunction;
   userName: string;
+  status: any;
 };
 
-export default function SiteMoreMenu({ onDelete, userName }: SiteMoreMenuProps) {
+export default function SiteMoreMenu({ onDelete, userName, status }: SiteMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -62,15 +63,18 @@ export default function SiteMoreMenu({ onDelete, userName }: SiteMoreMenuProps) 
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={trash2Outline} width={24} height={24} />
-          </ListItemIcon>
-          <ListItemText
-            primary={translate('button.menu.delete')}
-            primaryTypographyProps={{ variant: 'body2' }}
-          />
-        </MenuItem>
+        {status !== 0 && (
+          <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
+            <ListItemIcon>
+              <Icon icon={trash2Outline} width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary={translate('button.menu.delete')}
+              primaryTypographyProps={{ variant: 'body2' }}
+            />
+          </MenuItem>
+        )}
+
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">

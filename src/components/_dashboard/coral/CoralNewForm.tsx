@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
+import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -15,7 +16,9 @@ import {
   Typography,
   Autocomplete,
   FormHelperText,
-  Tab
+  Tab,
+  ListItem,
+  Paper
 } from '@material-ui/core';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
@@ -23,6 +26,10 @@ import TabPanel from '@material-ui/lab/TabPanel';
 // utils
 import { manageCoral } from '_apis_/coral';
 import { OptionStatus, coralStatusOptions } from 'utils/constants';
+import { RootState, useSelector } from 'redux/store';
+
+import { MIconButton } from 'components/@material-extend';
+import closeFill from '@iconify/icons-eva/close-fill';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
@@ -32,7 +39,7 @@ import { Coral, Habitat } from '../../../@types/coral';
 //
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
-import CoralDetailsCarousel from './CoralDetailsCarousel';
+import LivePreview from '../../upload/LivePreview';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -51,9 +58,11 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
   const { translate } = useLocales();
   const [valueTab, setValueTab] = useState('coral');
   const [optionsGenus, setOptionsGenus] = useState([]);
+  const coralTypeSpecies = useSelector((state: RootState) => state.coral.coralType);
   const [enumCoralStatus, setEnumCoralStatus] = useState<OptionStatus | null>(null);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [img, setImg] = useState<string[]>();
 
   const NewProductSchema = Yup.object().shape(
     valueTab === 'coral'
@@ -92,7 +101,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       nutrition: currentCoral?.nutrition || '',
       colour: currentCoral?.colour || '',
       description: currentCoral?.description || '',
-      coralType: currentCoral?.coralType || null,
+      coralTypeId: currentCoral?.coralTypeId || null,
       statusEnum: currentCoral?.statusEnum || null,
       habitatId: currentHabitat?.id || '',
       bathymetry: currentHabitat?.bathymetry || '',
@@ -118,8 +127,15 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
           bodyFormData.append('Nutrition', values.nutrition);
           bodyFormData.append('Colour', values.colour);
           bodyFormData.append('Description', values.description);
-          bodyFormData.append('CoralType.Id', values.coralType.id);
-          bodyFormData.append('StatusEnum', enumCoralStatus!.id);
+          bodyFormData.append('CoralTypeId', values.coralTypeId.id);
+          bodyFormData.append('StatusEnum', values.statusEnum!.id);
+          if (img) {
+            img.map((file: any, index) => {
+              bodyFormData.append(`Images[${index}].Id`, file.id);
+              bodyFormData.append(`Images[${index}].ImageUrl`, file.imageUrl);
+            });
+            img.map((file: any, index) => console.log(`Images[${index}].Id`, file.id));
+          }
           values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
           !isEdit
             ? await manageCoral.createCoral(bodyFormData).then((response) => {
@@ -185,6 +201,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
+      console.log(1);
       setFieldValue(
         'imageUrl',
         acceptedFiles.map((file: File | string) =>
@@ -206,18 +223,24 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
     setFieldValue('imageUrl', filteredItems);
   };
 
-  useEffect(() => {
-    manageCoral.getCoralType('species').then((response) => {
-      if (response.status == 200) {
-        setOptionsGenus(response.data.items);
-      } else {
-        setOptionsGenus([]);
-      }
-    });
-  }, []);
+  const handleRemoveImage = (imageId: string) => {
+    if (img) {
+      const filteredImage = img.filter((v: any) => v.id !== imageId);
+      setImg(filteredImage);
+    }
+  };
+
   useEffect(() => {
     if (isEdit) {
-      setEnumCoralStatus(coralStatusOptions.find((e) => e.id == currentCoral?.statusEnum) || null);
+      setFieldValue(
+        'coralTypeId',
+        coralTypeSpecies.find((v) => v.id == currentCoral?.coralTypeId)
+      );
+      setFieldValue(
+        'statusEnum',
+        coralStatusOptions.find((e) => e.id == currentCoral?.statusEnum)
+      );
+      setImg(currentCoral?.images);
     }
   }, [currentCoral]);
 
@@ -305,10 +328,10 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           disablePortal
                           clearIcon
                           id="status"
-                          value={enumCoralStatus}
+                          {...getFieldProps('statusEnum')}
                           options={coralStatusOptions}
                           getOptionLabel={(option: OptionStatus) => option.label}
-                          onChange={(e, values: OptionStatus | null) => setEnumCoralStatus(values)}
+                          onChange={(e, values: any) => setFieldValue('statusEnum', values)}
                           renderInput={(params) => (
                             <TextField
                               {...params}
@@ -324,17 +347,17 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           fullWidth
                           disablePortal
                           clearIcon
-                          id="coralType"
-                          {...getFieldProps('coralType')}
-                          options={optionsGenus}
+                          id="coralTypeId"
+                          {...getFieldProps('coralTypeId')}
+                          options={coralTypeSpecies}
                           getOptionLabel={(option) => (option ? option.name : '')}
-                          onChange={(e, value) => setFieldValue('coralType', value)}
+                          onChange={(e, value) => setFieldValue('coralTypeId', value)}
                           renderInput={(params) => (
                             <TextField
                               {...params}
                               label={translate('page.coral.form.coral-type')}
-                              error={Boolean(touched.coralType && errors.coralType)}
-                              helperText={touched.coralType && errors.coralType}
+                              error={Boolean(touched.coralTypeId && errors.coralTypeId)}
+                              helperText={touched.coralTypeId && errors.coralTypeId}
                             />
                           )}
                         />
@@ -354,17 +377,12 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           </FormHelperText>
                         )}
                       </div>
-                      {currentCoral?.images && (
+                      {img && (
                         <>
-                          <Card>
-                            <Grid container>
-                              <Grid item xs={12} md={6} lg={7}>
-                                <CoralDetailsCarousel coral={currentCoral} />
-                              </Grid>
-                            </Grid>
-                          </Card>
+                          <LivePreview files={img} onRemove={handleRemoveImage} />
                         </>
                       )}
+
                       <div>
                         <LabelStyle>{translate('page.coral.form.image')}</LabelStyle>
                         <UploadMultiFile

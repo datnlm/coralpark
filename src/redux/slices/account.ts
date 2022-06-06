@@ -28,11 +28,6 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
-    // END LOADING
-    endLoading(state) {
-      state.isLoading = false;
-    },
-
     // TOTOAL COUNT
     totalCount(state, action) {
       state.totalCount = action.payload;
@@ -59,13 +54,11 @@ export default slice.reducer;
 export function getAccounts(page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
-    dispatch(slice.actions.getListAccount(null));
     try {
       await manageAccount.getListAccount(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListAccount(response.data.items));
-          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {

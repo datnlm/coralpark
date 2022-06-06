@@ -14,7 +14,7 @@ import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import CoralPhasesTypeNewForm from '../../components/_dashboard/coral/CoralPhasesTypeNewForm';
+import { getListCoral, getListCoralPhase } from '../../redux/slices/coral';
 
 // ----------------------------------------------------------------------
 
@@ -26,9 +26,10 @@ export default function PhasesTypeCreate() {
   const { name } = useParams();
   const isEdit = pathname.includes('edit');
 
-  // useEffect(() => {
-  //   dispatch(getUserList());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getListCoral(0, -1));
+    dispatch(getListCoralPhase(0, -1));
+  }, [dispatch]);
 
   return (
     <Page

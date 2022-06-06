@@ -48,7 +48,7 @@ export default function Login() {
   const { method } = useAuth();
   const { translate } = useLocales();
   return (
-    <RootStyle title={translate('page.login.title.list')}>
+    <RootStyle title={translate('page.login.title')}>
       <AuthLayout>
         <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.register} />
         {/* </Link> */}
@@ -65,7 +65,7 @@ export default function Login() {
           <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                {translate('page.login.title.list')}
+                {translate('page.login.title')}
               </Typography>
               {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
             </Box>

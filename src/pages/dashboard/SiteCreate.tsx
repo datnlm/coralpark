@@ -6,6 +6,7 @@ import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // redux
 import { useDispatch } from '../../redux/store';
+import { getListGarden } from '../../redux/slices/garden';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -26,27 +27,33 @@ export default function GardenCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentSite, setCurrentSite] = useState<Site>();
+
+  const fetchData = async () => {
+    await manageGarden.getSiteByID(paramCase(name)).then((response) => {
+      if (response.status == 200) {
+        const data = {
+          id: response.data.id,
+          name: response.data.name,
+          imageUrl: response.data.imageUrl,
+          createTime: response.data.createTime,
+          phone: response.data.phone,
+          email: response.data.email,
+          address: response.data.address,
+          webUrl: response.data.webUrl,
+          latitude: response.data.latitude,
+          longitude: response.data.longitude,
+          status: response.data.status,
+          listGarden: response.data.listGarden
+        };
+        setCurrentSite(data);
+      }
+    });
+  };
+
   useEffect(() => {
     if (isEdit) {
-      manageGarden.getSiteByID(paramCase(name)).then((response) => {
-        if (response.status == 200) {
-          const data = {
-            id: response.data.id,
-            name: response.data.name,
-            imageUrl: response.data.imageUrl,
-            createTime: response.data.createTime,
-            phone: response.data.phone,
-            email: response.data.email,
-            address: response.data.address,
-            webUrl: response.data.webUrl,
-            latitude: response.data.latitude,
-            longitude: response.data.longitude,
-            status: response.data.status,
-            listGarden: response.data.listGarden
-          };
-          setCurrentSite(data);
-        }
-      });
+      dispatch(getListGarden(0, -1));
+      fetchData();
     }
   }, [dispatch]);
 

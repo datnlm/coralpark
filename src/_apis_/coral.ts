@@ -130,7 +130,7 @@ export class Coral {
         timeFrom: v.timeFrom,
         timeTo: v.timeTo,
         colour: v.colour,
-        coralPhase: { id: v.coralPhase.id }
+        coralPhaseId: v.coralPhaseId
       });
     });
     const data = {
@@ -154,7 +154,7 @@ export class Coral {
         timeFrom: v.timeFrom,
         timeTo: v.timeTo,
         colour: v.colour,
-        coralPhase: { id: v.coralPhase.id }
+        coralPhaseId: v.coralPhaseId
       });
     });
     const data = {
@@ -216,7 +216,7 @@ export class Coral {
   };
 
   // get coral type
-  getCoralType = (ParentID: string) => {
+  getCoralType = (ParentID: string, page_number: number, page_size: number) => {
     console.log(ParentID);
     if (ParentID === 'class' || ParentID === 'species') {
       // level type = 1 to get all class
@@ -225,7 +225,7 @@ export class Coral {
       console.log(LevelType);
       return axios
         .get('/api/v1/admin/coral-types', {
-          params: { LevelType }
+          params: { LevelType, page_number, page_size }
         })
         .then((res) => res)
         .catch((err) => err);

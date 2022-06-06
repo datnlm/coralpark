@@ -21,15 +21,17 @@ import {
 } from '@material-ui/core';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
-
+import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
 type PartnerMoreMenuProps = {
   onDelete: VoidFunction;
   partnerId: string;
+  status: any;
 };
 
-export default function PartnerMoreMenu({ onDelete, partnerId }: PartnerMoreMenuProps) {
+export default function PartnerMoreMenu({ onDelete, partnerId, status }: PartnerMoreMenuProps) {
+  const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -58,23 +60,29 @@ export default function PartnerMoreMenu({ onDelete, partnerId }: PartnerMoreMenu
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={trash2Outline} width={24} height={24} />
-          </ListItemIcon>
-          <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
-        </MenuItem>
+        {status !== 0 && (
+          <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
+            <ListItemIcon>
+              <Icon icon={trash2Outline} width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary={translate('button.menu.delete')}
+              primaryTypographyProps={{ variant: 'body2' }}
+            />
+          </MenuItem>
+        )}
+
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-              Confirm delete
+              {translate('message.title.confirm-delete')}
             </DialogTitle>
             <DialogContent>
-              <DialogContentText>Are you sure to delete this?</DialogContentText>
+              <DialogContentText>{translate('message.confirm-delete')}</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button autoFocus onClick={handleClose}>
-                Cancel
+                {translate('button.save.cancel')}
               </Button>
               <Button
                 onClick={(event) => {
@@ -82,7 +90,7 @@ export default function PartnerMoreMenu({ onDelete, partnerId }: PartnerMoreMenu
                   handleClose();
                 }}
               >
-                Confirm
+                {translate('button.save.confirm')}
               </Button>
             </DialogActions>
           </Dialog>
@@ -96,7 +104,10 @@ export default function PartnerMoreMenu({ onDelete, partnerId }: PartnerMoreMenu
           <ListItemIcon>
             <Icon icon={editFill} width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText
+            primary={translate('button.menu.edit')}
+            primaryTypographyProps={{ variant: 'body2' }}
+          />
         </MenuItem>
       </Menu>
     </>

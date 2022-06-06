@@ -42,8 +42,8 @@ const slice = createSlice({
       state.error = action.payload;
     },
 
-    // GET LIST Diver
-    getListDiver(state, action) {
+    // GET LIST AREA
+    getListArea(state, action) {
       state.isLoading = false;
       state.areaList = action.payload;
     }
@@ -71,7 +71,7 @@ export function getListArea(page: number, rowsPerPage: number) {
       await manageArea.getListArea(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
-          dispatch(slice.actions.getListDiver(response.data.items));
+          dispatch(slice.actions.getListArea(response.data.items));
         }
       });
     } catch (error) {

@@ -172,7 +172,7 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getListSites(page, rowsPerPage));
-  }, [dispatch]);
+  }, [dispatch, page, rowsPerPage]);
 
   const emptyRows = !isLoading && !siteList;
 
@@ -284,7 +284,7 @@ export default function UserList() {
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == '0' && 'error') || 'success'}
+                              color={(status === 0 && 'error') || 'success'}
                             >
                               {statusOptions.find((v: any) => v.id == status)?.label}
                             </Label>
@@ -294,6 +294,7 @@ export default function UserList() {
                             <SiteMoreMenu
                               onDelete={() => handleDeleteSite(id.toString())}
                               userName={id.toString()}
+                              status={status}
                             />
                           </TableCell>
                         </TableRow>

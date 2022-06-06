@@ -76,7 +76,7 @@ export default function GardenCreate() {
           ]}
         />
 
-        <GardenNewForm isEdit={isEdit} currentGarden={currentGarden} />
+        {/* <GardenNewForm isEdit={isEdit} currentGarden={currentGarden} /> */}
       </Container>
     </Page>
   );

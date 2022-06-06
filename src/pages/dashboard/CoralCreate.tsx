@@ -7,6 +7,7 @@ import { manageCoral } from '_apis_/coral';
 import { Container } from '@material-ui/core';
 // redux
 import { useDispatch } from '../../redux/store';
+import { getCoralType } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -42,6 +43,8 @@ export default function UserCreate() {
   };
 
   useEffect(() => {
+    // get loai san ho
+    dispatch(getCoralType('species', 0, -1));
     fetchData();
   }, [dispatch]);
 

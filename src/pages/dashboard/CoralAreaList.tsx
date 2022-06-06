@@ -88,7 +88,7 @@ export default function CoralAreaList() {
 
   useEffect(() => {
     dispatch(getListArea(page, rowsPerPage));
-  }, [dispatch]);
+  }, [dispatch, page, rowsPerPage]);
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';

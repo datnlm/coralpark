@@ -22,6 +22,7 @@ import { OptionStatus, statusOptions } from 'utils/constants';
 import { manageGarden } from '_apis_/garden';
 import mapboxgl from 'mapbox-gl';
 import './Map.css';
+import { RootState, useSelector } from 'redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
@@ -54,9 +55,8 @@ mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
 export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
+  const gardenList = useSelector((state: RootState) => state.garden.gardenList);
   const { enqueueSnackbar } = useSnackbar();
-  const [gardenList, setGardenList] = useState([]);
-  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const [imageFILE, setImageFILE] = useState('');
   const mapContainerRef = useRef(null);
   const [lng, setLng] = useState(111.202);
@@ -104,7 +104,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
         const bodyFormData = new FormData();
         if (isEdit) {
           bodyFormData.append('id', values.id);
-          values.status = enumStatus!.id;
+          values.status = values.status.id;
         }
         bodyFormData.append('Name', values.name);
         bodyFormData.append('Phone', values.phone);
@@ -168,8 +168,13 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   );
 
   useEffect(() => {
-    setEnumStatus(statusOptions.find((e) => e.id == currentSite?.status) || null);
-    setGardenList(currentSite?.listGarden);
+    if (isEdit) {
+      setFieldValue('listGarden', currentSite?.listGarden);
+      setFieldValue(
+        'status',
+        statusOptions.find((v) => v.id == currentSite?.status)
+      );
+    }
   }, [currentSite]);
 
   useEffect(() => {
@@ -180,6 +185,8 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
       zoom: zoomMap
     });
 
+    // add mapbox fullscreen
+    map.addControl(new mapboxgl.FullscreenControl());
     // Add navigation control (the +/- zoom buttons)
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     const marker = new mapboxgl.Marker({ color: 'red' });
@@ -309,15 +316,15 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 </Stack>
                 {isEdit && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    {gardenList && (
+                    {/* {gardenList && (
                       <Autocomplete
                         fullWidth
                         multiple
                         id="tags-readOnly"
-                        value={gardenList}
-                        options={gardenList}
+                        {...getFieldProps('listGarden')}
+                        options={currentSite?.listGarden}
                         getOptionLabel={(option: any) => (option ? option.name : '')}
-                        defaultValue={gardenList}
+                        defaultValue={currentSite?.listGarden}
                         limitTags={2}
                         renderInput={(params) => (
                           <TextField
@@ -327,16 +334,18 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                           />
                         )}
                       />
-                    )}
+                    )} */}
                     <Autocomplete
                       fullWidth
                       disablePortal
                       clearIcon
                       id="status"
-                      value={enumStatus}
+                      {...getFieldProps('status')}
                       options={statusOptions}
                       getOptionLabel={(option: OptionStatus) => option.label}
-                      onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                      onChange={(e, values: any) =>
+                        values ? { ...setFieldValue('status', values) } : null
+                      }
                       renderInput={(params) => (
                         <TextField
                           {...params}

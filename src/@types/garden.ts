@@ -9,9 +9,9 @@ export type Garden = {
   latitude: string;
   longitude: string;
   address: string;
-  acreage: string;
-  quantityOfCells: string;
-  areaID: any;
+  acreage: number;
+  quantityOfCells: number;
+  areaId: any;
   gardenTypeId: any;
   siteId: any;
   status: any;

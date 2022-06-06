@@ -5,7 +5,7 @@ export class GroupModeManager {
   // get list update mode
   getListGroupMode = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/divers', {
+      .get('/api/v1/admin/group-modes', {
         params: { page_number, page_size }
       })
       .then((res) => res)

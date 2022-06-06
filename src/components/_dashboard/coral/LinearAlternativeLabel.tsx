@@ -18,9 +18,9 @@ import {
   Autocomplete
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import CoralPhasesNewForm from 'components/_dashboard/coral/CoralPhasesNewForm';
 import CoralPhasesTypeNewForm from 'components/_dashboard/coral/CoralPhasesTypeNewForm';
 import { manageCoral } from '_apis_/coral';
+import { RootState, useSelector } from 'redux/store';
 import { Coral, PhaseForm, PhasesType } from '../../../@types/coral';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -37,7 +37,7 @@ const phase: PhasesType = {
   timeTo: '',
   colour: '',
   coralId: '',
-  coralPhase: ''
+  coralPhaseId: ''
 };
 
 export type OptionStatus = {
@@ -50,11 +50,18 @@ export type OptionStatus = {
 export default function LinearAlternativeLabel() {
   const { translate } = useLocales();
   const [isEdit, setIsEdit] = useState<Boolean>(false);
-  const callback = (params: PhasesType) => {
+  const listCoral = useSelector((state: RootState) => state.coral.coralList);
+  const listPhase = useSelector((state: RootState) => state.coral.coralPhaseList);
+  const isLoading = useSelector((state: RootState) => state.coral.isLoading);
+
+  const callback = async (params: PhasesType) => {
+    if (params) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
     const dt = data;
     dt[activeStep] = params;
     setData(dt);
-    console.log(steps);
+
     if (activeStep == steps.length - 1) {
       try {
         const formPhase = {
@@ -63,19 +70,17 @@ export default function LinearAlternativeLabel() {
         };
         let flag = false;
         !isEdit
-          ? manageCoral.createCoralPhasesType(formPhase).then((response) => {
+          ? await manageCoral.createCoralPhasesType(formPhase).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : manageCoral.updateCoralPhasesType(formPhase).then((response) => {
+          : await manageCoral.updateCoralPhasesType(formPhase).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             });
         if (flag) {
-          // resetForm();
-          // setSubmitting(false);
           enqueueSnackbar(
             !isEdit ? translate('message.create-success') : translate('message.update-success'),
             {
@@ -99,8 +104,6 @@ export default function LinearAlternativeLabel() {
   };
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [optionCoralPhases, setOptionCoralPhases] = useState([]);
-  const [optionCoral, setOptionCoral] = useState([]);
   const [steps, setSteps] = useState(['']);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
@@ -125,14 +128,7 @@ export default function LinearAlternativeLabel() {
     if (submitRef && submitRef.current) {
       submitRef.current?.click();
     }
-    // let newSkipped = skipped;
-    // if (isStepSkipped(activeStep)) {
-    //   newSkipped = new Set(newSkipped.values());
-    //   newSkipped.delete(activeStep);
-    // }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // setSkipped(newSkipped);
+    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
@@ -171,7 +167,7 @@ export default function LinearAlternativeLabel() {
       timeTo: '',
       colour: '',
       coralId: '',
-      coralPhase: ''
+      coralPhaseId: ''
     };
     dt.push(phase);
     setData(dt);
@@ -184,17 +180,6 @@ export default function LinearAlternativeLabel() {
     });
   };
 
-  // get combobox
-  useEffect(() => {
-    manageCoral.getListCoral(1, 100000).then((response) => {
-      if (response.status == 200) {
-        setOptionCoral(response.data.items);
-      } else {
-        setOptionCoral([]);
-      }
-    });
-  }, []);
-
   useEffect(() => {
     if (coral != null) {
       manageCoral.getCoralByID(coral.id).then((response) => {
@@ -204,10 +189,13 @@ export default function LinearAlternativeLabel() {
             setIsEdit(true);
             setData(phaseType);
             const s: any[] = [];
+            // flag setSteps if true
             let flag = false;
             phaseType.map((v: any) => {
-              if (v.coralPhase.name != null) {
-                s.push(v.coralPhase.name);
+              // set label for coral phase
+              if (v.coralPhaseId != null) {
+                s.push(listPhase.find((value) => value.id == v.coralPhaseId)?.name);
+                // s.push(v.coralPhaseId);
                 flag = true;
               }
             });
@@ -263,7 +251,8 @@ export default function LinearAlternativeLabel() {
                 clearIcon
                 id="coral"
                 value={coral}
-                options={optionCoral}
+                options={listCoral}
+                loading={isLoading}
                 getOptionLabel={(option: any) => (option ? option.name : '')}
                 onChange={(e, value: any) => setCoral(value)}
                 renderInput={(params) => (

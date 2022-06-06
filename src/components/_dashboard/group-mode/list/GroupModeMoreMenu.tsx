@@ -24,12 +24,12 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
-type DiverMoreMenuProps = {
+type GroupModeMoreMenuProps = {
   onDelete: VoidFunction;
   id: string;
 };
 
-export default function DiverMoreMenu({ onDelete, id }: DiverMoreMenuProps) {
+export default function GroupModeMoreMenu({ onDelete, id }: GroupModeMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
