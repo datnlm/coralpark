@@ -31,11 +31,6 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
-    // END LOADING
-    endLoading(state) {
-      state.isLoading = false;
-    },
-
     // TOTOAL COUNT
     totalCount(state, action) {
       state.totalCount = action.payload;
@@ -77,7 +72,6 @@ export function getListDiver(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListDiver(response.data.items));
-          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {

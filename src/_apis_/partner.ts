@@ -28,7 +28,7 @@ export class PartnerManager {
       email: partner.email,
       address: partner.address,
       webUrl: partner.webUrl,
-      partnerType: { id: partner.partnerType.id }
+      partnerTypeId: partner.partnerTypeId
     };
     return axios
       .post('/api/v1/admin/partner', data)
@@ -45,7 +45,8 @@ export class PartnerManager {
       email: partner.email,
       address: partner.address,
       webUrl: partner.webUrl,
-      partnerType: { id: partner.partnerType.id }
+      partnerTypeId: partner.partnerTypeId,
+      status: partner.status
     };
     return axios
       .put('/api/v1/admin/partner', data)
@@ -56,7 +57,7 @@ export class PartnerManager {
   // delete garden
   deletePartner = (id: string) => {
     return axios
-      .delete(`/api/v1/admin/gardens/${id}`)
+      .delete(`/api/v1/admin/partner/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };

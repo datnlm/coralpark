@@ -37,11 +37,6 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
-    // END LOADING
-    endLoading(state) {
-      state.isLoading = false;
-    },
-
     // TOTOAL COUNT
     totalCount(state, action) {
       state.totalCount = action.payload;
@@ -113,7 +108,6 @@ export function getListGarden(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListGarden(response.data.items));
-          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -132,7 +126,6 @@ export function getListSites(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListGardenOwners(response.data.items));
-          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -151,7 +144,6 @@ export function getListGardenTypes(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListGardenType(response.data.items));
-          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -166,7 +158,6 @@ export function deleteGardenTypes(gardenTypeID: string) {
     dispatch(slice.actions.startLoading());
     try {
       await manageGarden.deleteGardenType(gardenTypeID);
-      dispatch(slice.actions.endLoading());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

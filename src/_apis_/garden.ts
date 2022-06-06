@@ -29,9 +29,9 @@ export class GardenManager {
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      area: { id: garden.areaID.id },
-      gardenType: { id: garden.gardenTypeId.id },
-      site: { id: garden.siteId.id },
+      areaId: garden.areaId,
+      gardenTypeId: garden.gardenTypeId,
+      siteId: garden.siteId,
       status: 1
     };
     return axios
@@ -50,9 +50,9 @@ export class GardenManager {
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
-      area: { id: garden.areaID.id },
-      gardenType: { id: garden.gardenTypeId.id },
-      site: { id: garden.siteId.id },
+      areaId: garden.areaId,
+      gardenTypeId: garden.gardenTypeId,
+      siteId: garden.siteId,
       status: garden.status
     };
     return axios
@@ -125,7 +125,7 @@ export class GardenManager {
   // get garden type
   getListGardenType = (page_number: number, page_size: number) => {
     return axios
-      .get('/api/v1/admin/divers', {
+      .get('/api/v1/admin/garden-types', {
         params: { page_number, page_size }
       })
       .then((res) => res)

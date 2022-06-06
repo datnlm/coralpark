@@ -162,7 +162,7 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getListPartnerType(page, rowsPerPage));
-  }, [dispatch]);
+  }, [dispatch, page, rowsPerPage]);
 
   const emptyRows = !isLoading && !partnerTypeList;
 

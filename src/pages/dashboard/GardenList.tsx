@@ -180,7 +180,7 @@ export default function UserList() {
     { id: 'name', label: translate('page.garden.form.name'), alignRight: false },
     { id: 'address', label: translate('page.garden.form.address'), alignRight: false },
     { id: 'acreage', label: translate('page.garden.form.acreage'), alignRight: false },
-    { id: 'quantity', label: translate('page.garden.form.quantity'), alignRight: false },
+    { id: 'quantity', label: translate('page.garden.form.quantity-of-cells'), alignRight: false },
     { id: 'status', label: translate('page.garden.form.status'), alignRight: false },
     { id: '' }
   ];
@@ -231,17 +231,8 @@ export default function UserList() {
                     </TableCell>
                   ) : (
                     filteredGarden.map((row) => {
-                      const {
-                        id,
-                        name,
-                        address,
-                        acreage,
-                        quantityOfCells,
-                        areaID,
-                        gardenTypeId,
-                        status
-                      } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      const { id, name, address, acreage, quantityOfCells, status } = row;
+
                       return (
                         <TableRow
                           hover
@@ -268,7 +259,7 @@ export default function UserList() {
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == '0' && 'error') || 'success'}
+                              color={(status === 0 && 'error') || 'success'}
                             >
                               {statusOptions.find((v: any) => v.id == status)?.label}
                             </Label>
@@ -278,6 +269,7 @@ export default function UserList() {
                             <GardenMoreMenu
                               onDelete={() => handleDeleteGarden(id.toString())}
                               userName={id.toString()}
+                              status={status}
                             />
                           </TableCell>
                         </TableRow>

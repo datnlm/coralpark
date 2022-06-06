@@ -18,6 +18,7 @@ import {
   Button
 } from '@material-ui/core';
 // routes
+import { RootState, useSelector } from 'redux/store';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
@@ -46,7 +47,7 @@ export default function CoralPhasesTypeNewForm({
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
   const [phaseId, setPhaseId] = useState('');
-  const [currentPhase, setCurrentPhase] = useState<any>(null);
+  const listPhase = useSelector((state: RootState) => state.coral.coralPhaseList);
   const [optionCoralPhases, setOptionCoralPhases] = useState([]);
 
   const NewUserSchema = Yup.object().shape({
@@ -57,7 +58,7 @@ export default function CoralPhasesTypeNewForm({
     timeFrom: Yup.string().required('TimeForm is required'),
     timeTo: Yup.string().required('TimeTo is required'),
     colour: Yup.string().required('Colour is required'),
-    coralPhase: Yup.object().required('Phase is required').nullable(true)
+    coralPhaseId: Yup.object().required('Phase is required').nullable(true)
   });
 
   const formik = useFormik({
@@ -72,10 +73,11 @@ export default function CoralPhasesTypeNewForm({
       timeTo: currentPhasesType?.timeTo || '',
       colour: currentPhasesType?.colour || '',
       coralId: currentPhasesType?.coralId || '',
-      coralPhase: currentPhasesType?.coralPhase || ''
+      coralPhaseId: currentPhasesType?.coralPhaseId || ''
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values) => {
+      values.coralPhaseId = values.coralPhaseId.id;
       onSubmit(values);
     }
   });
@@ -113,38 +115,41 @@ export default function CoralPhasesTypeNewForm({
     [setFieldValue]
   );
 
-  useEffect(() => {
-    manageCoral.getListCoralPhases(-1, 100000).then((response) => {
-      if (response.status == 200) {
-        setOptionCoralPhases(response.data.items);
-      } else {
-        setOptionCoralPhases([]);
-      }
-    });
-    if (currentPhasesType != null) {
-      setCurrentPhase(currentPhasesType.coralPhase);
-    }
-  }, []);
+  // useEffect(() => {
+  //   manageCoral.getListCoralPhases(1, -1).then((response) => {
+  //     if (response.status == 200) {
+  //       setOptionCoralPhases(response.data.items);
+  //     } else {
+  //       setOptionCoralPhases([]);
+  //     }
+  //   });
+  //   if (currentPhasesType != null) {
+  //     setCurrentPhase(currentPhasesType.coralPhase);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   manageCoral.getListCoralPhases(1, -1).then((response) => {
+  //     if (response.status == 200) {
+  //       setOptionCoralPhases(response.data.items);
+  //       if (phaseId != '') {
+  //         setCurrentPhase(response.data.items.find((v: any) => v.id == phaseId));
+  //       }
+  //     } else {
+  //       setOptionCoralPhases([]);
+  //     }
+  //   });
+  //   if (currentPhasesType != null) {
+  //     setCurrentPhase(currentPhasesType.coralPhaseId);
+  //   }
+  // }, [phaseId]);
 
   useEffect(() => {
-    manageCoral.getListCoralPhases(-1, 10000000).then((response) => {
-      if (response.status == 200) {
-        setOptionCoralPhases(response.data.items);
-        if (phaseId != '') {
-          setCurrentPhase(response.data.items.find((v: any) => v.id == phaseId));
-        }
-      } else {
-        setOptionCoralPhases([]);
-      }
-    });
-    if (currentPhasesType != null) {
-      setCurrentPhase(currentPhasesType.coralPhase);
-    }
-  }, [phaseId]);
-
-  useEffect(() => {
-    if (currentPhasesType != null) {
-      setCurrentPhase(currentPhasesType.coralPhase);
+    if (currentPhasesType != null && currentPhasesType.coralPhaseId != '') {
+      setFieldValue(
+        'coralPhaseId',
+        listPhase.find((v) => v.id == currentPhasesType.coralPhaseId)
+      );
     }
   }, [currentPhasesType]);
 
@@ -158,20 +163,16 @@ export default function CoralPhasesTypeNewForm({
                 fullWidth
                 disablePortal
                 clearIcon
-                id="coralPhase"
-                value={currentPhase}
-                options={optionCoralPhases}
+                {...getFieldProps('coralPhaseId')}
+                options={listPhase}
                 getOptionLabel={(option: any) => (option ? option.name : '')}
-                onChange={(e, value: any) => {
-                  setFieldValue('coralPhase', value);
-                  setCurrentPhase(value);
-                }}
+                onChange={(e, value: any) => setFieldValue('coralPhaseId', value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label={translate('page.coral-phase.form.phase')}
-                    error={Boolean(touched.coralPhase && errors.coralPhase)}
-                    helperText={touched.coralPhase && errors.coralPhase}
+                    error={Boolean(touched.coralPhaseId && errors.coralPhaseId)}
+                    helperText={touched.coralPhaseId && errors.coralPhaseId}
                   />
                 )}
                 noOptionsText={<Button onMouseDown={handleClickOpen}>No results! Click me</Button>}

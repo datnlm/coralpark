@@ -28,24 +28,28 @@ export default function DiverCreate() {
   const { name } = useParams();
   const [currentDiver, setCurrentDiver] = useState<Diver>();
 
+  const fetchData = async () => {
+    await manageDiver.getDiverByID(paramCase(name)).then((response) => {
+      if (response.status == 200) {
+        const data = {
+          id: response.data.id,
+          username: response.data.userName,
+          name: response.data.name,
+          phone: response.data.phone,
+          email: response.data.email,
+          address: response.data.address,
+          password: response.data.password,
+          imageUrl: response.data.imageUrl,
+          status: response.data.status
+        };
+        setCurrentDiver(data);
+      }
+    });
+  };
+
   useEffect(() => {
     if (isEdit) {
-      manageDiver.getDiverByID(paramCase(name)).then((response) => {
-        if (response.status == 200) {
-          const data = {
-            id: response.data.id,
-            username: response.data.userName,
-            name: response.data.name,
-            phone: response.data.phone,
-            email: response.data.email,
-            address: response.data.address,
-            password: response.data.password,
-            imageUrl: response.data.imageUrl,
-            status: response.data.status
-          };
-          setCurrentDiver(data);
-        }
-      });
+      fetchData();
     }
   }, [dispatch]);
 

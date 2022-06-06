@@ -63,8 +63,8 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    address: Yup.object().required('Province is required')
+    name: Yup.string().required('Name is required')
+    // address: Yup.object().required('Province is required').nullable(true)
   });
 
   const checkSelected = (provice: string) => {
@@ -302,8 +302,9 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       defaultMode: 'draw_polygon'
     });
 
+    // add mapbox fullscreen
+    map.addControl(new mapboxgl.FullscreenControl());
     // add polygon
-
     map.addControl(draw);
     map.on('draw.create', getCoords);
     map.on('draw.delete', getCoords);

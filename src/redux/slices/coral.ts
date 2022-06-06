@@ -2,24 +2,7 @@ import { manageCoral } from '_apis_/coral';
 import { map, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
-// utils
-import axios from '../../utils/axios';
-import {
-  Friend,
-  Gallery,
-  Profile,
-  UserPost,
-  Follower,
-  UserData,
-  CreditCard,
-  UserInvoice,
-  UserManager,
-  UserAddressBook,
-  NotificationSettings,
-  AreaProvice,
-  Coral,
-  CoralType
-} from '../../@types/coral';
+import { Coral, CoralType, Phases } from '../../@types/coral';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +11,9 @@ type UserState = {
   error: boolean;
   coralList: Coral[];
   coralListType: CoralType[];
+  // loai coral
+  coralType: CoralType[];
+  coralPhaseList: Phases[];
   totalCount: number;
 };
 
@@ -36,6 +22,9 @@ const initialState: UserState = {
   error: false,
   coralList: [],
   coralListType: [],
+  // loai coral
+  coralType: [],
+  coralPhaseList: [],
   totalCount: 0
 };
 
@@ -74,6 +63,16 @@ const slice = createSlice({
     getListCoralType(state, action) {
       state.isLoading = false;
       state.coralListType = action.payload;
+    },
+
+    getListCoralPhase(state, action) {
+      state.isLoading = false;
+      state.coralPhaseList = action.payload;
+    },
+
+    getCoralType(state, action) {
+      state.isLoading = false;
+      state.coralType = action.payload;
     }
   }
 });
@@ -109,6 +108,38 @@ export function getListCoralType(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCoralType(response.data.items));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// get loai species coral
+export function getCoralType(coralType: string, page: number, rowsPerPage: number) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await manageCoral.getCoralType(coralType, 1 + page, rowsPerPage).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.getCoralType(response.data.items));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// get list coral phase
+export function getListCoralPhase(page: number, rowsPerPage: number) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await manageCoral.getListCoralPhases(1 + page, rowsPerPage).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.getListCoralPhase(response.data.items));
         }
       });
     } catch (error) {

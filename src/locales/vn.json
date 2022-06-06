@@ -157,7 +157,7 @@
       "search": "Tìm kiếm theo loại vườn",
       "form": {
         "name": "Tên",
-        "description": "Mô ta"
+        "description": "Mô tả"
       }
     },
     "coral": {
@@ -337,12 +337,38 @@
       }
     },
     "login": {
+      "title": "Đăng nhập vào CGMS",
       "label": {
-        "signed": "Signed in as"
+        "signed": "Đăng nhập với tư cách là"
       },
       "form": {
-        "user": "User name",
-        "password": "Password"
+        "user": "Tên tài khoản",
+        "password": "Mật khẩu",
+        "remember": "Ghi nhớ tài khoản"
+      }
+    },
+    "account": {
+      "title": {
+        "list": "Tài khoản: Danh sách tài khoản",
+        "create": "Tài khoản: Tạo mới tài khoản",
+        "update": "Tài khoản: Cập nhật tài khoản"
+      },
+      "heading1": {
+        "list": "Tài khoản",
+        "create": "Tạo mới tài khoản",
+        "update": "Cập nhật tài khoản"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Tài khoản",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới tài khoản"
+      },
+      "search": "Tìm kiếm theo tên tài khoản",
+      "form": {
+        "user-name": "Tên",
+        "email": "Địa chỉ email",
+        "role-name": "Chức vụ"
       }
     }
   },
@@ -385,7 +411,13 @@
     "delete-success": "Xoá thành công",
     "create-error": "Thêm mới thất bại",
     "update-error": "Cập nhật thất bại",
-    "delete-error": "Xoá thất bại"
+    "delete-error": "Xoá thất bại",
+    "login": {
+      "success": "Login sucess",
+      "error": "Login error",
+      "failedLoginAttempts": "Too many failed login attempts",
+      "invalid": "The username or password are not valid."
+    }
   },
   "menu": {
     "sidebarConfig": {
@@ -456,9 +488,13 @@
         "create": "Thêm mới"
       },
       "group-mode": {
-        "list": "List",
-        "create": "Create"
+        "list": "Danh sách",
+        "create": "Thêm mới"
       }
+    },
+    "menu-option": {
+      "home": "Trang chủ",
+      "account": "Tài khoảng"
     }
   }
 }

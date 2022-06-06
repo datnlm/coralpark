@@ -21,19 +21,6 @@ import MenuPopover from '../../components/MenuPopover';
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: homeFill,
-    linkTo: '/'
-  },
-  {
-    label: 'Account',
-    icon: personFill,
-    linkTo: PATH_DASHBOARD.account.editById
-  }
-];
-
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
@@ -64,6 +51,19 @@ export default function AccountPopover() {
       enqueueSnackbar('Unable to logout', { variant: 'error' });
     }
   };
+
+  const MENU_OPTIONS = [
+    {
+      label: translate('menu.menu-option.home'),
+      icon: homeFill,
+      linkTo: '/'
+    },
+    {
+      label: translate('menu.menu-option.account'),
+      icon: personFill,
+      linkTo: PATH_DASHBOARD.account.editById
+    }
+  ];
 
   return (
     <>
@@ -131,7 +131,7 @@ export default function AccountPopover() {
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button fullWidth color="inherit" variant="outlined" onClick={handleLogout}>
-            {translate('page.button.logout')}
+            {translate('button.logout')}
           </Button>
         </Box>
       </MenuPopover>

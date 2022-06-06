@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { User } from '../@types/account';
 
 export class AccountManager {
   // get list account

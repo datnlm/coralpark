@@ -5,6 +5,8 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
 // redux
+import { getListGardenTypes, getListSites } from '../../redux/slices/garden';
+import { getListArea } from '../../redux/slices/area';
 import { useDispatch } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -27,26 +29,33 @@ export default function GardenCreate() {
   const { name } = useParams();
   const [currentGarden, setCurrentGarden] = useState<Garden>();
 
+  const fetchData = async () => {
+    await manageGarden.getGardenByID(paramCase(name)).then((response) => {
+      if (response.status == 200) {
+        const data = {
+          id: response.data.id,
+          name: response.data.name,
+          latitude: response.data.latitude,
+          longitude: response.data.longitude,
+          address: response.data.address,
+          acreage: response.data.acreage,
+          quantityOfCells: response.data.quantityOfCells,
+          areaId: response.data.areaId,
+          gardenTypeId: response.data.gardenTypeId,
+          siteId: response.data.siteId,
+          status: response.data.status
+        };
+        setCurrentGarden(data);
+      }
+    });
+  };
+
   useEffect(() => {
+    dispatch(getListGardenTypes(0, -1));
+    dispatch(getListSites(0, -1));
+    dispatch(getListArea(0, -1));
     if (isEdit) {
-      manageGarden.getGardenByID(paramCase(name)).then((response) => {
-        if (response.status == 200) {
-          const data = {
-            id: response.data.id,
-            name: response.data.name,
-            latitude: response.data.latitude,
-            longitude: response.data.longitude,
-            address: response.data.address,
-            acreage: response.data.acreage,
-            quantityOfCells: response.data.quantityOfCells,
-            areaID: response.data.area,
-            gardenTypeId: response.data.gardenType,
-            siteId: response.data.site,
-            status: response.data.status
-          };
-          setCurrentGarden(data);
-        }
-      });
+      fetchData();
     }
   }, [dispatch]);
 

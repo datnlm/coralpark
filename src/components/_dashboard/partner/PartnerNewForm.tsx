@@ -1,10 +1,8 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
-// material
-import { styled as styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import {
   Card,
@@ -12,22 +10,20 @@ import {
   Grid,
   Stack,
   TextField,
-  Typography,
   Autocomplete,
-  FormHelperText,
-  CardContent
+  CircularProgress
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
 import { managePartner } from '_apis_/partner';
+
+import { RootState, useSelector } from 'redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Partner } from '../../../@types/partner';
-//
-import { UploadAvatar } from '../../upload';
+import { Partner, PartnerType } from '../../../@types/partner';
 // ----------------------------------------------------------------------
 
 type PartnerNewFormProps = {
@@ -39,9 +35,9 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
-  const [optionsPartnerType, setOptionsPartnerType] = useState([]);
-  const [imageFILE, setImageFILE] = useState('');
+  const partnerTypeList = useSelector((state: RootState) => state.partner.partnerTypeList);
+  // const isLoading = useSelector((state: RootState) => state.partner.isLoading);
+  // const [open, setOpen] = useState(false);
 
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -56,7 +52,9 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
       /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
       'Enter correct url!'
     ),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required')
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    partnerTypeId: Yup.object().required('Partner Type is required')
+    // status: Yup.object().required('Status is required').nullable(true)
   });
 
   const formik = useFormik({
@@ -68,13 +66,17 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
       email: currentPartner?.email || '',
       address: currentPartner?.address || '',
       webUrl: currentPartner?.webUrl || '',
-      partnerType: currentPartner?.partnerType || '',
+      partnerTypeId: currentPartner?.partnerTypeId || '',
       status: currentPartner?.status || ''
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         let flag = false;
+        if (isEdit) {
+          values.status = values.status.id;
+        }
+        values.partnerTypeId = values.partnerTypeId.id;
         !isEdit
           ? await managePartner.createPartner(values).then((response) => {
               if (response.status == 200) {
@@ -106,67 +108,23 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      setImageFILE(file);
-      if (file) {
-        setFieldValue('imageUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
-
   useEffect(() => {
-    managePartner.getListPartnerType(1, 100000).then((response) => {
-      if (response.status == 200) {
-        setOptionsPartnerType(response.data.items);
-      } else {
-        setOptionsPartnerType([]);
-      }
-    });
-  }, []);
-  useEffect(() => {
-    setEnumStatus(statusOptions.find((e) => e.id == Number(currentPartner?.status)) || null);
+    if (isEdit) {
+      setFieldValue(
+        'partnerTypeId',
+        partnerTypeList.find((v) => v.id == currentPartner?.partnerTypeId)
+      );
+      setFieldValue(
+        'status',
+        statusOptions.find((v: OptionStatus) => v.id == currentPartner?.status)
+      );
+    }
   }, [currentPartner]);
 
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          {/* <Grid item xs={12} md={4}> */}
-          {/* <Card sx={{ py: 10, px: 3 }}> */}
-          {/* <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.imageUrl && errors.imageUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      {translate('site.message.allow-type-image')}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.imageUrl && errors.imageUrl}
-                </FormHelperText>
-              </Box> */}
-          {/* </Card>/ */}
-          {/* </Grid> */}
           <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
@@ -216,19 +174,39 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
                     fullWidth
                     disablePortal
                     clearIcon
-                    id="partnerType"
-                    {...getFieldProps('partnerType')}
-                    options={optionsPartnerType}
+                    id="partnerTypeId"
+                    // open={open}
+                    // onOpen={() => {
+                    //   setOpen(true);
+                    // }}
+                    // onClose={() => {
+                    //   setOpen(false);
+                    // }}
+                    // loading={isLoading}
+                    // loading={isLoading && open}
+                    {...getFieldProps('partnerTypeId')}
+                    options={partnerTypeList}
                     getOptionLabel={(option: any) => (option ? option.name : '')}
                     onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('partnerType', value) } : ''
+                      value ? { ...setFieldValue('partnerTypeId', value) } : null
                     }
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label={translate('page.partner.form.partner-type')}
-                        error={Boolean(touched.partnerType && errors.partnerType)}
-                        helperText={touched.partnerType && errors.partnerType}
+                        // InputProps={{
+                        //   ...params.InputProps,
+                        //   endAdornment: (
+                        //     <>
+                        //       {isLoading && open ? (
+                        //         <CircularProgress color="inherit" size={20} />
+                        //       ) : null}
+                        //       {params.InputProps.endAdornment}
+                        //     </>
+                        //   )
+                        // }}
+                        error={Boolean(touched.partnerTypeId && errors.partnerTypeId)}
+                        helperText={touched.partnerTypeId && errors.partnerTypeId}
                       />
                     )}
                   />
@@ -240,10 +218,12 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
                       disablePortal
                       clearIcon
                       id="status"
-                      value={enumStatus}
+                      {...getFieldProps('status')}
                       options={statusOptions}
-                      getOptionLabel={(option: OptionStatus) => option.label}
-                      onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                      getOptionLabel={(option: OptionStatus) => (option ? option.label : '')}
+                      onChange={(e, value: any) =>
+                        value ? { ...setFieldValue('status', value) } : ''
+                      }
                       renderInput={(params) => (
                         <TextField
                           {...params}

@@ -27,9 +27,10 @@ import useLocales from '../../../../hooks/useLocales';
 type DiverMoreMenuProps = {
   onDelete: VoidFunction;
   diverID: string;
+  status: any;
 };
 
-export default function DiverMoreMenu({ onDelete, diverID }: DiverMoreMenuProps) {
+export default function DiverMoreMenu({ onDelete, diverID, status }: DiverMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -60,15 +61,18 @@ export default function DiverMoreMenu({ onDelete, diverID }: DiverMoreMenuProps)
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={trash2Outline} width={24} height={24} />
-          </ListItemIcon>
-          <ListItemText
-            primary={translate('button.menu.delete')}
-            primaryTypographyProps={{ variant: 'body2' }}
-          />
-        </MenuItem>
+        {status !== 0 && (
+          <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
+            <ListItemIcon>
+              <Icon icon={trash2Outline} width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary={translate('button.menu.delete')}
+              primaryTypographyProps={{ variant: 'body2' }}
+            />
+          </MenuItem>
+        )}
+
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
@@ -101,7 +105,10 @@ export default function DiverMoreMenu({ onDelete, diverID }: DiverMoreMenuProps)
           <ListItemIcon>
             <Icon icon={editFill} width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText
+            primary={translate('button.menu.edit')}
+            primaryTypographyProps={{ variant: 'body2' }}
+          />
         </MenuItem>
       </Menu>
     </>

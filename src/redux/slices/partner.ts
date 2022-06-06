@@ -33,11 +33,6 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
-    // START LOADING
-    endLoading(state) {
-      state.isLoading = false;
-    },
-
     // TOTOAL COUNT
     totalCount(state, action) {
       state.totalCount = action.payload;
@@ -59,12 +54,6 @@ const slice = createSlice({
       state.isLoading = false;
       state.partnerTypeList = action.payload;
     }
-
-    // DELETE DIVER
-    // deleteDiver(state, action) {
-    //   const deleteDiver = filter(state.areaList, (area) => area.id !== action.payload);
-    //   state.areaList = deleteDiver;
-    // }
   }
 });
 // Reducer
@@ -84,7 +73,6 @@ export function getListPartner(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListPartner(response.data.items));
-          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -102,7 +90,6 @@ export function getListPartnerType(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListPartnerType(response.data.items));
-          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {

@@ -163,7 +163,8 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getListGardenTypes(page, rowsPerPage));
-  }, [dispatch]);
+  }, [dispatch, page, rowsPerPage]);
+
   const emptyRows = !isLoading && !gardenTypesList!;
 
   const filteredGardenTypes = applySortFilter(

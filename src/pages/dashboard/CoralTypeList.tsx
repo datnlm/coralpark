@@ -89,7 +89,7 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(getListCoralType(page, rowsPerPage));
-  }, [dispatch]);
+  }, [dispatch, page, rowsPerPage]);
 
   const handleChangeSort = (value?: string) => {
     if (value) {

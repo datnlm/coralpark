@@ -8,6 +8,7 @@ import PartnerNewForm from 'components/_dashboard/partner/PartnerNewForm';
 import { Partner } from '../../@types/partner';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
+import { getListPartnerType } from '../../redux/slices/partner';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -27,23 +28,28 @@ export default function ParterTypeCreate() {
   const { name } = useParams();
   const [currentPartner, setCurrentPartner] = useState<Partner | null>(null);
 
+  const fetchData = async () => {
+    await managePartner.getPartnerByID(paramCase(name)).then((response) => {
+      if (response.status == 200) {
+        const data = {
+          id: response.data.id,
+          name: response.data.name,
+          phone: response.data.phone,
+          email: response.data.email,
+          address: response.data.address,
+          webUrl: response.data.webUrl,
+          partnerTypeId: response.data.partnerTypeId,
+          status: response.data.status
+        };
+        setCurrentPartner(data);
+      }
+    });
+  };
+
   useEffect(() => {
+    dispatch(getListPartnerType(0, -1));
     if (isEdit) {
-      managePartner.getPartnerByID(paramCase(name)).then((response) => {
-        if (response.status == 200) {
-          const data = {
-            id: response.data.id,
-            name: response.data.name,
-            phone: response.data.phone,
-            email: response.data.email,
-            address: response.data.address,
-            webUrl: response.data.webUrl,
-            partnerType: response.data.partnerType,
-            status: response.data.status
-          };
-          setCurrentPartner(data);
-        }
-      });
+      fetchData();
     }
   }, [dispatch]);
 

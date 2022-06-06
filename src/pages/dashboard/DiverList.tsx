@@ -262,6 +262,7 @@ export default function UserList() {
                             <DiverMoreMenu
                               onDelete={() => handleDeleteDiver(id.toString())}
                               diverID={id.toString()}
+                              status={status}
                             />
                           </TableCell>
                         </TableRow>

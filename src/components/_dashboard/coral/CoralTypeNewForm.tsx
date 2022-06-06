@@ -36,7 +36,6 @@ import useLocales from '../../../hooks/useLocales';
 import { CoralType } from '../../../@types/coral';
 //
 import { QuillEditor } from '../../editor';
-import { UploadMultiFile } from '../../upload';
 
 // ----------------------------------------------------------------------
 
@@ -66,22 +65,38 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   const [currentOrder, setCurrentOrder] = useState<any>(null);
   const [currentFamily, setCurrentFamily] = useState<any>(null);
   const [currentGenus, setCurrentGenus] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [NewProductSchema, setNewProductSchema] = useState<any>();
 
-  const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
-    // class: Yup.object().required('Class is required'),
-    // order: Yup.object().required('Order is required'),
-    // family: Yup.object().required('Family is required'),
-    // genus: Yup.object().required('Genus is required')
-  });
+  useEffect(() => {
+    const object = {
+      name: Yup.string().required('Name is required'),
+      class: Yup.object().required('Class is required').nullable(true)
+    };
+    if (currentLevel!.id >= '3') {
+      Object.assign(object, { order: Yup.object().required('Order is required').nullable(true) });
+    }
+    if (currentLevel!.id >= '4') {
+      Object.assign(object, {
+        family: Yup.object().required('Family is required').nullable(true)
+      });
+    }
+    if (currentLevel!.id == '5') {
+      Object.assign(object, {
+        genus: Yup.object().required('Genus is required').nullable(true)
+      });
+    }
+    setNewProductSchema(Yup.object().shape(object));
+  }, [currentLevel]);
 
   // call class name parent id = null
   useEffect(() => {
     if (!isEdit) {
-      manageCoral.getCoralType('class').then((response) => {
+      setIsLoading(true);
+      manageCoral.getCoralType('class', 0, -1).then((response) => {
         if (response.status == 200) {
           setOptionsClass(response.data.items);
-          console.log(response.data.items);
+          setIsLoading(false);
         }
       });
     }
@@ -90,17 +105,17 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   // call order name parent class id = ?
   useEffect(() => {
     if (!isEdit) {
+      setIsLoading(true);
       setCurrentOrder(null);
       setOptionsOrder([]);
-      // setCurrentOrder([]);
       if (currentClass != null) {
-        // if (currentClass!.id != null) {
-        manageCoral.getCoralType(currentClass!.id).then((response) => {
+        manageCoral.getCoralType(currentClass!.id, 0, -1).then((response) => {
           if (response.status == 200) {
             setOptionsOrder(response.data.items);
-            console.log(response.data.items);
+            setIsLoading(false);
           } else {
             setOptionsOrder([]);
+            setIsLoading(false);
           }
         });
       }
@@ -110,14 +125,17 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   // call family name theo order id = ?
   useEffect(() => {
     if (!isEdit) {
+      setIsLoading(true);
       setCurrentFamily(null);
       setOptionsFamily([]);
       if (currentOrder != null) {
-        manageCoral.getCoralType(currentOrder!.id).then((response) => {
+        manageCoral.getCoralType(currentOrder!.id, 0, -1).then((response) => {
           if (response.status == 200) {
             setOptionsFamily(response.data.items);
+            setIsLoading(false);
           } else {
             setOptionsFamily([]);
+            setIsLoading(false);
           }
         });
       }
@@ -127,18 +145,21 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
   // call Genus name theo family id = ?
   useEffect(() => {
     if (!isEdit) {
+      setIsLoading(true);
       setCurrentGenus(null);
       setOptionsGenus([]);
-      if (currentFamily != null) {
-        // if (currentFamily!.id != null) {
-        manageCoral.getCoralType(currentFamily!.id).then((response) => {
-          if (response.status == 200) {
-            console.log(response.data.items);
-            setOptionsGenus(response.data.items);
-          } else {
-            setOptionsGenus([]);
-          }
-        });
+      if (currentFamily) {
+        if (currentFamily!.id != null) {
+          manageCoral.getCoralType(currentFamily!.id, 0, -1).then((response) => {
+            if (response.status == 200) {
+              setOptionsGenus(response.data.items);
+              setIsLoading(false);
+            } else {
+              setOptionsGenus([]);
+              setIsLoading(false);
+            }
+          });
+        }
       }
     }
   }, [currentFamily]);
@@ -294,6 +315,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                       clearIcon
                       disabled={isEdit}
                       id="class"
+                      loading={isLoading}
                       value={currentClass}
                       options={optionsClass}
                       getOptionLabel={(option: any) => option.name}
@@ -317,6 +339,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                         clearIcon
                         disabled={isEdit}
                         id="order"
+                        loading={isLoading}
                         value={currentOrder}
                         options={optionsOrder}
                         getOptionLabel={(option: any) => option.name}
@@ -344,6 +367,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                       clearIcon
                       disabled={isEdit}
                       id="family"
+                      loading={isLoading}
                       value={currentFamily}
                       options={optionsFamily}
                       getOptionLabel={(option) => option.name}
@@ -367,6 +391,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                         clearIcon
                         disabled={isEdit}
                         id="Genus"
+                        loading={isLoading}
                         value={currentGenus}
                         options={optionsGenus}
                         getOptionLabel={(option) => option.name}

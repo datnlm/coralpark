@@ -21,15 +21,17 @@ import {
 } from '@material-ui/core';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
-
+import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
 type GardenMoreMenuProps = {
   onDelete: VoidFunction;
   userName: string;
+  status: any;
 };
 
-export default function GardenMoreMenu({ onDelete, userName }: GardenMoreMenuProps) {
+export default function GardenMoreMenu({ onDelete, userName, status }: GardenMoreMenuProps) {
+  const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -58,23 +60,29 @@ export default function GardenMoreMenu({ onDelete, userName }: GardenMoreMenuPro
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={trash2Outline} width={24} height={24} />
-          </ListItemIcon>
-          <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
-        </MenuItem>
+        {status !== 0 && (
+          <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
+            <ListItemIcon>
+              <Icon icon={trash2Outline} width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary={translate('button.menu.delete')}
+              primaryTypographyProps={{ variant: 'body2' }}
+            />
+          </MenuItem>
+        )}
+
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-              Confirm delete
+              {translate('message.title.confirm-delete')}
             </DialogTitle>
             <DialogContent>
-              <DialogContentText>Are you sure to delete this?</DialogContentText>
+              <DialogContentText>{translate('message.confirm-delete')}</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button autoFocus onClick={handleClose}>
-                Cancel
+                {translate('button.save.cancel')}
               </Button>
               <Button
                 onClick={(event) => {
@@ -82,7 +90,7 @@ export default function GardenMoreMenu({ onDelete, userName }: GardenMoreMenuPro
                   handleClose();
                 }}
               >
-                Confirm
+                {translate('button.save.confirm')}
               </Button>
             </DialogActions>
           </Dialog>
@@ -96,7 +104,10 @@ export default function GardenMoreMenu({ onDelete, userName }: GardenMoreMenuPro
           <ListItemIcon>
             <Icon icon={editFill} width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText
+            primary={translate('button.menu.edit')}
+            primaryTypographyProps={{ variant: 'body2' }}
+          />
         </MenuItem>
       </Menu>
     </>

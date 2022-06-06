@@ -19,11 +19,13 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+
 import { codes, emailError } from 'utils/helpError';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
+import useLocales from '../../../hooks/useLocales';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 //
 import { MIconButton } from '../../@material-extend';
@@ -38,6 +40,7 @@ type InitialValues = {
 };
 export default function LoginForm() {
   const { login } = useAuth();
+  const { translate } = useLocales();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -61,7 +64,7 @@ export default function LoginForm() {
       if (failedLoginAttempts && Number(failedLoginAttempts) >= 5) {
         resetForm();
         setSubmitting(false);
-        setErrors({ failedLoginAttempts: 'Too many failed login attempts' });
+        setErrors({ failedLoginAttempts: translate('message.login.failedLoginAttempts') });
         if (localStorage.getItem('expiration')) {
           const expiration = new Date(localStorage.getItem('expiration')!);
           if (new Date().valueOf() - expiration.valueOf() == 0) {
@@ -72,7 +75,7 @@ export default function LoginForm() {
       } else {
         try {
           await login(values.email, values.password);
-          enqueueSnackbar('Login success', {
+          enqueueSnackbar(translate('message.login.success'), {
             variant: 'success',
             action: (key) => (
               <MIconButton size="small" onClick={() => closeSnackbar(key)}>
@@ -88,7 +91,7 @@ export default function LoginForm() {
           resetForm();
           if (isMountedRef.current) {
             setSubmitting(false);
-            setErrors({ afterSubmit: 'The username or password are not valid.' });
+            setErrors({ afterSubmit: translate('message.login.invalid') });
 
             // set login 5 failed
             // failedLoginAttempts
@@ -131,7 +134,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="username"
             // type="email"
-            label="Username"
+            label={translate('page.login.form.user')}
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
@@ -141,7 +144,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label={translate('page.login.form.password')}
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -160,7 +163,7 @@ export default function LoginForm() {
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
           <FormControlLabel
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
-            label="Remember me"
+            label={translate('page.login.form.remember')}
           />
 
           <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
@@ -175,7 +178,7 @@ export default function LoginForm() {
           variant="contained"
           loading={isSubmitting}
         >
-          Login
+          {translate('button.login')}
         </LoadingButton>
       </Form>
     </FormikProvider>

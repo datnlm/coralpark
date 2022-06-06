@@ -7,6 +7,7 @@ import { Container } from '@material-ui/core';
 import { Area } from '../../@types/area';
 // redux
 import { useDispatch } from '../../redux/store';
+import { getListArea } from '../../redux/slices/area';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -31,6 +32,7 @@ export default function AreaCreate() {
   const fetchData = async () => {
     await manageArea.getAreaById(paramCase(name)).then((response) => {
       setCurrentArea(response.data);
+      console.log(response.data);
     });
   };
 

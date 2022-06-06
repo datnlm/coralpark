@@ -337,12 +337,38 @@
       }
     },
     "login": {
+      "title": "Login to CGMS",
       "label": {
         "signed": "Signed in as"
       },
       "form": {
         "user": "User name",
-        "password": "Password"
+        "password": "Password",
+        "remember": "Remember me"
+      }
+    },
+    "account": {
+      "title": {
+        "list": "Account: Acount List",
+        "create": "Account: Create a new account",
+        "update": "Account: Update account"
+      },
+      "heading1": {
+        "list": "Account",
+        "create": "Create account",
+        "update": "Update account"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Account",
+      "heading4": {
+        "list": "List",
+        "new": "New account"
+      },
+      "search": "Search account",
+      "form": {
+        "user-name": "Name",
+        "email": "Email",
+        "role-name": "Role"
       }
     }
   }, 
@@ -385,7 +411,13 @@
     "delete-success": "Delete success",
     "create-error": "Create error",
     "update-error": "Update error",
-    "delete-error": "Delete error"
+    "delete-error": "Delete error",
+    "login": {
+      "success": "Login sucess",
+      "error": "Login error",
+      "failedLoginAttempts": "Too many failed login attempts",
+      "invalid": "The username or password are not valid."
+    }
   },
   "menu": {
     "sidebarConfig": {
@@ -459,6 +491,10 @@
         "list": "List",
         "create": "Create"
       }
+    },
+    "menu-option": {
+      "home": "Home",
+      "account": "Account"
     }
   }
 }
