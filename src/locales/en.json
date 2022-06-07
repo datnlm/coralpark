@@ -56,6 +56,30 @@
         "status": "Status"
       }
     },
+    "diver-team": {
+      "title": {
+        "list": "Diver Team: Diver Team List",
+        "create": "Diver Team: Create a new diver team",
+        "update": "Diver Team: Update diver team"
+      },
+      "heading1": {
+        "list": "Diver Team List",
+        "create": "Create diver team",
+        "update": "Update diver team"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Diver Team",
+      "heading4": {
+        "list": "List",
+        "new": "New diver team"
+      },
+      "search": "Search diver team",
+      "form": {
+        "name": "Name",
+        "quantity": "Phone",
+        "status": "Status"
+      }
+    },
     "partner": {
       "title": {
         "list": "Partner: Partner List",
@@ -429,7 +453,8 @@
         "partner": "partner"
       },
       "diver": {
-        "list": "List"
+        "list": "List",
+        "team": "Team"
       },
       "partner": {
         "list": "List"

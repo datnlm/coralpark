@@ -4,22 +4,26 @@ import { createSlice } from '@reduxjs/toolkit';
 import { manageDiver } from '_apis_/diver';
 import { dispatch } from '../store';
 // utils
-import { Diver } from '../../@types/diver';
+import { Diver, DiverTeam } from '../../@types/diver';
 
 // ----------------------------------------------------------------------
 
 type DiverState = {
   isLoading: boolean;
+  isLoadingDiverTeam: boolean;
   error: boolean;
   totalCount: number;
   diverList: Diver[];
+  diverTeamList: DiverTeam[];
 };
 
 const initialState: DiverState = {
   isLoading: false,
+  isLoadingDiverTeam: false,
   error: false,
   totalCount: 0,
-  diverList: []
+  diverList: [],
+  diverTeamList: []
 };
 
 const slice = createSlice({
@@ -29,6 +33,11 @@ const slice = createSlice({
     // START LOADING
     startLoading(state) {
       state.isLoading = true;
+    },
+
+    // START LOADING
+    startLoadingDiverTeam(state) {
+      state.isLoadingDiverTeam = true;
     },
 
     // TOTOAL COUNT
@@ -48,10 +57,10 @@ const slice = createSlice({
       state.diverList = action.payload;
     },
 
-    // DELETE DIVER
-    deleteDiver(state, action) {
-      const deleteDiver = filter(state.diverList, (diver) => diver.id !== action.payload);
-      state.diverList = deleteDiver;
+    // GET LIST Diver
+    getListDiverTeam(state, action) {
+      state.isLoadingDiverTeam = false;
+      state.diverTeamList = action.payload;
     }
   }
 });
@@ -72,6 +81,23 @@ export function getListDiver(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListDiver(response.data.items));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// get Diver team
+export function getListDiverTeam(page: number, rowsPerPage: number) {
+  return async () => {
+    dispatch(slice.actions.startLoadingDiverTeam());
+    try {
+      await manageDiver.getListDiverTeam(1 + page, rowsPerPage).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
+          dispatch(slice.actions.getListDiverTeam(response.data.items));
         }
       });
     } catch (error) {

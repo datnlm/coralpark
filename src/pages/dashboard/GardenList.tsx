@@ -146,10 +146,10 @@ export default function UserList() {
     try {
       await manageGarden.deleteGarden(gardenId).then((respone) => {
         if (respone.status === 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
           dispatch(getListGarden(page, rowsPerPage));
         } else {
-          enqueueSnackbar('Delete error', { variant: 'error' });
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {

@@ -44,7 +44,8 @@ export default function SidebarConfig() {
           icon: ICONS.diver,
           children: [
             { title: translate('menu.sidebarConfig.diver.list'), path: PATH_DASHBOARD.diver.list },
-            { title: translate('menu.sidebarConfig.diver.team'), path: PATH_DASHBOARD.diver.team }
+            { title: translate('menu.sidebarConfig.diver.team'), path: PATH_DASHBOARD.diver.team },
+            { title: translate('menu.sidebarConfig.diver.area'), path: PATH_DASHBOARD.diver.area }
           ]
         },
         {

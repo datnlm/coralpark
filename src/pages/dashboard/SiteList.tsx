@@ -160,12 +160,12 @@ export default function UserList() {
     try {
       await manageGarden.deleteSite(siteId).then((respone) => {
         if (respone.status === 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
           dispatch(getListSites(page, rowsPerPage));
         }
       });
     } catch (error) {
-      enqueueSnackbar('Delete error', { variant: 'error' });
+      enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
       console.log(error);
     }
   };

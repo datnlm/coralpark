@@ -4,6 +4,12 @@ import { useCallback, useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { RootState, useSelector, dispatch } from 'redux/store';
+import searchFill from '@iconify/icons-eva/search-fill';
+import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
+import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
+import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
+import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
@@ -23,21 +29,15 @@ import {
   ListItemIcon,
   Button,
   ListItemText,
+  InputAdornment,
+  Avatar,
   Radio
 } from '@material-ui/core';
+import { manageDiver } from '_apis_/diver';
+import { getListDiver } from 'redux/slices/diver';
+import { Diver, DiverTeam } from '../../../@types/diver';
 // utils
-import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
-import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
-import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import { RootState, useSelector } from 'redux/store';
-import { manageCoral } from '_apis_/coral';
-import { Diver } from '../../../@types/diver';
 import useLocales from '../../../hooks/useLocales';
-// @types
-import { Coral } from '../../../@types/coral';
-
-//
 
 // ----------------------------------------------------------------------
 const style = {
@@ -53,20 +53,29 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1)
 }));
 
-export default function CoralAreaNewForm() {
+type DiverTeaTransferListProps = {
+  isEdit: boolean;
+  currentDiverTeam?: DiverTeam | null;
+  submitRef: any;
+  onSubmitCallback: any;
+};
+
+export default function DiverTeaTransferList({
+  isEdit,
+  currentDiverTeam,
+  submitRef,
+  onSubmitCallback
+}: DiverTeaTransferListProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   // -------------------
   const diverList = useSelector((state: RootState) => state.diver.diverList);
-  const [currentArea, setCurrentArea] = useState<any>(null);
-  const [coralList, setCoralList] = useState<Coral[]>([]);
   const [checked, setChecked] = useState<number[]>([]);
   const [left, setLeft] = useState<number[] | any>([]);
   const [right, setRight] = useState<number[]>([]);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
-  const [isEdit, setIsEdit] = useState<Boolean>(false);
   // -------------------
 
   function not(a: number[], b: number[]) {
@@ -127,35 +136,37 @@ export default function CoralAreaNewForm() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentArea?.id || '',
-      coral: currentArea?.coral || '',
-      area: currentArea?.area || ''
+      id: currentDiverTeam?.id || '',
+      name: currentDiverTeam?.name || '',
+      number: currentDiverTeam?.number || '',
+      divers: currentDiverTeam?.divers || [{}],
+      status: currentDiverTeam?.status || 1
     },
-    // validationSchema: NewUserSchema,
+
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        // number.map((v) => arr.push({id: v}));
-        values.coral = right.map((v: any) => ({
+        values.divers = right.map((v: any) => ({
           id: v
         }));
-        values.area = currentArea;
-
         let flag = false;
 
         !isEdit
-          ? await manageCoral.createCoralArea(values).then((response) => {
+          ? await manageDiver.createDiverTeam(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageCoral.updateCoralArea(values).then((response) => {
+          : await manageDiver.updateDiverTeam(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             });
+
         if (flag) {
-          setCurrentArea(null);
+          // setCurrentArea(null);
           setSubmitting(false);
+          onSubmitCallback(true);
+          dispatch(getListDiver(0, -1));
           enqueueSnackbar(
             !isEdit ? translate('message.create-success') : translate('message.update-success'),
             {
@@ -163,6 +174,7 @@ export default function CoralAreaNewForm() {
             }
           );
         } else {
+          onSubmitCallback(false);
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),
             {
@@ -171,6 +183,7 @@ export default function CoralAreaNewForm() {
           );
         }
       } catch (error) {
+        onSubmitCallback(false);
         console.error(error);
         setSubmitting(false);
       }
@@ -194,42 +207,26 @@ export default function CoralAreaNewForm() {
   );
 
   useEffect(() => {
-    const mapDiver: number[] = [];
-    diverList.map((v: Diver) => mapDiver.push(Number(v.id)));
-    setRight([]);
-    setLeft(mapDiver);
-    setIsEdit(false);
-    // if (currentArea != null) {
-    //   // set coral id right
-    //   manageArea.getAreaById(currentArea.id).then((response) => {
-    //     if (response.status == 200) {
-    //       const data = response.data.corals;
-    //       if (data != null) {
-    //         data.map((v: Coral) => mapCoralAreaId.push(Number(v.id)));
-    //         setRight(mapCoralAreaId);
-    //         setIsEdit(true);
-    //       }
-    //       // set coral id left
-    //       manageCoral.getListCoral(1, 100000).then((response) => {
-    //         if (response.status == 200) {
-    //           const data = response.data.items;
-    //           setCoralList(data);
-    //           const mapId: number[] = [];
-    //           data.map((v: Coral) => mapId.push(Number(v.id)));
-    //           const mapCoralId: number[] = mapId.filter((i) => !mapCoralAreaId.includes(i));
-    //           setLeft(mapCoralId);
-    //         }
-    //       });
-    //     }
-    //   });
-    // }
-  }, [currentArea]);
+    let listSelectDiverTeamId: number[] = [];
+    const listSelectedDiverId: number[] = [];
+    if (isEdit) {
+      currentDiverTeam?.divers.map((v: Diver) => listSelectedDiverId.push(Number(v.id)));
+      const mapId: number[] = [];
+      diverList.map((v: Diver) => mapId.push(Number(v.id)));
+      listSelectDiverTeamId = mapId.filter((i) => !listSelectedDiverId.includes(i));
+    } else {
+      diverList.map((v: Diver) => listSelectDiverTeamId.push(Number(v.id)));
+    }
+    setRight(listSelectedDiverId);
+    setLeft(listSelectDiverTeamId);
+  }, [currentDiverTeam]);
 
   // define
   const customList = (title: React.ReactNode, items: number[]) => (
     <Card
       sx={{
-        height: 320,
+        width: 300,
+        height: 450,
         overflow: 'auto',
         borderRadius: 1.5
       }}
@@ -263,10 +260,13 @@ export default function CoralAreaNewForm() {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText
-                id={labelId}
-                primary={diverList.find((e: Diver) => Number(e.id) == value)?.name}
-              />
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <Avatar src={diverList.find((e: Diver) => Number(e.id) == value)?.imageUrl} />
+                <ListItemText
+                  id={labelId}
+                  primary={diverList.find((e: Diver) => Number(e.id) == value)?.name}
+                />
+              </Stack>
               {/* <ListItemText
                 id={labelId}
                 primary={.find((e: any) => e.id == statusEnum)?.label}
@@ -281,73 +281,111 @@ export default function CoralAreaNewForm() {
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Card sx={{ p: 3, minWidth: 400 }}>
-              <Stack spacing={3}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{ width: 'auto', py: 3 }}
-                  >
-                    <Grid item>{customList(translate('page.coral-area.form.choices'), left)}</Grid>
-                    <Grid item>
-                      <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
-                        <Button
-                          color="inherit"
-                          variant="outlined"
-                          size="small"
-                          onClick={handleAllRight}
-                          disabled={left.length === 0}
-                          aria-label="move all right"
-                          sx={{ my: 1 }}
-                        >
-                          <Icon icon={arrowheadRightFill} width={18} height={18} />
-                        </Button>
-                        {/* <Button
-                          color="inherit"
-                          variant="outlined"
-                          size="small"
-                          onClick={handleCheckedRight}
-                          disabled={leftChecked.length === 0}
-                          aria-label="move selected right"
-                          sx={{ my: 1 }}
-                        >
-                          <Icon icon={arrowIosForwardFill} width={18} height={18} />
-                        </Button> */}
-                        {/* <Button
-                          color="inherit"
-                          variant="outlined"
-                          size="small"
-                          onClick={handleCheckedLeft}
-                          disabled={rightChecked.length === 0}
-                          aria-label="move selected left"
-                          sx={{ my: 1 }}
-                        >
-                          <Icon icon={arrowIosBackFill} width={18} height={18} />
-                        </Button> */}
-                        <Button
-                          color="inherit"
-                          variant="outlined"
-                          size="small"
-                          onClick={handleAllLeft}
-                          disabled={right.length === 0}
-                          aria-label="move all left"
-                          sx={{ my: 1 }}
-                        >
-                          <Icon icon={arrowheadLeftFill} width={18} height={18} />
-                        </Button>
+        <Grid container spacing={3} direction="column">
+          <Grid item>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  fullWidth
+                  label="Full Name"
+                  {...getFieldProps('name')}
+                  error={Boolean(touched.name && errors.name)}
+                  helperText={touched.name && errors.name}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          {/* <Grid item>
+            <TextField
+              fullWidth
+              label="Search"
+              type="search"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icon icon={searchFill} />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid> */}
+
+          <Grid item>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Card sx={{ p: 3, minWidth: 600 }}>
+                  <Stack spacing={3}>
+                    <Stack direction={{ xs: 'row', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                      <Grid
+                        container
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{ width: 'auto', py: 3 }}
+                      >
+                        <Grid item>
+                          {customList(translate('page.coral-area.form.choices'), left)}
+                        </Grid>
+                        <Grid item>
+                          <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
+                            <Button
+                              color="inherit"
+                              variant="outlined"
+                              size="small"
+                              onClick={handleAllRight}
+                              disabled={left.length === 0}
+                              aria-label="move all right"
+                              sx={{ my: 1 }}
+                            >
+                              <Icon icon={arrowheadRightFill} width={18} height={18} />
+                            </Button>
+                            <Button
+                              color="inherit"
+                              variant="outlined"
+                              size="small"
+                              onClick={handleCheckedRight}
+                              disabled={leftChecked.length === 0}
+                              aria-label="move selected right"
+                              sx={{ my: 1 }}
+                            >
+                              <Icon icon={arrowIosForwardFill} width={18} height={18} />
+                            </Button>
+                            <Button
+                              color="inherit"
+                              variant="outlined"
+                              size="small"
+                              onClick={handleCheckedLeft}
+                              disabled={rightChecked.length === 0}
+                              aria-label="move selected left"
+                              sx={{ my: 1 }}
+                            >
+                              <Icon icon={arrowIosBackFill} width={18} height={18} />
+                            </Button>
+                            <Button
+                              color="inherit"
+                              variant="outlined"
+                              size="small"
+                              onClick={handleAllLeft}
+                              disabled={right.length === 0}
+                              aria-label="move all left"
+                              sx={{ my: 1 }}
+                            >
+                              <Icon icon={arrowheadLeftFill} width={18} height={18} />
+                            </Button>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          {customList(translate('page.coral-area.form.chosen'), right)}
+                        </Grid>
                       </Grid>
-                    </Grid>
-                    <Grid item>{customList(translate('page.coral-area.form.chosen'), right)}</Grid>
-                  </Grid>
-                </Stack>
-              </Stack>
-            </Card>
+                    </Stack>
+                  </Stack>
+                </Card>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
+        <Button type="submit" ref={submitRef} disableRipple={true} />
       </Form>
     </FormikProvider>
   );

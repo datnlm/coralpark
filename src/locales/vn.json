@@ -56,6 +56,30 @@
         "status": "Trạng thái"
       }
     },
+    "diver-team": {
+      "title": {
+        "list": "Đội thợ lặn: Danh sách đội thợ lặn",
+        "create": "Đội thợ lặn: Tạo mới đội thợ lặn",
+        "update": "Đội thợ lặn: Cập nhật thợ lặn"
+      },
+      "heading1": {
+        "list": "Danh sách đội thợ lặn",
+        "create": "Tạo mới đội thợ lặn",
+        "update": "Cập nhật đội thợ lặn"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Đội thợ lặn",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới đội"
+      },
+      "search": "Tìm tên đội",
+      "form": {
+        "name": "Tên đội",
+        "quantity": "Số lượng thành viên",
+        "status": "Trạng thái"
+      }
+    },
     "partner": {
       "title": {
         "list": "Đối tác: Danh sách đối tác",
@@ -413,10 +437,10 @@
     "update-error": "Cập nhật thất bại",
     "delete-error": "Xoá thất bại",
     "login": {
-      "success": "Login sucess",
-      "error": "Login error",
-      "failedLoginAttempts": "Too many failed login attempts",
-      "invalid": "The username or password are not valid."
+      "success": "Đăng nhập thành công",
+      "error": "Đăng nhập thất bại",
+      "failedLoginAttempts": "Quá nhiều lần đăng nhập không thành công",
+      "invalid": "Tên người dùng hoặc mật khẩu không hợp lệ."
     }
   },
   "menu": {
@@ -429,7 +453,8 @@
         "partner": "Đối tác"
       },
       "diver": {
-        "list": "Danh sách"
+        "list": "Danh sách",
+        "team": "Đội"
       },
       "partner": {
         "list": "Danh sách"

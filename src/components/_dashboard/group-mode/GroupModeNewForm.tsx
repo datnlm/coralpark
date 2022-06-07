@@ -15,7 +15,8 @@ import {
   TextField,
   Typography,
   Autocomplete,
-  FormHelperText
+  FormHelperText,
+  InputAdornment
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -42,7 +43,11 @@ export default function GroupModeNewForm({ isEdit, currentGroupMode }: GroupMode
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    contribute: Yup.string().required('Contribute is required')
+    contribution: Yup.number()
+      .min(0, 'Contribution must be greater than 0')
+      .max(100, 'Contribution must be less than 100')
+      .required('Contribution is required')
+      .typeError('Contribution must be a number')
   });
 
   const formik = useFormik({
@@ -50,7 +55,7 @@ export default function GroupModeNewForm({ isEdit, currentGroupMode }: GroupMode
     initialValues: {
       id: currentGroupMode?.id || '',
       name: currentGroupMode?.name || '',
-      contribute: currentGroupMode?.contribute || ''
+      contribution: currentGroupMode?.contribution || 0
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -125,9 +130,12 @@ export default function GroupModeNewForm({ isEdit, currentGroupMode }: GroupMode
                   <TextField
                     fullWidth
                     label={translate('page.group-mode.form.contribution')}
-                    {...getFieldProps('contribute')}
-                    error={Boolean(touched.contribute && errors.contribute)}
-                    helperText={touched.contribute && errors.contribute}
+                    {...getFieldProps('contribution')}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">%</InputAdornment>
+                    }}
+                    error={Boolean(touched.contribution && errors.contribution)}
+                    helperText={touched.contribution && errors.contribution}
                   />
                 </Stack>
 

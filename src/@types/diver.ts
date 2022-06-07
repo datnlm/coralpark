@@ -15,3 +15,12 @@ export type Diver = {
     password: string;
     status: any;
 };
+
+
+export type DiverTeam = {
+    id: string;
+    name: string;
+    number: string;
+    divers: Diver[];
+    status: any;
+};

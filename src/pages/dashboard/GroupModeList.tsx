@@ -158,14 +158,14 @@ export default function EcommerceProductList() {
     try {
       await manageGroupMode.deleteGroupMode(id).then((respone) => {
         if (respone.status == 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
           dispatch(getListGroupMode(page, rowsPerPage));
         } else {
-          enqueueSnackbar('Delete error', { variant: 'error' });
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
-      enqueueSnackbar('Delete error', { variant: 'error' });
+      enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
       console.log(error);
     }
   };
@@ -241,7 +241,7 @@ export default function EcommerceProductList() {
                     </TableCell>
                   ) : (
                     filteredGroupMode.map((row, index) => {
-                      const { id, name, contribute } = row;
+                      const { id, name, contribution } = row;
 
                       const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -251,7 +251,7 @@ export default function EcommerceProductList() {
                             {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
                           <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{contribute}</TableCell>
+                          <TableCell align="left">{contribution}</TableCell>
                           <TableCell align="right">
                             <GroupModeMoreMenu
                               onDelete={() => handleDeleteGroup(id.toString())}
