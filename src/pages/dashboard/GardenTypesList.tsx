@@ -197,7 +197,7 @@ export default function UserList() {
           links={[
             { name: translate('page.garden-type.heading2'), href: PATH_DASHBOARD.root },
             { name: translate('page.garden-type.heading3'), href: PATH_DASHBOARD.garden.typesList },
-            { name: translate('page.site.heading4.list') }
+            { name: translate('page.garden-type.heading4.list') }
           ]}
           action={
             <Button

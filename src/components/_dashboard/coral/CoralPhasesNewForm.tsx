@@ -27,6 +27,7 @@ import useLocales from '../../../hooks/useLocales';
 import { Phases } from '../../../@types/coral';
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
+import LivePreview from '../../upload/LivePreview';
 // ----------------------------------------------------------------------
 
 type CoralPhasesNewFormProps = {
@@ -89,10 +90,10 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.phases.new);
+          navigate(PATH_DASHBOARD.phases.list);
         } else {
           enqueueSnackbar(
-            !isEdit ? translate('message.error-success') : translate('message.update-success'),
+            !isEdit ? translate('message.create-error') : translate('message.update-error'),
             { variant: 'error' }
           );
         }
@@ -129,6 +130,12 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
     setFieldValue('imageUrl', filteredItems);
   };
 
+  const handleRemoveImage = (imageId: string) => {
+    if (values.imageUrl) {
+      setFieldValue('imageUrl', '');
+    }
+  };
+
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -161,7 +168,11 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                     </FormHelperText>
                   )}
                 </div>
-
+                {/* {values.imageUrl && (
+                  <>
+                    <LivePreview files={values.imageUrl} onRemove={handleRemoveImage} />
+                  </>
+                )} */}
                 <div>
                   <LabelStyle>{translate('page.phase.form.image')}</LabelStyle>
                   <UploadMultiFile

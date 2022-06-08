@@ -19,9 +19,8 @@ import useLocales from '../../../../hooks/useLocales';
 const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
   display: 'flex',
-  // justifyContent: 'space-between',
-  padding: theme.spacing(0, 0, 0, 0)
-  // padding: theme.spacing(0, 1, 0, 3)
+  justifyContent: 'space-between',
+  padding: theme.spacing(0, 1, 0, 3)
 }));
 
 const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
@@ -39,17 +38,17 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type UserListToolbarProps = {
+type CoralPhaseListToolbarProps = {
   numSelected: number;
   filterName: string;
   onFilterName: (value: string) => void;
 };
 
-export default function UserListToolbar({
+export default function CoralPhaseListToolbar({
   numSelected,
   filterName,
   onFilterName
-}: UserListToolbarProps) {
+}: CoralPhaseListToolbarProps) {
   const { translate } = useLocales();
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
@@ -66,7 +65,7 @@ export default function UserListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder={translate('page.coral-phase.search')}
+        placeholder={translate('page.coral-coral.search')}
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
+import { manageCoral } from '_apis_/coral';
+import { Phases } from '../../@types/coral';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -25,8 +27,27 @@ export default function PhasesCreate() {
   const { name } = useParams();
   const isEdit = pathname.includes('edit');
 
-  // useEffect(() => {}, [dispatch]);
-  // chua sua coral phase list
+  const [currentPhase, setCurrentPhases] = useState<Phases>();
+
+  const fetchData = async () => {
+    await manageCoral.getCoralPhaseByID(paramCase(name)).then((response) => {
+      if (response.status == 200) {
+        const data = {
+          id: response.data.id,
+          name: response.data.name,
+          imageUrl: response.data.imageUrl,
+          description: response.data.description
+        };
+        setCurrentPhases(data);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      fetchData();
+    }
+  }, [dispatch]);
   return (
     <Page
       title={
@@ -48,7 +69,7 @@ export default function PhasesCreate() {
             { name: !isEdit ? translate('page.coral-phase.heading4.new') : name }
           ]}
         />
-        <CoralPhasesNewForm isEdit={isEdit} />
+        <CoralPhasesNewForm isEdit={isEdit} currentPhases={currentPhase} />
       </Container>
     </Page>
   );

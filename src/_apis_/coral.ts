@@ -87,6 +87,14 @@ export class Coral {
       .catch((err) => err);
   };
 
+  // get coral type by id
+  getCoralPhaseByID = (id: string) => {
+    return axios
+      .get(`/api/v1/admin/coral-phases/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
   createCoralPhases = (phases: any) => {
     return axios
       .post('/api/v1/admin/coral-phases', phases, {
@@ -105,6 +113,14 @@ export class Coral {
           'Content-Type': 'multipart/form-data'
         }
       })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // delete coral phase
+  deleteCoralPhase = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/coral-phases/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };
