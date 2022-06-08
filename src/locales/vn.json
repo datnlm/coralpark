@@ -56,6 +56,104 @@
         "status": "Trạng thái"
       }
     },
+    "technician": {
+      "title": {
+        "list": "Kỹ thuật viên: Danh sách kỹ thuật viên",
+        "create": "Kỹ thuật viên: Tạo mới kỹ thuật viên",
+        "update": "Kỹ thuật viên: Cập nhật kỹ thuật viên"
+      },
+      "heading1": {
+        "list": "Kỹ thuật viên List",
+        "create": "Tạo mới kỹ thuật viên",
+        "update": "Cập nhật kỹ thuật viên"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Kỹ thuật viên",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới kỹ thuật viên"
+      },
+      "search": "Tìm kiếm theo tên",
+      "form": {
+        "name": "Tên",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ email",
+        "address": "Địa chỉ",
+        "status": "Trạng thái"
+      }
+    },
+    "technician-area": {
+      "title": {
+        "list": "Kỹ thuật viên: Khu vực ",
+        "create": "Kỹ thuật viên: Thêm kỹ thuật viên vào khu vực",
+        "update": "Kỹ thuật viên: Cập nhật kỹ thuật viên khu vực"
+      },
+      "heading1": {
+        "list": "Danh sách khu vực kỹ thuật viên",
+        "create": "Thêm kỹ thuật viên vào khu vực",
+        "update": "Cập nhật kỹ thuật viên khu vực"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Kỹ thuật viên khu vực",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm kỹ thuật viên vào khu vực"
+      },
+      "search": "Tìm kiếm kỹ thuật viên trong khu vực",
+      "form": {
+        "choices": "Chưa chọn",
+        "chosen": "Đã chọn",
+        "area": "Khu vực"
+      }
+    },
+    "diver-team": {
+      "title": {
+        "list": "Đội thợ lặn: Danh sách đội thợ lặn",
+        "create": "Đội thợ lặn: Tạo mới đội thợ lặn",
+        "update": "Đội thợ lặn: Cập nhật thợ lặn"
+      },
+      "heading1": {
+        "list": "Danh sách đội thợ lặn",
+        "create": "Tạo mới đội thợ lặn",
+        "update": "Cập nhật đội thợ lặn"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Đội thợ lặn",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới đội"
+      },
+      "search": "Tìm tên đội",
+      "form": {
+        "name": "Tên đội",
+        "quantity": "Số lượng thành viên",
+        "status": "Trạng thái"
+      }
+    },
+    "diver-team-area": {
+      "title": {
+        "list": "Thợ lặn: Khu vực",
+        "create": "Thợ lặn: Thêm mới thợ lặn vào khu vực",
+        "update": "Thợ lặn: Cập nhật thợ lặn trong khu vực"
+      },
+      "heading1": {
+        "list": "Danh sách Thợ lặn trong khu vực",
+        "create": "Thêm mới thợ lặn vào khu vực",
+        "update": "Cập nhật thợ lặn trong khu vực"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Thợ lặn trong khu vực",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới"
+      },
+      "search": "Tìm kiếm thợ lặn trong khu vực",
+      "form": {
+        "choices": "Chưa chọn",
+        "chosen": "Đã chọn",
+        "area": "Khu vực"
+      }
+    },
     "partner": {
       "title": {
         "list": "Đối tác: Danh sách đối tác",
@@ -336,6 +434,28 @@
         "contribution": "Đóng góp"
       }
     },
+    "categories": {
+      "title": {
+        "list": "Loại sản phẩm: Loại sản phẩm List",
+        "create": "Loại sản phẩmt: Thêm mới loại sản phẩm",
+        "update": "Loại sản phẩm: Cập nhật loại sản phẩm"
+      },
+      "heading1": {
+        "list": "Loại sản phẩm",
+        "create": "Thêm mới loại sản phẩm",
+        "update": "Cập nhật loại sản phẩm"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Loại sản phẩm",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới loại sản phẩm"
+      },
+      "search": "Tìm kiếm theo tên loại sản phẩm",
+      "form": {
+        "name": "Tên"
+      }
+    },
     "login": {
       "title": "Đăng nhập vào CGMS",
       "label": {
@@ -413,10 +533,10 @@
     "update-error": "Cập nhật thất bại",
     "delete-error": "Xoá thất bại",
     "login": {
-      "success": "Login sucess",
-      "error": "Login error",
-      "failedLoginAttempts": "Too many failed login attempts",
-      "invalid": "The username or password are not valid."
+      "success": "Đăng nhập thành công",
+      "error": "Đăng nhập thất bại",
+      "failedLoginAttempts": "Quá nhiều lần đăng nhập không thành công",
+      "invalid": "Tên người dùng hoặc mật khẩu không hợp lệ."
     }
   },
   "menu": {
@@ -429,7 +549,9 @@
         "partner": "Đối tác"
       },
       "diver": {
-        "list": "Danh sách"
+        "list": "Danh sách",
+        "team": "Đội",
+        "area": "Địa điểm"
       },
       "partner": {
         "list": "Danh sách"
@@ -447,7 +569,9 @@
         "coral": "San hô",
         "area": "Khu vực",
         "group-mode": "Group Mode",
-        "account": "Tài khoản"
+        "account": "Tài khoản",
+        "categories": "Loại sản phẩm",
+        "technician": "Kỹ thuật viên"
       },
       "subheader": {
         "site": "Địa điểm",
@@ -459,7 +583,9 @@
         "phase-type": "Từng giai đoạn",
         "area": "Khu vực",
         "account": "Tài khoản",
-        "group-mode": "Group Mode"
+        "group-mode": "Group Mode",
+        "categories": "Loại sản phẩm",
+        "technician": "Kỹ thuật viên"
       },
       "site": {
         "list": "Danh sách",
@@ -490,6 +616,15 @@
       "group-mode": {
         "list": "Danh sách",
         "create": "Thêm mới"
+      },
+      "categories": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
+      },
+      "technician": {
+        "list": "Danh sách",
+        "create": "Thêm mới",
+        "area": "Khu vực"
       }
     },
     "menu-option": {

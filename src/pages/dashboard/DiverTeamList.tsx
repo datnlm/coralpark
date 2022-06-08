@@ -29,7 +29,7 @@ import { statusOptions } from 'utils/constants';
 import DiverTeamNewForm from 'components/_dashboard/diver/DiverTeamNewForm';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListDiver } from '../../redux/slices/diver';
+import { getListDiverTeam } from '../../redux/slices/diver';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -37,7 +37,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import useLocales from '../../hooks/useLocales';
 import useSettings from '../../hooks/useSettings';
 // @types
-import { Diver } from '../../@types/diver';
+import { DiverTeam } from '../../@types/diver';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -45,10 +45,10 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  DiverListHead,
-  DiverListToolbar,
-  DiverMoreMenu
-} from '../../components/_dashboard/diver/list';
+  DiverTeamListHead,
+  DiverTeamListToolbar,
+  DiverTeamMoreMenu
+} from '../../components/_dashboard/diver/list_diver_team';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -69,7 +69,11 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Diver[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(
+  array: DiverTeam[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -88,9 +92,9 @@ export default function UserList() {
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const diverList = useSelector((state: RootState) => state.diver.diverList);
+  const diverTeamList = useSelector((state: RootState) => state.diver.diverTeamList);
   const totalCount = useSelector((state: RootState) => state.diver.totalCount);
-  const isLoading = useSelector((state: RootState) => state.diver.isLoading);
+  const isLoading = useSelector((state: RootState) => state.diver.isLoadingDiverTeam);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -98,7 +102,7 @@ export default function UserList() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  const [currentDiverTeamId, setCurrentDiverTeamId] = useState<string | null>(null);
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -107,7 +111,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = diverList.map((n) => n.name);
+      const newSelecteds = diverTeamList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -141,35 +145,48 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteDiver = async (id: string) => {
+  const handleDeleteDiverTeam = async (id: string) => {
     try {
-      await manageDiver.deleteDiver(id).then((respone) => {
+      await manageDiver.deleteDiverTeam(id).then((respone) => {
         if (respone.status == 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
-          dispatch(getListDiver(page, rowsPerPage));
+          dispatch(getListDiverTeam(page, rowsPerPage));
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
+        } else {
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
+      enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
       console.log(error);
     }
+  };
+
+  const handleClickEditOpen = async (id: string) => {
+    setOpen(true);
+    setCurrentDiverTeamId(id);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
   const handleClickOpen = () => {
+    setCurrentDiverTeamId(null);
     setOpen(true);
   };
 
   useEffect(() => {
-    dispatch(getListDiver(page, rowsPerPage));
+    dispatch(getListDiverTeam(page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !diverList;
+  const emptyRows = !isLoading && !diverTeamList;
 
-  const filteredDiver = applySortFilter(diverList, getComparator(order, orderBy), filterName);
+  const filteredDiverTeam = applySortFilter(
+    diverTeamList,
+    getComparator(order, orderBy),
+    filterName
+  );
 
-  const isDiverNotFound = filteredDiver.length === 0 && !isLoading;
+  const isDiverTeamNotFound = filteredDiverTeam.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -180,22 +197,20 @@ export default function UserList() {
   //   });
   // }
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.diver.form.name'), alignRight: false },
-    { id: 'phone', label: translate('page.diver.form.phone'), alignRight: false },
-    { id: 'email', label: translate('page.diver.form.email'), alignRight: false },
-    { id: 'address', label: translate('page.diver.form.address'), alignRight: false },
-    { id: 'status', label: translate('page.diver.form.status'), alignRight: false },
+    { id: 'name', label: translate('page.diver-team.form.name'), alignRight: false },
+    { id: 'quantity', label: translate('page.diver-team.form.quantity'), alignRight: false },
+    { id: 'status', label: translate('page.diver-team.form.status'), alignRight: false },
     { id: '' }
   ];
   return (
-    <Page title={translate('page.diver.title.list')}>
+    <Page title={translate('page.diver-team.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.diver.heading1.list')}
+          heading={translate('page.diver-team.heading1.list')}
           links={[
-            { name: translate('page.diver.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.diver.heading3'), href: PATH_DASHBOARD.diver.root },
-            { name: translate('page.diver.heading4.list') }
+            { name: translate('page.diver-team.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.diver-team.heading3'), href: PATH_DASHBOARD.diver.root },
+            { name: translate('page.diver-team.heading4.list') }
           ]}
           action={
             <Button
@@ -208,7 +223,7 @@ export default function UserList() {
           }
         />
         <Card>
-          <DiverListToolbar
+          <DiverTeamListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -217,11 +232,11 @@ export default function UserList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <DiverListHead
+                <DiverTeamListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={diverList.length}
+                  rowCount={diverTeamList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -232,8 +247,8 @@ export default function UserList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredDiver.map((row) => {
-                      const { id, name, phone, status, email, address, imageUrl } = row;
+                    filteredDiverTeam.map((row) => {
+                      const { id, name, number, status } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -249,15 +264,12 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">{number}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -267,9 +279,9 @@ export default function UserList() {
                             </Label>
                           </TableCell>
                           <TableCell align="right">
-                            <DiverMoreMenu
-                              onDelete={() => handleDeleteDiver(id.toString())}
-                              diverID={id.toString()}
+                            <DiverTeamMoreMenu
+                              onDelete={() => handleDeleteDiverTeam(id.toString())}
+                              onEdit={() => handleClickEditOpen(id.toString())}
                               status={status}
                             />
                           </TableCell>
@@ -288,7 +300,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isDiverNotFound && (
+                {isDiverTeamNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -311,7 +323,7 @@ export default function UserList() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
-        <DiverTeamNewForm open={open} onClose={handleClose} />
+        <DiverTeamNewForm id={currentDiverTeamId} open={open} onClose={handleClose} />
       </Container>
     </Page>
   );

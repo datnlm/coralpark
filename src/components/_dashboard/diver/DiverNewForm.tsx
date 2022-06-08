@@ -68,7 +68,6 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
       email: currentDiver?.email || '',
       address: currentDiver?.address || '',
       imageUrl: currentDiver?.imageUrl || null,
-      password: currentDiver?.password || '',
       status: currentDiver?.status || 1
     },
     validationSchema: NewProductSchema,

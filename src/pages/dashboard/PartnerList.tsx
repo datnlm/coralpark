@@ -165,12 +165,12 @@ export default function UserList() {
     try {
       await managePartner.deletePartner(id).then((respone) => {
         if (respone.status === 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
           dispatch(getListPartner(page, rowsPerPage));
         }
       });
     } catch (error) {
-      enqueueSnackbar('Delete error', { variant: 'error' });
+      enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
       console.log(error);
     }
   };

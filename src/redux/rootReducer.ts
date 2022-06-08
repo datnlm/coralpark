@@ -9,6 +9,8 @@ import areaReducer from './slices/area';
 import partnerReducer from './slices/partner';
 import accountReducer from './slices/account';
 import groupModeReducer from './slices/groupMode';
+import categoriesReducer from './slices/categories';
+import technicianReducer from './slices/technician';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +35,9 @@ const rootReducer = combineReducers({
   garden: gardenReducer,
   partner: partnerReducer,
   coral: coralReducer,
-  groupMode: groupModeReducer
+  groupMode: groupModeReducer,
+  categories: categoriesReducer,
+  technician: technicianReducer
 });
 
 export { rootPersistConfig, rootReducer };

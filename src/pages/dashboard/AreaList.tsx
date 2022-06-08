@@ -162,14 +162,14 @@ export default function EcommerceProductList() {
     try {
       await manageArea.deleteArea(areaId).then((respone) => {
         if (respone.status == 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
           dispatch(getListArea(page, rowsPerPage));
         } else {
-          enqueueSnackbar('Delete error', { variant: 'error' });
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
-      enqueueSnackbar('Delete error', { variant: 'error' });
+      enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
       console.log(error);
     }
   };

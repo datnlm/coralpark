@@ -182,13 +182,13 @@ export default function UserList() {
       await manageCoral.deleteCoralType(coralId).then((respone) => {
         if (respone.status === 200) {
           dispatch(getListCoralType(page, rowsPerPage));
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
         } else {
-          enqueueSnackbar('Delete error', { variant: 'error' });
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
-      enqueueSnackbar('Delete error', { variant: 'error' });
+      enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
       console.log(error);
     }
   };

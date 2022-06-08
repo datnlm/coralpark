@@ -160,14 +160,14 @@ export default function UserList() {
     try {
       await manageCoral.deleteCoral(coralId).then((respone) => {
         if (respone.status === 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
           dispatch(getListCoral(page, rowsPerPage));
         } else {
-          enqueueSnackbar('Delete fail', { variant: 'error' });
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
-      enqueueSnackbar('Delete fail', { variant: 'error' });
+      enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
       console.log(error);
     }
   };

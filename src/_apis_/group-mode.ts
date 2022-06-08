@@ -24,7 +24,7 @@ export class GroupModeManager {
   createGroupMode = (groupMode: GroupMode) => {
     const data = {
       name: groupMode.name,
-      contribute: groupMode.contribute
+      contribution: groupMode.contribution
     };
     return axios
       .post('/api/v1/admin/group-modes', data)
@@ -37,7 +37,7 @@ export class GroupModeManager {
     const data = {
       id: groupMode.id,
       name: groupMode.name,
-      contribute: groupMode.contribute
+      contribution: groupMode.contribution
     };
     return axios
       .put('/api/v1/admin/group-modes', data)

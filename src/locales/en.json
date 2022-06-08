@@ -56,6 +56,104 @@
         "status": "Status"
       }
     },
+    "technician": {
+      "title": {
+        "list": "Technician: Technician List",
+        "create": "Technician: Create a new technician",
+        "update": "Technician: Update technician"
+      },
+      "heading1": {
+        "list": "Technician List",
+        "create": "Create technician",
+        "update": "Update technician"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Technician",
+      "heading4": {
+        "list": "List",
+        "new": "New technician"
+      },
+      "search": "Search technician",
+      "form": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "status": "Status"
+      }
+    },
+    "technician-area": {
+      "title": {
+        "list": "Technician: Area",
+        "create": "Technician: Add technician to area",
+        "update": "Techniciann: Update technician in area"
+      },
+      "heading1": {
+        "list": "List Technician Area",
+        "create": "Add technician to area",
+        "update": "Update technician in area"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Technician Area",
+      "heading4": {
+        "list": "List",
+        "new": "Add technician to area"
+      },
+      "search": "Search technician in area",
+      "form": {
+        "choices": "Select",
+        "chosen": "Selected",
+        "area": "Area"
+      }
+    },
+    "diver-team": {
+      "title": {
+        "list": "Diver Team: Diver Team List",
+        "create": "Diver Team: Create a new diver team",
+        "update": "Diver Team: Update diver team"
+      },
+      "heading1": {
+        "list": "Diver Team List",
+        "create": "Create diver team",
+        "update": "Update diver team"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Diver Team",
+      "heading4": {
+        "list": "List",
+        "new": "New diver team"
+      },
+      "search": "Search diver team",
+      "form": {
+        "name": "Name",
+        "quantity": "Phone",
+        "status": "Status"
+      }
+    },
+    "diver-team-area": {
+      "title": {
+        "list": "Diver: Area",
+        "create": "Diver: Add diver to area",
+        "update": "Diver: Update diver in area"
+      },
+      "heading1": {
+        "list": "List Diver Area",
+        "create": "Add diver to area",
+        "update": "Update diver in area"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Diver Area",
+      "heading4": {
+        "list": "List",
+        "new": "Add diver to area"
+      },
+      "search": "Search diver in area",
+      "form": {
+        "choices": "Select",
+        "chosen": "Selected",
+        "area": "Area"
+      }
+    },
     "partner": {
       "title": {
         "list": "Partner: Partner List",
@@ -336,6 +434,28 @@
         "contribution": "Contribution"
       }
     },
+    "categories": {
+      "title": {
+        "list": "Categories Product: Categories List",
+        "create": "Categories Product: Create a new categories product",
+        "update": "Categories Product: Update categories product"
+      },
+      "heading1": {
+        "list": "Categories Product",
+        "create": "Create categories product",
+        "update": "Update categories product"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Categories Product",
+      "heading4": {
+        "list": "List",
+        "new": "New categories product"
+      },
+      "search": "Search categories product",
+      "form": {
+        "name": "Name"
+      }
+    },
     "login": {
       "title": "Login to CGMS",
       "label": {
@@ -429,7 +549,9 @@
         "partner": "partner"
       },
       "diver": {
-        "list": "List"
+        "list": "List",
+        "team": "Team",
+        "area": "Area"
       },
       "partner": {
         "list": "List"
@@ -447,7 +569,9 @@
         "coral": "Coral",
         "area": "Area",
         "group-mode": "Group Mode",
-        "account": "Account"
+        "categories": "Categories Product",
+        "account": "Account",
+        "technician": "Technician"
       },
       "subheader": {
         "site": "Site",
@@ -459,7 +583,9 @@
         "phase-type": "Phase type",
         "area": "Area",
         "account": "Account",
-        "group-mode": "Group Mode"
+        "group-mode": "Group Mode",
+        "categories": "Categories Product",
+        "technician": "Technician"
       },
       "site": {
         "list": "List",
@@ -490,6 +616,15 @@
       "group-mode": {
         "list": "List",
         "create": "Create"
+      },
+      "categories": {
+        "list": "List",
+        "create": "Create"
+      },
+      "technician": {
+        "list": "List",
+        "create": "Create",
+        "area": "Area"
       }
     },
     "menu-option": {

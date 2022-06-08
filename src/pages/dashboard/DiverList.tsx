@@ -143,11 +143,14 @@ export default function UserList() {
     try {
       await manageDiver.deleteDiver(id).then((respone) => {
         if (respone.status == 200) {
-          enqueueSnackbar('Delete success', { variant: 'success' });
+          enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
           dispatch(getListDiver(page, rowsPerPage));
+        } else {
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
+      enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
       console.log(error);
     }
   };

@@ -72,12 +72,18 @@ export default function GardenNewForm({ isEdit, currentAccount }: AccountNewForm
         if (flag) {
           resetForm();
           setSubmitting(false);
-          enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', {
-            variant: 'success'
-          });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-success') : translate('message.update-success'),
+            {
+              variant: 'success'
+            }
+          );
           navigate(PATH_DASHBOARD.account.list);
         } else {
-          enqueueSnackbar(!isEdit ? 'Create error' : 'Update error', { variant: 'error' });
+          enqueueSnackbar(
+            !isEdit ? translate('message.create-error') : translate('message.update-error'),
+            { variant: 'error' }
+          );
         }
       } catch (error) {
         console.error(error);

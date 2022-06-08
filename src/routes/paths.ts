@@ -86,6 +86,12 @@ export const PATH_DASHBOARD = {
     newSite: path(ROOTS_DASHBOARD, '/site/new'),
     editByIdSite: path(ROOTS_DASHBOARD, '/site/:name/edit')
   },
+  technician: {
+    root: path(ROOTS_DASHBOARD, '/technician'),
+    list: path(ROOTS_DASHBOARD, '/technician/list'),
+    new: path(ROOTS_DASHBOARD, '/technician/new'),
+    area: path(ROOTS_DASHBOARD, '/technician/area')
+  },
   garden: {
     root: path(ROOTS_DASHBOARD, '/garden'),
     list: path(ROOTS_DASHBOARD, '/garden/list'),
@@ -101,6 +107,11 @@ export const PATH_DASHBOARD = {
     newGroupMode: path(ROOTS_DASHBOARD, '/group-mode/new'),
     editByIdGroupMode: path(ROOTS_DASHBOARD, '/group-mode/:name/edit')
   },
+  categories: {
+    root: path(ROOTS_DASHBOARD, '/categories'),
+    list: path(ROOTS_DASHBOARD, '/categories/list'),
+    new: path(ROOTS_DASHBOARD, '/categories/new')
+  },
   partner: {
     root: path(ROOTS_DASHBOARD, '/partner'),
     list: path(ROOTS_DASHBOARD, '/partner/list'),
@@ -113,7 +124,8 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/diver'),
     list: path(ROOTS_DASHBOARD, '/diver/list'),
     newDiver: path(ROOTS_DASHBOARD, '/diver/new'),
-    team: path(ROOTS_DASHBOARD, '/diver/team')
+    team: path(ROOTS_DASHBOARD, '/diver/team'),
+    area: path(ROOTS_DASHBOARD, '/diver/area')
   }
 };
 

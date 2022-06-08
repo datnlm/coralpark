@@ -209,7 +209,7 @@ export default function CoralAreaNewForm() {
             setIsEdit(true);
           }
           // set coral id left
-          manageCoral.getListCoral(1, 100000).then((response) => {
+          manageCoral.getListCoral(0, -1).then((response) => {
             if (response.status == 200) {
               const data = response.data.items;
               setCoralList(data);
