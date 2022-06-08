@@ -101,7 +101,10 @@ export default function GroupModeMoreMenu({ onDelete, id }: GroupModeMoreMenuPro
           <ListItemIcon>
             <Icon icon={editFill} width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText
+            primary={translate('button.menu.edit')}
+            primaryTypographyProps={{ variant: 'body2' }}
+          />
         </MenuItem>
       </Menu>
     </>

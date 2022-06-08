@@ -33,17 +33,6 @@ export const PATH_DASHBOARD = {
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics')
   },
-  mail: {
-    root: path(ROOTS_DASHBOARD, '/mail'),
-    all: path(ROOTS_DASHBOARD, '/mail/all')
-  },
-  chat: {
-    root: path(ROOTS_DASHBOARD, '/chat'),
-    new: path(ROOTS_DASHBOARD, '/chat/new'),
-    conversation: path(ROOTS_DASHBOARD, '/chat/:conversationKey')
-  },
-  calendar: path(ROOTS_DASHBOARD, '/calendar'),
-  kanban: path(ROOTS_DASHBOARD, '/kanban'),
   coral: {
     root: path(ROOTS_DASHBOARD, '/coral'),
     list: path(ROOTS_DASHBOARD, '/coral/list'),
@@ -61,19 +50,16 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/phases'),
     list: path(ROOTS_DASHBOARD, '/phases/list'),
     new: path(ROOTS_DASHBOARD, '/phases/new'),
-    typeNew: path(ROOTS_DASHBOARD, '/phases/type/new')
+    typeNew: path(ROOTS_DASHBOARD, '/phases/type/new'),
+    editById: path(ROOTS_DASHBOARD, '/phases/:name/edit')
   },
   area: {
     root: path(ROOTS_DASHBOARD, '/area'),
     shop: path(ROOTS_DASHBOARD, '/area/shop'),
     product: path(ROOTS_DASHBOARD, '/area/:name'),
-    productById: path(ROOTS_DASHBOARD, '/area/product/nike-air-force-1-ndestrukt'),
     list: path(ROOTS_DASHBOARD, '/area/list'),
     new: path(ROOTS_DASHBOARD, '/area/new'),
-    newProvince: path(ROOTS_DASHBOARD, '/area/product/province'),
-    editById: path(ROOTS_DASHBOARD, '/area/product/nike-blazer-low-77-vintage/edit'),
-    checkout: path(ROOTS_DASHBOARD, '/area/checkout'),
-    invoice: path(ROOTS_DASHBOARD, '/area/invoice')
+    newProvince: path(ROOTS_DASHBOARD, '/area/product/province')
   },
   coralArea: {
     root: path(ROOTS_DASHBOARD, '/coralarea'),
@@ -128,5 +114,3 @@ export const PATH_DASHBOARD = {
     area: path(ROOTS_DASHBOARD, '/diver/area')
   }
 };
-
-export const PATH_DOCS = 'https://docs-minimals.vercel.app/introduction';

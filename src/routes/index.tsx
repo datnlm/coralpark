@@ -112,8 +112,9 @@ export default function Router() {
           path: 'phases',
           children: [
             { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
-            // { path: 'list', element: <PhaseList /> },
+            { path: 'list', element: <PhaseList /> },
             { path: 'new', element: <PhasesCreate /> },
+            { path: '/:name/edit', element: <PhasesCreate /> },
             { path: '/type/new', element: <PhasesTypeCreate /> }
           ]
         },
@@ -247,6 +248,7 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
             // { path: 'list', element: <PhaseList /> },
             { path: 'new', element: <PhasesCreate /> },
+            { path: '/:name/edit', element: <PhasesCreate /> },
             { path: '/type/new', element: <PhasesTypeCreate /> }
           ]
         },
@@ -338,7 +340,7 @@ const AreaList = Loadable(lazy(() => import('../pages/dashboard/AreaList')));
 const AccountList = Loadable(lazy(() => import('../pages/dashboard/AccountList')));
 const AccountCreate = Loadable(lazy(() => import('../pages/dashboard/AccountCreate')));
 const AreaCreate = Loadable(lazy(() => import('../pages/dashboard/AreaCreate')));
-// const PhaseList = Loadable(lazy(() => import('../pages/dashboard/CoralPhaseList')));
+const PhaseList = Loadable(lazy(() => import('../pages/dashboard/CoralPhaseList')));
 const PhasesCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhases')));
 const PhasesTypeCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhasesType')));
 const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralAreaList')));

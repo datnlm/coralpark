@@ -14,13 +14,11 @@ import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import {
-  Box,
   Card,
   Grid,
   Stack,
   TextField,
   Typography,
-  Autocomplete,
   CardHeader,
   Checkbox,
   Divider,
@@ -29,12 +27,11 @@ import {
   ListItemIcon,
   Button,
   ListItemText,
-  InputAdornment,
   Avatar,
   Radio
 } from '@material-ui/core';
 import { manageDiver } from '_apis_/diver';
-import { getListDiver } from 'redux/slices/diver';
+import { getListDiverTeam } from 'redux/slices/diver';
 import { Diver, DiverTeam } from '../../../@types/diver';
 // utils
 import useLocales from '../../../hooks/useLocales';
@@ -166,7 +163,7 @@ export default function DiverTeaTransferList({
           // setCurrentArea(null);
           setSubmitting(false);
           onSubmitCallback(true);
-          dispatch(getListDiver(0, -1));
+          dispatch(getListDiverTeam(0, -1));
           enqueueSnackbar(
             !isEdit ? translate('message.create-success') : translate('message.update-success'),
             {

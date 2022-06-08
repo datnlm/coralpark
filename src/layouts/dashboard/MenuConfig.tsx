@@ -137,8 +137,8 @@ export default function MegaMenuConfig() {
         {
           subheader: translate('menu.mega.subheader.phase'),
           items: [
-            // { title: translate('menu.mega.coral.list'), path: PATH_DASHBOARD.phases.list },
-            // { title: 'Create', path: PATH_DASHBOARD.phases.new },
+            { title: translate('menu.mega.coral.list'), path: PATH_DASHBOARD.phases.list },
+            { title: translate('menu.mega.coral.create'), path: PATH_DASHBOARD.phases.new },
             { title: translate('menu.mega.coral.phase'), path: PATH_DASHBOARD.phases.typeNew }
           ]
         },

@@ -18,7 +18,7 @@ import MegaMenuMobile from './MegaMenuMobile';
 import useAuth from '../../hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // routes
-import { PATH_DASHBOARD, PATH_DOCS } from '../../routes/paths';
+import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Logo from '../../components/Logo';
 import MyAvatar from '../../components/MyAvatar';
@@ -178,9 +178,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       <NavSection navConfig={SidebarConfig()} isShow={!isCollapse} />
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isCollapse && (
+      {!isOpenSidebar && (
         <Box sx={{ px: 2.5, pb: 3, mt: 10, width: 1 }}>
-          <MegaMenuMobile navConfig={menuConfig()} />
+          <MegaMenuMobile navConfig={menuConfig()} isShow={!isCollapse} />
         </Box>
       )}
     </Scrollbar>

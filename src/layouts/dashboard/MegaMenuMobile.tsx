@@ -22,11 +22,11 @@ import {
 } from '@material-ui/core';
 import Logo from 'components/Logo';
 import Scrollbar from 'components/Scrollbar';
+import { Menu as MenuIcon } from '@material-ui/icons';
 // hook
 import useLocales from '../../hooks/useLocales';
 // @types
 import { ParentItemProps, MegaMenuItemProps } from '../../@types/mega-menu';
-
 // ----------------------------------------------------------------------
 
 const ICON_SIZE = 22;
@@ -161,9 +161,10 @@ function SubMenu({ parent, pathname }: SubMenuProps) {
 
 type MegaMenuMobileProps = {
   navConfig: MegaMenuItemProps[];
+  isShow?: boolean | undefined;
 };
 
-export default function MegaMenuMobile({ navConfig }: MegaMenuMobileProps) {
+export default function MegaMenuMobile({ navConfig, isShow = true }: MegaMenuMobileProps) {
   const { translate } = useLocales();
   const { pathname } = useLocation();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -185,9 +186,19 @@ export default function MegaMenuMobile({ navConfig }: MegaMenuMobileProps) {
 
   return (
     <>
-      <Button variant="contained" onClick={handleDrawerOpen} startIcon={<Icon icon={menu2Fill} />}>
-        {translate('menu.mega.button.more')}
-      </Button>
+      {!isShow ? (
+        <IconButton size="large" onClick={handleDrawerOpen}>
+          <MenuIcon />
+        </IconButton>
+      ) : (
+        <Button
+          variant="contained"
+          onClick={handleDrawerOpen}
+          startIcon={<Icon icon={menu2Fill} />}
+        >
+          {translate('menu.mega.button.more')}
+        </Button>
+      )}
 
       <Drawer
         open={openDrawer}
