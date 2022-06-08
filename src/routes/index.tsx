@@ -144,6 +144,25 @@ export default function Router() {
           ]
         },
         {
+          path: 'categories',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/categories/list" replace /> },
+            { path: 'list', element: <CategoriesList /> },
+            { path: 'new', element: <CategoriesCreate /> },
+            { path: '/:name/edit', element: <CategoriesCreate /> }
+          ]
+        },
+        {
+          path: 'technician',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/technician/list" replace /> },
+            { path: 'list', element: <TechinicianList /> },
+            { path: 'new', element: <TechinicianCreate /> },
+            { path: '/:name/edit', element: <TechinicianCreate /> },
+            { path: 'area', element: <TechnicianAreaCreate /> }
+          ]
+        },
+        {
           path: 'garden',
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
@@ -249,6 +268,16 @@ export default function Router() {
           ]
         },
         {
+          path: 'technician',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/technician/list" replace /> },
+            { path: 'list', element: <TechinicianList /> },
+            { path: 'new', element: <TechinicianCreate /> },
+            { path: '/:name/edit', element: <TechinicianCreate /> },
+            { path: 'area', element: <TechnicianAreaCreate /> }
+          ]
+        },
+        {
           path: 'garden',
           children: [
             { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
@@ -258,6 +287,24 @@ export default function Router() {
             { path: 'type-new', element: <GardenTypeCreate /> },
             { path: 'types/:name/edit', element: <GardenTypeCreate /> },
             { path: '/:name/edit', element: <GardenCreate /> }
+          ]
+        },
+        {
+          path: 'group-mode',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/group-mode/list" replace /> },
+            { path: 'list', element: <GroupModeList /> },
+            { path: 'new', element: <GroupModeCreate /> },
+            { path: '/:name/edit', element: <GroupModeCreate /> }
+          ]
+        },
+        {
+          path: 'categories',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/categories/list" replace /> },
+            { path: 'list', element: <CategoriesList /> },
+            { path: 'new', element: <CategoriesCreate /> },
+            { path: '/:name/edit', element: <CategoriesCreate /> }
           ]
         },
         {
@@ -303,6 +350,8 @@ const CoralTypeList = Loadable(lazy(() => import('../pages/dashboard/CoralTypeLi
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
 const GroupModeList = Loadable(lazy(() => import('../pages/dashboard/GroupModeList')));
 const GroupModeCreate = Loadable(lazy(() => import('../pages/dashboard/GroupModeCreate')));
+const CategoriesList = Loadable(lazy(() => import('../pages/dashboard/CategoriesList')));
+const CategoriesCreate = Loadable(lazy(() => import('../pages/dashboard/CategoriesCreate')));
 const SiteList = Loadable(lazy(() => import('../pages/dashboard/SiteList')));
 const GardenTypesList = Loadable(lazy(() => import('../pages/dashboard/GardenTypesList')));
 const PartnerTypeList = Loadable(lazy(() => import('../pages/dashboard/PartnerTypeList')));
@@ -316,6 +365,11 @@ const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));
 const DiverTeamList = Loadable(lazy(() => import('../pages/dashboard/DiverTeamList')));
 const DiverTeamAreaCreate = Loadable(lazy(() => import('../pages/dashboard/DiverTeamAreaCreate')));
+const TechinicianList = Loadable(lazy(() => import('../pages/dashboard/TechnicianList')));
+const TechinicianCreate = Loadable(lazy(() => import('../pages/dashboard/TechnicianCreate')));
+const TechnicianAreaCreate = Loadable(
+  lazy(() => import('../pages/dashboard/TechnicianAreaCreate'))
+);
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { manageDiver } from '_apis_/diver';
+import { manageTechnican } from '_apis_/technician';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -24,17 +24,17 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Diver } from '../../../@types/diver';
+import { Technician } from '../../../@types/technicians';
 import { UploadAvatar } from '../../upload';
 
 // ----------------------------------------------------------------------
 
-type DiverNewFormProps = {
+type TechnicianNewFormProps = {
   isEdit: boolean;
-  currentDiver?: Diver;
+  currentTechnician?: Technician;
 };
 
-export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps) {
+export default function TechnicianNewForm({ isEdit, currentTechnician }: TechnicianNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -55,20 +55,20 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
   });
 
   useEffect(() => {
-    setEnumStatus(statusOptions.find((e) => e.id == currentDiver?.status) || null);
-  }, [currentDiver]);
+    setEnumStatus(statusOptions.find((e) => e.id == currentTechnician?.status) || null);
+  }, [currentTechnician]);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentDiver?.id || '',
-      username: currentDiver?.username || '',
-      name: currentDiver?.name || '',
-      phone: currentDiver?.phone || '',
-      email: currentDiver?.email || '',
-      address: currentDiver?.address || '',
-      imageUrl: currentDiver?.imageUrl || null,
-      status: currentDiver?.status || 1
+      id: currentTechnician?.id || '',
+      name: currentTechnician?.name || '',
+      phone: currentTechnician?.phone || '',
+      email: currentTechnician?.email || '',
+      address: currentTechnician?.address || '',
+      imageUrl: currentTechnician?.imageUrl || null,
+      areas: currentTechnician?.areas || '',
+      status: currentTechnician?.status || 1
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -87,12 +87,12 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
         bodyFormData.append('imageFile', imageFILE);
 
         !isEdit
-          ? await manageDiver.createDiver(bodyFormData).then((response) => {
+          ? await manageTechnican.createTechnican(bodyFormData).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageDiver.updateDiver(bodyFormData).then((response) => {
+          : await manageTechnican.updateTechnican(bodyFormData).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
@@ -106,7 +106,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.diver.list);
+          navigate(PATH_DASHBOARD.technician.list);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),
@@ -177,14 +177,14 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.diver.form.name')}
+                    label={translate('page.technician.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
-                    label={translate('page.diver.form.phone')}
+                    label={translate('page.technician.form.phone')}
                     {...getFieldProps('phone')}
                     error={Boolean(touched.phone && errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -194,14 +194,14 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.diver.form.email')}
+                    label={translate('page.technician.form.email')}
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
                   <TextField
                     fullWidth
-                    label={translate('page.diver.form.address')}
+                    label={translate('page.technician.form.address')}
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
@@ -222,7 +222,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={translate('page.diver.form.status')}
+                          label={translate('page.technician.form.status')}
                           error={Boolean(touched.status && errors.status)}
                           helperText={touched.status && errors.status}
                         />

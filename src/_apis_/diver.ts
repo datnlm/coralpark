@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Diver } from '../@types/diver';
+import { Diver, DiverTeamArea } from '../@types/diver';
 
 export class DiverManager {
   // get list diver
@@ -101,6 +101,35 @@ export class DiverManager {
   deleteDiverTeam = (id: string) => {
     return axios
       .delete(`/api/v1/admin/diver-teams/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  createDiverTeamArea = (diverTeamArea: DiverTeamArea) => {
+    const data = {
+      diverTeams: diverTeamArea.diverTeams,
+      id: diverTeamArea.area.id
+    };
+    return axios
+      .post('/api/v1/admin/diver-team-areas/divers', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateDiverTeamArea = (diverTeamArea: DiverTeamArea) => {
+    const data = {
+      diverTeams: diverTeamArea.diverTeams,
+      id: diverTeamArea.area.id
+    };
+    return axios
+      .put('/api/v1/admin/diver-team-areas/divers', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  deleteDiverTeamArea = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/diver-team-areas/divers/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };

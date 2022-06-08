@@ -24,20 +24,21 @@ import {
   Button,
   ListItemText
 } from '@material-ui/core';
+
 // utils
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
 import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import { RootState, useSelector } from 'redux/store';
-import { manageCoral } from '_apis_/coral';
+import { RootState, useSelector, useDispatch } from 'redux/store';
 import { manageArea } from '_apis_/area';
+import { manageTechnican } from '_apis_/technician';
 import { Area } from '../../../@types/area';
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Coral } from '../../../@types/coral';
-
-//
+import { Technician } from '../../../@types/technicians';
+// redux
+import { getListTechnician } from '../../../redux/slices/technician';
 
 // ----------------------------------------------------------------------
 const style = {
@@ -57,10 +58,11 @@ export default function CoralAreaNewForm() {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   // -------------------
+  const technicianList = useSelector((state: RootState) => state.technician.technicianList);
   const areaList = useSelector((state: RootState) => state.area.areaList);
   const [currentArea, setCurrentArea] = useState<any>(null);
-  const [coralList, setCoralList] = useState<Coral[]>([]);
   const [checked, setChecked] = useState<number[]>([]);
   const [left, setLeft] = useState<number[] | any>([]);
   const [right, setRight] = useState<number[]>([]);
@@ -128,14 +130,14 @@ export default function CoralAreaNewForm() {
     enableReinitialize: true,
     initialValues: {
       id: currentArea?.id || '',
-      coral: currentArea?.coral || '',
+      technicians: currentArea?.technicians || '',
       area: currentArea?.area || ''
     },
     // validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         // number.map((v) => arr.push({id: v}));
-        values.coral = right.map((v: any) => ({
+        values.technicians = right.map((v: any) => ({
           id: v
         }));
         values.area = currentArea;
@@ -143,12 +145,12 @@ export default function CoralAreaNewForm() {
         let flag = false;
 
         !isEdit
-          ? await manageCoral.createCoralArea(values).then((response) => {
+          ? await manageTechnican.createTechnicanArea(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageCoral.updateCoralArea(values).then((response) => {
+          : await manageTechnican.updateTechnicanArea(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
@@ -194,7 +196,8 @@ export default function CoralAreaNewForm() {
   );
 
   useEffect(() => {
-    const mapCoralAreaId: number[] = [];
+    const selectedTechnicianId: number[] = [];
+    dispatch(getListTechnician(0, -1));
     setRight([]);
     setLeft([]);
     setIsEdit(false);
@@ -202,23 +205,20 @@ export default function CoralAreaNewForm() {
       // set coral id right
       manageArea.getAreaById(currentArea.id).then((response) => {
         if (response.status == 200) {
-          const data = response.data.corals;
+          const data = response.data.technicians;
+          let listSelectTechnicianId: number[] = [];
+          const listSelectedTechnicianId: number[] = [];
           if (data != null) {
-            data.map((v: Coral) => mapCoralAreaId.push(Number(v.id)));
-            setRight(mapCoralAreaId);
             setIsEdit(true);
+            data.map((v: Technician) => listSelectedTechnicianId.push(Number(v.id)));
+            const mapId: number[] = [];
+            technicianList.map((v: Technician) => mapId.push(Number(v.id)));
+            listSelectTechnicianId = mapId.filter((i) => !listSelectedTechnicianId.includes(i));
+          } else {
+            technicianList.map((v: Technician) => listSelectTechnicianId.push(Number(v.id)));
           }
-          // set coral id left
-          manageCoral.getListCoral(0, -1).then((response) => {
-            if (response.status == 200) {
-              const data = response.data.items;
-              setCoralList(data);
-              const mapId: number[] = [];
-              data.map((v: Coral) => mapId.push(Number(v.id)));
-              const mapCoralId: number[] = mapId.filter((i) => !mapCoralAreaId.includes(i));
-              setLeft(mapCoralId);
-            }
-          });
+          setLeft(listSelectTechnicianId);
+          setRight(listSelectedTechnicianId);
         }
       });
     }
@@ -265,7 +265,7 @@ export default function CoralAreaNewForm() {
               </ListItemIcon>
               <ListItemText
                 id={labelId}
-                primary={coralList.find((e: Coral) => Number(e.id) == value)?.name}
+                primary={technicianList.find((e: Technician) => Number(e.id) == value)?.name}
               />
               {/* <ListItemText
                 id={labelId}
@@ -296,7 +296,7 @@ export default function CoralAreaNewForm() {
                     getOptionLabel={(option: Area) => option.name}
                     onChange={(e, values: Area | null) => setCurrentArea(values)}
                     renderInput={(params) => (
-                      <TextField {...params} label={translate('page.coral-area.form.area')} />
+                      <TextField {...params} label={translate('page.technician-area.form.area')} />
                     )}
                   />
                 </Stack>
@@ -307,7 +307,9 @@ export default function CoralAreaNewForm() {
                     alignItems="center"
                     sx={{ width: 'auto', py: 3 }}
                   >
-                    <Grid item>{customList(translate('page.coral-area.form.choices'), left)}</Grid>
+                    <Grid item>
+                      {customList(translate('page.technician-area.form.choices'), left)}
+                    </Grid>
                     <Grid item>
                       <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
                         <Button
@@ -356,7 +358,9 @@ export default function CoralAreaNewForm() {
                         </Button>
                       </Grid>
                     </Grid>
-                    <Grid item>{customList(translate('page.coral-area.form.chosen'), right)}</Grid>
+                    <Grid item>
+                      {customList(translate('page.technician-area.form.chosen'), right)}
+                    </Grid>
                   </Grid>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

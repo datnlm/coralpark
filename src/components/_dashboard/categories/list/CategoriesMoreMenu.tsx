@@ -24,11 +24,12 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
-type GardenMoreMenuProps = {
+type CategoriesMoreMenuProps = {
   onDelete: VoidFunction;
+  id: string;
 };
 
-export default function GardenMoreMenu({ onDelete }: GardenMoreMenuProps) {
+export default function CategoriesMoreMenu({ onDelete, id }: CategoriesMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +43,7 @@ export default function GardenMoreMenu({ onDelete }: GardenMoreMenuProps) {
     setOpen(false);
     setIsOpen(false);
   };
+
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -90,6 +92,17 @@ export default function GardenMoreMenu({ onDelete }: GardenMoreMenuProps) {
             </DialogActions>
           </Dialog>
         </div>
+
+        <MenuItem
+          component={RouterLink}
+          to={`${PATH_DASHBOARD.categories.root}/${paramCase(id)}/edit`}
+          sx={{ color: 'text.secondary' }}
+        >
+          <ListItemIcon>
+            <Icon icon={editFill} width={24} height={24} />
+          </ListItemIcon>
+          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+        </MenuItem>
       </Menu>
     </>
   );

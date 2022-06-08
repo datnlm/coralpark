@@ -58,6 +58,25 @@ export default function MegaMenuConfig() {
       ]
     },
     {
+      title: translate('menu.mega.title.technician'),
+      path: PATH_DASHBOARD.technician.root,
+      icon: ICONS.site,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.technician'),
+          items: [
+            { title: translate('menu.mega.technician.list'), path: PATH_DASHBOARD.technician.list },
+            {
+              title: translate('menu.mega.technician.create'),
+              path: PATH_DASHBOARD.technician.new
+            },
+            { title: translate('menu.mega.technician.area'), path: PATH_DASHBOARD.technician.area }
+            // { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
+          ]
+        }
+      ]
+    },
+    {
       title: translate('menu.mega.title.garden'),
       path: PATH_DASHBOARD.garden.root,
       icon: ICONS.garden,
@@ -148,6 +167,23 @@ export default function MegaMenuConfig() {
             {
               title: translate('menu.mega.group-mode.create'),
               path: PATH_DASHBOARD.group.newGroupMode
+            }
+          ]
+        }
+      ]
+    },
+    {
+      title: translate('menu.mega.title.categories'),
+      path: PATH_DASHBOARD.categories.root,
+      icon: ICONS.ecommerce,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.categories'),
+          items: [
+            { title: translate('menu.mega.categories.list'), path: PATH_DASHBOARD.categories.list },
+            {
+              title: translate('menu.mega.categories.create'),
+              path: PATH_DASHBOARD.categories.new
             }
           ]
         }

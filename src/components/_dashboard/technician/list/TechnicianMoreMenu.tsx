@@ -24,11 +24,13 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
-type GardenMoreMenuProps = {
+type TechnicianMoreMenuProps = {
   onDelete: VoidFunction;
+  id: string;
+  status: any;
 };
 
-export default function GardenMoreMenu({ onDelete }: GardenMoreMenuProps) {
+export default function TechnicianMoreMenu({ onDelete, id, status }: TechnicianMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +44,7 @@ export default function GardenMoreMenu({ onDelete }: GardenMoreMenuProps) {
     setOpen(false);
     setIsOpen(false);
   };
+
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -58,15 +61,18 @@ export default function GardenMoreMenu({ onDelete }: GardenMoreMenuProps) {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={trash2Outline} width={24} height={24} />
-          </ListItemIcon>
-          <ListItemText
-            primary={translate('button.menu.delete')}
-            primaryTypographyProps={{ variant: 'body2' }}
-          />
-        </MenuItem>
+        {status !== 0 && (
+          <MenuItem onClick={handleClickOpen} sx={{ color: 'text.secondary' }}>
+            <ListItemIcon>
+              <Icon icon={trash2Outline} width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary={translate('button.menu.delete')}
+              primaryTypographyProps={{ variant: 'body2' }}
+            />
+          </MenuItem>
+        )}
+
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
@@ -90,6 +96,20 @@ export default function GardenMoreMenu({ onDelete }: GardenMoreMenuProps) {
             </DialogActions>
           </Dialog>
         </div>
+
+        <MenuItem
+          component={RouterLink}
+          to={`${PATH_DASHBOARD.technician.root}/${paramCase(id)}/edit`}
+          sx={{ color: 'text.secondary' }}
+        >
+          <ListItemIcon>
+            <Icon icon={editFill} width={24} height={24} />
+          </ListItemIcon>
+          <ListItemText
+            primary={translate('button.menu.edit')}
+            primaryTypographyProps={{ variant: 'body2' }}
+          />
+        </MenuItem>
       </Menu>
     </>
   );

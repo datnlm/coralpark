@@ -24,20 +24,21 @@ import {
   Button,
   ListItemText
 } from '@material-ui/core';
+
 // utils
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
 import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import { RootState, useSelector } from 'redux/store';
-import { manageCoral } from '_apis_/coral';
+import { RootState, useSelector, useDispatch } from 'redux/store';
 import { manageArea } from '_apis_/area';
+import { manageDiver } from '_apis_/diver';
 import { Area } from '../../../@types/area';
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Coral } from '../../../@types/coral';
-
-//
+import { Diver, DiverTeam } from '../../../@types/diver';
+// redux
+import { getListDiverTeam } from '../../../redux/slices/diver';
 
 // ----------------------------------------------------------------------
 const style = {
@@ -57,10 +58,11 @@ export default function CoralAreaNewForm() {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   // -------------------
+  const diverTeamList = useSelector((state: RootState) => state.diver.diverTeamList);
   const areaList = useSelector((state: RootState) => state.area.areaList);
   const [currentArea, setCurrentArea] = useState<any>(null);
-  const [coralList, setCoralList] = useState<Coral[]>([]);
   const [checked, setChecked] = useState<number[]>([]);
   const [left, setLeft] = useState<number[] | any>([]);
   const [right, setRight] = useState<number[]>([]);
@@ -128,14 +130,14 @@ export default function CoralAreaNewForm() {
     enableReinitialize: true,
     initialValues: {
       id: currentArea?.id || '',
-      coral: currentArea?.coral || '',
+      diverTeams: currentArea?.diverTeams || '',
       area: currentArea?.area || ''
     },
     // validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         // number.map((v) => arr.push({id: v}));
-        values.coral = right.map((v: any) => ({
+        values.diverTeams = right.map((v: any) => ({
           id: v
         }));
         values.area = currentArea;
@@ -143,12 +145,12 @@ export default function CoralAreaNewForm() {
         let flag = false;
 
         !isEdit
-          ? await manageCoral.createCoralArea(values).then((response) => {
+          ? await manageDiver.createDiverTeamArea(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageCoral.updateCoralArea(values).then((response) => {
+          : await manageDiver.updateDiverTeamArea(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
@@ -194,7 +196,8 @@ export default function CoralAreaNewForm() {
   );
 
   useEffect(() => {
-    const mapCoralAreaId: number[] = [];
+    const selectedDiverTeamId: number[] = [];
+    dispatch(getListDiverTeam(0, -1));
     setRight([]);
     setLeft([]);
     setIsEdit(false);
@@ -202,23 +205,20 @@ export default function CoralAreaNewForm() {
       // set coral id right
       manageArea.getAreaById(currentArea.id).then((response) => {
         if (response.status == 200) {
-          const data = response.data.corals;
+          const data = response.data.diverTeams;
+          let listSelectDiverTeamId: number[] = [];
+          const listSelectedDiverId: number[] = [];
           if (data != null) {
-            data.map((v: Coral) => mapCoralAreaId.push(Number(v.id)));
-            setRight(mapCoralAreaId);
             setIsEdit(true);
+            data.map((v: DiverTeam) => listSelectedDiverId.push(Number(v.id)));
+            const mapId: number[] = [];
+            diverTeamList.map((v: DiverTeam) => mapId.push(Number(v.id)));
+            listSelectDiverTeamId = mapId.filter((i) => !listSelectedDiverId.includes(i));
+          } else {
+            diverTeamList.map((v: DiverTeam) => listSelectDiverTeamId.push(Number(v.id)));
           }
-          // set coral id left
-          manageCoral.getListCoral(1, 100000).then((response) => {
-            if (response.status == 200) {
-              const data = response.data.items;
-              setCoralList(data);
-              const mapId: number[] = [];
-              data.map((v: Coral) => mapId.push(Number(v.id)));
-              const mapCoralId: number[] = mapId.filter((i) => !mapCoralAreaId.includes(i));
-              setLeft(mapCoralId);
-            }
-          });
+          setLeft(listSelectDiverTeamId);
+          setRight(listSelectedDiverId);
         }
       });
     }
@@ -265,7 +265,7 @@ export default function CoralAreaNewForm() {
               </ListItemIcon>
               <ListItemText
                 id={labelId}
-                primary={coralList.find((e: Coral) => Number(e.id) == value)?.name}
+                primary={diverTeamList.find((e: DiverTeam) => Number(e.id) == value)?.name}
               />
               {/* <ListItemText
                 id={labelId}
@@ -296,7 +296,7 @@ export default function CoralAreaNewForm() {
                     getOptionLabel={(option: Area) => option.name}
                     onChange={(e, values: Area | null) => setCurrentArea(values)}
                     renderInput={(params) => (
-                      <TextField {...params} label={translate('page.coral-area.form.area')} />
+                      <TextField {...params} label={translate('page.diver-team-area.form.area')} />
                     )}
                   />
                 </Stack>
@@ -307,7 +307,9 @@ export default function CoralAreaNewForm() {
                     alignItems="center"
                     sx={{ width: 'auto', py: 3 }}
                   >
-                    <Grid item>{customList(translate('page.coral-area.form.choices'), left)}</Grid>
+                    <Grid item>
+                      {customList(translate('page.diver-team-area.form.choices'), left)}
+                    </Grid>
                     <Grid item>
                       <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
                         <Button
@@ -356,7 +358,9 @@ export default function CoralAreaNewForm() {
                         </Button>
                       </Grid>
                     </Grid>
-                    <Grid item>{customList(translate('page.coral-area.form.chosen'), right)}</Grid>
+                    <Grid item>
+                      {customList(translate('page.diver-team-area.form.chosen'), right)}
+                    </Grid>
                   </Grid>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
