@@ -4,7 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { manageGroup } from '_apis_/group';
 // material
 import { Container } from '@material-ui/core';
-import { GroupMode } from '../../@types/group';
+import { GroupMode, GroupRole } from '../../@types/group';
 // redux
 import { useDispatch } from '../../redux/store';
 // routes
@@ -15,22 +15,22 @@ import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import GroupModeNewForm from '../../components/_dashboard/group/GroupModeNewForm';
+import GroupRoleNewForm from '../../components/_dashboard/group/GroupRoleNewForm';
 
 // ----------------------------------------------------------------------
 
-export default function GroupModeCreate() {
+export default function GroupRoleCreate() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { name } = useParams();
   const isEdit = pathname.includes('edit');
-  const [currentGroupMode, setCurrentGroupMode] = useState<GroupMode>();
+  const [currentGroupRole, setCurrentGroupRole] = useState<GroupRole>();
 
   const fetchData = async () => {
-    await manageGroup.getGroupModeByID(paramCase(name)).then((response) => {
-      setCurrentGroupMode(response.data);
+    await manageGroup.getGroupRoleByID(paramCase(name)).then((response) => {
+      setCurrentGroupRole(response.data);
     });
   };
 
@@ -44,27 +44,27 @@ export default function GroupModeCreate() {
     <Page
       title={
         !isEdit
-          ? translate('page.group-mode.title.create')
-          : translate('page.group-mode.title.update')
+          ? translate('page.group-role.title.create')
+          : translate('page.group-role.title.update')
       }
     >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={
             !isEdit
-              ? translate('page.group-mode.heading1.create')
-              : translate('page.group-mode.heading1.update')
+              ? translate('page.group-role.heading1.create')
+              : translate('page.group-role.heading1.update')
           }
           links={[
-            { name: translate('page.group-mode.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.group-role.heading2'), href: PATH_DASHBOARD.root },
             {
-              name: translate('page.group-mode.heading3'),
-              href: PATH_DASHBOARD.group.root
+              name: translate('page.group-role.heading3'),
+              href: PATH_DASHBOARD.group.listRole
             },
-            { name: !isEdit ? translate('page.group-mode.heading4.new') : name }
+            { name: !isEdit ? translate('page.group-role.heading4.new') : name }
           ]}
         />
-        <GroupModeNewForm isEdit={isEdit} currentGroupMode={currentGroupMode} />
+        <GroupRoleNewForm isEdit={isEdit} currentGroupRole={currentGroupRole} />
       </Container>
     </Page>
   );

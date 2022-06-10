@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { manageGroupMode } from '_apis_/group-mode';
+import { manageGroup } from '_apis_/group';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -25,7 +25,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { GroupMode } from '../../../@types/group-mode';
+import { GroupMode } from '../../../@types/group';
 import { UploadAvatar } from '../../upload';
 
 // ----------------------------------------------------------------------
@@ -62,12 +62,12 @@ export default function GroupModeNewForm({ isEdit, currentGroupMode }: GroupMode
       let flag = false;
       try {
         !isEdit
-          ? await manageGroupMode.createGroupMode(values).then((response) => {
+          ? await manageGroup.createGroupMode(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageGroupMode.updateUpdateMode(values).then((response) => {
+          : await manageGroup.updateUpdateMode(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }

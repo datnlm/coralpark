@@ -239,7 +239,9 @@ export default function DiverTeaTransferList({
           />
         }
         title={title}
-        subheader={`${numberOfChecked(items)}/${items.length} selected`}
+        subheader={`${numberOfChecked(items)}/${items.length} ${translate(
+          'page.diver-team.form.selected'
+        )}`}
         sx={{ p: 2 }}
       />
 
@@ -284,7 +286,7 @@ export default function DiverTeaTransferList({
               <Grid item xs={12} sm={12}>
                 <TextField
                   fullWidth
-                  label="Full Name"
+                  label={translate('page.diver-team.form.name')}
                   {...getFieldProps('name')}
                   error={Boolean(touched.name && errors.name)}
                   helperText={touched.name && errors.name}
@@ -313,7 +315,12 @@ export default function DiverTeaTransferList({
               <Grid item xs={12}>
                 <Card sx={{ p: 3, minWidth: 600 }}>
                   <Stack spacing={3}>
-                    <Stack direction={{ xs: 'row', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                    <Stack
+                      direction={{ xs: 'row', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
                       <Grid
                         container
                         justifyContent="center"
@@ -321,7 +328,7 @@ export default function DiverTeaTransferList({
                         sx={{ width: 'auto', py: 3 }}
                       >
                         <Grid item>
-                          {customList(translate('page.coral-area.form.choices'), left)}
+                          {customList(translate('page.diver-team.form.choices'), left)}
                         </Grid>
                         <Grid item>
                           <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
@@ -372,7 +379,7 @@ export default function DiverTeaTransferList({
                           </Grid>
                         </Grid>
                         <Grid item>
-                          {customList(translate('page.coral-area.form.chosen'), right)}
+                          {customList(translate('page.diver-team.form.chosen'), right)}
                         </Grid>
                       </Grid>
                     </Stack>

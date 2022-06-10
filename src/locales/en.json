@@ -127,7 +127,10 @@
       "form": {
         "name": "Name",
         "quantity": "Phone",
-        "status": "Status"
+        "status": "Status",
+        "choices": "Diver: Select",
+        "chosen": "Diver: Selected",
+        "area": "Area"
       }
     },
     "diver-team-area": {
@@ -434,6 +437,30 @@
         "contribution": "Contribution"
       }
     },
+    "group-role": {
+      "title": {
+        "list": "Group Role: Group Role List",
+        "create": "Group Role: Thêm mới group role",
+        "update": "Group Role: Cập nhật group role"
+      },
+      "heading1": {
+        "list": "Group Role",
+        "create": "Thêm mới group role",
+        "update": "Cập nhật group role"
+      },
+      "heading2": "Bảng điều kiển",
+      "heading3": "Group Role",
+      "heading4": {
+        "list": "List",
+        "new": "Group Role New"
+      },
+      "search": "Search group role",
+      "form": {
+        "name": "Name",
+        "personalRate": "Personal Rate",
+        "partnerRate": "Partner Rate"
+      }
+    },
     "categories": {
       "title": {
         "list": "Categories Product: Categories List",
@@ -488,7 +515,8 @@
       "form": {
         "user-name": "Name",
         "email": "Email",
-        "role-name": "Role"
+        "role-name": "Role",
+        "status": "Status"
       }
     }
   }, 
@@ -568,7 +596,7 @@
         "partner": "Partner",
         "coral": "Coral",
         "area": "Area",
-        "group-mode": "Group Mode",
+        "group-mode": "Group",
         "categories": "Categories Product",
         "account": "Account",
         "technician": "Technician"
@@ -583,7 +611,8 @@
         "phase-type": "Phase type",
         "area": "Area",
         "account": "Account",
-        "group-mode": "Group Mode",
+        "group-mode": "Mode",
+        "group-role": "Role",
         "categories": "Categories Product",
         "technician": "Technician"
       },
@@ -614,6 +643,10 @@
         "create": "Create"
       },
       "group-mode": {
+        "list": "List",
+        "create": "Create"
+      },
+      "group-role": {
         "list": "List",
         "create": "Create"
       },

@@ -97,6 +97,24 @@ export default function Router() {
           ]
         },
         {
+          path: 'staff',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/staff/list" replace /> },
+            { path: 'list', element: <StaffList /> },
+            { path: 'new', element: <StaffCreate /> },
+            { path: '/:name/edit', element: <StaffCreate /> }
+          ]
+        },
+        {
+          path: 'employee',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/employee/list" replace /> },
+            { path: 'list', element: <EmployeeList /> },
+            { path: 'new', element: <EmployeeCreate /> },
+            { path: '/:name/edit', element: <EmployeeCreate /> }
+          ]
+        },
+        {
           path: 'coral',
           children: [
             { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
@@ -141,7 +159,16 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/group-mode/list" replace /> },
             { path: 'list', element: <GroupModeList /> },
             { path: 'new', element: <GroupModeCreate /> },
-            { path: '/:name/edit', element: <GroupModeCreate /> }
+            { path: ':name/edit', element: <GroupModeCreate /> }
+          ]
+        },
+        {
+          path: 'group-role',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/group-role/list" replace /> },
+            { path: 'list', element: <GroupRoleList /> },
+            { path: 'new', element: <GroupRoleCreate /> },
+            { path: ':name/edit', element: <GroupRoleCreate /> }
           ]
         },
         {
@@ -219,108 +246,108 @@ export default function Router() {
         <AuthGuard>
           <DashboardLayout />
         </AuthGuard>
-      ),
-      children: [
-        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <GeneralApp /> },
-        {
-          path: 'area',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
-            { path: 'list', element: <AreaList /> },
-            { path: 'new', element: <AreaCreate /> },
-            { path: '/:name/edit', element: <AreaCreate /> }
-          ]
-        },
-        {
-          path: 'coral',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
-            { path: 'list', element: <CoralList /> },
-            { path: 'new', element: <CoralCreate /> },
-            { path: 'type', element: <CoralType /> },
-            { path: 'coral-type-list', element: <CoralTypeList /> }
-          ]
-        },
-        {
-          path: 'phases',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
-            // { path: 'list', element: <PhaseList /> },
-            { path: 'new', element: <PhasesCreate /> },
-            { path: '/:name/edit', element: <PhasesCreate /> },
-            { path: '/type/new', element: <PhasesTypeCreate /> }
-          ]
-        },
-        {
-          path: 'coralArea',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
-            { path: 'list', element: <CoraAreaList /> },
-            { path: 'new', element: <CoralAreaCreate /> }
-          ]
-        },
-        {
-          path: 'site',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/site/list" replace /> },
-            { path: 'list', element: <SiteList /> },
-            { path: 'site-new', element: <SiteCreate /> },
-            { path: 'owners/:name/edit', element: <SiteCreate /> }
-          ]
-        },
-        {
-          path: 'technician',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/technician/list" replace /> },
-            { path: 'list', element: <TechinicianList /> },
-            { path: 'new', element: <TechinicianCreate /> },
-            { path: '/:name/edit', element: <TechinicianCreate /> },
-            { path: 'area', element: <TechnicianAreaCreate /> }
-          ]
-        },
-        {
-          path: 'garden',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
-            { path: 'list', element: <GardenList /> },
-            { path: 'types', element: <GardenTypesList /> },
-            { path: 'new', element: <GardenCreate /> },
-            { path: 'type-new', element: <GardenTypeCreate /> },
-            { path: 'types/:name/edit', element: <GardenTypeCreate /> },
-            { path: '/:name/edit', element: <GardenCreate /> }
-          ]
-        },
-        {
-          path: 'group-mode',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/group-mode/list" replace /> },
-            { path: 'list', element: <GroupModeList /> },
-            { path: 'new', element: <GroupModeCreate /> },
-            { path: '/:name/edit', element: <GroupModeCreate /> }
-          ]
-        },
-        {
-          path: 'categories',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/categories/list" replace /> },
-            { path: 'list', element: <CategoriesList /> },
-            { path: 'new', element: <CategoriesCreate /> },
-            { path: '/:name/edit', element: <CategoriesCreate /> }
-          ]
-        },
-        {
-          path: 'diver',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
-            { path: 'list', element: <DiverList /> },
-            { path: 'new', element: <DiverCreate /> },
-            { path: '/:name/edit', element: <DiverCreate /> },
-            { path: 'team', element: <DiverTeamList /> },
-            { path: 'area', element: <DiverTeamAreaCreate /> }
-          ]
-        }
-      ]
+      )
+      // children: [
+      //   { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+      //   { path: 'app', element: <GeneralApp /> },
+      //   {
+      //     path: 'area',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
+      //       { path: 'list', element: <AreaList /> },
+      //       { path: 'new', element: <AreaCreate /> },
+      //       { path: '/:name/edit', element: <AreaCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'coral',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
+      //       { path: 'list', element: <CoralList /> },
+      //       { path: 'new', element: <CoralCreate /> },
+      //       { path: 'type', element: <CoralType /> },
+      //       { path: 'coral-type-list', element: <CoralTypeList /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'phases',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
+      //       // { path: 'list', element: <PhaseList /> },
+      //       { path: 'new', element: <PhasesCreate /> },
+      //       { path: '/:name/edit', element: <PhasesCreate /> },
+      //       { path: '/type/new', element: <PhasesTypeCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'coralArea',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
+      //       { path: 'list', element: <CoraAreaList /> },
+      //       { path: 'new', element: <CoralAreaCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'site',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/site/list" replace /> },
+      //       { path: 'list', element: <SiteList /> },
+      //       { path: 'site-new', element: <SiteCreate /> },
+      //       { path: 'owners/:name/edit', element: <SiteCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'technician',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/technician/list" replace /> },
+      //       { path: 'list', element: <TechinicianList /> },
+      //       { path: 'new', element: <TechinicianCreate /> },
+      //       { path: '/:name/edit', element: <TechinicianCreate /> },
+      //       { path: 'area', element: <TechnicianAreaCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'garden',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
+      //       { path: 'list', element: <GardenList /> },
+      //       { path: 'types', element: <GardenTypesList /> },
+      //       { path: 'new', element: <GardenCreate /> },
+      //       { path: 'type-new', element: <GardenTypeCreate /> },
+      //       { path: 'types/:name/edit', element: <GardenTypeCreate /> },
+      //       { path: '/:name/edit', element: <GardenCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'group-mode',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/group-mode/list" replace /> },
+      //       { path: 'list', element: <GroupModeList /> },
+      //       { path: 'new', element: <GroupModeCreate /> },
+      //       { path: '/:name/edit', element: <GroupModeCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'categories',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/categories/list" replace /> },
+      //       { path: 'list', element: <CategoriesList /> },
+      //       { path: 'new', element: <CategoriesCreate /> },
+      //       { path: '/:name/edit', element: <CategoriesCreate /> }
+      //     ]
+      //   },
+      //   {
+      //     path: 'diver',
+      //     children: [
+      //       { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
+      //       { path: 'list', element: <DiverList /> },
+      //       { path: 'new', element: <DiverCreate /> },
+      //       { path: '/:name/edit', element: <DiverCreate /> },
+      //       { path: 'team', element: <DiverTeamList /> },
+      //       { path: 'area', element: <DiverTeamAreaCreate /> }
+      //     ]
+      //   }
+      // ]
     },
 
     { path: '*', element: <Navigate to="/404" replace /> }
@@ -339,6 +366,10 @@ const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')))
 const AreaList = Loadable(lazy(() => import('../pages/dashboard/AreaList')));
 const AccountList = Loadable(lazy(() => import('../pages/dashboard/AccountList')));
 const AccountCreate = Loadable(lazy(() => import('../pages/dashboard/AccountCreate')));
+const StaffList = Loadable(lazy(() => import('../pages/dashboard/StaffList')));
+const StaffCreate = Loadable(lazy(() => import('../pages/dashboard/StaffCreate')));
+const EmployeeList = Loadable(lazy(() => import('../pages/dashboard/EmployeeList')));
+const EmployeeCreate = Loadable(lazy(() => import('../pages/dashboard/EmployeeCreate')));
 const AreaCreate = Loadable(lazy(() => import('../pages/dashboard/AreaCreate')));
 const PhaseList = Loadable(lazy(() => import('../pages/dashboard/CoralPhaseList')));
 const PhasesCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhases')));
@@ -352,6 +383,8 @@ const CoralTypeList = Loadable(lazy(() => import('../pages/dashboard/CoralTypeLi
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
 const GroupModeList = Loadable(lazy(() => import('../pages/dashboard/GroupModeList')));
 const GroupModeCreate = Loadable(lazy(() => import('../pages/dashboard/GroupModeCreate')));
+const GroupRoleList = Loadable(lazy(() => import('../pages/dashboard/GroupRoleList')));
+const GroupRoleCreate = Loadable(lazy(() => import('../pages/dashboard/GroupRoleCreate')));
 const CategoriesList = Loadable(lazy(() => import('../pages/dashboard/CategoriesList')));
 const CategoriesCreate = Loadable(lazy(() => import('../pages/dashboard/CategoriesCreate')));
 const SiteList = Loadable(lazy(() => import('../pages/dashboard/SiteList')));
