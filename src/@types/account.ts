@@ -24,4 +24,5 @@ export type Account = {
   email: string;
   roleId: string;
   roleName: string;
+  status: string;
 };

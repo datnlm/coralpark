@@ -72,6 +72,18 @@ export const PATH_DASHBOARD = {
     newSite: path(ROOTS_DASHBOARD, '/site/new'),
     editByIdSite: path(ROOTS_DASHBOARD, '/site/:name/edit')
   },
+  staff: {
+    root: path(ROOTS_DASHBOARD, '/staff'),
+    list: path(ROOTS_DASHBOARD, '/staff/list'),
+    new: path(ROOTS_DASHBOARD, '/staff/new'),
+    editById: path(ROOTS_DASHBOARD, '/staff/:name/edit')
+  },
+  employee: {
+    root: path(ROOTS_DASHBOARD, '/employee'),
+    list: path(ROOTS_DASHBOARD, '/employee/list'),
+    new: path(ROOTS_DASHBOARD, '/employee/new'),
+    editById: path(ROOTS_DASHBOARD, '/employee/:name/edit')
+  },
   technician: {
     root: path(ROOTS_DASHBOARD, '/technician'),
     list: path(ROOTS_DASHBOARD, '/technician/list'),
@@ -91,7 +103,11 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/group-mode'),
     list: path(ROOTS_DASHBOARD, '/group-mode/list'),
     newGroupMode: path(ROOTS_DASHBOARD, '/group-mode/new'),
-    editByIdGroupMode: path(ROOTS_DASHBOARD, '/group-mode/:name/edit')
+    editByIdGroupMode: path(ROOTS_DASHBOARD, '/group-mode/:name/edit'),
+    role: path(ROOTS_DASHBOARD, '/group-role'),
+    listRole: path(ROOTS_DASHBOARD, '/group-role/list'),
+    newGroupRole: path(ROOTS_DASHBOARD, '/group-role/new'),
+    editByIdGroupRole: path(ROOTS_DASHBOARD, '/group-role/:name/edit')
   },
   categories: {
     root: path(ROOTS_DASHBOARD, '/categories'),

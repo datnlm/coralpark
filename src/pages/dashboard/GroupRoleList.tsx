@@ -26,28 +26,26 @@ import {
 } from '@material-ui/core';
 
 import plusFill from '@iconify/icons-eva/plus-fill';
-import axiosInstance from 'utils/axios';
-import axios from 'axios';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListGroupMode } from '../../redux/slices/groupMode';
+import { getListGroupRole } from '../../redux/slices/groupMode';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import useLocales from '../../hooks/useLocales';
 // @types
-import { GroupMode } from '../../@types/group';
+import { GroupRole } from '../../@types/group';
 // components
 import Page from '../../components/Page';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  GroupModeListHead,
-  GroupModeListToolbar,
-  GroupModeMoreMenu
-} from '../../components/_dashboard/group/list_mode';
+  GroupRoleListHead,
+  GroupRoleListToolbar,
+  GroupRoleMoreMenu
+} from '../../components/_dashboard/group/list_role';
 // ----------------------------------------------------------------------
 
 function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
@@ -69,7 +67,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: GroupMode[],
+  array: GroupRole[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -92,13 +90,13 @@ function applySortFilter(
 
 // ----------------------------------------------------------------------
 
-export default function GroupModeList() {
+export default function GroupRoleList() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const groupModeList = useSelector((state: RootState) => state.groupMode.groupModeList);
+  const groupRoleList = useSelector((state: RootState) => state.groupMode.groupRoleList);
   const totalCount = useSelector((state: RootState) => state.groupMode.totalCount);
   const isLoading = useSelector((state: RootState) => state.groupMode.isLoading);
   const [page, setPage] = useState(0);
@@ -109,7 +107,7 @@ export default function GroupModeList() {
   const [orderBy, setOrderBy] = useState('createdAt');
 
   useEffect(() => {
-    dispatch(getListGroupMode(page, rowsPerPage));
+    dispatch(getListGroupRole(page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
   const handleRequestSort = (property: string) => {
@@ -120,7 +118,7 @@ export default function GroupModeList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const selected = groupModeList.map((n) => n.name);
+      const selected = groupRoleList.map((n) => n.name);
       setSelected(selected);
       return;
     }
@@ -154,12 +152,12 @@ export default function GroupModeList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteGroup = async (id: string) => {
+  const handleDeleteGroupRole = async (id: string) => {
     try {
-      await manageGroup.deleteGroupMode(id).then((respone) => {
+      await manageGroup.deleteGroupRole(id).then((respone) => {
         if (respone.status == 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListGroupMode(page, rowsPerPage));
+          dispatch(getListGroupRole(page, rowsPerPage));
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
@@ -170,44 +168,49 @@ export default function GroupModeList() {
     }
   };
 
-  const emptyRows = !isLoading && !groupModeList;
+  const emptyRows = !isLoading && !groupRoleList;
 
-  const filteredGroupMode = applySortFilter(
-    groupModeList,
+  const filteredGroupRole = applySortFilter(
+    groupRoleList,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isGroupModeNotFound = filteredGroupMode.length === 0 && !isLoading;
+  const isGroupRoleNotFound = filteredGroupRole.length === 0 && !isLoading;
 
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.group-mode.form.name'), alignRight: false },
+    { id: 'name', label: translate('page.group-role.form.name'), alignRight: false },
     {
-      id: 'contribution',
-      label: translate('page.group-mode.form.contribution'),
+      id: 'personalRate',
+      label: translate('page.group-role.form.personalRate'),
+      alignRight: false
+    },
+    {
+      id: 'partnerRate',
+      label: translate('page.group-role.form.partnerRate'),
       alignRight: false
     },
     { id: '' }
   ];
 
   return (
-    <Page title={translate('page.group-mode.title.list')}>
+    <Page title={translate('page.group-role.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.group-mode.heading1.list')}
+          heading={translate('page.group-role.heading1.list')}
           links={[
-            { name: translate('page.group-mode.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.group-role.heading2'), href: PATH_DASHBOARD.root },
             {
-              name: translate('page.group-mode.heading3'),
+              name: translate('page.group-role.heading3'),
               href: PATH_DASHBOARD.group.root
             },
-            { name: translate('page.group-mode.heading4.list') }
+            { name: translate('page.group-role.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.group.newGroupMode}
+              to={PATH_DASHBOARD.group.newGroupRole}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}
@@ -216,7 +219,7 @@ export default function GroupModeList() {
         />
 
         <Card>
-          <GroupModeListToolbar
+          <GroupRoleListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -225,11 +228,11 @@ export default function GroupModeList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <GroupModeListHead
+                <GroupRoleListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={groupModeList.length}
+                  rowCount={groupRoleList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -240,8 +243,8 @@ export default function GroupModeList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredGroupMode.map((row, index) => {
-                      const { id, name, contribution } = row;
+                    filteredGroupRole.map((row, index) => {
+                      const { id, name, personalRate, partnerRate } = row;
 
                       const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -251,10 +254,11 @@ export default function GroupModeList() {
                             {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
                           <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{contribution}</TableCell>
+                          <TableCell align="left">{personalRate}</TableCell>
+                          <TableCell align="left">{partnerRate}</TableCell>
                           <TableCell align="right">
-                            <GroupModeMoreMenu
-                              onDelete={() => handleDeleteGroup(id.toString())}
+                            <GroupRoleMoreMenu
+                              onDelete={() => handleDeleteGroupRole(id.toString())}
                               id={id.toString()}
                             />
                           </TableCell>
@@ -273,7 +277,7 @@ export default function GroupModeList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isGroupModeNotFound && (
+                {isGroupRoleNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6}>

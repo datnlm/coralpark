@@ -127,7 +127,10 @@
       "form": {
         "name": "Tên đội",
         "quantity": "Số lượng thành viên",
-        "status": "Trạng thái"
+        "status": "Trạng thái",
+        "choices": "Thợ lặn: Chưa chọn",
+        "chosen": "Thợ lặn: Đã chọn",
+        "selected": "Đã chọn"
       }
     },
     "diver-team-area": {
@@ -149,8 +152,8 @@
       },
       "search": "Tìm kiếm thợ lặn trong khu vực",
       "form": {
-        "choices": "Chưa chọn",
-        "chosen": "Đã chọn",
+        "choices": "Thợ lặn: Chưa chọn",
+        "chosen": "Thợ lặn: Đã chọn",
         "area": "Khu vực"
       }
     },
@@ -434,6 +437,30 @@
         "contribution": "Đóng góp"
       }
     },
+    "group-role": {
+      "title": {
+        "list": "Group Role: Group Role List",
+        "create": "Group Role: Thêm mới group role",
+        "update": "Group Role: Cập nhật group role"
+      },
+      "heading1": {
+        "list": "Group Role",
+        "create": "Thêm mới group role",
+        "update": "Cập nhật group role"
+      },
+      "heading2": "Bảng điều kiển",
+      "heading3": "Group Role",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Group Role mới"
+      },
+      "search": "Tìm kiếm group role",
+      "form": {
+        "name": "Tên",
+        "personalRate": "Tỷ lệ cá nhân",
+        "partnerRate": "Tỷ lệ đối tác"
+      }
+    },
     "categories": {
       "title": {
         "list": "Loại sản phẩm: Loại sản phẩm List",
@@ -488,7 +515,8 @@
       "form": {
         "user-name": "Tên",
         "email": "Địa chỉ email",
-        "role-name": "Chức vụ"
+        "role-name": "Chức vụ",
+        "status": "Trạng thái"
       }
     }
   },
@@ -568,7 +596,7 @@
         "partner": "Đối tác",
         "coral": "San hô",
         "area": "Khu vực",
-        "group-mode": "Group Mode",
+        "group-mode": "Group",
         "account": "Tài khoản",
         "categories": "Loại sản phẩm",
         "technician": "Kỹ thuật viên"
@@ -583,7 +611,8 @@
         "phase-type": "Từng giai đoạn",
         "area": "Khu vực",
         "account": "Tài khoản",
-        "group-mode": "Group Mode",
+        "group-mode": "Mode",
+        "group-role": "Role",
         "categories": "Loại sản phẩm",
         "technician": "Kỹ thuật viên"
       },
@@ -617,6 +646,10 @@
         "list": "Danh sách",
         "create": "Thêm mới"
       },
+      "group-role": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
+      },
       "categories": {
         "list": "Danh sách",
         "create": "Thêm mới"
@@ -629,7 +662,7 @@
     },
     "menu-option": {
       "home": "Trang chủ",
-      "account": "Tài khoảng"
+      "account": "Tài khoản"
     },
     "language": {
       "vi-VN": "Tiếng Việt",

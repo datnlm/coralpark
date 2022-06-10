@@ -27,7 +27,6 @@ export default function App() {
             <NotistackProvider>
               <Settings />
               <ScrollToTop />
-              <GoogleAnalytics />
               {isInitialized ? <Router /> : <LoadingScreen />}
             </NotistackProvider>
           </RtlLayout>

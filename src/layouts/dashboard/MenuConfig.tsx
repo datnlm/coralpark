@@ -77,6 +77,40 @@ export default function MegaMenuConfig() {
       ]
     },
     {
+      title: translate('menu.mega.title.staff'),
+      path: PATH_DASHBOARD.staff.root,
+      icon: ICONS.user,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.staff'),
+          items: [
+            { title: translate('menu.mega.staff.list'), path: PATH_DASHBOARD.staff.list },
+            {
+              title: translate('menu.mega.staff.create'),
+              path: PATH_DASHBOARD.staff.new
+            }
+          ]
+        }
+      ]
+    },
+    {
+      title: translate('menu.mega.title.employee'),
+      path: PATH_DASHBOARD.employee.root,
+      icon: ICONS.user,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.employee'),
+          items: [
+            { title: translate('menu.mega.employee.list'), path: PATH_DASHBOARD.employee.list },
+            {
+              title: translate('menu.mega.employee.create'),
+              path: PATH_DASHBOARD.employee.new
+            }
+          ]
+        }
+      ]
+    },
+    {
       title: translate('menu.mega.title.garden'),
       path: PATH_DASHBOARD.garden.root,
       icon: ICONS.garden,
@@ -142,16 +176,9 @@ export default function MegaMenuConfig() {
             { title: translate('menu.mega.coral.phase'), path: PATH_DASHBOARD.phases.typeNew }
           ]
         },
-        // {
-        //   subheader: 'Phase Type',
-        //   items: [{ title: 'Phase Type', path: PATH_DASHBOARD.phases.typeNew }]
-        // },
         {
           subheader: translate('menu.mega.subheader.area'),
-          items: [
-            // { title: translate('menu.mega.area.list'), path: PATH_DASHBOARD.coralArea.list },
-            { title: translate('menu.mega.area.create'), path: PATH_DASHBOARD.coralArea.new }
-          ]
+          items: [{ title: translate('menu.mega.area.create'), path: PATH_DASHBOARD.coralArea.new }]
         }
       ]
     },
@@ -167,6 +194,16 @@ export default function MegaMenuConfig() {
             {
               title: translate('menu.mega.group-mode.create'),
               path: PATH_DASHBOARD.group.newGroupMode
+            }
+          ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.group-role'),
+          items: [
+            { title: translate('menu.mega.group-role.list'), path: PATH_DASHBOARD.group.listRole },
+            {
+              title: translate('menu.mega.group-role.create'),
+              path: PATH_DASHBOARD.group.newGroupRole
             }
           ]
         }

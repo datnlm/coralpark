@@ -29,6 +29,7 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import { manageAccount } from '_apis_/account';
+import { statusOptions } from 'utils/constants';
 // @types
 import { Account } from '../../@types/account';
 // redux
@@ -50,7 +51,6 @@ import {
   AccountListToolbar,
   AccountMoreMenu
 } from '../../components/_dashboard/account/list';
-
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -183,6 +183,7 @@ export default function UserList() {
     { id: 'user-name', label: translate('page.account.form.user-name'), alignRight: false },
     { id: 'email', label: translate('page.account.form.email'), alignRight: false },
     { id: 'roleName', label: translate('page.account.form.role-name'), alignRight: false },
+    { id: 'status', label: translate('page.account.form.status'), alignRight: false },
     { id: '' }
   ];
 
@@ -233,7 +234,7 @@ export default function UserList() {
                     </TableCell>
                   ) : (
                     filteredAccount.map((row) => {
-                      const { userName, email, roleName } = row;
+                      const { userName, email, roleName, status } = row;
                       const isItemSelected = selected.indexOf(userName) !== -1;
                       return (
                         <TableRow
@@ -250,14 +251,14 @@ export default function UserList() {
                           <TableCell align="left">{userName}</TableCell>
                           <TableCell align="left">{email}</TableCell>
                           <TableCell align="left">{roleName}</TableCell>
-                          {/* <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={(status == '0' && 'error') || 'success'}
-                          >
-                            {status}
-                          </Label>
-                        </TableCell> */}
+                          <TableCell align="left">
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={(status == '0' && 'error') || 'success'}
+                            >
+                              {statusOptions.find((v: any) => v.id == status)?.label}
+                            </Label>
+                          </TableCell>
 
                           <TableCell align="right">
                             <AccountMoreMenu onDelete={() => handleAccount(email, roleName)} />
