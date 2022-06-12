@@ -39,8 +39,8 @@ export default function GardenNewForm({ isEdit, currentGardenType }: GardenNewFo
   const { enqueueSnackbar } = useSnackbar();
 
   const NewGardenSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    imageUrl: Yup.array().min(1, 'Images is required')
+    name: Yup.string().required(translate('message.form.name')),
+    imageUrl: Yup.array().min(1, translate('message.form.image'))
   });
 
   const formik = useFormik({

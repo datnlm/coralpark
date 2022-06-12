@@ -90,14 +90,7 @@ export default function MegaMenuConfig() {
               path: PATH_DASHBOARD.staff.new
             }
           ]
-        }
-      ]
-    },
-    {
-      title: translate('menu.mega.title.employee'),
-      path: PATH_DASHBOARD.employee.root,
-      icon: ICONS.user,
-      children: [
+        },
         {
           subheader: translate('menu.mega.subheader.employee'),
           items: [

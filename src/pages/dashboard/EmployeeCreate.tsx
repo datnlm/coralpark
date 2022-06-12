@@ -19,7 +19,7 @@ import { Employee } from '../../@types/employee';
 
 // ----------------------------------------------------------------------
 
-export default function StaffCreate() {
+export default function EmployeeCreate() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();

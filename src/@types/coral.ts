@@ -173,7 +173,7 @@ export type Coral = {
   images: string[];
   imageUrl: string[];
   scientificName: string;
-  longevity: string;
+  longevity: number;
   exhibitSocial: string;
   sexualBehaviors: string;
   nutrition: string;
@@ -185,21 +185,21 @@ export type Coral = {
 
 export type Habitat = {
   id: string;
-  bathymetry: string;
-  temperature: string;
-  brightness: string;
-  current: string;
-  tides: string;
+  bathymetry: number;
+  temperature: number;
+  brightness: number;
+  current: number;
+  tides: number;
 };
 
 export type PhasesType = {
   id: string;
-  minWeight: string;
-  maxWeight: string;
-  minHigh: string;
-  maxHigh: string;
-  timeFrom: string;
-  timeTo: string;
+  minWeight: number;
+  maxWeight: number;
+  minHigh: number;
+  maxHigh: number;
+  timeFrom: number;
+  timeTo: number;
   colour: string;
   coralId: any;
   coralPhaseId: any;

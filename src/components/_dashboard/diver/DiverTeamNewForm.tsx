@@ -99,7 +99,7 @@ export default function DiverTeamNewForm({ id, open, onClose }: DiverTeamNewForm
 
   return (
     <Dialog fullWidth maxWidth="md" open={open} onClose={onClose}>
-      <DialogTitle>Đội lặn</DialogTitle>
+      <DialogTitle>{translate('page.diver-team.heading3')}</DialogTitle>
       <Divider />
       <DialogContent>
         <Grid container spacing={3} direction="column">
@@ -125,10 +125,10 @@ export default function DiverTeamNewForm({ id, open, onClose }: DiverTeamNewForm
           onClick={handleSubmit}
           loading={isSubmitting}
         >
-          Tạo mới
+          {translate('button.save.confirm')}
         </LoadingButton>
         <Button type="button" color="inherit" variant="outlined" onClick={onClose}>
-          Huỷ
+          {translate('button.save.cancel')}
         </Button>
       </DialogActions>
     </Dialog>

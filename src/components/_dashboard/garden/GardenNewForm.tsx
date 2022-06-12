@@ -34,21 +34,24 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   const siteList = useSelector((state: RootState) => state.garden.siteList);
   const areaList = useSelector((state: RootState) => state.area.areaList);
   const NewGardenSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    latitude: Yup.string().required('Latitude is required'),
-    longitude: Yup.string().required('Longitude is required'),
-    address: Yup.string().required('Address is required'),
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_50'))
+      .max(50, translate('message.form.name_length_50')),
+    latitude: Yup.string().required(translate('message.form.latitude')),
+    longitude: Yup.string().required(translate('message.form.longitude')),
+    address: Yup.string().required(translate('message.form.address')),
     acreage: Yup.string()
       .required()
-      .matches(/^[0-9]+$/, 'Acreage must be only number')
-      .required('Acreage is required'),
+      .matches(/^[0-9]+$/, translate('message.form.acreage_typeError'))
+      .required(translate('message.form.acreage')),
     quantityOfCells: Yup.string()
       .required()
-      .matches(/^[0-9]+$/, 'Quantity of Cells must be only number')
-      .required('Quantity of Cells is required'),
-    areaId: Yup.object().required('Area is required'),
-    gardenTypeId: Yup.object().required('Garden Type is required'),
-    siteId: Yup.object().required('Site is required')
+      .matches(/^[0-9]+$/, translate('message.form.quantity_of_cells_typeError'))
+      .required(translate('message.form.quantity_of_cells')),
+    areaId: Yup.object().required(translate('message.form.area')),
+    gardenTypeId: Yup.object().required(translate('message.form.garden_type')),
+    siteId: Yup.object().required(translate('message.form.site'))
   });
 
   const formik = useFormik({
@@ -262,7 +265,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                       id="status"
                       value={enumStatus}
                       options={statusOptions}
-                      getOptionLabel={(option: OptionStatus) => option.label}
+                      getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
                       // getOptionLabel={(option: any) => (option ? option.name : '')}
                       onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
                       renderInput={(params) => (

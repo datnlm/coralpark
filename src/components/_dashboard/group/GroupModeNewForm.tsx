@@ -42,12 +42,15 @@ export default function GroupModeNewForm({ isEdit, currentGroupMode }: GroupMode
   const [imageFILE, setImageFILE] = useState('');
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_50'))
+      .max(50, translate('message.form.name_length_50')),
     contribution: Yup.number()
-      .min(0, 'Contribution must be greater than 0')
-      .max(100, 'Contribution must be less than 100')
-      .required('Contribution is required')
-      .typeError('Contribution must be a number')
+      .min(0, translate('message.form.contribution_min_max'))
+      .max(100, translate('message.form.contribution_min_max'))
+      .required(translate('message.form.contribution'))
+      .typeError(translate('message.form.contribution_typeError'))
   });
 
   const formik = useFormik({

@@ -151,7 +151,7 @@ export default function GardenNewForm({ isEdit, currentAccount }: AccountNewForm
                       id="status"
                       value={enumStatus}
                       options={statusOptions}
-                      getOptionLabel={(option: OptionStatus) => option.label}
+                      getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
                       // getOptionLabel={(option: any) => (option ? option.name : '')}
                       onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
                       renderInput={(params) => (

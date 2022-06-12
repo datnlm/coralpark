@@ -41,16 +41,21 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
   const [imageFILE, setImageFILE] = useState('');
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_50'))
+      .max(50, translate('message.form.name_length_50')),
     // username: Yup.string().required('Username is required'),
     phone: Yup.string()
       .required()
-      .matches(/^[0-9]+$/, 'Phone must be only number')
-      .min(10, 'Phone must be 10 number')
-      .max(10, 'Phone must be 10 number')
-      .required('Phone is required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    address: Yup.string().required('Address is required')
+      .matches(/^[0-9]+$/, translate('message.form.phone_typeError'))
+      .min(10, translate('message.form.phone_length'))
+      .max(10, translate('message.form.phone_length'))
+      .required(translate('message.form.phone')),
+    email: Yup.string()
+      .email(translate('message.form.email_invalid'))
+      .required(translate('message.form.email')),
+    address: Yup.string().required(translate('message.form.address'))
     // imageUrl: Yup.array().min(1, 'Images is required')
   });
 
@@ -216,7 +221,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
                       id="status"
                       value={enumStatus}
                       options={statusOptions}
-                      getOptionLabel={(option: OptionStatus) => option.label}
+                      getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
                       // getOptionLabel={(option: any) => (option ? option.name : '')}
                       onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
                       renderInput={(params) => (

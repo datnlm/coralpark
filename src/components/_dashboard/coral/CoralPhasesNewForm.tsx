@@ -47,8 +47,11 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    imageUrl: Yup.array().min(1, 'Images is required')
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_100'))
+      .max(100, translate('message.form.name_length_100')),
+    imageUrl: Yup.array().min(1, translate('message.form.image'))
   });
 
   const formik = useFormik({
@@ -146,7 +149,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.phases.form.name')}
+                    label={translate('page.phase.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}

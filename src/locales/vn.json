@@ -361,7 +361,32 @@
         "max-high": "Chiều cao tối đa",
         "time-from": "Thời gian bắt đầu",
         "time-to": "Thời gian kết thúc",
-        "colour": "Màu sắc"
+        "colour": "Màu sắc",
+        "name": "Tên giai đoạn",
+        "description": "Mô tả",
+        "image": "Thêm mới hình ảnh"
+      }
+    },
+    "phase": {
+      "title": {
+        "create": "San hô: Thêm mới giai đoạn",
+        "update": "San hô: Cập nhật giai đoạn"
+      },
+      "heading1": {
+        "list": "Giai đoạn",
+        "create": "Tạo mới giai đoạn",
+        "update": "Cập nhật giai đoạn"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Giai đoạn",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Giai đoạn"
+      },
+      "form": {
+        "name": "Tên giai đoạn",
+        "description": "Mô tả",
+        "image": "Thêm mới hình ảnh"
       }
     },
     "coral-area": {
@@ -518,6 +543,32 @@
         "role-name": "Chức vụ",
         "status": "Trạng thái"
       }
+    },
+    "employee": {
+      "title": {
+        "list": "Nhân viên: Danh sách nhân viên",
+        "create": "Nhân viên: Thêm mới thông tin nhân viên",
+        "update": "Nhân viên: Cập nhật thông tin nhân viên"
+      },
+      "heading1": {
+        "list": "Danh sách nhân viên",
+        "create": "Thêm mới thông tin nhân viên",
+        "update": "Chỉnh sửa thông tin nhân viên"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Nhân viên",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Nhân viên mới"
+      },
+      "search": "Tìm kiếm theo tên nhân viên",
+      "form": {
+        "name": "Tên đầy đủ",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ email",
+        "address": "Địa chỉ",
+        "status": "Trạng thái"
+      }
     }
   },
   "button": {
@@ -565,7 +616,109 @@
       "error": "Đăng nhập thất bại",
       "failedLoginAttempts": "Quá nhiều lần đăng nhập không thành công",
       "invalid": "Tên người dùng hoặc mật khẩu không hợp lệ."
+    },
+    "form": {
+      "name": "Tên là bắt buộc",
+      "name_length_50": "Tên phải dài từ 3 đến 50 ký tự",
+      "name_length_100": "Tên phải dài từ 3 đến 100 ký tự",
+      "name_length_200": "Tên phải dài từ 3 đến 200 ký tự",
+      "scientfic": "Tên khoa học là bắt buộc",
+      "scientific_length_200": "Tên khoah học phải dài từ 3 đến 200 ký tự",
+      "longevity": "Tuổi thọ là bắt buộc",
+      "longevity_typeError": "Tuổi thọ là số",
+      "longevity_min": "Tuổi thọ hơn 0",
+      "exhibit_social": "Hành vi xã hội is required",
+      "exhibit_social_length_200": "Hành vi xã hội dài từ 3 đến 200 ký tự",
+      "sexual_behaviors": "Sinh sản là bắt buộc",
+      "sexual_behaviors_length_200": "Sinh sản phải dài từ 3 đến 200 ký tự",
+      "nutrition": "Dinh dưỡng là bắt buộc",
+      "nutrition_length_200": "Dinh dưỡng phải dài từ 3 đến 200 ký tự",
+      "colour": "Màu sắc là bắt buộc",
+      "colour_length_200": "Màu sắc phải dài từ 3 đến 200 ký tự",
+      "bathymetry": "Độ sâu là bắt buộc",
+      "bathymetry_typeError": "Độ sâu là số",
+      "temperature": "Nhiệt độ là bắt buộc",
+      "temperature_typeError": "Nhiệt độ là số",
+      "brightness": "Độ sáng là bắt buộc",
+      "brightness_typeError": "Độ sáng là số",
+      "tides": "Thuỷ triều là bắt buộc",
+      "tides_typeError": "Thuỷ triều là một số",
+      "current": "Dòng chảy là bắt buộc",
+      "current_typeError": "Dòng chảy là số",
+      "min_weight": "Trọng lượng tối thiểu là bắt buộc",
+      "min_weight_min": "Trọng lượng tối thiểu lớn hơn 0",
+      "min_weight_typeError": "Trọng lượng tối thiểu là số",
+      "max_weight": "Trọng lượng tối đa là bắt buộc",
+      "max_weight_min": "Trọng lượng tối đa lớn hơn 0",
+      "max_weight_typeError": "Trọng lượng tối đa là số",
+      "min_High": "Chiều cao tối thiểu là bắt buộc",
+      "min_High_min": "Chiều cao tối thiểu lớn hơn 0",
+      "min_High_typeError": "Chiều cao tối thiểu là số",
+      "max_High": "Chiều cao tối đa là bắt buộc",
+      "max_High_min": "Chiều cao tối đa lớn hơn 0",
+      "max_High_typeError": "Chiều cao tối đa là số",
+      "time_from": "Thời gian bắt đầu là bắt buộc",
+      "time_from_min": "Thời gian bắt đầu lớn hơn 0",
+      "time_from_typeError": "Thời gian bắt đầu là số",
+      "time_to": "Thời gian kết thúcc là bắt buộc",
+      "time_to_min": "Thời gian kết thúc lớn hơn 0",
+      "time_to_typeError": "Thời gian kết thúc là số",
+      "latitude": "Vĩ độ là bắt buộc",
+      "longitude": "Kinh độ là bắt buộc",
+      "coral_type": "Loài là bắt buộc",
+      "status_enum": "Trạng thái san hô là bắt buộc",
+      "coral_phase": "Giai đoạn là bắt buộc",
+      "acreage": "Diện tích là bắt buộc",
+      "acreage_typeError": "Diện tích là số",
+      "quantity_of_cells": "Số cell là bắt buộc",
+      "quantity_of_cells_typeError": "Số cell là số",
+      "area": "Khu vực là bắt buộc",
+      "garden_type": "Loạn vườn là bắt buộc",
+      "site": "Địa điểm là bắt buộc",
+      "contribution": "Phần trăm đóng góp là bắt buộc",
+      "contribution_typeError": "Phần trăm đóng góp là số",
+      "contribution_min_max": "Phần trăm đóng góp lớn hơn 0 và nhỏ hơn 100",
+      "personal_rate": "Tỷ lệ cá nhân là bắt buộc",
+      "personal_rate_typeError": "Tỷ lệ cá nhân là số",
+      "personal_rate_min_max": "Tỷ lệ cá nhân lớn hơn 0 và nhỏ hơn 100",
+      "partner_rate": "Tỷ lệ đối tác là bắt buộc",
+      "partner_rate_typeError": "Tỷ lệ đối tác là số",
+      "partner_rate_min_max": "Tỷ lệ đối tác lớn hơn 0 và nhỏ hơn 100",
+      "web_typeError": "Vui lòng nhập đúng địa chỉ website",
+      "partner_type": "Loại đối tác là bắt buộc",
+      "phone": "Số điện là bắt buộc",
+      "phone_length": "Số điện loại nên là 10 số",
+      "phone_typeError": "Số điện loại nên số",
+      "email": "Địa chỉ email là bắt buộc",
+      "email_invalid": "Email phải là một địa chỉ email hợp lệ",
+      "address": "Địa chỉ là bắt buộc",
+      "province": "Tỉnh là bắt buộc",
+      "image": "Hình ảnh là bắt buộc"
     }
+  },
+  "status": {
+    "coral": {
+      "EX": "Tuyệt chủng",
+      "EW": "Tuyệt chủng trong tự nhiên",
+      "CR": "Cực kỳ nguy cấp",
+      "EN": "Nguy cấp",
+      "VU": "Sắp nguy cấp",
+      "NT": "Sắp bị đe doạ",
+      "LC": "Ít quan tâm",
+      "DD": "Thiếu dữ liệu",
+      "NE": "Thiếu dữ liệu",
+      "DE": "Đã xoá"
+    },
+    "coral_level_type": {
+      "0": "Tất cả",
+      "1": "Lớp",
+      "2": "Bộ",
+      "3": "Họ",
+      "4": "Chi",
+      "5": "Loài"
+    },
+    "Available": "Đang hoạt động",
+    "Deleted": "Đã xoá"
   },
   "menu": {
     "sidebarConfig": {
@@ -599,7 +752,8 @@
         "group-mode": "Group",
         "account": "Tài khoản",
         "categories": "Loại sản phẩm",
-        "technician": "Kỹ thuật viên"
+        "technician": "Kỹ thuật viên",
+        "staff": "Nhân viên"
       },
       "subheader": {
         "site": "Địa điểm",
@@ -614,7 +768,9 @@
         "group-mode": "Mode",
         "group-role": "Role",
         "categories": "Loại sản phẩm",
-        "technician": "Kỹ thuật viên"
+        "technician": "Kỹ thuật viên",
+        "staff": "Nhân viên",
+        "employee": "Nhân viên"
       },
       "site": {
         "list": "Danh sách",
@@ -658,6 +814,10 @@
         "list": "Danh sách",
         "create": "Thêm mới",
         "area": "Khu vực"
+      },
+      "employee": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
       }
     },
     "menu-option": {

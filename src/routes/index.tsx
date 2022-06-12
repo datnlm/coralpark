@@ -246,108 +246,108 @@ export default function Router() {
         <AuthGuard>
           <DashboardLayout />
         </AuthGuard>
-      )
-      // children: [
-      //   { path: '/', element: <Navigate to="/dashboard/app" replace /> },
-      //   { path: 'app', element: <GeneralApp /> },
-      //   {
-      //     path: 'area',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
-      //       { path: 'list', element: <AreaList /> },
-      //       { path: 'new', element: <AreaCreate /> },
-      //       { path: '/:name/edit', element: <AreaCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'coral',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
-      //       { path: 'list', element: <CoralList /> },
-      //       { path: 'new', element: <CoralCreate /> },
-      //       { path: 'type', element: <CoralType /> },
-      //       { path: 'coral-type-list', element: <CoralTypeList /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'phases',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
-      //       // { path: 'list', element: <PhaseList /> },
-      //       { path: 'new', element: <PhasesCreate /> },
-      //       { path: '/:name/edit', element: <PhasesCreate /> },
-      //       { path: '/type/new', element: <PhasesTypeCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'coralArea',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
-      //       { path: 'list', element: <CoraAreaList /> },
-      //       { path: 'new', element: <CoralAreaCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'site',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/site/list" replace /> },
-      //       { path: 'list', element: <SiteList /> },
-      //       { path: 'site-new', element: <SiteCreate /> },
-      //       { path: 'owners/:name/edit', element: <SiteCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'technician',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/technician/list" replace /> },
-      //       { path: 'list', element: <TechinicianList /> },
-      //       { path: 'new', element: <TechinicianCreate /> },
-      //       { path: '/:name/edit', element: <TechinicianCreate /> },
-      //       { path: 'area', element: <TechnicianAreaCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'garden',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
-      //       { path: 'list', element: <GardenList /> },
-      //       { path: 'types', element: <GardenTypesList /> },
-      //       { path: 'new', element: <GardenCreate /> },
-      //       { path: 'type-new', element: <GardenTypeCreate /> },
-      //       { path: 'types/:name/edit', element: <GardenTypeCreate /> },
-      //       { path: '/:name/edit', element: <GardenCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'group-mode',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/group-mode/list" replace /> },
-      //       { path: 'list', element: <GroupModeList /> },
-      //       { path: 'new', element: <GroupModeCreate /> },
-      //       { path: '/:name/edit', element: <GroupModeCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'categories',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/categories/list" replace /> },
-      //       { path: 'list', element: <CategoriesList /> },
-      //       { path: 'new', element: <CategoriesCreate /> },
-      //       { path: '/:name/edit', element: <CategoriesCreate /> }
-      //     ]
-      //   },
-      //   {
-      //     path: 'diver',
-      //     children: [
-      //       { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
-      //       { path: 'list', element: <DiverList /> },
-      //       { path: 'new', element: <DiverCreate /> },
-      //       { path: '/:name/edit', element: <DiverCreate /> },
-      //       { path: 'team', element: <DiverTeamList /> },
-      //       { path: 'area', element: <DiverTeamAreaCreate /> }
-      //     ]
-      //   }
-      // ]
+      ),
+      children: [
+        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        { path: 'app', element: <GeneralApp /> },
+        {
+          path: 'area',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/area/list" replace /> },
+            { path: 'list', element: <AreaList /> },
+            { path: 'new', element: <AreaCreate /> },
+            { path: '/:name/edit', element: <AreaCreate /> }
+          ]
+        },
+        {
+          path: 'coral',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/coral/list" replace /> },
+            { path: 'list', element: <CoralList /> },
+            { path: 'new', element: <CoralCreate /> },
+            { path: 'type', element: <CoralType /> },
+            { path: 'coral-type-list', element: <CoralTypeList /> }
+          ]
+        },
+        {
+          path: 'phases',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/phases/new" replace /> },
+            // { path: 'list', element: <PhaseList /> },
+            { path: 'new', element: <PhasesCreate /> },
+            { path: '/:name/edit', element: <PhasesCreate /> },
+            { path: '/type/new', element: <PhasesTypeCreate /> }
+          ]
+        },
+        {
+          path: 'coralArea',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
+            { path: 'list', element: <CoraAreaList /> },
+            { path: 'new', element: <CoralAreaCreate /> }
+          ]
+        },
+        {
+          path: 'site',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/site/list" replace /> },
+            { path: 'list', element: <SiteList /> },
+            { path: 'site-new', element: <SiteCreate /> },
+            { path: 'owners/:name/edit', element: <SiteCreate /> }
+          ]
+        },
+        {
+          path: 'technician',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/technician/list" replace /> },
+            { path: 'list', element: <TechinicianList /> },
+            { path: 'new', element: <TechinicianCreate /> },
+            { path: '/:name/edit', element: <TechinicianCreate /> },
+            { path: 'area', element: <TechnicianAreaCreate /> }
+          ]
+        },
+        {
+          path: 'garden',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/garden/list" replace /> },
+            { path: 'list', element: <GardenList /> },
+            { path: 'types', element: <GardenTypesList /> },
+            { path: 'new', element: <GardenCreate /> },
+            { path: 'type-new', element: <GardenTypeCreate /> },
+            { path: 'types/:name/edit', element: <GardenTypeCreate /> },
+            { path: '/:name/edit', element: <GardenCreate /> }
+          ]
+        },
+        {
+          path: 'group-mode',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/group-mode/list" replace /> },
+            { path: 'list', element: <GroupModeList /> },
+            { path: 'new', element: <GroupModeCreate /> },
+            { path: '/:name/edit', element: <GroupModeCreate /> }
+          ]
+        },
+        {
+          path: 'categories',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/categories/list" replace /> },
+            { path: 'list', element: <CategoriesList /> },
+            { path: 'new', element: <CategoriesCreate /> },
+            { path: '/:name/edit', element: <CategoriesCreate /> }
+          ]
+        },
+        {
+          path: 'diver',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/diver/list" replace /> },
+            { path: 'list', element: <DiverList /> },
+            { path: 'new', element: <DiverCreate /> },
+            { path: '/:name/edit', element: <DiverCreate /> },
+            { path: 'team', element: <DiverTeamList /> },
+            { path: 'area', element: <DiverTeamAreaCreate /> }
+          ]
+        }
+      ]
     },
 
     { path: '*', element: <Navigate to="/404" replace /> }

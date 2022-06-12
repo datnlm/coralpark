@@ -24,8 +24,12 @@ export default function CategoriesNewForm({ isEdit, currentCategories }: Categor
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_50'))
+      .max(50, translate('message.form.name_length_50'))
   });
 
   const formik = useFormik({

@@ -361,7 +361,32 @@
         "max-high": "Max High",
         "time-from": "Time From",
         "time-to": "Time To",
-        "colour": "Colour"
+        "colour": "Colour",
+        "name": "Phase name",
+        "description": "Description",
+        "image": "Add new image"
+      }
+    },
+    "phase": {
+      "title": {
+        "create": "Coral: Create a coral phase",
+        "update": "Coral: Update coral phase"
+      },
+      "heading1": {
+        "list": "Coral Phase",
+        "create": "Create a coral phase",
+        "update": "Update coral phase"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Coral Phase",
+      "heading4": {
+        "list": "List",
+        "new": "Phase"
+      },
+      "form": {
+        "name": "Phase name",
+        "description": "Description",
+        "image": "Add new image"
       }
     },
     "coral-area": {
@@ -484,7 +509,7 @@
       }
     },
     "login": {
-      "title": "Login to CGMS",
+      "title": "Login to CPMS",
       "label": {
         "signed": "Signed in as"
       },
@@ -516,6 +541,32 @@
         "user-name": "Name",
         "email": "Email",
         "role-name": "Role",
+        "status": "Status"
+      }
+    },
+    "employee": {
+      "title": {
+        "list": "Employee: Employee List",
+        "create": "Employee: Create a new employee",
+        "update": "Employee: Update employee"
+      },
+      "heading1": {
+        "list": "Employee List",
+        "create": "Create employee",
+        "update": "Update employee"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Employee",
+      "heading4": {
+        "list": "List",
+        "new": "New employee"
+      },
+      "search": "Search employee",
+      "form": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
         "status": "Status"
       }
     }
@@ -565,7 +616,107 @@
       "error": "Login error",
       "failedLoginAttempts": "Too many failed login attempts",
       "invalid": "The username or password are not valid."
+    },
+    "form": {
+      "name": "Name is required",
+      "name_length_50": "Name must be between 3 and 50 characters",
+      "name_length_100": "Name must be between 3 and 100 characters",
+      "name_length_200": "Name must be between 3 and 200 characters",
+      "scientfic": "Scientific Name is required",
+      "scientific_length_200": "Scientific Name must be between 3 and 200 characters",
+      "longevity": "Longevity is required",
+      "longevity_typeError": "Longevity is number",
+      "longevity_min": "Longevity more than 0",
+      "exhibit_social": "Exhibit Social is required",
+      "exhibit_social_length_200": "Exhibit Social must be between 3 and 200 characters",
+      "sexual_behaviors": "Sexual Behaviors is required",
+      "sexual_behaviors_length_200": "Sexual Behaviors must be between 3 and 200 characters",
+      "nutrition": "Nutrition is required",
+      "nutrition_length_200": "Nutrition must be between 3 and 200 characters",
+      "colour": "Colour is required",
+      "colour_length_200": "Colour must be between 3 and 200 characters",
+      "coral_type": "Coral Type is required",
+      "status_enum": "Status Enum is required",
+      "bathymetry": "Bathymetry is required",
+      "bathymetry_typeError": "Bathymetry is a number",
+      "temperature": "Temperature is required",
+      "temperature_typeError": "Temperature is a number",
+      "brightness": "Brightness is required",
+      "brightness_typeError": "Brightness is a number",
+      "tides": "Tides is required",
+      "tides_typeError": "Tides is a number",
+      "current": "Current is required",
+      "current_typeError": "Current is a number",
+      "min_weight": "Min Weight is required",
+      "min_weight_min": "Min Weight more than 0",
+      "min_weight_typeError": "Win Weight is a number",
+      "max_weight": "Max Weight is required",
+      "max_weight_min": "Max Weight more than 0",
+      "max_weight_typeError": "Max Weight is a number",
+      "min_High": "Min High is required",
+      "min_High_min": "Min High more than 0",
+      "min_High_typeError": "Min High is a number",
+      "max_High": "Max High is required",
+      "max_High_min": "Max High more than 0",
+      "max_High_typeError": "Max High is a number",
+      "time_from": "Time From is required",
+      "time_form_min": "Time From more than 0",
+      "time_form_typeError": "Time From is a number",
+      "time_to": "Time To is required",
+      "time_to_min": "Time To more than 0",
+      "time_to_typeError": "Time To is a number",
+      "latitude": "Latitude is required",
+      "longitude": "Longitude is required",
+      "coral_phase": "Phase is required",
+      "acreage": "Acreage is required",
+      "acreage_typeError": "Acreage must be only number",
+      "quantity_of_cells": "Quantity of Cells is required",
+      "quantity_of_cells_typeError": "Quantity of Cells must be only number",
+      "area": "Area is required",
+      "garden_type": "Garden Type is required",
+      "site": "Site is required",
+      "contribution": "Contribution is required",
+      "contribution_typeError": "Contribution must be a number",
+      "contribution_min_max": "Contribution greater than 0 and less than 100",
+      "personal_rate": "Personal Rate is required",
+      "personal_rate_typeError": "Personal Rate must be a number",
+      "personal_rate_min_max": "Personal Rate greater than 0 and less than 100",
+      "partner_rate": "Parnter Rate is required",
+      "partner_rate_typeError": "Parnter Rate must be a number",
+      "partner_rate_min_max": "Parnter Rate greater than 0 and less than 100",
+      "web_typeError": "Enter correct url!",
+      "partner_type": "Partner Type is required",
+      "phone": "Phone must be only number",
+      "phone_length": "Phone must be 10 number",
+      "email": "Email is required",
+      "email_invalid": "Email must be a valid email address",
+      "address": "Address is required",
+      "image": "Images is required"
     }
+  },
+  "status": {
+    "coral": {
+      "EX": "Extinct",
+      "EW": "Extinct in the wild",
+      "CR": "Critically Endangered",
+      "EN": "Endangered",
+      "VU": "Vulnerable",
+      "NT": "Near Threatened",
+      "LC": "Least Concern",
+      "DD": "Data deficient",
+      "NE": "Not evaluated",
+      "DE": "Deleted"
+    },
+    "coral_level_type": {
+      "0": "All",
+      "1": "Class",
+      "2": "Order",
+      "3": "Family",
+      "4": "Genus",
+      "5": "Species"
+    },
+    "Available": "Available",
+    "Deleted": "Deleted"
   },
   "menu": {
     "sidebarConfig": {
@@ -599,7 +750,8 @@
         "group-mode": "Group",
         "categories": "Categories Product",
         "account": "Account",
-        "technician": "Technician"
+        "technician": "Technician",
+        "staff": "Staff"
       },
       "subheader": {
         "site": "Site",
@@ -614,7 +766,9 @@
         "group-mode": "Mode",
         "group-role": "Role",
         "categories": "Categories Product",
-        "technician": "Technician"
+        "technician": "Technician",
+        "staff": "Staff",
+        "employee": "Employee"
       },
       "site": {
         "list": "List",
@@ -658,6 +812,10 @@
         "list": "List",
         "create": "Create",
         "area": "Area"
+      },
+      "employee": {
+        "list": "List",
+        "create": "Create"
       }
     },
     "menu-option": {

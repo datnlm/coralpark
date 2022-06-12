@@ -151,6 +151,14 @@ export class Coral {
     });
     const data = {
       id: phaseForm.id,
+      colour: phaseForm!.colour,
+      exhibitSocial: phaseForm!.exhibitSocial,
+      longevity: phaseForm!.longevity,
+      name: phaseForm!.name,
+      nutrition: phaseForm!.nutrition,
+      scientificName: phaseForm!.scientificName,
+      sexualBehaviors: phaseForm!.sexualBehaviors,
+      coralTypeId: phaseForm!.coralTypeId,
       coralPhaseTypes: phaseType
     };
     return axios
@@ -175,6 +183,14 @@ export class Coral {
     });
     const data = {
       id: phaseForm.id,
+      colour: phaseForm!.colour,
+      exhibitSocial: phaseForm!.exhibitSocial,
+      longevity: phaseForm!.longevity,
+      name: phaseForm!.name,
+      nutrition: phaseForm!.nutrition,
+      scientificName: phaseForm!.scientificName,
+      sexualBehaviors: phaseForm!.sexualBehaviors,
+      coralTypeId: phaseForm!.coralTypeId,
       coralPhaseTypes: phaseType
     };
     return axios
@@ -261,7 +277,7 @@ export class Coral {
       brightness: habitat.brightness,
       tides: habitat.tides,
       current: habitat.current,
-      coral: { id: habitat.coralId }
+      coralId: habitat.coralId
     };
     return axios
       .post('/api/v1/admin/habitats', data)
@@ -277,7 +293,7 @@ export class Coral {
       brightness: habitat.brightness,
       tides: habitat.tides,
       current: habitat.current,
-      coral: { id: habitat.coralId }
+      coralId: habitat.coralId
     };
     return axios
       .put('/api/v1/admin/habitats', data)

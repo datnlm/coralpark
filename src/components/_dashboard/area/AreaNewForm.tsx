@@ -13,7 +13,16 @@ import './Map.css';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
-import { Card, Grid, Stack, TextField, Autocomplete, Box, CardContent } from '@material-ui/core';
+import {
+  Card,
+  Grid,
+  Stack,
+  TextField,
+  Autocomplete,
+  Box,
+  CardContent,
+  FormHelperText
+} from '@material-ui/core';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import useLocales from '../../../hooks/useLocales';
@@ -63,8 +72,12 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
-    // address: Yup.object().required('Province is required').nullable(true)
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_50'))
+      .max(50, translate('message.form.name_length_50')),
+    wellKnownText: Yup.string().required(translate('message.form.area')),
+    address: Yup.object().required(translate('message.form.province')).nullable(true)
   });
 
   const checkSelected = (provice: string) => {
@@ -206,15 +219,12 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       const province = addressArr?.pop();
       const district = addressArr?.pop();
       const ward = addressArr?.pop();
-      const polygonStr = currentArea?.wellKnownText.replace('POLYGON', '');
-      console.log(currentArea?.wellKnownText);
-      // console.log(currentArea?.wellKnownText);
+      setFieldValue('wellKnownText', currentArea?.wellKnownText);
       const mapPoly = currentArea?.wellKnownText
         .replace('POLYGON', '')
         .replace('((', '')
         .replace('))', '')
         .split(',');
-      // console.log(mapPoly);
       const coordinatesTmp: any = [];
       mapPoly.map((v) => {
         const tmp: any = [];
@@ -334,9 +344,9 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
               // console.log(string + `(${values.toString()})`);
             });
             string = `POLYGON((${str}))`;
-            console.log(string);
             // set polygonStr
             setPolygonStr(string);
+            setFieldValue('wellKnownText', string);
           });
         } else {
           setPolygonStr('');
@@ -420,6 +430,11 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
                           <div className="map-container" ref={mapContainerRef} />
                         </div>
                       </MapWrapperStyle>
+                      {touched.wellKnownText && errors.wellKnownText && (
+                        <FormHelperText error sx={{ px: 2 }}>
+                          {touched.wellKnownText && errors.wellKnownText}
+                        </FormHelperText>
+                      )}
                     </CardContent>
                   </Card>
                 </Grid>
