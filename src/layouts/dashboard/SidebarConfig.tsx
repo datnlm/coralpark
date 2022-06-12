@@ -28,7 +28,7 @@ const ICONS = {
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
   kanban: getIcon('ic_kanban')
-};
+}; 
 
 export default function SidebarConfig() {
   const { translate } = useLocales();

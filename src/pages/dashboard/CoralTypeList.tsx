@@ -295,7 +295,11 @@ export default function UserList() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left">
-                            {coralLevelType.find((e: any) => e.id == levelType)?.label}
+                            {translate(
+                              `status.coral_level_type.${
+                                coralLevelType.find((e: any) => e.id == levelType)?.id
+                              }`
+                            )}
                           </TableCell>
                           <TableCell align="right">
                             <CoralTypeMoreMenu

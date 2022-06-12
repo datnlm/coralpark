@@ -46,19 +46,38 @@ export default function CoralPhasesTypeNewForm({
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
-  const [phaseId, setPhaseId] = useState('');
+  let phaseId = '';
+  // const [phaseId, setPhaseId] = useState('');
   const listPhase = useSelector((state: RootState) => state.coral.coralPhaseList);
   const [optionCoralPhases, setOptionCoralPhases] = useState([]);
 
   const NewUserSchema = Yup.object().shape({
-    minWeight: Yup.string().required('MinWeight is required'),
-    maxWeight: Yup.string().required('MaxWeight is required'),
-    minHigh: Yup.string().required('MinHigh is required'),
-    maxHigh: Yup.string().required('MaxHigh is required'),
-    timeFrom: Yup.string().required('TimeForm is required'),
-    timeTo: Yup.string().required('TimeTo is required'),
-    colour: Yup.string().required('Colour is required'),
-    coralPhaseId: Yup.object().required('Phase is required').nullable(true)
+    minWeight: Yup.number()
+      .required(translate('message.form.min_weight'))
+      .min(0, translate('message.form.min_weight_min'))
+      .typeError(translate('message.form.min_typeError')),
+    maxWeight: Yup.number()
+      .required(translate('message.form.max_weight'))
+      .min(0, translate('message.form.max_weight_min'))
+      .typeError(translate('message.form.max_weight_typeError')),
+    minHigh: Yup.number()
+      .required(translate('message.form.min_high'))
+      .min(0, translate('message.form.min_high_min'))
+      .typeError(translate('message.form.min_high_typeError')),
+    maxHigh: Yup.number()
+      .required(translate('message.form.max_high'))
+      .min(0, translate('message.form.max_high_min'))
+      .typeError(translate('message.form.max_high_typeError')),
+    timeFrom: Yup.number()
+      .required(translate('message.form.time_from'))
+      .min(0, translate('message.form.time_from_min'))
+      .typeError(translate('message.form.time_from_typeError')),
+    timeTo: Yup.number()
+      .required(translate('message.form.time_fo'))
+      .min(0, translate('message.form.time_fo_min'))
+      .typeError(translate('message.form.time_to_typeError')),
+    colour: Yup.string().required(translate('message.form.colour')),
+    coralPhaseId: Yup.object().required(translate('message.form.coral_phase')).nullable(true)
   });
 
   const formik = useFormik({
@@ -94,54 +113,13 @@ export default function CoralPhasesTypeNewForm({
   } = formik;
 
   const handleClose = (params: string) => {
-    setPhaseId(params);
+    phaseId = params;
+    // setPhaseId(params);
     setOpen(false);
   };
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
-
-  // useEffect(() => {
-  //   manageCoral.getListCoralPhases(1, -1).then((response) => {
-  //     if (response.status == 200) {
-  //       setOptionCoralPhases(response.data.items);
-  //     } else {
-  //       setOptionCoralPhases([]);
-  //     }
-  //   });
-  //   if (currentPhasesType != null) {
-  //     setCurrentPhase(currentPhasesType.coralPhase);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   manageCoral.getListCoralPhases(1, -1).then((response) => {
-  //     if (response.status == 200) {
-  //       setOptionCoralPhases(response.data.items);
-  //       if (phaseId != '') {
-  //         setCurrentPhase(response.data.items.find((v: any) => v.id == phaseId));
-  //       }
-  //     } else {
-  //       setOptionCoralPhases([]);
-  //     }
-  //   });
-  //   if (currentPhasesType != null) {
-  //     setCurrentPhase(currentPhasesType.coralPhaseId);
-  //   }
-  // }, [phaseId]);
 
   useEffect(() => {
     if (currentPhasesType != null && currentPhasesType.coralPhaseId != '') {
@@ -149,8 +127,13 @@ export default function CoralPhasesTypeNewForm({
         'coralPhaseId',
         listPhase.find((v) => v.id == currentPhasesType.coralPhaseId)
       );
+    } else if (phaseId) {
+      setFieldValue(
+        'coralPhaseId',
+        listPhase.find((v) => v.id == phaseId)
+      );
     }
-  }, [currentPhasesType]);
+  }, [currentPhasesType, listPhase]);
 
   return (
     <FormikProvider value={formik}>

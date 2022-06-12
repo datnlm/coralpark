@@ -25,6 +25,8 @@ import {
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { manageCoral } from '_apis_/coral';
+import { useDispatch } from 'redux/store';
+import { getListCoralPhase } from '../../../redux/slices/coral';
 import useLocales from '../../../hooks/useLocales';
 // @types
 import { QuillEditor } from '../../editor';
@@ -45,9 +47,10 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
+    name: Yup.string().required(translate('message.form.name'))
   });
 
   const formik = useFormik({
@@ -60,7 +63,6 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        console.log('submit');
         const bodyFormData = new FormData();
         bodyFormData.append('name', values.name);
         bodyFormData.append('description', values.description);
@@ -68,6 +70,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
 
         await manageCoral.createCoralPhases(bodyFormData).then((response) => {
           if (response.status == 200) {
+            dispatch(getListCoralPhase(0, -1));
             resetForm();
             setSubmitting(false);
             enqueueSnackbar(translate('message.create-success'), {
@@ -114,7 +117,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
 
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
-      <DialogTitle>{translate('page.phases.form.name')}</DialogTitle>
+      <DialogTitle>{translate('page.phase.form.name')}</DialogTitle>
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <DialogContent>
@@ -124,7 +127,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <TextField
                       fullWidth
-                      label={translate('page.phases.form.name')}
+                      label={translate('page.phase.form.name')}
                       {...getFieldProps('name')}
                       error={Boolean(touched.name && errors.name)}
                       helperText={touched.name && errors.name}
@@ -177,117 +180,9 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
                 </Stack>
               </Card>
             </Grid>
-            {/* <Grid container spacing={3} direction="column">
-              <Grid item>
-                <RadioGroup row {...getFieldProps('addressType')}>
-                  <FormControlLabel value="Home" control={<Radio />} label="Home" sx={{ mr: 2 }} />
-                  <FormControlLabel value="Office" control={<Radio />} label="Office" />
-                </RadioGroup>
-              </Grid>
-
-              <Grid item>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Full Name"
-                      {...getFieldProps('receiver')}
-                      error={Boolean(touched.receiver && errors.receiver)}
-                      helperText={touched.receiver && errors.receiver}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Phone Number"
-                      {...getFieldProps('phone')}
-                      error={Boolean(touched.phone && errors.phone)}
-                      helperText={touched.phone && errors.phone}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item>
-                <TextField
-                  fullWidth
-                  label="Address"
-                  {...getFieldProps('address')}
-                  error={Boolean(touched.address && errors.address)}
-                  helperText={touched.address && errors.address}
-                />
-              </Grid>
-
-              <Grid item>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={4}>
-                    <TextField
-                      fullWidth
-                      label="Town / City"
-                      {...getFieldProps('city')}
-                      error={Boolean(touched.city && errors.city)}
-                      helperText={touched.city && errors.city}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextField
-                      fullWidth
-                      label="State"
-                      {...getFieldProps('state')}
-                      error={Boolean(touched.state && errors.state)}
-                      helperText={touched.state && errors.state}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextField
-                      fullWidth
-                      label="Zip / Postal Code"
-                      {...getFieldProps('zipcode')}
-                      error={Boolean(touched.zipcode && errors.zipcode)}
-                      helperText={touched.zipcode && errors.zipcode}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item>
-                <TextField
-                  select
-                  fullWidth
-                  label="Country"
-                  placeholder="Country"
-                  {...getFieldProps('country')}
-                  SelectProps={{ native: true }}
-                  error={Boolean(touched.country && errors.country)}
-                  helperText={touched.country && errors.country}
-                >
-                  {countries.map((option) => (
-                    <option key={option.code} value={option.label}>
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-
-                <FormControlLabel
-                  control={<Checkbox checked={values.isDefault} {...getFieldProps('isDefault')} />}
-                  label="Use this address as default."
-                  sx={{ mt: 3 }}
-                />
-              </Grid>
-            </Grid> */}
           </DialogContent>
 
           <Divider />
-
-          {/* <DialogActions>
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Deliver to this Address
-            </LoadingButton>
-            <Button type="button" color="inherit" variant="outlined" onClick={onClose}>
-              Cancel
-            </Button>
-          </DialogActions> */}
         </Form>
       </FormikProvider>
     </Dialog>

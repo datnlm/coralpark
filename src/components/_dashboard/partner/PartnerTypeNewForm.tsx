@@ -60,7 +60,10 @@ export default function PartnerTypeNewForm({
   const { enqueueSnackbar } = useSnackbar();
 
   const NewGardenSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_50'))
+      .max(50, translate('message.form.name_length_50'))
   });
 
   const formik = useFormik({

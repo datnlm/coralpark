@@ -149,11 +149,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             <Logo />
           </Box>
 
-          <MHidden width="lgDown">
+          {/* <MHidden width="lgDown">
             {!isCollapse && (
               <IconCollapse onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
             )}
-          </MHidden>
+          </MHidden> */}
         </Stack>
 
         {isCollapse ? (
@@ -178,7 +178,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       <NavSection navConfig={SidebarConfig()} isShow={!isCollapse} />
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isOpenSidebar && (
+      {!isCollapse && (
+        // {!isOpenSidebar && (
         <Box sx={{ px: 2.5, pb: 3, mt: 10, width: 1 }}>
           <MegaMenuMobile navConfig={menuConfig()} isShow={!isCollapse} />
         </Box>

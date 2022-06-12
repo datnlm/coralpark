@@ -263,16 +263,6 @@ export default function UserList() {
                               <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
                             )}
                           </TableCell>
-                          {/* <TableCell align="left">{description}</TableCell> */}
-                          {/* <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={(status === 0 && 'error') || 'success'}
-                          >
-                            {status == 1 ? 'Available' : 'deleted'}
-                          </Label>
-                        </TableCell> */}
-
                           <TableCell align="right">
                             <GardenTypesMoreMenu
                               onDelete={() => handleDeleteGardenType(id.toString())}

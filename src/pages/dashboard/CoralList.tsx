@@ -269,21 +269,13 @@ export default function UserList() {
                           </TableCell>
                           <TableCell align="left">{scientificName}</TableCell>
                           <TableCell align="left">
-                            {coralStatus.find((e: any) => e.id == statusEnum)?.label}
+                            {translate(
+                              `status.coral.${coralStatus.find((e: any) => e.id == statusEnum)?.id}`
+                            )}
                           </TableCell>
-                          {/* <TableCell align="left">{statusEnum}</TableCell> */}
-                          {/* <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={(status === 0 && 'error') || 'success'}
-                          >
-                            {status == 1 ? 'Available' : 'deleted'}
-                          </Label>
-                        </TableCell> */}
                           <TableCell align="right">
                             <CoralMoreMenu
                               onDelete={() => handleDeleteCoral(id.toString())}
-                              // onDelete={() => handleDeleteCoral(id.toString())}
                               coralID={id.toString()}
                             />
                           </TableCell>

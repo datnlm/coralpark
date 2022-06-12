@@ -1,7 +1,7 @@
 import { useTheme, styled } from '@material-ui/core/styles';
 // material
 import { MenuItem, TextField, Toolbar } from '@material-ui/core';
-
+import useLocales from '../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
@@ -18,6 +18,7 @@ type CoralTypeSortProps = {
 };
 
 export default function CoralTypeSortProps({ query, options, onSort }: CoralTypeSortProps) {
+  const { translate } = useLocales();
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
 
@@ -31,7 +32,7 @@ export default function CoralTypeSortProps({ query, options, onSort }: CoralType
       <TextField select size="small" value={query} onChange={(e) => onSort(e.target.value)}>
         {options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
-            {option.label}
+            {translate(`status.coral_level_type.${option.id}`)}
           </MenuItem>
         ))}
       </TextField>

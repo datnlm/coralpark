@@ -258,7 +258,9 @@ export default function StaffList() {
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status === 0 && 'error') || 'success'}
                             >
-                              {statusOptions.find((v: any) => v.id == status)?.label}
+                              {translate(
+                                `status.${statusOptions.find((v: any) => v.id == status)?.label}`
+                              )}
                             </Label>
                           </TableCell>
                           <TableCell align="right">

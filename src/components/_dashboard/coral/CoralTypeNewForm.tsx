@@ -70,9 +70,16 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
 
   useEffect(() => {
     const object = {
-      name: Yup.string().required('Name is required'),
-      class: Yup.object().required('Class is required').nullable(true)
+      name: Yup.string()
+        .required(translate('message.form.name'))
+        .min(3, translate('message.form.name_length_50'))
+        .max(50, translate('message.form.name_length_50'))
     };
+    if (currentLevel!.id >= '2') {
+      Object.assign(object, {
+        class: Yup.object().required('Class is required').nullable(true)
+      });
+    }
     if (currentLevel!.id >= '3') {
       Object.assign(object, { order: Yup.object().required('Order is required').nullable(true) });
     }
@@ -233,7 +240,7 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
           navigate(PATH_DASHBOARD.coral.listType);
         } else {
           enqueueSnackbar(
-            !isEdit ? translate('message.error-success') : translate('message.error-success'),
+            !isEdit ? translate('message.create-error') : translate('message.update-error'),
             { variant: 'error' }
           );
         }
@@ -300,7 +307,9 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
                     disabled={isEdit}
                     value={currentLevel}
                     options={coralLevelTypeOptions}
-                    getOptionLabel={(option: OptionStatus) => option.label}
+                    getOptionLabel={(option: OptionStatus) =>
+                      translate(`status.coral_level_type.${option.id}`)
+                    }
                     onChange={(e, values: OptionStatus | null) => setCurrentLevel(values)}
                     renderInput={(params) => (
                       <TextField {...params} label={translate('page.coral-type.form.level')} />

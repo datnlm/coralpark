@@ -67,23 +67,53 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
   const NewProductSchema = Yup.object().shape(
     valueTab === 'coral'
       ? {
-          name: Yup.string().required('Name is required'),
-          scientificName: Yup.string().required('Scientific Name is required'),
-          longevity: Yup.string().required('Longevity is required'),
-          exhibitSocial: Yup.string().required('ExhibitSocial is required'),
-          sexualBehaviors: Yup.string().required('SexualBehaviors is required'),
-          nutrition: Yup.string().required('Nutrition is required'),
-          colour: Yup.string().required('Colour is required'),
-          // description: Yup.string().required('Description is required'),
-          coralTypeId: Yup.object().required('CoralTypeId is required').nullable(true),
-          statusEnum: Yup.object().required('StatusEnum is required').nullable(true)
+          name: Yup.string()
+            .required(translate('message.form.name'))
+            .min(3, translate('message.form.name_length_200'))
+            .max(200, translate('message.form.name_length_200')),
+          scientificName: Yup.string()
+            .required(translate('message.form.scientfic'))
+            .min(3, translate('message.form.scientfic_length_200'))
+            .max(200, translate('message.form.scientfic_length_200')),
+          longevity: Yup.number()
+            .required(translate('message.form.longevity'))
+            .typeError(translate('message.form.longevity_typeError'))
+            .min(1, translate('message.form.longevity_min')),
+          exhibitSocial: Yup.string()
+            .required(translate('message.form.exhibit_social'))
+            .min(3, translate('message.form.exhibit_social_length_200'))
+            .max(200, translate('message.form.exhibit_social_length_200')),
+          sexualBehaviors: Yup.string()
+            .required(translate('message.form.sexual_behaviors'))
+            .min(3, translate('message.form.sexual_behaviors_length_200'))
+            .max(200, translate('message.form.sexual_behaviors_length_200')),
+          nutrition: Yup.string()
+            .required(translate('message.form.nutrition'))
+            .min(3, translate('message.form.nutrition_length_200'))
+            .max(200, translate('message.form.nutrition_length_200')),
+          colour: Yup.string()
+            .required(translate('message.form.colour'))
+            .min(3, translate('message.form.colour_length_200'))
+            .max(50, translate('message.form.colour_length_200')),
+          coralTypeId: Yup.object().required(translate('message.form.coral_type')).nullable(true),
+          statusEnum: Yup.object().required(translate('message.form.status_enum')).nullable(true)
         }
       : {
-          bathymetry: Yup.string().required('Bathymetry is required'),
-          temperature: Yup.string().required('Temperature is required'),
-          brightness: Yup.string().required('Brightness is required'),
-          tides: Yup.string().required('Tides is required'),
-          current: Yup.string().required('Current is required')
+          bathymetry: Yup.string()
+            .required(translate('message.form.bathymetry'))
+            .typeError(translate('message.form.bathymetry_typeError')),
+          temperature: Yup.number()
+            .required(translate('message.form.temperature'))
+            .typeError(translate('message.form.temperature_typeError')),
+          brightness: Yup.string()
+            .required(translate('message.form.brightness'))
+            .typeError(translate('message.form.brightness_typeError')),
+          tides: Yup.string()
+            .required(translate('message.form.tides'))
+            .typeError(translate('message.form.tides_typeError')),
+          current: Yup.string()
+            .required(translate('message.form.current'))
+            .typeError(translate('message.form.current_typeError'))
         }
   );
 
@@ -102,7 +132,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       colour: currentCoral?.colour || '',
       description: currentCoral?.description || '',
       coralTypeId: currentCoral?.coralTypeId || null,
-      statusEnum: currentCoral?.statusEnum || null,
+      statusEnum: currentCoral?.statusEnum || '',
       habitatId: currentHabitat?.id || '',
       bathymetry: currentHabitat?.bathymetry || '',
       temperature: currentHabitat?.temperature || '',
@@ -110,7 +140,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       tides: currentHabitat?.tides || '',
       current: currentHabitat?.current || ''
     },
-    // validationSchema: NewProductSchema,
+    validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         let flag = false;
@@ -121,7 +151,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
           }
           bodyFormData.append('Name', values.name);
           bodyFormData.append('ScientificName', values.scientificName);
-          bodyFormData.append('Longevity', values.longevity);
+          bodyFormData.append('Longevity', values.longevity.toString());
           bodyFormData.append('ExhibitSocial', values.exhibitSocial);
           bodyFormData.append('SexualBehaviors', values.sexualBehaviors);
           bodyFormData.append('Nutrition', values.nutrition);
@@ -173,7 +203,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
           navigate(PATH_DASHBOARD.coral.list);
         } else {
           enqueueSnackbar(
-            !isEdit ? translate('message.error-success') : translate('message.error-success'),
+            !isEdit ? translate('message.create-error') : translate('message.update-error'),
             { variant: 'error' }
           );
         }
@@ -231,6 +261,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
   };
 
   useEffect(() => {
+    console.log('chay');
     if (isEdit) {
       setFieldValue(
         'coralTypeId',
@@ -327,10 +358,12 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           fullWidth
                           disablePortal
                           clearIcon
-                          id="status"
+                          id="statusEnum"
                           {...getFieldProps('statusEnum')}
                           options={coralStatusOptions}
-                          getOptionLabel={(option: OptionStatus) => option.label}
+                          getOptionLabel={(option: OptionStatus) =>
+                            option ? translate(`status.coral.${option.id}`) : ''
+                          }
                           onChange={(e, values: any) => setFieldValue('statusEnum', values)}
                           renderInput={(params) => (
                             <TextField
