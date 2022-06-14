@@ -24,13 +24,13 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
-type EmployeeMoreMenuProps = {
+type StaffMoreMenuProps = {
   onDelete: VoidFunction;
   id: string;
   status: any;
 };
 
-export default function EmployeeMoreMenu({ onDelete, id, status }: EmployeeMoreMenuProps) {
+export default function StaffMoreMenu({ onDelete, id, status }: StaffMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -99,7 +99,7 @@ export default function EmployeeMoreMenu({ onDelete, id, status }: EmployeeMoreM
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.staff.root}/employee/${id}/edit`}
+          to={`${PATH_DASHBOARD.staff.root}/site-manager/${id}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

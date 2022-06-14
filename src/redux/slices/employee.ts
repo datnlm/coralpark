@@ -14,6 +14,7 @@ type EmployeeState = {
   error: boolean;
   totalCount: number;
   employeeList: Employee[];
+  employeePartnerList: Employee[];
 };
 
 const initialState: EmployeeState = {
@@ -21,7 +22,8 @@ const initialState: EmployeeState = {
   isLoadingDiverTeam: false,
   error: false,
   totalCount: 0,
-  employeeList: []
+  employeeList: [],
+  employeePartnerList: []
 };
 
 const slice = createSlice({
@@ -53,6 +55,11 @@ const slice = createSlice({
     getListEmployee(state, action) {
       state.isLoading = false;
       state.employeeList = action.payload;
+    },
+    // GET LIST
+    getListEmployeePartner(state, action) {
+      state.isLoading = false;
+      state.employeePartnerList = action.payload;
     }
   }
 });
@@ -64,15 +71,31 @@ export const { totalCount } = slice.actions;
 
 // ----------------------------------------------------------------------
 
-// get Diver
-export function getListEmployee(page: number, rowsPerPage: number) {
+export function getListEmployee(roleId: string, page: number, rowsPerPage: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      await manageEmployee.getListEmployee(1 + page, rowsPerPage).then((response) => {
+      await manageEmployee.getListEmployee(roleId, 1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListEmployee(response.data.items));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// get employee partner
+export function getListEmployeePartner(page: number, rowsPerPage: number) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await manageEmployee.getListEmployeePartner(1 + page, rowsPerPage).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
+          dispatch(slice.actions.getListEmployeePartner(response.data.items));
         }
       });
     } catch (error) {

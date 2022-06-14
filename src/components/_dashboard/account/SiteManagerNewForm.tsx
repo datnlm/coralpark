@@ -24,17 +24,17 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Employee } from '../../../@types/employee';
 import { UploadAvatar } from '../../upload';
+import { Employee } from '../../../@types/employee';
 
 // ----------------------------------------------------------------------
 
-type EmployeeNewFormProps = {
+type SiteMannagerNewFormProps = {
   isEdit: boolean;
   currentEmployee?: Employee;
 };
 
-export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNewFormProps) {
+export default function StaffNewForm({ isEdit, currentEmployee }: SiteMannagerNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -88,7 +88,7 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
         bodyFormData.append('Email', values.email);
         bodyFormData.append('Address', values.address);
         bodyFormData.append('Status', values.status);
-        bodyFormData.append('RoleId', 'EM');
+        bodyFormData.append('RoleId', 'SM');
         bodyFormData.append('imageFile', imageFILE);
 
         !isEdit
@@ -111,7 +111,7 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.staff.listEmployee);
+          navigate(PATH_DASHBOARD.staff.listSite);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.update-error'),
@@ -182,14 +182,14 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.employee.form.name')}
+                    label={translate('page.staff.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
-                    label={translate('page.employee.form.phone')}
+                    label={translate('page.staff.form.phone')}
                     {...getFieldProps('phone')}
                     error={Boolean(touched.phone && errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -199,14 +199,14 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.employee.form.email')}
+                    label={translate('page.staff.form.email')}
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
                   <TextField
                     fullWidth
-                    label={translate('page.employee.form.address')}
+                    label={translate('page.staff.form.address')}
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
@@ -227,7 +227,7 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={translate('page.employee.form.status')}
+                          label={translate('page.staff.form.status')}
                           error={Boolean(touched.status && errors.status)}
                           helperText={touched.status && errors.status}
                         />

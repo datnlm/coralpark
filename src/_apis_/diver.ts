@@ -81,6 +81,7 @@ export class DiverManager {
       id: diverTeam.id,
       name: diverTeam.name,
       number: diverTeam.divers.length,
+      status: diverTeam.status,
       divers: diverTeam.divers
     };
     return axios
