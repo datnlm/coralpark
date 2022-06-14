@@ -6,7 +6,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import { manageStaff } from '_apis_/staff';
+import { manageEmployee } from '_apis_/employee';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -28,7 +28,7 @@ import {
 import { statusOptions } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListStaff } from '../../redux/slices/staff';
+import { getListEmployee } from '../../redux/slices/employee';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -36,7 +36,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import useLocales from '../../hooks/useLocales';
 import useSettings from '../../hooks/useSettings';
 // @types
-import { Staff } from '../../@types/staff';
+import { Employee } from '../../@types/employee';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -44,10 +44,10 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  StaffListHead,
-  StaffListToolbar,
-  StaffMoreMenu
-} from '../../components/_dashboard/account/list_staff';
+  SiteManagerListHead,
+  SiteManagerListToolbar,
+  SiteManagerMoreMenu
+} from '../../components/_dashboard/account/list_site_manager';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -68,7 +68,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Staff[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(array: Employee[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -81,15 +81,15 @@ function applySortFilter(array: Staff[], comparator: (a: any, b: any) => number,
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function StaffList() {
+export default function SiteManagerList() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const staffList = useSelector((state: RootState) => state.staff.staffList);
-  const totalCount = useSelector((state: RootState) => state.staff.totalCount);
-  const isLoading = useSelector((state: RootState) => state.staff.isLoading);
+  const employeeList = useSelector((state: RootState) => state.employee.employeeList);
+  const totalCount = useSelector((state: RootState) => state.employee.totalCount);
+  const isLoading = useSelector((state: RootState) => state.employee.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -105,7 +105,7 @@ export default function StaffList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = staffList.map((n) => n.name);
+      const newSelecteds = employeeList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -139,12 +139,12 @@ export default function StaffList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteStaff = async (id: string) => {
+  const handleDeleteEmployee = async (id: string) => {
     try {
-      await manageStaff.deleteStaff(id).then((respone) => {
+      await manageEmployee.deleteEmployee(id).then((respone) => {
         if (respone.status == 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListStaff(page, rowsPerPage));
+          dispatch(getListEmployee('sm', page, rowsPerPage));
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
@@ -156,14 +156,14 @@ export default function StaffList() {
   };
 
   useEffect(() => {
-    dispatch(getListStaff(page, rowsPerPage));
+    dispatch(getListEmployee('SM', page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !staffList;
+  const emptyRows = !isLoading && !employeeList;
 
-  const filteredStaff = applySortFilter(staffList, getComparator(order, orderBy), filterName);
+  const filteredEmployee = applySortFilter(employeeList, getComparator(order, orderBy), filterName);
 
-  const isStaffNotFound = filteredStaff.length === 0 && !isLoading;
+  const isEmployeeNotFound = filteredEmployee.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -174,28 +174,28 @@ export default function StaffList() {
   //   });
   // }
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.staff.form.name'), alignRight: false },
-    { id: 'phone', label: translate('page.staff.form.phone'), alignRight: false },
-    { id: 'email', label: translate('page.staff.form.email'), alignRight: false },
-    { id: 'address', label: translate('page.staff.form.address'), alignRight: false },
-    { id: 'status', label: translate('page.staff.form.status'), alignRight: false },
+    { id: 'name', label: translate('page.employee.form.name'), alignRight: false },
+    { id: 'phone', label: translate('page.employee.form.phone'), alignRight: false },
+    { id: 'email', label: translate('page.employee.form.email'), alignRight: false },
+    { id: 'address', label: translate('page.employee.form.address'), alignRight: false },
+    { id: 'status', label: translate('page.employee.form.status'), alignRight: false },
     { id: '' }
   ];
   return (
-    <Page title={translate('page.staff.title.list')}>
+    <Page title={translate('page.employee.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.staff.heading1.list')}
+          heading={translate('page.employee.heading1.list')}
           links={[
-            { name: translate('page.staff.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.staff.heading3'), href: PATH_DASHBOARD.staff.root },
-            { name: translate('page.staff.heading4.list') }
+            { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.employee.root },
+            { name: translate('page.employee.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.staff.new}
+              to={PATH_DASHBOARD.employee.new}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}
@@ -203,7 +203,7 @@ export default function StaffList() {
           }
         />
         <Card>
-          <StaffListToolbar
+          <SiteManagerListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -212,11 +212,11 @@ export default function StaffList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <StaffListHead
+                <SiteManagerListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={staffList.length}
+                  rowCount={employeeList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -227,7 +227,7 @@ export default function StaffList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredStaff.map((row) => {
+                    filteredEmployee.map((row) => {
                       const { id, name, phone, status, email, address, imageUrl } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
@@ -264,8 +264,8 @@ export default function StaffList() {
                             </Label>
                           </TableCell>
                           <TableCell align="right">
-                            <StaffMoreMenu
-                              onDelete={() => handleDeleteStaff(id.toString())}
+                            <SiteManagerMoreMenu
+                              onDelete={() => handleDeleteEmployee(id.toString())}
                               id={id.toString()}
                               status={status}
                             />
@@ -285,7 +285,7 @@ export default function StaffList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isStaffNotFound && (
+                {isEmployeeNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>

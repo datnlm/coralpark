@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { manageStaff } from '_apis_/staff';
+import { manageEmployee } from '_apis_/employee';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -29,12 +29,15 @@ import { UploadAvatar } from '../../upload';
 
 // ----------------------------------------------------------------------
 
-type StaffNewFormProps = {
+type EmployeePartnerNewFormProps = {
   isEdit: boolean;
   currentStaff?: Staff;
 };
 
-export default function StaffNewForm({ isEdit, currentStaff }: StaffNewFormProps) {
+export default function EmployeePartnerNewForm({
+  isEdit,
+  currentStaff
+}: EmployeePartnerNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -91,12 +94,12 @@ export default function StaffNewForm({ isEdit, currentStaff }: StaffNewFormProps
         bodyFormData.append('imageFile', imageFILE);
 
         !isEdit
-          ? await manageStaff.createStaff(bodyFormData).then((response) => {
+          ? await manageEmployee.createEmployeePartner(bodyFormData).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageStaff.updateStaff(bodyFormData).then((response) => {
+          : await manageEmployee.updateEmployeePartner(bodyFormData).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
@@ -110,7 +113,7 @@ export default function StaffNewForm({ isEdit, currentStaff }: StaffNewFormProps
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.staff.list);
+          navigate(PATH_DASHBOARD.staff.listEmployeePartner);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.update-error'),

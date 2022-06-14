@@ -82,22 +82,38 @@ export default function MegaMenuConfig() {
       icon: ICONS.user,
       children: [
         {
-          subheader: translate('menu.mega.subheader.staff'),
+          subheader: translate('menu.mega.subheader.site-manager'),
           items: [
-            { title: translate('menu.mega.staff.list'), path: PATH_DASHBOARD.staff.list },
+            { title: translate('menu.mega.staff.list'), path: PATH_DASHBOARD.staff.listSite },
             {
               title: translate('menu.mega.staff.create'),
-              path: PATH_DASHBOARD.staff.new
+              path: PATH_DASHBOARD.staff.newSite
             }
           ]
         },
         {
           subheader: translate('menu.mega.subheader.employee'),
           items: [
-            { title: translate('menu.mega.employee.list'), path: PATH_DASHBOARD.employee.list },
             {
-              title: translate('menu.mega.employee.create'),
-              path: PATH_DASHBOARD.employee.new
+              title: translate('menu.mega.staff.list'),
+              path: PATH_DASHBOARD.staff.listEmployee
+            },
+            {
+              title: translate('menu.mega.staff.create'),
+              path: PATH_DASHBOARD.staff.newEmployee
+            }
+          ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.employee-partner'),
+          items: [
+            {
+              title: translate('menu.mega.employee-partner.list'),
+              path: PATH_DASHBOARD.staff.listEmployeePartner
+            },
+            {
+              title: translate('menu.mega.employee-partner.create'),
+              path: PATH_DASHBOARD.staff.newEmployeePartner
             }
           ]
         }

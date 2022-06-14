@@ -3,7 +3,8 @@ import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
-import { manageStaff } from '_apis_/staff';
+import { manageEmployee } from '_apis_/employee';
+import { Employee } from '../../@types/employee';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -14,22 +15,21 @@ import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import StaffNewForm from '../../components/_dashboard/account/StaffNewForm';
-import { Staff } from '../../@types/staff';
+import SiteManagerNewForm from '../../components/_dashboard/account/SiteManagerNewForm';
 
 // ----------------------------------------------------------------------
 
-export default function StaffCreate() {
+export default function EmployeeCreate() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const [currentStaff, setCurrentStaff] = useState<Staff>();
+  const [currentEmployee, setCurrentEmployee] = useState<Employee>();
 
   const fetchData = async () => {
-    await manageStaff.getStaffByID(name).then((response) => {
+    await manageEmployee.getEmployeeByID(name).then((response) => {
       if (response.status == 200) {
         const data = {
           id: response.data.id,
@@ -41,7 +41,7 @@ export default function StaffCreate() {
           imageUrl: response.data.imageUrl,
           status: response.data.status
         };
-        setCurrentStaff(data);
+        setCurrentEmployee(data);
       }
     });
   };
@@ -54,22 +54,24 @@ export default function StaffCreate() {
 
   return (
     <Page
-      title={!isEdit ? translate('page.staff.title.create') : translate('page.staff.title.update')}
+      title={
+        !isEdit ? translate('page.employee.title.create') : translate('page.employee.title.update')
+      }
     >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={
             !isEdit
-              ? translate('page.staff.heading1.create')
-              : translate('page.staff.heading1.update')
+              ? translate('page.employee.heading1.create')
+              : translate('page.employee.heading1.update')
           }
           links={[
-            { name: translate('page.staff.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.staff.heading3'), href: PATH_DASHBOARD.staff.root },
-            { name: !isEdit ? translate('page.staff.heading4.new') : name }
+            { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.staff.root },
+            { name: !isEdit ? translate('page.employee.heading4.new') : name }
           ]}
         />
-        <StaffNewForm isEdit={isEdit} currentStaff={currentStaff} />
+        <SiteManagerNewForm isEdit={isEdit} currentEmployee={currentEmployee} />
       </Container>
     </Page>
   );

@@ -11,7 +11,6 @@ import accountReducer from './slices/account';
 import groupModeReducer from './slices/groupMode';
 import categoriesReducer from './slices/categories';
 import technicianReducer from './slices/technician';
-import staffReducer from './slices/staff';
 import employeeReducer from './slices/employee';
 
 // ----------------------------------------------------------------------
@@ -40,7 +39,6 @@ const rootReducer = combineReducers({
   groupMode: groupModeReducer,
   categories: categoriesReducer,
   technician: technicianReducer,
-  staff: staffReducer,
   employee: employeeReducer
 });
 

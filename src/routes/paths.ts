@@ -74,9 +74,15 @@ export const PATH_DASHBOARD = {
   },
   staff: {
     root: path(ROOTS_DASHBOARD, '/staff'),
-    list: path(ROOTS_DASHBOARD, '/staff/list'),
-    new: path(ROOTS_DASHBOARD, '/staff/new'),
-    editById: path(ROOTS_DASHBOARD, '/staff/:name/edit')
+    listEmployee: path(ROOTS_DASHBOARD, '/staff/employee/list'),
+    listSite: path(ROOTS_DASHBOARD, '/staff/site-manager/list'),
+    listEmployeePartner: path(ROOTS_DASHBOARD, '/staff/employee-partner/list'),
+    newEmployeePartner: path(ROOTS_DASHBOARD, '/staff/employee-partner/new'),
+    editByEmployeePartner: path(ROOTS_DASHBOARD, '/staff/employee-partner/:name/edit'),
+    newEmployee: path(ROOTS_DASHBOARD, '/staff/employee/new'),
+    newSite: path(ROOTS_DASHBOARD, '/staff/site-manager/new'),
+    editByEmployeeId: path(ROOTS_DASHBOARD, '/staff/employeee/:name/edit'),
+    editBySiteId: path(ROOTS_DASHBOARD, '/staff/site-manager/:name/edit')
   },
   employee: {
     root: path(ROOTS_DASHBOARD, '/employee'),

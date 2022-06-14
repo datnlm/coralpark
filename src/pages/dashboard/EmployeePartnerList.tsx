@@ -28,7 +28,7 @@ import {
 import { statusOptions } from 'utils/constants';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListEmployee } from '../../redux/slices/employee';
+import { getListEmployeePartner } from '../../redux/slices/employee';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -44,10 +44,10 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  EmployeeListHead,
-  EmployeeListToolbar,
-  EmployeeMoreMenu
-} from '../../components/_dashboard/account/list_employee';
+  EmployeePartnerListHead,
+  EmployeePartnerListToolbar,
+  EmployeePartnerMoreMenu
+} from '../../components/_dashboard/account/list_employee_partner';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -81,13 +81,13 @@ function applySortFilter(array: Employee[], comparator: (a: any, b: any) => numb
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function EmployeeList() {
+export default function EmployeePartnerList() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const employeeList = useSelector((state: RootState) => state.employee.employeeList);
+  const employeePartnerList = useSelector((state: RootState) => state.employee.employeePartnerList);
   const totalCount = useSelector((state: RootState) => state.employee.totalCount);
   const isLoading = useSelector((state: RootState) => state.employee.isLoading);
   const [page, setPage] = useState(0);
@@ -105,7 +105,7 @@ export default function EmployeeList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = employeeList.map((n) => n.name);
+      const newSelecteds = employeePartnerList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -141,10 +141,10 @@ export default function EmployeeList() {
 
   const handleDeleteEmployee = async (id: string) => {
     try {
-      await manageEmployee.deleteEmployee(id).then((respone) => {
+      await manageEmployee.deleteEmployeePartner(id).then((respone) => {
         if (respone.status == 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListEmployee('em', page, rowsPerPage));
+          dispatch(getListEmployeePartner(page, rowsPerPage));
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
@@ -156,12 +156,16 @@ export default function EmployeeList() {
   };
 
   useEffect(() => {
-    dispatch(getListEmployee('EM', page, rowsPerPage));
+    dispatch(getListEmployeePartner(page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !employeeList;
+  const emptyRows = !isLoading && !employeePartnerList;
 
-  const filteredEmployee = applySortFilter(employeeList, getComparator(order, orderBy), filterName);
+  const filteredEmployee = applySortFilter(
+    employeePartnerList,
+    getComparator(order, orderBy),
+    filterName
+  );
 
   const isEmployeeNotFound = filteredEmployee.length === 0 && !isLoading;
   // if (companiesList !== null) {
@@ -203,7 +207,7 @@ export default function EmployeeList() {
           }
         />
         <Card>
-          <EmployeeListToolbar
+          <EmployeePartnerListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -212,11 +216,11 @@ export default function EmployeeList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <EmployeeListHead
+                <EmployeePartnerListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={employeeList.length}
+                  rowCount={employeePartnerList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -264,7 +268,7 @@ export default function EmployeeList() {
                             </Label>
                           </TableCell>
                           <TableCell align="right">
-                            <EmployeeMoreMenu
+                            <EmployeePartnerMoreMenu
                               onDelete={() => handleDeleteEmployee(id.toString())}
                               id={id.toString()}
                               status={status}

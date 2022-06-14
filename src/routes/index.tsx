@@ -99,19 +99,16 @@ export default function Router() {
         {
           path: 'staff',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/staff/list" replace /> },
-            { path: 'list', element: <StaffList /> },
-            { path: 'new', element: <StaffCreate /> },
-            { path: '/:name/edit', element: <StaffCreate /> }
-          ]
-        },
-        {
-          path: 'employee',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/employee/list" replace /> },
-            { path: 'list', element: <EmployeeList /> },
-            { path: 'new', element: <EmployeeCreate /> },
-            { path: '/:name/edit', element: <EmployeeCreate /> }
+            { path: '/', element: <Navigate to="/dashboard/staff" replace /> },
+            { path: '/site-manager/list', element: <SiteManagerList /> },
+            { path: '/employee/list', element: <EmployeeList /> },
+            { path: '/site-manager/new', element: <SiteManagerCreate /> },
+            { path: '/site-manager/:name/edit', element: <SiteManagerCreate /> },
+            { path: '/employee/new', element: <EmployeeCreate /> },
+            { path: '/employee/:name/edit', element: <EmployeeCreate /> },
+            { path: '/employee-partner/list', element: <EmployeePartnerList /> },
+            { path: '/employee-partner/new', element: <EmployeePartnerCreate /> },
+            { path: '/employee-partner/:name/edit', element: <EmployeePartnerCreate /> }
           ]
         },
         {
@@ -366,10 +363,14 @@ const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')))
 const AreaList = Loadable(lazy(() => import('../pages/dashboard/AreaList')));
 const AccountList = Loadable(lazy(() => import('../pages/dashboard/AccountList')));
 const AccountCreate = Loadable(lazy(() => import('../pages/dashboard/AccountCreate')));
-const StaffList = Loadable(lazy(() => import('../pages/dashboard/StaffList')));
-const StaffCreate = Loadable(lazy(() => import('../pages/dashboard/StaffCreate')));
 const EmployeeList = Loadable(lazy(() => import('../pages/dashboard/EmployeeList')));
 const EmployeeCreate = Loadable(lazy(() => import('../pages/dashboard/EmployeeCreate')));
+const EmployeePartnerList = Loadable(lazy(() => import('../pages/dashboard/EmployeePartnerList')));
+const EmployeePartnerCreate = Loadable(
+  lazy(() => import('../pages/dashboard/EmployeePartnerCreate'))
+);
+const SiteManagerList = Loadable(lazy(() => import('../pages/dashboard/SiteManagerList')));
+const SiteManagerCreate = Loadable(lazy(() => import('../pages/dashboard/SiteManagerCreate')));
 const AreaCreate = Loadable(lazy(() => import('../pages/dashboard/AreaCreate')));
 const PhaseList = Loadable(lazy(() => import('../pages/dashboard/CoralPhaseList')));
 const PhasesCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhases')));
