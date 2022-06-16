@@ -101,9 +101,10 @@
       },
       "search": "Tìm kiếm kỹ thuật viên trong khu vực",
       "form": {
-        "choices": "Chưa chọn",
-        "chosen": "Đã chọn",
-        "area": "Khu vực"
+        "choices": "Kỹ thuật viên: Chưa chọn",
+        "chosen": "Kỹ thuật viên: Đã chọn",
+        "area": "Khu vực",
+        "selected": "Đã chọn"
       }
     },
     "diver-team": {
@@ -141,20 +142,21 @@
       },
       "heading1": {
         "list": "Danh sách Thợ lặn trong khu vực",
-        "create": "Thêm mới thợ lặn vào khu vực",
+        "create": "Thêm đội thợ lặn vào khu vực",
         "update": "Cập nhật thợ lặn trong khu vực"
       },
       "heading2": "Bảng điều khiển",
-      "heading3": "Thợ lặn trong khu vực",
+      "heading3": "Đội thợ lặn trong khu vực",
       "heading4": {
         "list": "Danh sách",
         "new": "Thêm mới"
       },
-      "search": "Tìm kiếm thợ lặn trong khu vực",
+      "search": "Tìm kiếm đội thợ lặn trong khu vực",
       "form": {
-        "choices": "Thợ lặn: Chưa chọn",
-        "chosen": "Thợ lặn: Đã chọn",
-        "area": "Khu vực"
+        "choices": "Đội thợ lặn: Chưa chọn",
+        "chosen": "Đội thợ lặn: Đã chọn",
+        "area": "Khu vực",
+        "selected": "Đã chọn"
       }
     },
     "partner": {

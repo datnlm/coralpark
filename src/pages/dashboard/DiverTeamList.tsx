@@ -93,7 +93,7 @@ export default function UserList() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const diverTeamList = useSelector((state: RootState) => state.diver.diverTeamList);
-  const totalCount = useSelector((state: RootState) => state.diver.totalCount);
+  const totalCount = useSelector((state: RootState) => state.diver.totalCountDiverTeam);
   const isLoading = useSelector((state: RootState) => state.diver.isLoadingDiverTeam);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
