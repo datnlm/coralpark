@@ -77,49 +77,6 @@ export default function MegaMenuConfig() {
       ]
     },
     {
-      title: translate('menu.mega.title.staff'),
-      path: PATH_DASHBOARD.staff.root,
-      icon: ICONS.user,
-      children: [
-        {
-          subheader: translate('menu.mega.subheader.site-manager'),
-          items: [
-            { title: translate('menu.mega.staff.list'), path: PATH_DASHBOARD.staff.listSite },
-            {
-              title: translate('menu.mega.staff.create'),
-              path: PATH_DASHBOARD.staff.newSite
-            }
-          ]
-        },
-        {
-          subheader: translate('menu.mega.subheader.employee'),
-          items: [
-            {
-              title: translate('menu.mega.staff.list'),
-              path: PATH_DASHBOARD.staff.listEmployee
-            },
-            {
-              title: translate('menu.mega.staff.create'),
-              path: PATH_DASHBOARD.staff.newEmployee
-            }
-          ]
-        },
-        {
-          subheader: translate('menu.mega.subheader.employee-partner'),
-          items: [
-            {
-              title: translate('menu.mega.employee-partner.list'),
-              path: PATH_DASHBOARD.staff.listEmployeePartner
-            },
-            {
-              title: translate('menu.mega.employee-partner.create'),
-              path: PATH_DASHBOARD.staff.newEmployeePartner
-            }
-          ]
-        }
-      ]
-    },
-    {
       title: translate('menu.mega.title.garden'),
       path: PATH_DASHBOARD.garden.root,
       icon: ICONS.garden,
@@ -153,7 +110,6 @@ export default function MegaMenuConfig() {
           items: [
             { title: translate('menu.mega.partner.list'), path: PATH_DASHBOARD.partner.typeList },
             { title: translate('menu.mega.partner.create'), path: PATH_DASHBOARD.partner.typeNew }
-            // { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
           ]
         }
       ]
@@ -255,11 +211,44 @@ export default function MegaMenuConfig() {
       icon: ICONS.user,
       children: [
         {
-          subheader: translate('menu.mega.subheader.account'),
+          subheader: translate('menu.mega.subheader.site-manager'),
           items: [
-            { title: translate('menu.mega.account.list'), path: PATH_DASHBOARD.account.list },
-            { title: translate('menu.mega.account.create'), path: PATH_DASHBOARD.account.newUser }
+            { title: translate('menu.mega.employee.list'), path: PATH_DASHBOARD.staff.listSite },
+            {
+              title: translate('menu.mega.employee.create'),
+              path: PATH_DASHBOARD.staff.newSite
+            }
           ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.employee'),
+          items: [
+            {
+              title: translate('menu.mega.employee.list'),
+              path: PATH_DASHBOARD.staff.listEmployee
+            },
+            {
+              title: translate('menu.mega.employee.create'),
+              path: PATH_DASHBOARD.staff.newEmployee
+            }
+          ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.employee-partner'),
+          items: [
+            {
+              title: translate('menu.mega.employee.list'),
+              path: PATH_DASHBOARD.staff.listEmployeePartner
+            },
+            {
+              title: translate('menu.mega.employee.create'),
+              path: PATH_DASHBOARD.staff.newEmployeePartner
+            }
+          ]
+        },
+        {
+          subheader: translate('menu.mega.subheader.account'),
+          items: [{ title: translate('menu.mega.account.list'), path: PATH_DASHBOARD.account.list }]
         }
       ]
     }
