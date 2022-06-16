@@ -754,8 +754,7 @@
         "group-mode": "Group",
         "account": "Tài khoản",
         "categories": "Loại sản phẩm",
-        "technician": "Kỹ thuật viên",
-        "staff": "Nhân viên"
+        "technician": "Kỹ thuật viên"
       },
       "subheader": {
         "site": "Địa điểm",
@@ -771,8 +770,9 @@
         "group-role": "Role",
         "categories": "Loại sản phẩm",
         "technician": "Kỹ thuật viên",
-        "staff": "Nhân viên",
-        "employee": "Nhân viên"
+        "site-manager": "Quản lí Site",
+        "employee": "Nhân viên",
+        "employee-partner": "Nhân viên đối tác"
       },
       "site": {
         "list": "Danh sách",

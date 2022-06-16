@@ -770,8 +770,9 @@
         "group-role": "Role",
         "categories": "Categories Product",
         "technician": "Technician",
-        "staff": "Staff",
-        "employee": "Employee"
+        "employee": "Employee",
+        "site-manager": "Site Manager",
+        "employee-partner": "Employe Partner"
       },
       "site": {
         "list": "List",
