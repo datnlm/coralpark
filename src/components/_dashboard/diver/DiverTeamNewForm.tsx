@@ -91,7 +91,10 @@ export default function DiverTeamNewForm({ id, open, onClose }: DiverTeamNewForm
     }
   };
   const callback = async (params: boolean) => {
-    if (params) {
+    if (!params) {
+      setIsSubmitting(false);
+      console.log(params);
+    } else if (params) {
       onClose();
       setIsSubmitting(false);
     }

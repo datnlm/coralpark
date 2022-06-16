@@ -101,9 +101,10 @@
       },
       "search": "Search technician in area",
       "form": {
-        "choices": "Select",
-        "chosen": "Selected",
-        "area": "Area"
+        "choices": "Technician: Select",
+        "chosen": "Technician: Selected",
+        "area": "Area",
+        "selected": "Selected"
       }
     },
     "diver-team": {
@@ -130,7 +131,8 @@
         "status": "Status",
         "choices": "Diver: Select",
         "chosen": "Diver: Selected",
-        "area": "Area"
+        "area": "Area",
+        "selected": "Selected"
       }
     },
     "diver-team-area": {
@@ -140,21 +142,22 @@
         "update": "Diver: Update diver in area"
       },
       "heading1": {
-        "list": "List Diver Area",
-        "create": "Add diver to area",
-        "update": "Update diver in area"
+        "list": "List Diver Team Area",
+        "create": "Add diver team to area",
+        "update": "Update diver team in area"
       },
       "heading2": "Dashboard",
-      "heading3": "Diver Area",
+      "heading3": "Diver Team Area",
       "heading4": {
         "list": "List",
-        "new": "Add diver to area"
+        "new": "Add diver team to area"
       },
-      "search": "Search diver in area",
+      "search": "Search diver team in area",
       "form": {
-        "choices": "Select",
-        "chosen": "Selected",
-        "area": "Area"
+        "choices": "Select Diver Team",
+        "chosen": "Selected Diver Team",
+        "area": "Area",
+        "selected": "Selected"
       }
     },
     "partner": {

@@ -245,7 +245,9 @@ export default function CoralAreaNewForm() {
           />
         }
         title={title}
-        subheader={`${numberOfChecked(items)}/${items.length} selected`}
+        subheader={`${numberOfChecked(items)}/${items.length} ${translate(
+          'page.techinician-area.form.selected'
+        )}`}
         sx={{ p: 2 }}
       />
 

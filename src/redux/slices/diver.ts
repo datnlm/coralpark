@@ -13,6 +13,7 @@ type DiverState = {
   isLoadingDiverTeam: boolean;
   error: boolean;
   totalCount: number;
+  totalCountDiverTeam: number;
   diverList: Diver[];
   diverTeamList: DiverTeam[];
 };
@@ -22,6 +23,7 @@ const initialState: DiverState = {
   isLoadingDiverTeam: false,
   error: false,
   totalCount: 0,
+  totalCountDiverTeam: 0,
   diverList: [],
   diverTeamList: []
 };
@@ -43,6 +45,10 @@ const slice = createSlice({
     // TOTOAL COUNT
     totalCount(state, action) {
       state.totalCount = action.payload;
+    },
+    // TOTOAL COUNT
+    totalCountDiverTeam(state, action) {
+      state.totalCountDiverTeam = action.payload;
     },
 
     // HAS ERROR
@@ -96,7 +102,7 @@ export function getListDiverTeam(page: number, rowsPerPage: number) {
     try {
       await manageDiver.getListDiverTeam(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
-          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
+          dispatch(slice.actions.totalCountDiverTeam(response.data.metaData.totalCount));
           dispatch(slice.actions.getListDiverTeam(response.data.items));
         }
       });

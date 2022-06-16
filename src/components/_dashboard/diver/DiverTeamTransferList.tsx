@@ -28,8 +28,10 @@ import {
   Button,
   ListItemText,
   Avatar,
-  Radio
+  Radio,
+  FormHelperText
 } from '@material-ui/core';
+import { PATH_DASHBOARD } from 'routes/paths';
 import { manageDiver } from '_apis_/diver';
 import { getListDiverTeam } from 'redux/slices/diver';
 import { Diver, DiverTeam } from '../../../@types/diver';
@@ -127,19 +129,27 @@ export default function DiverTeaTransferList({
 
   const handleAllLeft = () => {
     setLeft(left.concat(right));
+
     setRight([]);
   };
+  const NewProductSchema = Yup.object().shape({
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_50'))
+      .max(50, translate('message.form.name_length_50')),
+    number: Yup.number().min(2, translate('message.form.number_2'))
+  });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       id: currentDiverTeam?.id || '',
       name: currentDiverTeam?.name || '',
-      number: currentDiverTeam?.number || '',
+      number: Number(currentDiverTeam?.number) || 0,
       divers: currentDiverTeam?.divers || [{}],
       status: currentDiverTeam?.status || 1
     },
-
+    validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         values.divers = right.map((v: any) => ({
@@ -161,9 +171,8 @@ export default function DiverTeaTransferList({
 
         if (flag) {
           // setCurrentArea(null);
-          setSubmitting(false);
           onSubmitCallback(true);
-          dispatch(getListDiverTeam(0, -1));
+          dispatch(getListDiverTeam(0, 5));
           enqueueSnackbar(
             !isEdit ? translate('message.create-success') : translate('message.update-success'),
             {
@@ -171,6 +180,7 @@ export default function DiverTeaTransferList({
             }
           );
         } else {
+          setSubmitting(false);
           onSubmitCallback(false);
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),
@@ -190,18 +200,15 @@ export default function DiverTeaTransferList({
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
+  useEffect(() => {
+    setFieldValue('number', right.length);
+  }, [right, left]);
+
+  useEffect(() => {
+    if (right.length <= 2) {
+      onSubmitCallback(false);
+    }
+  }, [isSubmitting]);
 
   useEffect(() => {
     let listSelectDiverTeamId: number[] = [];
@@ -266,10 +273,6 @@ export default function DiverTeaTransferList({
                   primary={diverList.find((e: Diver) => Number(e.id) == value)?.name}
                 />
               </Stack>
-              {/* <ListItemText
-                id={labelId}
-                primary={.find((e: any) => e.id == statusEnum)?.label}
-              /> */}
             </ListItemButton>
           );
         })}
@@ -294,22 +297,6 @@ export default function DiverTeaTransferList({
               </Grid>
             </Grid>
           </Grid>
-
-          {/* <Grid item>
-            <TextField
-              fullWidth
-              label="Search"
-              type="search"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Icon icon={searchFill} />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid> */}
-
           <Grid item>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -380,6 +367,9 @@ export default function DiverTeaTransferList({
                         </Grid>
                         <Grid item>
                           {customList(translate('page.diver-team.form.chosen'), right)}
+                          <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
+                            {touched.number && errors.number}
+                          </FormHelperText>
                         </Grid>
                       </Grid>
                     </Stack>
