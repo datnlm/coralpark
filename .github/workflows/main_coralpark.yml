@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'coralpark'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D05ABC5A75804AA984732FA9D09F0211 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C24D1252B5D2460482464592A1C9E326 }}
           package: .
