@@ -195,7 +195,7 @@ export default function EmployeeList() {
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.employee.new}
+              to={PATH_DASHBOARD.staff.newEmployee}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}

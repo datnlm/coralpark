@@ -184,14 +184,14 @@ export default function EmployeePartnerNewForm({
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.staff.form.name')}
+                    label={translate('page.employee.form.name')}
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
                   <TextField
                     fullWidth
-                    label={translate('page.staff.form.phone')}
+                    label={translate('page.employee.form.phone')}
                     {...getFieldProps('phone')}
                     error={Boolean(touched.phone && errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -201,14 +201,14 @@ export default function EmployeePartnerNewForm({
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label={translate('page.staff.form.email')}
+                    label={translate('page.employee.form.email')}
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
                   <TextField
                     fullWidth
-                    label={translate('page.staff.form.address')}
+                    label={translate('page.employee.form.address')}
                     {...getFieldProps('address')}
                     error={Boolean(touched.address && errors.address)}
                     helperText={touched.address && errors.address}
@@ -229,7 +229,7 @@ export default function EmployeePartnerNewForm({
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={translate('page.staff.form.status')}
+                          label={translate('page.employee.form.status')}
                           error={Boolean(touched.status && errors.status)}
                           helperText={touched.status && errors.status}
                         />

@@ -572,6 +572,58 @@
         "address": "Address",
         "status": "Status"
       }
+    },
+    "employee-partner": {
+      "title": {
+        "list": "Employee Partner: Employee Partner List",
+        "create": "Employee Partner: Create a new employee partner",
+        "update": "Employee Partner: Update employee partner"
+      },
+      "heading1": {
+        "list": "Employee Partner List",
+        "create": "Create employee partner",
+        "update": "Update employee partner"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Employee Partner",
+      "heading4": {
+        "list": "List",
+        "new": "New employee partner"
+      },
+      "search": "Search employee partner",
+      "form": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "status": "Status"
+      }
+    },
+    "site-manager": {
+      "title": {
+        "list": "Site Manager: Site Manager List",
+        "create": "Site Manager: Create a new site manager",
+        "update": "Site Manager: Update site manager"
+      },
+      "heading1": {
+        "list": "Site Manager List",
+        "create": "Create site manager partner",
+        "update": "Update site manager partner"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Site Manager",
+      "heading4": {
+        "list": "List",
+        "new": "New site manager"
+      },
+      "search": "Search site manager",
+      "form": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "status": "Status"
+      }
     }
   }, 
   "button": {

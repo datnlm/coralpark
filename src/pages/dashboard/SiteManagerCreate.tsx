@@ -55,20 +55,22 @@ export default function EmployeeCreate() {
   return (
     <Page
       title={
-        !isEdit ? translate('page.employee.title.create') : translate('page.employee.title.update')
+        !isEdit
+          ? translate('page.site-manager.title.create')
+          : translate('page.site-manager.title.update')
       }
     >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={
             !isEdit
-              ? translate('page.employee.heading1.create')
-              : translate('page.employee.heading1.update')
+              ? translate('page.site-manager.heading1.create')
+              : translate('page.site-manager.heading1.update')
           }
           links={[
-            { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.staff.root },
-            { name: !isEdit ? translate('page.employee.heading4.new') : name }
+            { name: translate('page.site-manager.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.site-manager.heading3'), href: PATH_DASHBOARD.staff.root },
+            { name: !isEdit ? translate('page.site-manager.heading4.new') : name }
           ]}
         />
         <SiteManagerNewForm isEdit={isEdit} currentEmployee={currentEmployee} />

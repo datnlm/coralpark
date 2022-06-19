@@ -178,28 +178,31 @@ export default function EmployeePartnerList() {
   //   });
   // }
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.employee.form.name'), alignRight: false },
-    { id: 'phone', label: translate('page.employee.form.phone'), alignRight: false },
-    { id: 'email', label: translate('page.employee.form.email'), alignRight: false },
-    { id: 'address', label: translate('page.employee.form.address'), alignRight: false },
-    { id: 'status', label: translate('page.employee.form.status'), alignRight: false },
+    { id: 'name', label: translate('page.employee-partner.form.name'), alignRight: false },
+    { id: 'phone', label: translate('page.employee-partner.form.phone'), alignRight: false },
+    { id: 'email', label: translate('page.employee-partner.form.email'), alignRight: false },
+    { id: 'address', label: translate('page.employee-partner.form.address'), alignRight: false },
+    { id: 'status', label: translate('page.employee-partner.form.status'), alignRight: false },
     { id: '' }
   ];
   return (
-    <Page title={translate('page.employee.title.list')}>
+    <Page title={translate('page.employee-partner.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.employee.heading1.list')}
+          heading={translate('page.employee-partner.heading1.list')}
           links={[
-            { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.employee.root },
-            { name: translate('page.employee.heading4.list') }
+            { name: translate('page.employee-partner.heading2'), href: PATH_DASHBOARD.root },
+            {
+              name: translate('page.employee-partner.heading3'),
+              href: PATH_DASHBOARD.employee.root
+            },
+            { name: translate('page.employee-partner.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.employee.new}
+              to={PATH_DASHBOARD.staff.newEmployeePartner}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}
