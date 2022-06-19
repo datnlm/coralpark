@@ -97,6 +97,7 @@ export default function UserList() {
   const isLoading = useSelector((state: RootState) => state.diver.isLoadingDiverTeam);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('name');
@@ -164,6 +165,7 @@ export default function UserList() {
   const handleClickEditOpen = async (id: string) => {
     setOpen(true);
     setCurrentDiverTeamId(id);
+    setIsEdit(true);
   };
 
   const handleClose = () => {
@@ -172,6 +174,7 @@ export default function UserList() {
   const handleClickOpen = () => {
     setCurrentDiverTeamId(null);
     setOpen(true);
+    setIsEdit(false);
   };
 
   useEffect(() => {
@@ -325,7 +328,12 @@ export default function UserList() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
-        <DiverTeamNewForm id={currentDiverTeamId} open={open} onClose={handleClose} />
+        <DiverTeamNewForm
+          id={currentDiverTeamId}
+          open={open}
+          onClose={handleClose}
+          isEdit={isEdit}
+        />
       </Container>
     </Page>
   );
