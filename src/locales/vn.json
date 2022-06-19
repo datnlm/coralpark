@@ -571,6 +571,58 @@
         "address": "Địa chỉ",
         "status": "Trạng thái"
       }
+    },
+    "employee-partner": {
+      "title": {
+        "list": "Nhân viên Đối tác: Danh sách nhân viên đối tác",
+        "create": "Nhân viên Đối tác: Thêm mới thông tin nhân viên đối tác",
+        "update": "Nhân viên Đối tác: Cập nhật thông tin nhân viên đối tác"
+      },
+      "heading1": {
+        "list": "Danh sách nhân viên đối tác",
+        "create": "Thêm mới thông tin nhân viên đối tác",
+        "update": "Chỉnh sửa thông tin nhân viên đối tác"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Nhân viên đối tác",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Nhân viên đối tác mới"
+      },
+      "search": "Tìm kiếm theo tên nhân viên đối tác",
+      "form": {
+        "name": "Tên đầy đủ",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ email",
+        "address": "Địa chỉ",
+        "status": "Trạng thái"
+      }
+    },
+    "site-manager": {
+      "title": {
+        "list": "Quản lý Site: Danh sách quản lý Site",
+        "create": "Quản lý Site: Thêm mới thông tin quản lý Site",
+        "update": "Quản lý Site: Cập nhật thông tin quản lý Site"
+      },
+      "heading1": {
+        "list": "Danh sách quản lý Site",
+        "create": "Thêm mới thông tin quản lý Site",
+        "update": "Chỉnh sửa thông tin quản lý Site"
+      },
+      "heading2": "Bảng điều khiển",
+      "heading3": "Quản lý Site",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Quản lý Site mới"
+      },
+      "search": "Tìm kiếm theo tên quản lý Site",
+      "form": {
+        "name": "Tên đầy đủ",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ email",
+        "address": "Địa chỉ",
+        "status": "Trạng thái"
+      }
     }
   },
   "button": {
