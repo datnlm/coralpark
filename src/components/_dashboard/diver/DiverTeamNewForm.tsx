@@ -40,16 +40,16 @@ import DiverTeamTransferList from './DiverTeamTransferList';
 
 type DiverTeamNewFormProps = {
   id?: string | null;
+  isEdit: boolean;
   open: boolean;
   onClose: VoidFunction;
 };
 
-export default function DiverTeamNewForm({ id, open, onClose }: DiverTeamNewFormProps) {
+export default function DiverTeamNewForm({ id, open, onClose, isEdit }: DiverTeamNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { enqueueSnackbar } = useSnackbar();
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const { name } = useParams();
   // -------------------
   const submitRef = useRef<HTMLInputElement>(null);
@@ -76,7 +76,6 @@ export default function DiverTeamNewForm({ id, open, onClose }: DiverTeamNewForm
   useEffect(() => {
     if (id != null) {
       fetchData();
-      setIsEdit(true);
     }
     if (id == null) {
       setCurrentDiverTeam(null);
