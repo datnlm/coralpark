@@ -65,7 +65,6 @@
     "@turf/bbox": "^6.5.0",
     "@turf/boolean-contains": "^4.6.1",
     "@turf/turf": "^4.7.3",
-    "@types/mapbox__mapbox-gl-draw": "^1.2.3",
     "amazon-cognito-identity-js": "^5.0.5",
     "apexcharts": "^3.27.2",
     "autosuggest-highlight": "^3.1.1",

@@ -51,7 +51,6 @@ type AreaNewFormProps = {
   isEdit: boolean;
   currentArea?: Area;
 };
-mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
 
 export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   const { currentLang, translate } = useLocales();
@@ -239,6 +238,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   }, [currentArea]);
 
   useEffect(() => {
+    mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
     const map = new mapboxgl.Map({
       accessToken: mapboxgl.accessToken,
       container: mapContainerRef.current || '',
