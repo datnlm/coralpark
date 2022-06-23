@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useState, useEffect, useRef } from 'react';
 import { manageArea } from '_apis_/area';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+// import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -307,10 +308,10 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       controls: {
         polygon: true,
         trash: true
-      }
+      },
       // Set mapbox-gl-draw to draw by default.
       // The user does not have to click the polygon control button first.
-      // defaultMode: 'draw_polygon'
+      defaultMode: 'draw_polygon'
     });
     // add mapbox fullscreen
     map.addControl(new mapboxgl.FullscreenControl());
