@@ -310,7 +310,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       },
       // Set mapbox-gl-draw to draw by default.
       // The user does not have to click the polygon control button first.
-      defaultMode: 'draw_polygon'
+      // defaultMode: 'draw_polygon'
     });
     // add mapbox fullscreen
     map.addControl(new mapboxgl.FullscreenControl());
