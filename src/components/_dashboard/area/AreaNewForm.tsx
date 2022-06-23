@@ -52,6 +52,8 @@ type AreaNewFormProps = {
   currentArea?: Area;
 };
 
+mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
+
 export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   const { currentLang, translate } = useLocales();
   const [optionsProvince, setOptionsProvince] = useState([]);
@@ -238,9 +240,8 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   }, [currentArea]);
 
   useEffect(() => {
-    mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
     const map = new mapboxgl.Map({
-      accessToken: mapboxgl.accessToken,
+      // accessToken: mapboxgl.accessToken,
       container: mapContainerRef.current || '',
       style: 'mapbox://styles/mapbox/satellite-v9',
       center: [lng, lat],
@@ -292,13 +293,13 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       });
     });
 
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      placeholder: ''
-    });
-    geocoder.setLanguage(currentLang.value);
-    // Add the control to the map.
-    map.addControl(geocoder);
+    // const geocoder = new MapboxGeocoder({
+    //   accessToken: mapboxgl.accessToken,
+    //   placeholder: ''
+    // });
+    // geocoder.setLanguage(currentLang.value);
+    // // Add the control to the map.
+    // map.addControl(geocoder);
 
     const draw = new MapboxDraw({
       displayControlsDefault: false,
@@ -311,7 +312,6 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       // The user does not have to click the polygon control button first.
       defaultMode: 'draw_polygon'
     });
-
     // add mapbox fullscreen
     map.addControl(new mapboxgl.FullscreenControl());
     // add polygon
