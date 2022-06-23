@@ -307,7 +307,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       controls: {
         polygon: true,
         trash: true
-      },
+      }
       // Set mapbox-gl-draw to draw by default.
       // The user does not have to click the polygon control button first.
       // defaultMode: 'draw_polygon'
