@@ -15,7 +15,8 @@ import {
   TextField,
   Typography,
   Autocomplete,
-  FormHelperText
+  FormHelperText,
+  CardHeader
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -26,6 +27,7 @@ import useLocales from '../../../hooks/useLocales';
 // @types
 import { Technician } from '../../../@types/technicians';
 import { UploadAvatar } from '../../upload';
+import DataGridBasic from './DataGridBasic';
 
 // ----------------------------------------------------------------------
 
@@ -243,6 +245,16 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
               </Stack>
             </Card>
           </Grid>
+          {/* <Grid item xs={12} md={12}>
+            <Stack spacing={5}>
+              <Card>
+                <CardHeader title="Basic" sx={{ mb: 2 }} />
+                <Box sx={{ height: 390 }}>
+                  <DataGridBasic />
+                </Box>
+              </Card>
+            </Stack>
+          </Grid> */}
         </Grid>
       </Form>
     </FormikProvider>

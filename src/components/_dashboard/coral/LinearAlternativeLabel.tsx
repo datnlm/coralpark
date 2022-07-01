@@ -231,6 +231,7 @@ export default function LinearAlternativeLabel() {
           } else {
             setSteps(['']);
             setData([phase]);
+            setActiveStep(0);
           }
         }
       });
@@ -294,6 +295,7 @@ export default function LinearAlternativeLabel() {
                 )}
               />
             </Stack>
+
             <Typography sx={{ my: 1 }}> {translate('page.coral-phase.form.header')} </Typography>
 
             <CoralPhasesTypeNewForm
@@ -309,11 +311,6 @@ export default function LinearAlternativeLabel() {
               {translate('button.back')}
             </Button>
             <Box sx={{ flexGrow: 1 }} />
-            {/* {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                {translate('button.skip')}
-              </Button>
-            )} */}
             <Button variant="contained" onClick={handleNext}>
               {activeStep === steps.length - 1
                 ? translate('button.save.finish')

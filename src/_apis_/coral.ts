@@ -312,7 +312,10 @@ export class Coral {
   createCoralArea = (coralArea: CoralArea) => {
     const data = {
       corals: coralArea.coral,
-      id: coralArea.area.id
+      id: coralArea.area.id,
+      name: coralArea.area.name,
+      wellKnownText: coralArea.area.wellKnownText,
+      address: coralArea.area.address
     };
     return axios
       .post('/api/v1/admin/coral-areas/corals', data)
@@ -323,7 +326,10 @@ export class Coral {
   updateCoralArea = (coralArea: CoralArea) => {
     const data = {
       corals: coralArea.coral,
-      id: coralArea.area.id
+      id: coralArea.area.id,
+      name: coralArea.area.name,
+      wellKnownText: coralArea.area.wellKnownText,
+      address: coralArea.area.address
     };
     return axios
       .put('/api/v1/admin/coral-areas/corals', data)

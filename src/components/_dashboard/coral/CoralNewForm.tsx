@@ -261,7 +261,6 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
   };
 
   useEffect(() => {
-    console.log('chay');
     if (isEdit) {
       setFieldValue(
         'coralTypeId',
@@ -395,21 +394,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                           )}
                         />
                       </Stack>
-                      <div>
-                        <LabelStyle>{translate('page.coral.form.description')}</LabelStyle>
-                        <QuillEditor
-                          simple
-                          id="product-description"
-                          value={values.description}
-                          onChange={(val) => setFieldValue('description', val)}
-                          error={Boolean(touched.description && errors.description)}
-                        />
-                        {touched.description && errors.description && (
-                          <FormHelperText error sx={{ px: 2 }}>
-                            {touched.description && errors.description}
-                          </FormHelperText>
-                        )}
-                      </div>
+
                       {img && (
                         <>
                           <LivePreview files={img} onRemove={handleRemoveImage} />
@@ -432,6 +417,22 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
                         {touched.imageUrl && errors.imageUrl}
                       </FormHelperText>
                     )} */}
+                      </div>
+
+                      <div>
+                        <LabelStyle>{translate('page.coral.form.description')}</LabelStyle>
+                        <QuillEditor
+                          simple
+                          id="product-description"
+                          value={values.description}
+                          onChange={(val) => setFieldValue('description', val)}
+                          error={Boolean(touched.description && errors.description)}
+                        />
+                        {touched.description && errors.description && (
+                          <FormHelperText error sx={{ px: 2 }}>
+                            {touched.description && errors.description}
+                          </FormHelperText>
+                        )}
                       </div>
 
                       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

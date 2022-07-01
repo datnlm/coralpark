@@ -23,6 +23,7 @@ import {
   CardContent,
   FormHelperText
 } from '@material-ui/core';
+import { mapConfig } from 'config';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import useLocales from '../../../hooks/useLocales';
@@ -52,7 +53,8 @@ type AreaNewFormProps = {
   currentArea?: Area;
 };
 
-mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
+mapboxgl.accessToken = mapConfig || '';
+// mapboxgl.accessToken = process.env.REACT_APP_MAP_MAPBOX || '';
 
 export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
   const { currentLang, translate } = useLocales();

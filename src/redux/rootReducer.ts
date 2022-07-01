@@ -12,6 +12,7 @@ import groupModeReducer from './slices/groupMode';
 import categoriesReducer from './slices/categories';
 import technicianReducer from './slices/technician';
 import employeeReducer from './slices/employee';
+import cellReducer from './slices/cell';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +40,8 @@ const rootReducer = combineReducers({
   groupMode: groupModeReducer,
   categories: categoriesReducer,
   technician: technicianReducer,
-  employee: employeeReducer
+  employee: employeeReducer,
+  cell: cellReducer
 });
 
 export { rootPersistConfig, rootReducer };

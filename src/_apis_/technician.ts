@@ -55,7 +55,10 @@ export class TechnicanManager {
   createTechnicanArea = (technicianArea: TechnicianArea) => {
     const data = {
       technicians: technicianArea.technicians,
-      id: technicianArea.area.id
+      id: technicianArea.area.id,
+      name: technicianArea.area.name,
+      wellKnownText: technicianArea.area.wellKnownText,
+      address: technicianArea.area.address
     };
     return axios
       .post('/api/v1/admin/technician-areas/technicians', data)
@@ -66,7 +69,10 @@ export class TechnicanManager {
   updateTechnicanArea = (technicianArea: TechnicianArea) => {
     const data = {
       technicians: technicianArea.technicians,
-      id: technicianArea.area.id
+      id: technicianArea.area.id,
+      name: technicianArea.area.name,
+      wellKnownText: technicianArea.area.wellKnownText,
+      address: technicianArea.area.address
     };
     return axios
       .put('/api/v1/admin/technician-areas/technicians', data)

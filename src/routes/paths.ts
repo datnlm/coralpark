@@ -105,6 +105,15 @@ export const PATH_DASHBOARD = {
     editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
     editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
   },
+  cell: {
+    root: path(ROOTS_DASHBOARD, '/cell'),
+    // list: path(ROOTS_DASHBOARD, '/cell/list'),
+    typesList: path(ROOTS_DASHBOARD, '/cell/types'),
+    // newCell: path(ROOTS_DASHBOARD, '/cell/new'),
+    newCellType: path(ROOTS_DASHBOARD, '/cell/type-new'),
+    // editCellById: path(ROOTS_DASHBOARD, '/cell/:name/edit'),
+    editCellTypeById: path(ROOTS_DASHBOARD, '/cell/types/:name/edit')
+  },
   group: {
     root: path(ROOTS_DASHBOARD, '/group-mode'),
     list: path(ROOTS_DASHBOARD, '/group-mode/list'),

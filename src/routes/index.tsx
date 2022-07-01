@@ -201,6 +201,17 @@ export default function Router() {
           ]
         },
         {
+          path: 'cell',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/cell/list" replace /> },
+            // { path: 'list', element: <CellTypeList /> },
+            { path: 'types', element: <CellTypeList /> },
+            // { path: '/:name/edit', element: <CellTypeCreate /> },
+            { path: 'type-new', element: <CellTypeCreate /> },
+            { path: 'types/:name/edit', element: <CellTypeCreate /> }
+          ]
+        },
+        {
           path: 'partner',
           children: [
             { path: '/', element: <Navigate to="/dashboard/partner/list" replace /> },
@@ -390,13 +401,15 @@ const CategoriesList = Loadable(lazy(() => import('../pages/dashboard/Categories
 const CategoriesCreate = Loadable(lazy(() => import('../pages/dashboard/CategoriesCreate')));
 const SiteList = Loadable(lazy(() => import('../pages/dashboard/SiteList')));
 const GardenTypesList = Loadable(lazy(() => import('../pages/dashboard/GardenTypesList')));
+const GardenTypeCreate = Loadable(lazy(() => import('../pages/dashboard/GardenTypeCreate')));
+const CellTypeList = Loadable(lazy(() => import('../pages/dashboard/CellTypeList')));
+const CellTypeCreate = Loadable(lazy(() => import('../pages/dashboard/CellTypeCreate')));
 const PartnerTypeList = Loadable(lazy(() => import('../pages/dashboard/PartnerTypeList')));
 const PartnerList = Loadable(lazy(() => import('../pages/dashboard/PartnerList')));
 const PartnerTypeCreate = Loadable(lazy(() => import('../pages/dashboard/PartnerTypeCreate')));
 const PartnerCreate = Loadable(lazy(() => import('../pages/dashboard/PartnerCreate')));
 const GardenCreate = Loadable(lazy(() => import('../pages/dashboard/GardenCreate')));
 const SiteCreate = Loadable(lazy(() => import('../pages/dashboard/SiteCreate')));
-const GardenTypeCreate = Loadable(lazy(() => import('../pages/dashboard/GardenTypeCreate')));
 const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));
 const DiverTeamList = Loadable(lazy(() => import('../pages/dashboard/DiverTeamList')));

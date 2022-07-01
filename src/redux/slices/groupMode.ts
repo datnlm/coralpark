@@ -8,7 +8,7 @@ import { GroupMode, GroupRole } from '../../@types/group';
 
 // ----------------------------------------------------------------------
 
-type AreaState = {
+type GroupModeState = {
   isLoading: boolean;
   error: boolean;
   totalCount: number;
@@ -16,7 +16,7 @@ type AreaState = {
   groupRoleList: GroupRole[];
 };
 
-const initialState: AreaState = {
+const initialState: GroupModeState = {
   isLoading: false,
   error: false,
   totalCount: 0,

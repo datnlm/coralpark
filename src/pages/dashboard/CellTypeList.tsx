@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { filter } from 'lodash';
 import { useSnackbar } from 'notistack5';
+import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import { manageTechnican } from '_apis_/technician';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -23,23 +22,20 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  CircularProgress,
-  CardHeader,
-  Box
+  CircularProgress
 } from '@material-ui/core';
-import { statusOptions } from 'utils/constants';
-import DataGridBasic from 'components/_dashboard/technician/DataGridBasic';
+import { manageGarden } from '_apis_/garden';
+import { QuillEditor } from 'components/editor';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListTechnician } from '../../redux/slices/technician';
-
+import { getListCellType } from '../../redux/slices/cell';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
-import useLocales from '../../hooks/useLocales';
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // @types
-import { Technician } from '../../@types/technicians';
+import { CellType } from '../../@types/cell-type';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -47,10 +43,10 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  TechnicianListHead,
-  TechnicianListToolbar,
-  TechnicianMoreMenu
-} from '../../components/_dashboard/technician/list';
+  CellTypesListHead,
+  CellTypesListToolbar,
+  CellTypesMoreMenu
+} from '../../components/_dashboard/cell/typesList';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -71,11 +67,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(
-  array: Technician[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
+function applySortFilter(array: CellType[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -83,20 +75,23 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_diver) => _diver.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_cellType) => _cellType.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function TechinicianList() {
+export default function UserList() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const techinicianList = useSelector((state: RootState) => state.technician.technicianList);
-  const totalCount = useSelector((state: RootState) => state.technician.totalCount);
-  const isLoading = useSelector((state: RootState) => state.technician.isLoading);
+  const cellTypeList = useSelector((state: RootState) => state.cell.cellTypeList);
+  const totalCount = useSelector((state: RootState) => state.cell.totalCount);
+  const isLoading = useSelector((state: RootState) => state.cell.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -112,7 +107,7 @@ export default function TechinicianList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = techinicianList.map((n) => n.name);
+      const newSelecteds = cellTypeList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -146,12 +141,12 @@ export default function TechinicianList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteTechnician = async (id: string) => {
+  const handleDeleteGardenType = async (gardenTypeID: string) => {
     try {
-      await manageTechnican.deleteTechnican(id).then((respone) => {
-        if (respone.status == 200) {
+      await manageGarden.deleteGardenType(gardenTypeID).then((respone) => {
+        if (respone.status === 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListTechnician(page, rowsPerPage));
+          dispatch(getListCellType(page, rowsPerPage));
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
@@ -163,18 +158,18 @@ export default function TechinicianList() {
   };
 
   useEffect(() => {
-    dispatch(getListTechnician(page, rowsPerPage));
+    dispatch(getListCellType(page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !techinicianList;
+  const emptyRows = !isLoading && !cellTypeList!;
 
-  const filteredTechinician = applySortFilter(
-    techinicianList,
+  const filteredCellTypes = applySortFilter(
+    cellTypeList,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isTechinician = filteredTechinician.length === 0 && !isLoading;
+  const isCellTypesNotFound = filteredCellTypes.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -184,29 +179,27 @@ export default function TechinicianList() {
   //     );
   //   });
   // }
+
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.technician.form.name'), alignRight: false },
-    { id: 'phone', label: translate('page.technician.form.phone'), alignRight: false },
-    { id: 'email', label: translate('page.technician.form.email'), alignRight: false },
-    { id: 'address', label: translate('page.technician.form.address'), alignRight: false },
-    { id: 'status', label: translate('page.technician.form.status'), alignRight: false },
+    { id: 'name', label: translate('page.cell-type.form.name'), alignRight: false },
+    { id: 'description', label: translate('page.cell-type.form.description'), alignRight: false },
     { id: '' }
   ];
   return (
-    <Page title={translate('page.technician.title.list')}>
+    <Page title={translate('page.cell-type.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.technician.heading1.list')}
+          heading={translate('page.garden-type.heading1.list')}
           links={[
-            { name: translate('page.technician.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.technician.heading3'), href: PATH_DASHBOARD.technician.root },
-            { name: translate('page.technician.heading4.list') }
+            { name: translate('page.cell-type.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.cell-type.heading3'), href: PATH_DASHBOARD.cell.typesList },
+            { name: translate('page.cell-type.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.technician.new}
+              to={PATH_DASHBOARD.cell.newCellType}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}
@@ -214,7 +207,7 @@ export default function TechinicianList() {
           }
         />
         <Card>
-          <TechnicianListToolbar
+          <CellTypesListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -223,11 +216,11 @@ export default function TechinicianList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <TechnicianListHead
+                <CellTypesListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={techinicianList.length}
+                  rowCount={cellTypeList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -238,8 +231,8 @@ export default function TechinicianList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredTechinician.map((row) => {
-                      const { id, name, phone, status, email, address, imageUrl } = row;
+                    filteredCellTypes.map((row) => {
+                      const { id, name, description } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -255,30 +248,21 @@ export default function TechinicianList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl} />
+                              {/* <Avatar alt={name} src={imageUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status === 0 && 'error') || 'success'}
-                            >
-                              {translate(
-                                `status.${statusOptions.find((v: any) => v.id == status)?.label}`
-                              )}
-                            </Label>
+                            {description && (
+                              <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
+                            )}
                           </TableCell>
                           <TableCell align="right">
-                            <TechnicianMoreMenu
-                              onDelete={() => handleDeleteTechnician(id.toString())}
-                              id={id.toString()}
-                              status={status}
+                            <CellTypesMoreMenu
+                              onDelete={() => handleDeleteGardenType(id.toString())}
+                              userName={id.toString()}
                             />
                           </TableCell>
                         </TableRow>
@@ -288,7 +272,7 @@ export default function TechinicianList() {
 
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
                         <Typography gutterBottom align="center" variant="subtitle1">
                           {translate('message.not-found')}
                         </Typography>
@@ -296,7 +280,7 @@ export default function TechinicianList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isTechinician && (
+                {isCellTypesNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
