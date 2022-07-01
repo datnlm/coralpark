@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
-import { Container } from '@material-ui/core';
+import { Box, Card, CardHeader, Container, Stack } from '@material-ui/core';
 import { manageTechnican } from '_apis_/technician';
+import DataGridBasic from 'components/_dashboard/technician/DataGridBasic';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes

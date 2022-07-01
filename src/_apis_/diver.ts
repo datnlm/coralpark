@@ -109,7 +109,10 @@ export class DiverManager {
   createDiverTeamArea = (diverTeamArea: DiverTeamArea) => {
     const data = {
       diverTeams: diverTeamArea.diverTeams,
-      id: diverTeamArea.area.id
+      id: diverTeamArea.area.id,
+      name: diverTeamArea.area.name,
+      wellKnownText: diverTeamArea.area.wellKnownText,
+      address: diverTeamArea.area.address
     };
     return axios
       .post('/api/v1/admin/diver-team-areas/divers', data)
@@ -120,7 +123,10 @@ export class DiverManager {
   updateDiverTeamArea = (diverTeamArea: DiverTeamArea) => {
     const data = {
       diverTeams: diverTeamArea.diverTeams,
-      id: diverTeamArea.area.id
+      id: diverTeamArea.area.id,
+      name: diverTeamArea.area.name,
+      wellKnownText: diverTeamArea.area.wellKnownText,
+      address: diverTeamArea.area.address
     };
     return axios
       .put('/api/v1/admin/diver-team-areas/divers', data)

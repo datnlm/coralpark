@@ -23,10 +23,18 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  CircularProgress
+  CircularProgress,
+  Box,
+  Tab,
+  Grid,
+  CardHeader
 } from '@material-ui/core';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
 import { statusOptions } from 'utils/constants';
 import DiverTeamNewForm from 'components/_dashboard/diver/DiverTeamNewForm';
+import DataGridBasic from 'components/_dashboard/diver/DataGridBasic';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListDiverTeam } from '../../redux/slices/diver';
@@ -102,6 +110,7 @@ export default function UserList() {
   const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
+  const [valueTab, setValueTab] = useState('0');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentDiverTeamId, setCurrentDiverTeamId] = useState<string | null>(null);
   const handleRequestSort = (property: string) => {
@@ -160,6 +169,10 @@ export default function UserList() {
       enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
       console.log(error);
     }
+  };
+
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setValueTab(newValue);
   };
 
   const handleClickEditOpen = async (id: string) => {
@@ -225,6 +238,7 @@ export default function UserList() {
             </Button>
           }
         />
+
         <Card>
           <DiverTeamListToolbar
             numSelected={selected.length}
@@ -328,6 +342,18 @@ export default function UserList() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
+
+        {/* <Grid item xs={12} md={12}>
+          <Stack spacing={5}>
+            <Card>
+              <CardHeader title="Basic" sx={{ mb: 2 }} />
+              <Box sx={{ height: 390 }}>
+                <DataGridBasic />
+              </Box>
+            </Card>
+          </Stack>
+        </Grid> */}
+
         <DiverTeamNewForm
           id={currentDiverTeamId}
           open={open}

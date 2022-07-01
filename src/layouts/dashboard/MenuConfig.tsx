@@ -101,6 +101,23 @@ export default function MegaMenuConfig() {
       ]
     },
     {
+      title: translate('menu.mega.title.cell'),
+      path: PATH_DASHBOARD.cell.root,
+      icon: ICONS.garden,
+      children: [
+        {
+          subheader: translate('menu.mega.subheader.type'),
+          items: [
+            { title: translate('menu.mega.cell.list'), path: PATH_DASHBOARD.cell.typesList },
+            {
+              title: translate('menu.mega.cell.create'),
+              path: PATH_DASHBOARD.cell.newCellType
+            }
+          ]
+        }
+      ]
+    },
+    {
       title: translate('menu.mega.title.partner'),
       path: PATH_DASHBOARD.partner.root,
       icon: ICONS.partner,
