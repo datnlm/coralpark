@@ -1,40 +1,22 @@
-import * as Yup from 'yup';
 import { useRef, useState, useEffect } from 'react';
-import { paramCase } from 'change-case';
 import { useSnackbar } from 'notistack5';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { useFormik, Form, FormikProvider } from 'formik';
 // material
-// material
-import { useTheme, styled } from '@material-ui/core/styles';
 import {
-  Radio,
   Dialog,
   Button,
   Divider,
-  Checkbox,
-  RadioGroup,
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormControlLabel,
-  OutlinedInput,
-  Stack,
-  Avatar,
-  CardHeader,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  InputAdornment,
   Grid
 } from '@material-ui/core';
 import { getListDiver } from 'redux/slices/diver';
 import { LoadingButton } from '@material-ui/lab';
-import { RootState, useSelector, dispatch } from 'redux/store';
+import { dispatch } from 'redux/store';
 import { manageDiver } from '_apis_/diver';
 import useLocales from '../../../hooks/useLocales';
-import { Diver, DiverTeam } from '../../../@types/diver';
+import { DiverTeam } from '../../../@types/diver';
 import DiverTeamTransferList from './DiverTeamTransferList';
 // ----------------------------------------------------------------------
 
@@ -47,10 +29,6 @@ type DiverTeamNewFormProps = {
 
 export default function DiverTeamNewForm({ id, open, onClose, isEdit }: DiverTeamNewFormProps) {
   const { translate } = useLocales();
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const { enqueueSnackbar } = useSnackbar();
-  const { name } = useParams();
   // -------------------
   const submitRef = useRef<HTMLInputElement>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -59,7 +37,7 @@ export default function DiverTeamNewForm({ id, open, onClose, isEdit }: DiverTea
   const fetchData = async () => {
     if (id != null) {
       await manageDiver.getDiverTeamByID(id).then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           const data = {
             id: response.data.id,
             name: response.data.name,
@@ -92,7 +70,6 @@ export default function DiverTeamNewForm({ id, open, onClose, isEdit }: DiverTea
   const callback = async (params: boolean) => {
     if (!params) {
       setIsSubmitting(false);
-      console.log(params);
     } else if (params) {
       onClose();
       setIsSubmitting(false);

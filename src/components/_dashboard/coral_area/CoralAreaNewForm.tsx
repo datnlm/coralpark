@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
 import { useCallback, useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack5';
@@ -40,22 +39,9 @@ import { Coral } from '../../../@types/coral';
 //
 
 // ----------------------------------------------------------------------
-const style = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexWrap: 'wrap'
-} as const;
-
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
 
 export default function CoralAreaNewForm() {
   const { translate } = useLocales();
-  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   // -------------------
   const areaList = useSelector((state: RootState) => state.area.areaList);
@@ -144,12 +130,12 @@ export default function CoralAreaNewForm() {
 
         !isEdit
           ? await manageCoral.createCoralArea(values).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             })
           : await manageCoral.updateCoralArea(values).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             });
@@ -177,21 +163,7 @@ export default function CoralAreaNewForm() {
     }
   });
 
-  const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
-    formik;
-
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
+  const { handleSubmit, isSubmitting, setFieldValue } = formik;
 
   useEffect(() => {
     const mapCoralAreaId: number[] = [];
@@ -210,7 +182,7 @@ export default function CoralAreaNewForm() {
           }
           // set coral id left
           manageCoral.getListCoral(0, -1).then((response) => {
-            if (response.status == 200) {
+            if (response.status === 200) {
               const data = response.data.items;
               setCoralList(data);
               const mapId: number[] = [];

@@ -13,16 +13,13 @@ import {
   IconButton,
   Stack,
   TextField,
-  Grid,
-  Card,
   Autocomplete
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import CoralPhasesNewForm from 'components/_dashboard/coral/CoralPhasesNewForm';
 import CoralPhasesTypeNewForm from 'components/_dashboard/coral/CoralPhasesTypeNewForm';
 import { manageCoral } from '_apis_/coral';
 import { RootState, useSelector } from 'redux/store';
-import { Coral, PhaseForm, PhasesType } from '../../../@types/coral';
+import { PhasesType } from '../../../@types/coral';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import useLocales from '../../../hooks/useLocales';
@@ -56,7 +53,6 @@ export default function LinearAlternativeLabel() {
   const isLoading = useSelector((state: RootState) => state.coral.isLoading);
 
   const callback = async (params: PhasesType) => {
-    console.log(params);
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -68,7 +64,7 @@ export default function LinearAlternativeLabel() {
     const dt = data;
     dt[activeStep] = params;
     setData(dt);
-    if (activeStep == steps.length - 1) {
+    if (activeStep === steps.length - 1) {
       try {
         const formPhase = {
           id: coral!.id,
@@ -85,12 +81,12 @@ export default function LinearAlternativeLabel() {
         let flag = false;
         !isEdit
           ? await manageCoral.createCoralPhasesType(formPhase).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             })
           : await manageCoral.updateCoralPhasesType(formPhase).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             });
@@ -121,8 +117,6 @@ export default function LinearAlternativeLabel() {
   };
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [optionCoralPhases, setOptionCoralPhases] = useState([]);
-  const [optionCoral, setOptionCoral] = useState([]);
   const [steps, setSteps] = useState(['']);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
@@ -147,33 +141,10 @@ export default function LinearAlternativeLabel() {
     if (submitRef && submitRef.current) {
       submitRef.current?.click();
     }
-    // let newSkipped = skipped;
-    // if (isStepSkipped(activeStep)) {
-    //   newSkipped = new Set(newSkipped.values());
-    //   newSkipped.delete(activeStep);
-    // }
-
-    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // setSkipped(newSkipped);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
   };
 
   const handleReset = () => {
@@ -186,18 +157,6 @@ export default function LinearAlternativeLabel() {
   const handleAddMore = () => {
     const s = steps;
     const dt = data;
-    // const phase: PhasesType = {
-    //   id: '',
-    //   minWeight: 0,
-    //   maxWeight: 0,
-    //   minHigh: 0,
-    //   maxHigh: 0,
-    //   timeFrom: 0,
-    //   timeTo: 0,
-    //   colour: '',
-    //   coralId: '',
-    //   coralPhaseId: ''
-    // };
     dt.push(phase);
     setData(dt);
     s.push('');

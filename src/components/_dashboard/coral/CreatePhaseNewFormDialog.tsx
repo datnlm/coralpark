@@ -7,17 +7,13 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { styled } from '@material-ui/core/styles';
 import {
   Grid,
-  Radio,
   Dialog,
   Button,
   Divider,
-  Checkbox,
   TextField,
-  RadioGroup,
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormControlLabel,
   FormHelperText,
   Card,
   Stack,
@@ -45,7 +41,6 @@ type CreatePhaseNewFormDialogProps = {
 
 export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseNewFormDialogProps) {
   const { translate } = useLocales();
-  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -69,7 +64,7 @@ export default function CreatePhaseNewFormDialog({ open, onClose }: CreatePhaseN
         values.imageUrl.map((file: File | string) => bodyFormData.append('imageFile', file));
 
         await manageCoral.createCoralPhases(bodyFormData).then((response) => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             dispatch(getListCoralPhase(0, -1));
             resetForm();
             setSubmitting(false);

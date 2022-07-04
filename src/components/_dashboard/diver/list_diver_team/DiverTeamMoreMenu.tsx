@@ -1,8 +1,6 @@
 import { Icon } from '@iconify/react';
-import { paramCase } from 'change-case';
 import { useRef, useState } from 'react';
 import editFill from '@iconify/icons-eva/edit-fill';
-import { Link as RouterLink } from 'react-router-dom';
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
@@ -19,8 +17,6 @@ import {
   DialogContent,
   DialogContentText
 } from '@material-ui/core';
-// routes
-import { PATH_DASHBOARD } from '../../../../routes/paths';
 import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 

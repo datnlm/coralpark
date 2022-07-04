@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
 import { useCallback, useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack5';
@@ -36,27 +35,14 @@ import { manageDiver } from '_apis_/diver';
 import { Area } from '../../../@types/area';
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Diver, DiverTeam } from '../../../@types/diver';
+import { DiverTeam } from '../../../@types/diver';
 // redux
 import { getListDiverTeam } from '../../../redux/slices/diver';
 
 // ----------------------------------------------------------------------
-const style = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexWrap: 'wrap'
-} as const;
-
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
 
 export default function CoralAreaNewForm() {
   const { translate } = useLocales();
-  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   // -------------------
@@ -134,7 +120,7 @@ export default function CoralAreaNewForm() {
       area: currentArea?.area || ''
     },
     // validationSchema: NewUserSchema,
-    onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         // number.map((v) => arr.push({id: v}));
         values.diverTeams = right.map((v: any) => ({
@@ -146,12 +132,12 @@ export default function CoralAreaNewForm() {
 
         !isEdit
           ? await manageDiver.createDiverTeamArea(values).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             })
           : await manageDiver.updateDiverTeamArea(values).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             });
@@ -179,24 +165,9 @@ export default function CoralAreaNewForm() {
     }
   });
 
-  const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
-    formik;
-
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
+  const { handleSubmit, isSubmitting, setFieldValue } = formik;
 
   useEffect(() => {
-    const selectedDiverTeamId: number[] = [];
     dispatch(getListDiverTeam(0, -1));
     setRight([]);
     setLeft([]);

@@ -47,9 +47,7 @@ export default function CoralPhasesTypeNewForm({
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
   let phaseId = '';
-  // const [phaseId, setPhaseId] = useState('');
   const listPhase = useSelector((state: RootState) => state.coral.coralPhaseList);
-  const [optionCoralPhases, setOptionCoralPhases] = useState([]);
 
   const NewUserSchema = Yup.object().shape({
     minWeight: Yup.number()
