@@ -2,6 +2,7 @@ import { FormikProps } from 'formik';
 import { type } from 'os';
 import internal from 'stream';
 import { StringLocale } from 'yup/lib/locale';
+import { Cell } from './cell';
 
 export type Garden = {
   id: string;
@@ -15,6 +16,7 @@ export type Garden = {
   gardenTypeId: any;
   siteId: any;
   status: any;
+  coralCells: any;
 };
 export type GardenType = {
   id: string;

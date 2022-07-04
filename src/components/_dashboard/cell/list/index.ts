@@ -1,3 +1,3 @@
-export { default as GardenListHead } from './GardenListHead';
-export { default as GardenListToolbar } from './GardenListToolbar';
-export { default as GardenMoreMenu } from './GardenMoreMenu';
+export { default as CellListHead } from './CellListHead';
+export { default as CellListToolbar } from './CellListToolbar';
+export { default as CellMoreMenu } from './CellMoreMenu';

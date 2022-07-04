@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import minusFill from '@iconify/icons-eva/minus-fill';
 // material
 import { LoadingButton, TabContext, TabList, TabPanel } from '@material-ui/lab';
 import {
@@ -13,26 +12,26 @@ import {
   Grid,
   Stack,
   TextField,
-  IconButton,
-  InputAdornment,
-  Typography,
   Autocomplete,
   Button,
-  Tab
+  Tab,
+  CardHeader
 } from '@material-ui/core';
 // utils
 import { manageGarden } from '_apis_/garden';
 import { OptionStatus, statusOptions } from 'utils/constants';
 
-import { RootState, useSelector } from 'redux/store';
+import { RootState, useSelector, useDispatch } from 'redux/store';
 import { Icon } from '@iconify/react';
-import { MIconButton } from 'components/@material-extend';
+
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
 import { Garden } from '../../../@types/garden';
+import CellList from '../../../pages/dashboard/CellList';
+import CreateCellNewForm from '../cell/CreateCellNewForm';
 // ----------------------------------------------------------------------
 
 type GardenNewFormProps = {
@@ -45,6 +44,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
+  const dispatch = useDispatch();
 
   const [valueTab, setValueTab] = useState('0');
   const gardenTypesList = useSelector((state: RootState) => state.garden.gardenTypesList);
@@ -84,7 +84,8 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       areaId: currentGarden?.areaId || '',
       gardenTypeId: currentGarden?.gardenTypeId || '',
       siteId: currentGarden?.siteId || '',
-      status: currentGarden?.status || ''
+      status: currentGarden?.status || '',
+      coralCells: currentGarden?.coralCells || ''
     },
     validationSchema: NewGardenSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -157,50 +158,6 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     }
   }, [currentGarden]);
 
-  const Incrementer = ({ name }: { name: string }) => {
-    // const { value } = field;
-    // const { setValue } = helpers;
-
-    const incrementQuantity = () => {
-      // setValue(1);
-    };
-    const decrementQuantity = () => {
-      // setValue(1);
-    };
-
-    return (
-      <Box
-        sx={{
-          py: 0.5,
-          px: 0.75,
-          border: 1,
-          lineHeight: 0,
-          borderRadius: 1,
-          display: 'flex',
-          alignItems: 'center',
-          borderColor: 'grey.50032'
-        }}
-      >
-        <MIconButton size="small" color="inherit" disabled={0 <= -1} onClick={decrementQuantity}>
-          <Icon icon={minusFill} width={16} height={16} />
-        </MIconButton>
-        <Typography
-          variant="body2"
-          component="span"
-          sx={{
-            width: 40,
-            textAlign: 'center',
-            display: 'inline-block'
-          }}
-        >
-          1
-        </Typography>
-        <MIconButton size="small" color="inherit" onClick={incrementQuantity}>
-          <Icon icon={plusFill} width={16} height={16} />
-        </MIconButton>
-      </Box>
-    );
-  };
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={valueTab}>
@@ -384,156 +341,11 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
             <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
-                  <Card sx={{ p: 3 }}>
-                    <Stack spacing={3}>
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
-                          fullWidth
-                          label={translate('page.garden.form.cell-type')}
-                          {...getFieldProps('temperature')}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.temperature')}
-                          {...getFieldProps('temperature')}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.temperature')}
-                          {...getFieldProps('temperature')}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <IconButton edge="start">
-                                  {/* <IconButton onClick={} edge="end"> */}
-                                  <Icon icon={minusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton edge="end">
-                                  <Icon icon={plusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.garden.form.quantity')}
-                          {...getFieldProps('temperature')}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <IconButton edge="start">
-                                  {/* <IconButton onClick={} edge="end"> */}
-                                  <Icon icon={minusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton edge="end">
-                                  <Icon icon={plusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Stack>
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
-                          fullWidth
-                          label={translate('page.garden.form.cell-type')}
-                          {...getFieldProps('temperature')}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.temperature')}
-                          {...getFieldProps('temperature')}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.temperature')}
-                          {...getFieldProps('temperature')}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <IconButton edge="start">
-                                  {/* <IconButton onClick={} edge="end"> */}
-                                  <Icon icon={minusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton edge="end">
-                                  <Icon icon={plusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.garden.form.quantity')}
-                          {...getFieldProps('temperature')}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <IconButton edge="start">
-                                  {/* <IconButton onClick={} edge="end"> */}
-                                  <Icon icon={minusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton edge="end">
-                                  <Icon icon={plusFill} />
-                                </IconButton>
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Stack>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        {/* <Button
-                          size="small"
-                          color="inherit"
-                          onClick={handleBackStep}
-                          startIcon={<Icon icon={arrowIosBackFill} />}
-                        >
-                          Back
-                        </Button> */}
-                        <Button size="small" startIcon={<Icon icon={plusFill} />}>
-                          Thêm cell
-                        </Button>
-                      </Box>
-                      {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                          <IconButton
-                            onClick={() => {}}
-                            color="default"
-                            sx={{
-                              right: 8,
-                              bottom: 8,
-                              position: 'absolute'
-                            }}
-                          >
-                            <Icon icon={plusFill} width={20} height={20} />
-                          </IconButton>
-                        </Box>
-                      </Stack> */}
-
-                      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                          {!isEdit ? translate('button.save.add') : translate('button.save.update')}
-                        </LoadingButton>
-                      </Box>
+                  <Grid item xs={12} md={12}>
+                    <Stack spacing={5}>
+                      <CellList gardenId={currentGarden?.id} />
                     </Stack>
-                  </Card>
+                  </Grid>
                 </Grid>
               </Grid>
             </Form>

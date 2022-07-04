@@ -15,9 +15,7 @@ import {
   Typography,
   Autocomplete,
   FormHelperText,
-  CardContent,
-  CardHeader,
-  Collapse
+  CardContent
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -33,7 +31,6 @@ import useLocales from '../../../hooks/useLocales';
 import { Site } from '../../../@types/garden';
 //
 import { UploadAvatar } from '../../upload';
-import DataGridEmployee from './DataGridEmployee';
 // ----------------------------------------------------------------------
 
 const MapWrapperStyle = styled('div')(({ theme }) => ({
@@ -61,7 +58,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const gardenList = useSelector((state: RootState) => state.garden.gardenList);
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
-  const [isChecked, setIsChecked] = useState(true);
   const mapContainerRef = useRef(null);
   const [lng, setLng] = useState(111.202);
   const [lat, setLat] = useState(11.305);
@@ -373,19 +369,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                 </Box>
               </Stack>
             </Card>
-          </Grid>
-
-          <Grid item xs={12} md={12}>
-            <Collapse in={isChecked}>
-              <Stack spacing={5}>
-                <Card>
-                  <CardHeader title="Basic" sx={{ mb: 2 }} />
-                  <Box sx={{ height: 390 }}>
-                    <DataGridEmployee />
-                  </Box>
-                </Card>
-              </Stack>
-            </Collapse>
           </Grid>
         </Grid>
       </Form>

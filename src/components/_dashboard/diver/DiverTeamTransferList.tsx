@@ -159,12 +159,12 @@ export default function DiverTeaTransferList({
 
         !isEdit
           ? await manageDiver.createDiverTeam(values).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             })
           : await manageDiver.updateDiverTeam(values).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             });

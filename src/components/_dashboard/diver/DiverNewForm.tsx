@@ -5,7 +5,6 @@ import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { manageDiver } from '_apis_/diver';
 // material
-import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import {
   Card,
@@ -93,12 +92,12 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
 
         !isEdit
           ? await manageDiver.createDiver(bodyFormData).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             })
           : await manageDiver.updateDiver(bodyFormData).then((response) => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 flag = true;
               }
             });

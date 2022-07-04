@@ -43,7 +43,8 @@ export default function GardenCreate() {
           areaId: response.data.areaId,
           gardenTypeId: response.data.gardenTypeId,
           siteId: response.data.siteId,
-          status: response.data.status
+          status: response.data.status,
+          coralCells: response.data.coralCells
         };
         setCurrentGarden(data);
       }
@@ -73,9 +74,9 @@ export default function GardenCreate() {
               : translate('page.garden.heading1.update')
           }
           links={[
-            { name: translate('page.site.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.site.heading3'), href: PATH_DASHBOARD.garden.root },
-            { name: !isEdit ? translate('page.site.heading4.new') : name }
+            { name: translate('page.garden.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.garden.heading3'), href: PATH_DASHBOARD.garden.root },
+            { name: !isEdit ? translate('page.garden.heading4.new') : name }
           ]}
         />
 
