@@ -21,6 +21,7 @@ export class CellManager {
   createCell = (cell: Cell) => {
     const data = [];
     const number_of_quantity = parseInt(cell.quantity, 10);
+
     for (let index = 0; index < number_of_quantity; index++) {
       data.push({
         acreage: cell.acreage,
@@ -35,13 +36,24 @@ export class CellManager {
       .catch((err) => err);
   };
 
-  updateCell = (cell: any) => {
+  updateCell = (cell: Cell) => {
+    const data = {
+      id: cell.id,
+      acreage: cell.acreage,
+      maxItem: cell.maxItem,
+      gardenId: cell.gardenId,
+      coralCellTypeId: cell.type!.id,
+      status: cell.status
+    };
     return axios
-      .post('/api/v1/admin/coral-cell-types', cell, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      .put('/api/v1/admin/coral-cells', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  deleteCell = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/coral-cells/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };

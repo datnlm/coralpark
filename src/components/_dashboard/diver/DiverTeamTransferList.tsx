@@ -39,18 +39,6 @@ import { Diver, DiverTeam } from '../../../@types/diver';
 import useLocales from '../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
-const style = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexWrap: 'wrap'
-} as const;
-
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
 
 type DiverTeaTransferListProps = {
   isEdit: boolean;

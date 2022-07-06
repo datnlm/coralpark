@@ -4,26 +4,19 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // material
 import {
   Grid,
-  Radio,
   Dialog,
   Button,
   Divider,
-  Checkbox,
   TextField,
-  RadioGroup,
-  IconButton,
   DialogTitle,
   Stack,
   DialogContent,
   DialogActions,
-  FormControlLabel,
-  Box,
-  Typography,
-  InputAdornment,
   Autocomplete
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { RootState, useSelector } from 'redux/store';
+import { useEffect } from 'react';
 import { manageCell } from '_apis_/cell';
 import useLocales from '../../../hooks/useLocales';
 import { Cell } from '../../../@types/cell';
@@ -58,7 +51,7 @@ export default function CreateCellNewForm({
     initialValues: {
       id: currentCell?.id || '',
       gardenId: currentCell?.gardenId || '',
-      type: currentCell?.type,
+      type: currentCell?.type || null,
       coralCellTypeId: currentCell?.coralCellTypeId || '',
       coralCellTypeName: currentCell?.coralCellTypeName || '',
       acreage: currentCell?.acreage || '',
@@ -70,7 +63,10 @@ export default function CreateCellNewForm({
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         let flag = false;
-        if (currentCell?.gardenId != '') {
+        if (currentCell?.gardenId != null && currentCell?.id != null) {
+          values.id = currentCell?.id;
+          values.gardenId = currentCell?.gardenId;
+          values.status = currentCell?.status;
           !isEdit
             ? await manageCell.createCell(values).then((response) => {
                 if (response.status == 200) {
@@ -93,7 +89,7 @@ export default function CreateCellNewForm({
           );
         } else {
           enqueueSnackbar(
-            !isEdit ? translate('message.create-error') : translate('message.create-error'),
+            !isEdit ? translate('message.create-error') : translate('message.update-error'),
             { variant: 'error' }
           );
         }
@@ -107,8 +103,26 @@ export default function CreateCellNewForm({
   const { errors, values, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
     formik;
 
+  const fetchData = async () => {
+    if (currentCell != null) {
+      setFieldValue(
+        'type',
+        cellTypeList.find((v) => v.id == currentCell.type?.id)
+      );
+      setFieldValue('acreage', currentCell?.acreage);
+      setFieldValue('maxItem', currentCell?.maxItem);
+      setFieldValue('quantity', '1');
+    }
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      fetchData();
+    }
+  }, [currentCell]);
+
   return (
-    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth="md" open={open} onClose={onClose}>
       <DialogTitle>Thêm mới Cell</DialogTitle>
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -157,6 +171,7 @@ export default function CreateCellNewForm({
                       {...getFieldProps('maxItem')}
                     />
                     <TextField
+                      disabled={isEdit}
                       fullWidth
                       label="quantity"
                       // label="{translate('page.garden.form.quantity')}"
