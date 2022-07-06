@@ -26,10 +26,11 @@ import useLocales from '../../../../hooks/useLocales';
 
 type CellMoreMenuProps = {
   onDelete: VoidFunction;
+  onEdit: VoidFunction;
   status: any;
 };
 
-export default function CellMoreMenu({ onDelete, status }: CellMoreMenuProps) {
+export default function CellMoreMenu({ onDelete, onEdit, status }: CellMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -94,6 +95,22 @@ export default function CellMoreMenu({ onDelete, status }: CellMoreMenuProps) {
             </DialogActions>
           </Dialog>
         </div>
+
+        <MenuItem
+          onClick={() => {
+            onEdit();
+            handleClose();
+          }}
+          sx={{ color: 'text.secondary' }}
+        >
+          <ListItemIcon>
+            <Icon icon={editFill} width={24} height={24} />
+          </ListItemIcon>
+          <ListItemText
+            primary={translate('button.menu.edit')}
+            primaryTypographyProps={{ variant: 'body2' }}
+          />
+        </MenuItem>
       </Menu>
     </>
   );

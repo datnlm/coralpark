@@ -39,7 +39,7 @@ type InitialValues = {
   failedLoginAttempts?: string;
 };
 export default function LoginForm() {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const { translate } = useLocales();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -75,14 +75,19 @@ export default function LoginForm() {
       } else {
         try {
           await login(values.email, values.password);
-          enqueueSnackbar(translate('message.login.success'), {
-            variant: 'success',
-            action: (key) => (
-              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                <Icon icon={closeFill} />
-              </MIconButton>
-            )
-          });
+          if (isAuthenticated) {
+            enqueueSnackbar(translate('message.login.success'), {
+              variant: 'success',
+              action: (key) => (
+                <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                  <Icon icon={closeFill} />
+                </MIconButton>
+              )
+            });
+          } else {
+            setErrors({ afterSubmit: translate('message.login.invalid') });
+          }
+
           if (isMountedRef.current) {
             setSubmitting(false);
           }
@@ -166,9 +171,9 @@ export default function LoginForm() {
             label={translate('page.login.form.remember')}
           />
 
-          <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
+          {/* <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
             Forgot password?
-          </Link>
+          </Link> */}
         </Stack>
 
         <LoadingButton

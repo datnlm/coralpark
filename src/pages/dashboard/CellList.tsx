@@ -26,6 +26,7 @@ import {
 import { statusOptions } from 'utils/constants';
 import CreateCellNewForm from 'components/_dashboard/cell/CreateCellNewForm';
 import { getListCell, getListCellType } from 'redux/slices/cell';
+import { manageCell } from '_apis_/cell';
 import { getListGarden } from 'redux/slices/garden';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
@@ -85,7 +86,8 @@ export default function CellList({ gardenId }: CellProps) {
   const cellList = useSelector((state: RootState) => state.cell.cellList);
   const totalCount = useSelector((state: RootState) => state.cell.totalCount);
   const isLoading = useSelector((state: RootState) => state.cell.isLoading);
-
+  const [currentCell, setCurrentCell] = useState<Cell>();
+  const [isEdit, setIsEdit] = useState(false);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -108,39 +110,19 @@ export default function CellList({ gardenId }: CellProps) {
     setSelected([]);
   };
 
-  const handleClick = (name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const handleFilterByName = (filterName: string) => {
-    setFilterName(filterName);
-  };
-
-  const handleDeleteDiver = async (id: string) => {
+  const handleDeleteCell = async (id: string) => {
     try {
-      await manageDiver.deleteDiver(id).then((respone) => {
+      await manageCell.deleteCell(id).then((respone) => {
         if (respone.status == 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListGarden(page, rowsPerPage));
+          if (gardenId != '' && gardenId != null) {
+            dispatch(getListCell(gardenId, page, rowsPerPage));
+          }
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
@@ -152,7 +134,9 @@ export default function CellList({ gardenId }: CellProps) {
   };
 
   useEffect(() => {
-    dispatch(getListCell(gardenId ?? '', page, rowsPerPage));
+    if (gardenId != '' && gardenId != null) {
+      dispatch(getListCell(gardenId, page, rowsPerPage));
+    }
   }, [dispatch, page, rowsPerPage]);
 
   const emptyRows = !isLoading && !cellList;
@@ -180,12 +164,48 @@ export default function CellList({ gardenId }: CellProps) {
 
   const handleClose = (params: boolean) => {
     if (params === true) {
-      dispatch(getListCell(gardenId ?? '', page, rowsPerPage));
+      if (gardenId != '' && gardenId != null) {
+        dispatch(getListCell(gardenId, page, rowsPerPage));
+      }
     }
     setOpen(false);
   };
+
+  const getCellById = async (id: string) => {
+    if (id != null) {
+      await manageCell.getCellById(id).then((response) => {
+        if (response.status == 200) {
+          const data = {
+            id: response.data.id,
+            gardenId: response.data.gardenId,
+            coralCellTypeId: response.data.coralCellTypeId,
+            coralCellTypeName: response.data.coralCellTypeName,
+            type: {
+              id: response.data.coralCellTypeId,
+              name: response.data.coralCellTypeName,
+              imageUrl: '',
+              description: ''
+            },
+            acreage: response.data.acreage,
+            maxItem: response.data.maxItem,
+            quantity: '1',
+            status: response.data.status
+          };
+          setCurrentCell(data);
+        }
+      });
+    }
+  };
+  const handleClickEditOpen = async (id: string) => {
+    dispatch(getListCellType(0, -1));
+    getCellById(id);
+    setIsEdit(true);
+    setOpen(true);
+  };
+
   const handleClickOpen = () => {
     dispatch(getListCellType(0, -1));
+    setIsEdit(false);
     setOpen(true);
   };
   return (
@@ -253,7 +273,8 @@ export default function CellList({ gardenId }: CellProps) {
                           </TableCell>
                           <TableCell align="right">
                             <CellMoreMenu
-                              onDelete={() => handleDeleteDiver(id.toString())}
+                              onDelete={() => handleDeleteCell(id.toString())}
+                              onEdit={() => handleClickEditOpen(id.toString())}
                               status={status}
                             />
                           </TableCell>
@@ -298,8 +319,8 @@ export default function CellList({ gardenId }: CellProps) {
         <CreateCellNewForm
           open={open}
           onClose={handleClose}
-          isEdit={false}
-          currentCell={cellList[0]}
+          isEdit={isEdit}
+          currentCell={currentCell}
         />
       </Container>
     </Page>

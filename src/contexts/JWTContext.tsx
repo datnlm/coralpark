@@ -89,13 +89,23 @@ function AuthProvider({ children }: { children: ReactNode }) {
             params: { token: accessToken }
           });
           const user = response.data;
-          dispatch({
-            type: Types.Initial,
-            payload: {
-              isAuthenticated: true,
-              user
-            }
-          });
+          if (response.data.role == 'AD') {
+            dispatch({
+              type: Types.Initial,
+              payload: {
+                isAuthenticated: true,
+                user
+              }
+            });
+          } else {
+            dispatch({
+              type: Types.Initial,
+              payload: {
+                isAuthenticated: false,
+                user: null
+              }
+            });
+          }
         } else {
           dispatch({
             type: Types.Initial,
@@ -137,13 +147,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
           params: { token: res.data.token }
         });
         const user = response.data;
-
-        dispatch({
-          type: Types.Login,
-          payload: {
-            user
-          }
-        });
+        if (response.data.role == 'AD') {
+          dispatch({
+            type: Types.Login,
+            payload: {
+              user
+            }
+          });
+        }
       });
   };
 

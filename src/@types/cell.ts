@@ -5,7 +5,7 @@ export type Cell = {
   gardenId: string;
   coralCellTypeId: string;
   coralCellTypeName: string;
-  type?: CellType;
+  type?: CellType | null;
   acreage: string;
   maxItem: string;
   quantity: string;
