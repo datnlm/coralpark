@@ -38,14 +38,28 @@ export default function CreateCellNewForm({
   const { translate } = useLocales();
   const { enqueueSnackbar } = useSnackbar();
   const cellTypeList = useSelector((state: RootState) => state.cell.cellTypeList);
-  // const NewAddressSchema = Yup.object().shape({
-  //   receiver: Yup.string().required('Fullname is required'),
-  //   phone: Yup.string().required('Phone is required'),
-  //   address: Yup.string().required('Address is required'),
-  //   city: Yup.string().required('City is required'),
-  //   state: Yup.string().required('State is required'),
-  //   country: Yup.string().required('State is required')
-  // });
+
+  const NewAddressSchema = Yup.object().shape({
+    type: Yup.object().required(translate('message.form.cell')),
+    acreage: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+      .min(10, translate('message.form.cell_length'))
+      .max(10, translate('message.form.cell_length'))
+      .required(translate('message.form.cell')),
+    maxItem: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+      .min(10, translate('message.form.cell_length'))
+      .max(10, translate('message.form.cell_length'))
+      .required(translate('message.form.cell')),
+    quantity: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+      .min(10, translate('message.form.cell_length'))
+      .max(10, translate('message.form.cell_length'))
+      .required(translate('message.form.cell'))
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -59,7 +73,7 @@ export default function CreateCellNewForm({
       quantity: currentCell?.quantity || '',
       status: currentCell?.status || ''
     },
-    // validationSchema: NewAddressSchema,
+    validationSchema: NewAddressSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         let flag = false;
