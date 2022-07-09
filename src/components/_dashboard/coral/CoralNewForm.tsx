@@ -28,8 +28,7 @@ import { manageCoral } from '_apis_/coral';
 import { OptionStatus, coralStatusOptions } from 'utils/constants';
 import { RootState, useSelector } from 'redux/store';
 
-import { MIconButton } from 'components/@material-extend';
-import closeFill from '@iconify/icons-eva/close-fill';
+import PhasesTypeCreate from 'pages/dashboard/CoralPhasesType';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
@@ -40,6 +39,7 @@ import { Coral, Habitat } from '../../../@types/coral';
 import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
 import LivePreview from '../../upload/LivePreview';
+import PhaseDetailNewForm from './PhaseDetailNewForm';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -285,10 +285,15 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
               value="habitat"
               disabled={!isEdit}
             />
+            <Tab
+              label={translate('page.coral.form.label.habitat')}
+              value="phases"
+              disabled={!isEdit}
+            />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
-        <TabPanel value="coral">
+        <TabPanel sx={{ p: 3 }} value="coral">
           <FormikProvider value={formik}>
             <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
               <Grid container spacing={3}>
@@ -447,7 +452,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
             </Form>
           </FormikProvider>
         </TabPanel>
-        <TabPanel value="habitat">
+        <TabPanel sx={{ p: 3 }} value="habitat">
           <FormikProvider value={formik}>
             <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
               <Grid container spacing={3}>
@@ -514,6 +519,10 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
               </Grid>
             </Form>
           </FormikProvider>
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="phases">
+          <PhaseDetailNewForm coral={currentCoral} />
+          {/* <PhasesTypeCreate /> */}
         </TabPanel>
       </TabContext>
     </Box>

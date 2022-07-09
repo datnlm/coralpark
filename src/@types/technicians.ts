@@ -6,7 +6,7 @@ export type Technician = {
   address: string;
   imageUrl: string;
   status: any;
-  areas: any;
+  technicianAreas: any;
 };
 
 export type TechnicianArea = {

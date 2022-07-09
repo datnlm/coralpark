@@ -17,7 +17,7 @@ import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // ----------------------------------------------------------------------
 
-export default function UserCreate() {
+export default function DiverTeamAreaCreate() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();

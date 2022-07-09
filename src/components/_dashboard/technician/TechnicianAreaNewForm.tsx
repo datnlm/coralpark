@@ -31,6 +31,7 @@ import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
 import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import { RootState, useSelector, useDispatch } from 'redux/store';
+import { getListArea } from 'redux/slices/area';
 import { manageArea } from '_apis_/area';
 import { manageTechnican } from '_apis_/technician';
 import { Area } from '../../../@types/area';
@@ -41,20 +42,10 @@ import { Technician } from '../../../@types/technicians';
 import { getListTechnician } from '../../../redux/slices/technician';
 
 // ----------------------------------------------------------------------
-const style = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexWrap: 'wrap'
-} as const;
-
-const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1)
-}));
-
-export default function CoralAreaNewForm() {
+type TechnicianAreaNewFormProps = {
+  areas?: any;
+};
+export default function TechnicianAreaNewForm({ areas }: TechnicianAreaNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -182,28 +173,16 @@ export default function CoralAreaNewForm() {
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
-
   useEffect(() => {
     const selectedTechnicianId: number[] = [];
+    dispatch(getListArea(0, -1));
     dispatch(getListTechnician(0, -1));
     setRight([]);
     setLeft([]);
     setIsEdit(false);
-    if (currentArea != null) {
+    if (currentArea?.id != null) {
       // set coral id right
-      manageArea.getAreaById(currentArea.id).then((response) => {
+      manageArea.getAreaById(currentArea?.id).then((response) => {
         if (response.status == 200) {
           const data = response.data.technicians;
           let listSelectTechnicianId: number[] = [];
@@ -228,7 +207,7 @@ export default function CoralAreaNewForm() {
   const customList = (title: React.ReactNode, items: number[]) => (
     <Card
       sx={{
-        width: 200,
+        width: 250,
         height: 520,
         overflow: 'auto',
         borderRadius: 1.5
@@ -246,7 +225,7 @@ export default function CoralAreaNewForm() {
         }
         title={title}
         subheader={`${numberOfChecked(items)}/${items.length} ${translate(
-          'page.techinician-area.form.selected'
+          'page.diver-team.form.selected'
         )}`}
         sx={{ p: 2 }}
       />
@@ -284,8 +263,8 @@ export default function CoralAreaNewForm() {
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3, minWidth: 400 }}>
+          <Grid item>
+            <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <Autocomplete
@@ -302,7 +281,7 @@ export default function CoralAreaNewForm() {
                     )}
                   />
                 </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                <Stack direction={{ xs: 'row', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <Grid
                     container
                     justifyContent="center"

@@ -3,7 +3,7 @@ import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container, Paper, Stack } from '@material-ui/core';
-import LinearAlternativeLabel from 'components/_dashboard/coral/LinearAlternativeLabel';
+import PhaseDetailNewForm from 'components/_dashboard/coral/PhaseDetailNewForm';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -27,7 +27,7 @@ export default function PhasesTypeCreate() {
   const isEdit = pathname.includes('edit');
 
   useEffect(() => {
-    dispatch(getListCoral(0, -1));
+    // dispatch(getListCoral(0, -1));
     dispatch(getListCoralPhase(0, -1));
   }, [dispatch]);
 
@@ -40,7 +40,7 @@ export default function PhasesTypeCreate() {
       }
     >
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
+        {/* <HeaderBreadcrumbs
           heading={
             !isEdit
               ? translate('page.coral-phase.heading1.create')
@@ -51,7 +51,7 @@ export default function PhasesTypeCreate() {
             { name: translate('page.coral-phase.heading3'), href: PATH_DASHBOARD.phases.root },
             { name: !isEdit ? translate('page.coral-phase.heading4.new') : name }
           ]}
-        />
+        /> */}
         <Stack spacing={5}>
           <Paper
             sx={{
@@ -60,7 +60,7 @@ export default function PhasesTypeCreate() {
               boxShadow: (theme) => theme.customShadows.z8
             }}
           >
-            <LinearAlternativeLabel />
+            <PhaseDetailNewForm />
           </Paper>
         </Stack>
       </Container>

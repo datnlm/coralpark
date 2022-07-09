@@ -57,6 +57,7 @@ import {
   DiverTeamListToolbar,
   DiverTeamMoreMenu
 } from '../../components/_dashboard/diver/list_diver_team';
+import DiverTeamAreaCreate from './DiverTeamAreaCreate';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -126,24 +127,6 @@ export default function UserList() {
       return;
     }
     setSelected([]);
-  };
-
-  const handleClick = (name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -238,128 +221,137 @@ export default function UserList() {
             </Button>
           }
         />
-
-        <Card>
-          <DiverTeamListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
-
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <DiverTeamListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={diverTeamList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+        <Box sx={{ width: '100%', typography: 'body1' }}>
+          <TabContext value={valueTab}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
+                <Tab label={translate('page.garden.form.label.information')} value="0" />
+                <Tab
+                  label={translate('page.garden.form.label.cell')}
+                  value="1"
+                  disabled={!isEdit}
                 />
-                <TableBody>
-                  {isLoading ? (
-                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                      <CircularProgress />
-                    </TableCell>
-                  ) : (
-                    filteredDiverTeam.map((row) => {
-                      const { id, name, number, status } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+              </TabList>
+            </Box>
+            <TabPanel sx={{ p: 3 }} value="0">
+              <Card>
+                <DiverTeamListToolbar
+                  numSelected={selected.length}
+                  filterName={filterName}
+                  onFilterName={handleFilterByName}
+                />
+
+                <Scrollbar>
+                  <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                      <DiverTeamListHead
+                        order={order}
+                        orderBy={orderBy}
+                        headLabel={TABLE_HEAD}
+                        rowCount={diverTeamList.length}
+                        numSelected={selected.length}
+                        onRequestSort={handleRequestSort}
+                        onSelectAllClick={handleSelectAllClick}
+                      />
+                      <TableBody>
+                        {isLoading ? (
+                          <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                            <CircularProgress />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
+                        ) : (
+                          filteredDiverTeam.map((row) => {
+                            const { id, name, number, status } = row;
+                            const isItemSelected = selected.indexOf(name) !== -1;
+                            return (
+                              <TableRow
+                                hover
+                                key={id}
+                                tabIndex={-1}
+                                role="checkbox"
+                                selected={isItemSelected}
+                                aria-checked={isItemSelected}
+                              >
+                                <TableCell padding="checkbox">
+                                  {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                                </TableCell>
+                                <TableCell component="th" scope="row" padding="none">
+                                  <Stack direction="row" alignItems="center" spacing={2}>
+                                    <Typography variant="subtitle2" noWrap>
+                                      {name}
+                                    </Typography>
+                                  </Stack>
+                                </TableCell>
+                                <TableCell align="left">{number}</TableCell>
+                                <TableCell align="left">
+                                  <Label
+                                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                                    color={(status === 0 && 'error') || 'success'}
+                                  >
+                                    {translate(
+                                      `status.${
+                                        statusOptions.find((v: any) => v.id == status)?.label
+                                      }`
+                                    )}
+                                  </Label>
+                                </TableCell>
+                                <TableCell align="right">
+                                  <DiverTeamMoreMenu
+                                    onDelete={() => handleDeleteDiverTeam(id.toString())}
+                                    onEdit={() => handleClickEditOpen(id.toString())}
+                                    status={status}
+                                  />
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })
+                        )}
+
+                        {emptyRows && (
+                          <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                              <Typography gutterBottom align="center" variant="subtitle1">
+                                {translate('message.not-found')}
                               </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{number}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status === 0 && 'error') || 'success'}
-                            >
-                              {translate(
-                                `status.${statusOptions.find((v: any) => v.id == status)?.label}`
-                              )}
-                            </Label>
-                          </TableCell>
-                          <TableCell align="right">
-                            <DiverTeamMoreMenu
-                              onDelete={() => handleDeleteDiverTeam(id.toString())}
-                              onEdit={() => handleClickEditOpen(id.toString())}
-                              status={status}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })
-                  )}
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                      {isDiverTeamNotFound && (
+                        <TableBody>
+                          <TableRow>
+                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                              <SearchNotFound searchQuery={filterName} />
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      )}
+                    </Table>
+                  </TableContainer>
+                </Scrollbar>
 
-                  {emptyRows && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                        <Typography gutterBottom align="center" variant="subtitle1">
-                          {translate('message.not-found')}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isDiverTeamNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  component="div"
+                  count={totalCount}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={(e, page) => setPage(page)}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Card>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-            component="div"
-            count={totalCount}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
-
-        {/* <Grid item xs={12} md={12}>
-          <Stack spacing={5}>
-            <Card>
-              <CardHeader title="Basic" sx={{ mb: 2 }} />
-              <Box sx={{ height: 390 }}>
-                <DataGridBasic />
-              </Box>
-            </Card>
-          </Stack>
-        </Grid> */}
-
-        <DiverTeamNewForm
-          id={currentDiverTeamId}
-          open={open}
-          onClose={handleClose}
-          isEdit={isEdit}
-        />
+              <DiverTeamNewForm
+                id={currentDiverTeamId}
+                open={open}
+                onClose={handleClose}
+                isEdit={isEdit}
+              />
+            </TabPanel>
+            <TabPanel sx={{ p: 3 }} value="1">
+              <DiverTeamAreaCreate />
+            </TabPanel>
+          </TabContext>
+        </Box>
       </Container>
     </Page>
   );

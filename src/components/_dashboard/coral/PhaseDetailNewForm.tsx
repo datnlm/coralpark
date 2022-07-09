@@ -19,7 +19,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CoralPhasesTypeNewForm from 'components/_dashboard/coral/CoralPhasesTypeNewForm';
 import { manageCoral } from '_apis_/coral';
 import { RootState, useSelector } from 'redux/store';
-import { PhasesType } from '../../../@types/coral';
+import { Coral, PhasesType } from '../../../@types/coral';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import useLocales from '../../../hooks/useLocales';
@@ -44,8 +44,10 @@ export type OptionStatus = {
 };
 
 // const steps = ['Phase 1'];
-
-export default function LinearAlternativeLabel() {
+type PhaseDetailNewFormProps = {
+  coral?: Coral;
+};
+export default function PhaseDetailNewForm({ coral }: PhaseDetailNewFormProps) {
   const { translate } = useLocales();
   const [isEdit, setIsEdit] = useState<Boolean>(false);
   const listCoral = useSelector((state: RootState) => state.coral.coralList);
@@ -122,15 +124,7 @@ export default function LinearAlternativeLabel() {
   const [skipped, setSkipped] = useState(new Set<number>());
   const [data, setData] = useState<PhasesType[]>([phase]);
   const submitRef = useRef<HTMLInputElement>(null);
-  const [coral, setCoral] = useState<any>(null);
-  // const [formCoralPhaseType, setFormCoralPhaseType] = useState<any>([
-  //   <CoralPhasesTypeNewForm
-  //     key={0}
-  //     isEdit={false}
-  //     currentPhasesType={data[0]}
-  //     onSubmit={callback}
-  //   />
-  // ]);
+  // const [coral, setCoral] = useState<any>(null);
 
   const isStepOptional = (step: number) => step === 1;
 
@@ -151,7 +145,6 @@ export default function LinearAlternativeLabel() {
     setActiveStep(0);
     setSteps(['']);
     setData([phase]);
-    setCoral(null);
   };
 
   const handleAddMore = () => {
@@ -219,7 +212,7 @@ export default function LinearAlternativeLabel() {
           <AddIcon />
         </IconButton>
       </Stepper>
-      {activeStep === steps.length ? (
+      {/* {activeStep === steps.length ? (
         <>
           <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
             <Typography sx={{ my: 1 }}>All steps completed - you&apos;re finished</Typography>
@@ -230,10 +223,10 @@ export default function LinearAlternativeLabel() {
             <Button onClick={handleReset}>Add more</Button>
           </Box>
         </>
-      ) : (
-        <>
-          <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-            <Stack spacing={3}>
+      ) : ( */}
+      <>
+        <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
+          {/* <Stack spacing={3}>
               <Autocomplete
                 fullWidth
                 disablePortal
@@ -253,31 +246,31 @@ export default function LinearAlternativeLabel() {
                   />
                 )}
               />
-            </Stack>
+            </Stack> */}
 
-            <Typography sx={{ my: 1 }}> {translate('page.coral-phase.form.header')} </Typography>
+          <Typography sx={{ my: 1 }}> {translate('page.coral-phase.form.header')} </Typography>
 
-            <CoralPhasesTypeNewForm
-              key={activeStep}
-              isEdit={false}
-              currentPhasesType={data[activeStep]}
-              submitRef={submitRef}
-              onSubmit={callback}
-            />
-          </Paper>
-          <Box sx={{ display: 'flex' }}>
-            <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-              {translate('button.back')}
-            </Button>
-            <Box sx={{ flexGrow: 1 }} />
-            <Button variant="contained" onClick={handleNext}>
-              {activeStep === steps.length - 1
-                ? translate('button.save.finish')
-                : translate('button.save.next')}
-            </Button>
-          </Box>
-        </>
-      )}
+          <CoralPhasesTypeNewForm
+            key={activeStep}
+            isEdit={false}
+            currentPhasesType={data[activeStep]}
+            submitRef={submitRef}
+            onSubmit={callback}
+          />
+        </Paper>
+        <Box sx={{ display: 'flex' }}>
+          <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
+            {translate('button.back')}
+          </Button>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button variant="contained" onClick={handleNext}>
+            {activeStep === steps.length - 1
+              ? translate('button.save.finish')
+              : translate('button.save.next')}
+          </Button>
+        </Box>
+      </>
+      {/* )} */}
     </>
   );
 }

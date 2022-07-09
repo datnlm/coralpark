@@ -21,9 +21,9 @@
       "form": {
         "name": "Tên",
         "phone": "Số điện thoại",
-        "email": "Địa chỉ email",
+        "email": "Email",
         "address": "Địa chỉ",
-        "website": "Địa chỉ trang web",
+        "website": "Website",
         "longitude": "Kinh độ",
         "latitude": "Vĩ độ",
         "garden-list": "Danh sách vườn",

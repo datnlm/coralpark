@@ -4,7 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Box, Card, CardHeader, Container, Stack } from '@material-ui/core';
 import { manageTechnican } from '_apis_/technician';
-import DataGridBasic from 'components/_dashboard/technician/DataGridBasic';
+import { getListArea } from 'redux/slices/area';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -40,7 +40,7 @@ export default function TechinicianCreate() {
           address: response.data.address,
           imageUrl: response.data.imageUrl,
           status: response.data.status,
-          areas: response.data.areas
+          technicianAreas: response.data.technicianAreas
         };
         setCurrentTechnician(data);
       }
@@ -48,6 +48,7 @@ export default function TechinicianCreate() {
   };
 
   useEffect(() => {
+    dispatch(getListArea(0, -1));
     if (isEdit) {
       fetchData();
     }
