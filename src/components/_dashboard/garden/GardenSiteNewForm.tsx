@@ -15,26 +15,23 @@ import { LoadingButton } from '@material-ui/lab';
 import { dispatch } from 'redux/store';
 import { getListGarden } from 'redux/slices/garden';
 import useLocales from '../../../hooks/useLocales';
-import { Technician } from '../../../@types/technicians';
-import { Area } from '../../../@types/area';
-import TechnicianAreaTransferList from './TechnicianAreaTransferList';
+import { Site } from '../../../@types/garden';
+import GardenSiteTransferList from './GardenSiteTransferList';
 // ----------------------------------------------------------------------
 
-type TechnicianAreaNewFormProps = {
-  currentTechnician?: Technician;
-  areaList: Area[];
+type GardenSiteNewFormProps = {
+  currentSite?: Site;
   isEdit: boolean;
   open: boolean;
   onClose: VoidFunction;
 };
 
-export default function TechnicianAreaNewForm({
-  currentTechnician,
-  areaList,
+export default function GardenSiteNewFormNewForm({
+  currentSite,
   open,
   onClose,
   isEdit
-}: TechnicianAreaNewFormProps) {
+}: GardenSiteNewFormProps) {
   const { translate } = useLocales();
   // -------------------
   const submitRef = useRef<HTMLInputElement>(null);
@@ -61,17 +58,16 @@ export default function TechnicianAreaNewForm({
 
   return (
     <Dialog fullWidth maxWidth="md" open={open} onClose={onClose}>
-      <DialogTitle> {translate('page.area.heading1.list')}</DialogTitle>
+      <DialogTitle> {translate('page.garden.heading1.list')}</DialogTitle>
       <Divider />
       <DialogContent>
         <Grid container spacing={3} direction="column">
           <Grid item>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
-                <TechnicianAreaTransferList
+                <GardenSiteTransferList
                   isEdit={isEdit}
-                  currentTechnician={currentTechnician}
-                  areaList={areaList}
+                  currentSite={currentSite}
                   submitRef={submitRef}
                   onSubmitCallback={callback}
                 />
