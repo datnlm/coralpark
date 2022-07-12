@@ -624,6 +624,29 @@
         "address": "Address",
         "status": "Status"
       }
+    },
+    "cell-type": {
+      "title": {
+        "list": "Cell Type: Cell Type List",
+        "create": "Cell Type: Create Cell Type",
+        "update": "Cell Type: Update Cell Type"
+      },
+      "heading1": {
+        "list": "Cell Type",
+        "create": "Create new cell type",
+        "update": "Update cell type"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Cell Type",
+      "heading4": {
+        "list": "List",
+        "new": "New Cell Type"
+      },
+      "search": "Search cell type",
+      "form": {
+        "name": "Name",
+        "description": "Description"
+      }
     }
   }, 
   "button": {
@@ -802,6 +825,7 @@
         "partner": "Partner",
         "coral": "Coral",
         "area": "Area",
+        "cell": "Cell",
         "group-mode": "Group",
         "categories": "Categories Product",
         "account": "Account",
@@ -817,6 +841,7 @@
         "phase": "Phase",
         "phase-type": "Phase type",
         "area": "Area",
+        "cell-type": "Cell Type",
         "account": "Account",
         "group-mode": "Mode",
         "group-role": "Role",
@@ -870,6 +895,10 @@
         "area": "Area"
       },
       "employee": {
+        "list": "List",
+        "create": "Create"
+      },
+      "cell-type": {
         "list": "List",
         "create": "Create"
       }

@@ -49,21 +49,21 @@ export default function GardenCreate() {
     <Page
       title={
         !isEdit
-          ? translate('page.garden-type.title.create')
-          : translate('page.garden-type.title.update')
+          ? translate('page.cell-type.title.create')
+          : translate('page.cell-type.title.update')
       }
     >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={
             !isEdit
-              ? translate('page.garden-type.heading1.create')
-              : translate('page.garden-type.heading1.update')
+              ? translate('page.cell-type.heading1.create')
+              : translate('page.cell-type.heading1.update')
           }
           links={[
-            { name: translate('page.garden-type.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.garden-type.heading3'), href: PATH_DASHBOARD.garden.typesList },
-            { name: !isEdit ? translate('page.garden-type.heading4.new') : name }
+            { name: translate('page.cell-type.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.cell-type.heading3'), href: PATH_DASHBOARD.garden.typesList },
+            { name: !isEdit ? translate('page.cell-type.heading4.new') : name }
           ]}
         />
 

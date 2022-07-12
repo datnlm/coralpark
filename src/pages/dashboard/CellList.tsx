@@ -209,14 +209,14 @@ export default function CellList({ gardenId }: CellProps) {
     setOpen(true);
   };
   return (
-    <Page title={translate('page.garden.title.list')}>
+    <Page title={translate('page.cell.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <Card>
           <CardHeader
             sx={{ mb: 2 }}
             action={
               <Button size="small" onClick={handleClickOpen} startIcon={<Icon icon={plusFill} />}>
-                Thêm cell
+                {translate('button.save.add')}
               </Button>
             }
           />

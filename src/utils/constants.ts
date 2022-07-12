@@ -41,6 +41,11 @@ export const coralLevelType = [
   { id: '5', label: 'Species' }
 ];
 
+export const coralLevelHealth = [
+  { id: '0', label: 'All' },
+  { id: '1', label: '1' },
+  { id: '2', label: '2' }
+];
 // ------------------------------------------------------------------
 
 export const statusOptions = status.map((v, index) => ({
@@ -54,6 +59,11 @@ export const coralStatusOptions = coralStatus.map((v: any) => ({
 }));
 
 export const coralLevelTypeOptions = coralLevelType.map((v: any) => ({
+  id: v.id,
+  label: v.label
+}));
+
+export const coralLevelHealthOptions = coralLevelHealth.map((v: any) => ({
   id: v.id,
   label: v.label
 }));

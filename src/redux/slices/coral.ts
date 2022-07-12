@@ -2,7 +2,7 @@ import { manageCoral } from '_apis_/coral';
 import { map, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
-import { Coral, CoralType, Phases } from '../../@types/coral';
+import { Coral, CoralHealth, CoralType, Phases } from '../../@types/coral';
 
 // ----------------------------------------------------------------------
 
@@ -14,6 +14,7 @@ type UserState = {
   // loai coral
   coralType: CoralType[];
   coralPhaseList: Phases[];
+  coralHealthList: CoralHealth[];
   totalCount: number;
 };
 
@@ -25,6 +26,7 @@ const initialState: UserState = {
   // loai coral
   coralType: [],
   coralPhaseList: [],
+  coralHealthList: [],
   totalCount: 0
 };
 
@@ -63,6 +65,11 @@ const slice = createSlice({
     getListCoralType(state, action) {
       state.isLoading = false;
       state.coralListType = action.payload;
+    },
+
+    getListCoralHealth(state, action) {
+      state.isLoading = false;
+      state.coralHealthList = action.payload;
     },
 
     getListCoralPhase(state, action) {
@@ -140,6 +147,22 @@ export function getListCoralPhase(page: number, rowsPerPage: number) {
       await manageCoral.getListCoralPhases(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getListCoralPhase(response.data.items));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getListCoralHealth(page: number, rowsPerPage: number) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await manageCoral.getListCoralHealth(1 + page, rowsPerPage).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
+          dispatch(slice.actions.getListCoralHealth(response.data.items));
         }
       });
     } catch (error) {

@@ -120,7 +120,9 @@ export default function Router() {
             { path: '/:name/edit', element: <CoralCreate /> },
             { path: 'type', element: <CoralType /> },
             { path: 'type/:name/edit', element: <CoralType /> },
-            { path: 'coral-type-list', element: <CoralTypeList /> }
+            { path: 'coral-type-list', element: <CoralTypeList /> },
+            { path: 'health', element: <CoralHealthList /> },
+            { path: 'health/new', element: <CoralHealthCreate /> }
           ]
         },
         {
@@ -274,7 +276,9 @@ export default function Router() {
             { path: 'list', element: <CoralList /> },
             { path: 'new', element: <CoralCreate /> },
             { path: 'type', element: <CoralType /> },
-            { path: 'coral-type-list', element: <CoralTypeList /> }
+            { path: 'coral-type-list', element: <CoralTypeList /> },
+            { path: 'health', element: <CoralHealthList /> },
+            { path: 'health/new', element: <CoralHealthCreate /> }
           ]
         },
         {
@@ -392,6 +396,8 @@ const CoralList = Loadable(lazy(() => import('../pages/dashboard/CoralList')));
 const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')));
 const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));
 const CoralTypeList = Loadable(lazy(() => import('../pages/dashboard/CoralTypeList')));
+const CoralHealthCreate = Loadable(lazy(() => import('../pages/dashboard/CoralHealthCreate')));
+const CoralHealthList = Loadable(lazy(() => import('../pages/dashboard/CoralHealthList')));
 const GardenList = Loadable(lazy(() => import('../pages/dashboard/GardenList')));
 const GroupModeList = Loadable(lazy(() => import('../pages/dashboard/GroupModeList')));
 const GroupModeCreate = Loadable(lazy(() => import('../pages/dashboard/GroupModeCreate')));

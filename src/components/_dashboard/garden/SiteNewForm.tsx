@@ -114,7 +114,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const [gardenList, setGardenList] = useState<Garden[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
-
   const isLoading = useSelector((state: RootState) => state.garden.isLoading);
   const { enqueueSnackbar } = useSnackbar();
   const [page, setPage] = useState(0);

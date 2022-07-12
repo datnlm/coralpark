@@ -27,8 +27,6 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import { manageCoral } from '_apis_/coral';
 import { OptionStatus, coralStatusOptions } from 'utils/constants';
 import { RootState, useSelector } from 'redux/store';
-
-import PhasesTypeCreate from 'pages/dashboard/CoralPhasesType';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
@@ -40,6 +38,7 @@ import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
 import LivePreview from '../../upload/LivePreview';
 import PhaseDetailNewForm from './PhaseDetailNewForm';
+import CoralAreaList from './CoralAreaList';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -133,6 +132,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       description: currentCoral?.description || '',
       coralTypeId: currentCoral?.coralTypeId || null,
       statusEnum: currentCoral?.statusEnum || '',
+      coralAreas: currentCoral?.coralAreas || '',
       habitatId: currentHabitat?.id || '',
       bathymetry: currentHabitat?.bathymetry || '',
       temperature: currentHabitat?.temperature || '',
@@ -286,10 +286,11 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
               disabled={!isEdit}
             />
             <Tab
-              label={translate('page.coral.form.label.habitat')}
+              label={translate('page.coral.form.label.phases')}
               value="phases"
               disabled={!isEdit}
             />
+            <Tab label={translate('page.coral.form.label.area')} value="area" disabled={!isEdit} />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
@@ -522,7 +523,9 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
         </TabPanel>
         <TabPanel sx={{ p: 3 }} value="phases">
           <PhaseDetailNewForm coral={currentCoral} />
-          {/* <PhasesTypeCreate /> */}
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="area">
+          <CoralAreaList isEdit={isEdit} currentCoral={currentCoral} />
         </TabPanel>
       </TabContext>
     </Box>
