@@ -5,6 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
+import { getListArea } from 'redux/slices/area';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getCoralType } from '../../redux/slices/coral';
@@ -43,7 +44,7 @@ export default function UserCreate() {
   };
 
   useEffect(() => {
-    // get loai san ho
+    dispatch(getListArea(0, -1));
     dispatch(getCoralType('species', 0, -1));
     fetchData();
   }, [dispatch]);

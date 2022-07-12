@@ -69,8 +69,7 @@ export default function MegaMenuConfig() {
             {
               title: translate('menu.mega.technician.create'),
               path: PATH_DASHBOARD.technician.new
-            },
-            { title: translate('menu.mega.technician.area'), path: PATH_DASHBOARD.technician.area }
+            }
             // { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
           ]
         }
@@ -108,9 +107,9 @@ export default function MegaMenuConfig() {
         {
           subheader: translate('menu.mega.subheader.type'),
           items: [
-            { title: translate('menu.mega.cell.list'), path: PATH_DASHBOARD.cell.typesList },
+            { title: translate('menu.mega.cell-type.list'), path: PATH_DASHBOARD.cell.typesList },
             {
-              title: translate('menu.mega.cell.create'),
+              title: translate('menu.mega.cell-type.create'),
               path: PATH_DASHBOARD.cell.newCellType
             }
           ]
@@ -158,8 +157,11 @@ export default function MegaMenuConfig() {
           ]
         },
         {
-          subheader: translate('menu.mega.subheader.area'),
-          items: [{ title: translate('menu.mega.area.create'), path: PATH_DASHBOARD.coralArea.new }]
+          subheader: translate('menu.mega.subheader.health'),
+          items: [
+            { title: translate('menu.mega.coral.list'), path: PATH_DASHBOARD.coral.listHealth },
+            { title: translate('menu.mega.coral.create'), path: PATH_DASHBOARD.coral.healthNew }
+          ]
         }
       ]
     },

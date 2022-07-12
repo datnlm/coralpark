@@ -623,6 +623,29 @@
         "address": "Địa chỉ",
         "status": "Trạng thái"
       }
+    },
+    "cell-type": {
+      "title": {
+        "list": "Loại Cell: Danh sách loại cell",
+        "create": "Loại Cell: Thêm mới loại cell",
+        "update": "Loại Cell: Cập nhật loại cell"
+      },
+      "heading1": {
+        "list": "Loại Cell",
+        "create": "Thêm mới loại cell",
+        "update": "Cập nhật loại cell"
+      },
+      "heading2": "Bảng điều kiển",
+      "heading3": "Loại cell",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Loại cell mới"
+      },
+      "search": "Tìm kiếm loại cell",
+      "form": {
+        "name": "Tên",
+        "description": "Mô tả"
+      }
     }
   },
   "button": {
@@ -803,6 +826,7 @@
         "partner": "Đối tác",
         "coral": "San hô",
         "area": "Khu vực",
+        "cell": "Cell",
         "group-mode": "Group",
         "account": "Tài khoản",
         "categories": "Loại sản phẩm",
@@ -817,6 +841,7 @@
         "phase": "Giai đoạn",
         "phase-type": "Từng giai đoạn",
         "area": "Khu vực",
+        "cell-type": "Loại Cell",
         "account": "Tài khoản",
         "group-mode": "Mode",
         "group-role": "Role",
@@ -870,6 +895,10 @@
         "area": "Khu vực"
       },
       "employee": {
+        "list": "Danh sách",
+        "create": "Thêm mới"
+      },
+      "cell-type": {
         "list": "Danh sách",
         "create": "Thêm mới"
       }

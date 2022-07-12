@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { CoralType, Phases, PhasesType, CoralArea } from '../@types/coral';
+import coral from 'redux/slices/coral';
+import { CoralType, Phases, PhasesType, CoralArea, CoralHealth } from '../@types/coral';
 
 export class Coral {
   // get list coral
@@ -340,6 +341,53 @@ export class Coral {
   deleteCoralArea = (id: string) => {
     return axios
       .delete(`/api/v1/admin/coral-areas/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  getListCoralHealth = (page_number: number, page_size: number) => {
+    return axios
+      .get('/api/v1/admin/coral-health', {
+        params: { page_number, page_size }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  // get coral type by id
+  getCoralHealthByID = (id: string) => {
+    return axios
+      .get(`/api/v1/admin/coral-health/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  createCoralHealth = (coralHealth: CoralHealth) => {
+    const data = {
+      name: coralHealth.name
+    };
+    return axios
+      .post('/api/v1/admin/coral-health', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateCoralHealth = (coralHealth: CoralHealth) => {
+    const data = {
+      id: coralHealth.id,
+      name: coralHealth.name,
+      parentId: coralHealth.parentId,
+      levelType: coralHealth.levelType
+    };
+    return axios
+      .put('/api/v1/admin/coral-health', data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  deleteCoralHealth = (id: string) => {
+    return axios
+      .delete(`/api/v1/admin/coral-health/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };

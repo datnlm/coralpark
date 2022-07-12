@@ -1,11 +1,10 @@
-import axios from 'axios';
-import { useSnackbar } from 'notistack5';
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { manageDiver } from '_apis_/diver';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -24,29 +23,27 @@ import {
   TablePagination,
   CircularProgress
 } from '@material-ui/core';
-import { manageGarden } from '_apis_/garden';
-import { QuillEditor } from 'components/editor';
+import { getListCoralHealth } from 'redux/slices/coral';
 // redux
+import { manageCoral } from '_apis_/coral';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListCellType } from '../../redux/slices/cell';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
-import useSettings from '../../hooks/useSettings';
 import useLocales from '../../hooks/useLocales';
+import useSettings from '../../hooks/useSettings';
 // @types
-import { CellType } from '../../@types/cell-type';
+import { CoralHealth } from '../../@types/coral';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  CellTypesListHead,
-  CellTypesListToolbar,
-  CellTypesMoreMenu
-} from '../../components/_dashboard/cell/typesList';
+  CoralHealthListHead,
+  CoralHealthListToolbar,
+  CoralHealthMoreMenu
+} from '../../components/_dashboard/coral/list_health';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -67,7 +64,11 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: CellType[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(
+  array: CoralHealth[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -75,23 +76,20 @@ function applySortFilter(array: CellType[], comparator: (a: any, b: any) => numb
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_cellType) => _cellType.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_diver) => _diver.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function CoralHealthList() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const cellTypeList = useSelector((state: RootState) => state.cell.cellTypeList);
-  const totalCount = useSelector((state: RootState) => state.cell.totalCount);
-  const isLoading = useSelector((state: RootState) => state.cell.isLoading);
+  const coralHealthList = useSelector((state: RootState) => state.coral.coralHealthList);
+  const totalCount = useSelector((state: RootState) => state.coral.totalCount);
+  const isLoading = useSelector((state: RootState) => state.coral.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -107,7 +105,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = cellTypeList.map((n) => n.name);
+      const newSelecteds = coralHealthList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -141,12 +139,12 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteGardenType = async (gardenTypeID: string) => {
+  const handleDeleteDiver = async (id: string) => {
     try {
-      await manageGarden.deleteGardenType(gardenTypeID).then((respone) => {
-        if (respone.status === 200) {
+      await manageCoral.deleteCoralHealth(id).then((respone) => {
+        if (respone.status == 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListCellType(page, rowsPerPage));
+          dispatch(getListCoralHealth(page, rowsPerPage));
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
@@ -158,18 +156,18 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(getListCellType(page, rowsPerPage));
+    dispatch(getListCoralHealth(page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !cellTypeList!;
+  const emptyRows = !isLoading && !coralHealthList;
 
-  const filteredCellTypes = applySortFilter(
-    cellTypeList,
+  const filteredCoralHealth = applySortFilter(
+    coralHealthList,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isCellTypesNotFound = filteredCellTypes.length === 0 && !isLoading;
+  const isCoralHealthNotFound = filteredCoralHealth.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -179,27 +177,25 @@ export default function UserList() {
   //     );
   //   });
   // }
-
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.cell-type.form.name'), alignRight: false },
-    { id: 'description', label: translate('page.cell-type.form.description'), alignRight: false },
+    { id: 'name', label: translate('page.coral-health.form.name'), alignRight: false },
     { id: '' }
   ];
   return (
-    <Page title={translate('page.cell-type.title.list')}>
+    <Page title={translate('page.coral-health.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.cell-type.heading1.list')}
+          heading={translate('page.coral-health.heading1.list')}
           links={[
-            { name: translate('page.cell-type.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.cell-type.heading3'), href: PATH_DASHBOARD.cell.typesList },
-            { name: translate('page.cell-type.heading4.list') }
+            { name: translate('page.coral-health.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.coral-health.heading3'), href: PATH_DASHBOARD.diver.root },
+            { name: translate('page.coral-health.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.cell.newCellType}
+              to={PATH_DASHBOARD.coral.healthNew}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}
@@ -207,7 +203,7 @@ export default function UserList() {
           }
         />
         <Card>
-          <CellTypesListToolbar
+          <CoralHealthListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -216,11 +212,11 @@ export default function UserList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <CellTypesListHead
+                <CoralHealthListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={cellTypeList.length}
+                  rowCount={coralHealthList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -231,8 +227,8 @@ export default function UserList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredCellTypes.map((row) => {
-                      const { id, name, description } = row;
+                    filteredCoralHealth.map((row) => {
+                      const { id, name } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -248,21 +244,16 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              {/* <Avatar alt={name} src={imageUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">
-                            {description && (
-                              <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
-                            )}
-                          </TableCell>
+
                           <TableCell align="right">
-                            <CellTypesMoreMenu
-                              onDelete={() => handleDeleteGardenType(id.toString())}
-                              userName={id.toString()}
+                            <CoralHealthMoreMenu
+                              onDelete={() => handleDeleteDiver(id.toString())}
+                              id={id.toString()}
                             />
                           </TableCell>
                         </TableRow>
@@ -272,7 +263,7 @@ export default function UserList() {
 
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
                         <Typography gutterBottom align="center" variant="subtitle1">
                           {translate('message.not-found')}
                         </Typography>
@@ -280,7 +271,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isCellTypesNotFound && (
+                {isCoralHealthNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>

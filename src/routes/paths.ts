@@ -38,7 +38,9 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/coral/list'),
     new: path(ROOTS_DASHBOARD, '/coral/new'),
     type: path(ROOTS_DASHBOARD, '/coral/type'),
-    listType: path(ROOTS_DASHBOARD, '/coral/coral-type-list')
+    listType: path(ROOTS_DASHBOARD, '/coral/coral-type-list'),
+    listHealth: path(ROOTS_DASHBOARD, '/coral/health'),
+    healthNew: path(ROOTS_DASHBOARD, '/coral/health/new')
   },
   account: {
     root: path(ROOTS_DASHBOARD, '/account'),
@@ -107,11 +109,8 @@ export const PATH_DASHBOARD = {
   },
   cell: {
     root: path(ROOTS_DASHBOARD, '/cell'),
-    // list: path(ROOTS_DASHBOARD, '/cell/list'),
     typesList: path(ROOTS_DASHBOARD, '/cell/types'),
-    // newCell: path(ROOTS_DASHBOARD, '/cell/new'),
     newCellType: path(ROOTS_DASHBOARD, '/cell/type-new'),
-    // editCellById: path(ROOTS_DASHBOARD, '/cell/:name/edit'),
     editCellTypeById: path(ROOTS_DASHBOARD, '/cell/types/:name/edit')
   },
   group: {

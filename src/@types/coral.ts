@@ -181,6 +181,7 @@ export type Coral = {
   description: string;
   coralTypeId: any;
   statusEnum: any;
+  coralAreas: any;
 };
 
 export type Habitat = {
@@ -217,3 +218,10 @@ export type PhaseForm = {
   coralId: string;
   phaseType: PhasesType[];
 };
+
+export type CoralHealth = {
+  id: string;
+  name: string;
+  parentId: string;
+  levelType: string;
+}
