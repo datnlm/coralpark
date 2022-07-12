@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
+import plusFill from '@iconify/icons-eva/plus-fill';
 import { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
@@ -29,7 +30,14 @@ import {
   TablePagination,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
+  CardHeader,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -40,7 +48,6 @@ import { RootState, useSelector } from 'redux/store';
 import Scrollbar from 'components/Scrollbar';
 import SearchNotFound from 'components/SearchNotFound';
 import Label from 'components/Label';
-import Block from 'components/Block';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
@@ -51,6 +58,7 @@ import { Garden, Site } from '../../../@types/garden';
 //
 import { UploadAvatar } from '../../upload';
 import { GardenListHead, GardenListToolbar, GardenMoreMenu } from './list';
+import GardenSiteNewForm from './GardenSiteNewForm';
 
 // ----------------------------------------------------------------------
 
@@ -111,6 +119,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const navigate = useNavigate();
   const { themeStretch } = useSettings();
   const theme = useTheme();
+  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [gardenList, setGardenList] = useState<Garden[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -303,6 +312,16 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     setSelected([]);
   };
 
+  const handleClickOpen = () => {
+    // dispatch(getListCellType(0, -1));
+    // setIsEdit(false);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const emptyRows = !isLoading && !gardenList;
   const filteredGarden = applySortFilter(gardenList, getComparator(order, orderBy), filterName);
   const isGardenNotFound = filteredGarden.length === 0 && !isLoading;
@@ -466,12 +485,29 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
 
                 <AccordionDetails>
                   <Card>
-                    <GardenListToolbar
-                      numSelected={selected.length}
-                      filterName={filterName}
-                      onFilterName={handleFilterByName}
-                    />
-
+                    <Stack
+                      direction={{ xs: 'row', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                      justifyContent="space-between"
+                    >
+                      <GardenListToolbar
+                        numSelected={selected.length}
+                        filterName={filterName}
+                        onFilterName={handleFilterByName}
+                      />
+                      <CardHeader
+                        sx={{ mb: 2 }}
+                        action={
+                          <Button
+                            size="small"
+                            onClick={handleClickOpen}
+                            startIcon={<Icon icon={plusFill} />}
+                          >
+                            {translate('button.save.add')}
+                          </Button>
+                        }
+                      />
+                    </Stack>
                     <Scrollbar>
                       <TableContainer sx={{ minWidth: 800 }}>
                         <Table>
@@ -585,6 +621,12 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
           </Grid>
         </Grid>
       </Form>
+      <GardenSiteNewForm
+        currentSite={currentSite}
+        open={open}
+        onClose={handleClose}
+        isEdit={isEdit}
+      />
     </FormikProvider>
   );
 }

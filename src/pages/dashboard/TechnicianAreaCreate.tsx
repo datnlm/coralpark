@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 // material
 import { Container } from '@material-ui/core';
-import TechnicianAreaNewForm from 'components/_dashboard/technician/TechnicianAreaNewForm';
+import TechnicianAreaNewForm from 'components/_dashboard/technician/TechnicianAreaTransferList';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getListArea } from '../../redux/slices/area';
@@ -39,7 +39,7 @@ export default function TechnicianCreate() {
             { name: translate('page.technician-area.heading4.new') }
           ]}
         />
-        <TechnicianAreaNewForm />
+        {/* <TechnicianAreaNewForm /> */}
       </Container>
     </Page>
   );

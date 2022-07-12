@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
+import plusFill from '@iconify/icons-eva/plus-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import { manageTechnican } from '_apis_/technician';
 // material
@@ -31,7 +32,8 @@ import {
   CircularProgress,
   TableRow,
   Avatar,
-  TablePagination
+  TablePagination,
+  Button
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -48,6 +50,7 @@ import { Technician } from '../../../@types/technicians';
 import { Area } from '../../../@types/area';
 import { UploadAvatar } from '../../upload';
 import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../area/list';
+import TechnicianAreaNewForm from './TechnicianAreaNewForm';
 
 // ----------------------------------------------------------------------
 
@@ -95,6 +98,7 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [selected, setSelected] = useState<string[]>([]);
@@ -241,6 +245,15 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
     setSelected([]);
   };
 
+  const handleClickOpen = () => {
+    // dispatch(getListCellType(0, -1));
+    // setIsEdit(false);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const emptyRows = !isLoading && !areaList;
   const filteredArea = applySortFilter(areaList, getComparator(order, orderBy), filterName);
   const isAreaNotFound = filteredArea.length === 0 && !isLoading;
@@ -364,12 +377,29 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
 
                 <AccordionDetails>
                   <Card>
-                    <AreaListToolbar
-                      numSelected={selected.length}
-                      filterName={filterName}
-                      onFilterName={handleFilterByName}
-                    />
-
+                    <Stack
+                      direction={{ xs: 'row', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                      justifyContent="space-between"
+                    >
+                      <AreaListToolbar
+                        numSelected={selected.length}
+                        filterName={filterName}
+                        onFilterName={handleFilterByName}
+                      />
+                      <CardHeader
+                        sx={{ mb: 2 }}
+                        action={
+                          <Button
+                            size="small"
+                            onClick={handleClickOpen}
+                            startIcon={<Icon icon={plusFill} />}
+                          >
+                            {translate('button.save.add')}
+                          </Button>
+                        }
+                      />
+                    </Stack>
                     <Scrollbar>
                       <TableContainer sx={{ minWidth: 800 }}>
                         <Table>
@@ -449,6 +479,13 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
           </Grid>
         </Grid>
       </Form>
+      <TechnicianAreaNewForm
+        currentTechnician={currentTechnician}
+        areaList={areaList}
+        open={open}
+        onClose={handleClose}
+        isEdit={isEdit}
+      />
     </FormikProvider>
   );
 }

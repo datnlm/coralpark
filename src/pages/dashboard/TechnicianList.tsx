@@ -28,7 +28,6 @@ import {
   Box
 } from '@material-ui/core';
 import { statusOptions } from 'utils/constants';
-import DataGridBasic from 'components/_dashboard/technician/DataGridBasic';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListTechnician } from '../../redux/slices/technician';
