@@ -1,3 +1,5 @@
+import { Area } from "./area";
+
 export type Diver = {
   id: string;
   username: string;
@@ -14,11 +16,11 @@ export type DiverTeam = {
   name: string;
   number: string;
   divers: Diver[];
+  areas: Area[];
   status: any;
 };
 
 export type DiverTeamArea = {
-  id: string;
+  diverTeam: DiverTeam | null;
   area: any;
-  diverTeams: any;
 };
