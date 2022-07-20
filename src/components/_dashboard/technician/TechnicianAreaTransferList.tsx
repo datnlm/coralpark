@@ -171,7 +171,7 @@ export default function TechnicianAreaTransferList({
       onSubmitCallback(false);
     }
   }, [isSubmitting]);
- 
+
   useEffect(() => {
     let listSelectAreaId: number[] = [];
     const listSelectedAreaId: number[] = [];
