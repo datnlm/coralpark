@@ -25,7 +25,7 @@ export default function DiverTeamAreaCreate() {
   useEffect(() => {
     dispatch(getListDiverTeam(0, -1));
     dispatch(getListArea(0, -1));
-  });
+  }, []);
   return (
     <Page title={translate('page.diver-team-area.title.create')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>

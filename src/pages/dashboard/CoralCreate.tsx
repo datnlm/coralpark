@@ -8,7 +8,7 @@ import { Container } from '@material-ui/core';
 import { getListArea } from 'redux/slices/area';
 // redux
 import { useDispatch } from '../../redux/store';
-import { getCoralType } from '../../redux/slices/coral';
+import { getCoralType, getListCoralPhase } from '../../redux/slices/coral';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -45,7 +45,9 @@ export default function UserCreate() {
 
   useEffect(() => {
     dispatch(getListArea(0, -1));
+    dispatch(getListCoralPhase(0, -1));
     dispatch(getCoralType('species', 0, -1));
+
     fetchData();
   }, [dispatch]);
 

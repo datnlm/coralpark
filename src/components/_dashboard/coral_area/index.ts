@@ -1,1 +1,1 @@
-export { default as CoralAreaNewForm } from './CoralAreaNewForm';
+export { default as CoralAreaNewForm } from './CoralAreaTransferList';

@@ -122,7 +122,8 @@ export default function Router() {
             { path: 'type/:name/edit', element: <CoralType /> },
             { path: 'coral-type-list', element: <CoralTypeList /> },
             { path: 'health', element: <CoralHealthList /> },
-            { path: 'health/new', element: <CoralHealthCreate /> }
+            { path: 'health/new', element: <CoralHealthCreate /> },
+            { path: 'health/:name/edit', element: <CoralHealthCreate /> }
           ]
         },
         {
@@ -139,8 +140,8 @@ export default function Router() {
           path: 'coralArea',
           children: [
             { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
-            { path: 'list', element: <CoraAreaList /> },
-            { path: 'new', element: <CoralAreaCreate /> }
+            { path: 'list', element: <CoraAreaList /> }
+            // { path: 'new', element: <CoralAreaCreate /> }
           ]
         },
         {
@@ -233,6 +234,8 @@ export default function Router() {
             { path: 'new', element: <DiverCreate /> },
             { path: '/:name/edit', element: <DiverCreate /> },
             { path: 'team', element: <DiverTeamList /> },
+            { path: 'team/new', element: <DiverTeamCreate /> },
+            { path: 'team/:name/edit', element: <DiverTeamCreate /> },
             { path: 'area', element: <DiverTeamAreaCreate /> }
           ]
         }
@@ -295,8 +298,8 @@ export default function Router() {
           path: 'coralArea',
           children: [
             { path: '/', element: <Navigate to="/dashboard/coralarea/list" replace /> },
-            { path: 'list', element: <CoraAreaList /> },
-            { path: 'new', element: <CoralAreaCreate /> }
+            { path: 'list', element: <CoraAreaList /> }
+            // { path: 'new', element: <CoralAreaCreate /> }
           ]
         },
         {
@@ -356,6 +359,8 @@ export default function Router() {
             { path: 'new', element: <DiverCreate /> },
             { path: '/:name/edit', element: <DiverCreate /> },
             { path: 'team', element: <DiverTeamList /> },
+            { path: 'team/new', element: <DiverTeamCreate /> },
+            { path: 'team/:name/edit', element: <DiverTeamCreate /> },
             { path: 'area', element: <DiverTeamAreaCreate /> }
           ]
         }
@@ -391,7 +396,7 @@ const PhaseList = Loadable(lazy(() => import('../pages/dashboard/CoralPhaseList'
 const PhasesCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhases')));
 const PhasesTypeCreate = Loadable(lazy(() => import('../pages/dashboard/CoralPhasesType')));
 const CoraAreaList = Loadable(lazy(() => import('../pages/dashboard/CoralAreaList')));
-const CoralAreaCreate = Loadable(lazy(() => import('../pages/dashboard/CoralAreaCreate')));
+// const CoralAreaCreate = Loadable(lazy(() => import('../pages/dashboard/CoralAreaCreate')));
 const CoralList = Loadable(lazy(() => import('../pages/dashboard/CoralList')));
 const CoralCreate = Loadable(lazy(() => import('../pages/dashboard/CoralCreate')));
 const CoralType = Loadable(lazy(() => import('../pages/dashboard/CoralType')));
@@ -418,6 +423,7 @@ const GardenCreate = Loadable(lazy(() => import('../pages/dashboard/GardenCreate
 const SiteCreate = Loadable(lazy(() => import('../pages/dashboard/SiteCreate')));
 const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));
+const DiverTeamCreate = Loadable(lazy(() => import('../pages/dashboard/DiverTeamCreate')));
 const DiverTeamList = Loadable(lazy(() => import('../pages/dashboard/DiverTeamList')));
 const DiverTeamAreaCreate = Loadable(lazy(() => import('../pages/dashboard/DiverTeamAreaCreate')));
 const TechinicianList = Loadable(lazy(() => import('../pages/dashboard/TechnicianList')));

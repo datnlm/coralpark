@@ -139,7 +139,7 @@ export default function CoralHealthList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteDiver = async (id: string) => {
+  const handleDeleteCoralHealth = async (id: string) => {
     try {
       await manageCoral.deleteCoralHealth(id).then((respone) => {
         if (respone.status == 200) {
@@ -252,7 +252,7 @@ export default function CoralHealthList() {
 
                           <TableCell align="right">
                             <CoralHealthMoreMenu
-                              onDelete={() => handleDeleteDiver(id.toString())}
+                              onDelete={() => handleDeleteCoralHealth(id.toString())}
                               id={id.toString()}
                             />
                           </TableCell>
@@ -285,7 +285,7 @@ export default function CoralHealthList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+            rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
             component="div"
             count={totalCount}
             rowsPerPage={rowsPerPage}

@@ -30,14 +30,7 @@ import {
   TablePagination,
   Accordion,
   AccordionSummary,
-  AccordionDetails,
-  CardHeader,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions
+  AccordionDetails
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -119,7 +112,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const navigate = useNavigate();
   const { themeStretch } = useSettings();
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [gardenList, setGardenList] = useState<Garden[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -312,16 +304,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     setSelected([]);
   };
 
-  const handleClickOpen = () => {
-    // dispatch(getListCellType(0, -1));
-    // setIsEdit(false);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const emptyRows = !isLoading && !gardenList;
   const filteredGarden = applySortFilter(gardenList, getComparator(order, orderBy), filterName);
   const isGardenNotFound = filteredGarden.length === 0 && !isLoading;
@@ -495,18 +477,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                         filterName={filterName}
                         onFilterName={handleFilterByName}
                       />
-                      <CardHeader
-                        sx={{ mb: 2 }}
-                        action={
-                          <Button
-                            size="small"
-                            onClick={handleClickOpen}
-                            startIcon={<Icon icon={plusFill} />}
-                          >
-                            {translate('button.save.add')}
-                          </Button>
-                        }
-                      />
                     </Stack>
                     <Scrollbar>
                       <TableContainer sx={{ minWidth: 800 }}>
@@ -606,7 +576,12 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                     </Scrollbar>
 
                     <TablePagination
-                      rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                      rowsPerPageOptions={[
+                        5,
+                        10,
+                        25,
+                        { label: translate('message.all'), value: -1 }
+                      ]}
                       component="div"
                       count={totalCount}
                       rowsPerPage={rowsPerPage}
@@ -621,12 +596,6 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
           </Grid>
         </Grid>
       </Form>
-      <GardenSiteNewForm
-        currentSite={currentSite}
-        open={open}
-        onClose={handleClose}
-        isEdit={isEdit}
-      />
     </FormikProvider>
   );
 }

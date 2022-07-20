@@ -312,11 +312,11 @@ export class Coral {
 
   createCoralArea = (coralArea: CoralArea) => {
     const data = {
-      corals: coralArea.coral,
-      id: coralArea.area.id,
-      name: coralArea.area.name,
-      wellKnownText: coralArea.area.wellKnownText,
-      address: coralArea.area.address
+      coralId: coralArea.coral,
+      areas: coralArea.area
+      // name: technicianArea.area.name,
+      // wellKnownText: technicianArea.area.wellKnownText,
+      // address: technicianArea.area.address
     };
     return axios
       .post('/api/v1/admin/coral-areas/corals', data)
@@ -326,14 +326,19 @@ export class Coral {
 
   updateCoralArea = (coralArea: CoralArea) => {
     const data = {
-      corals: coralArea.coral,
-      id: coralArea.area.id,
-      name: coralArea.area.name,
-      wellKnownText: coralArea.area.wellKnownText,
-      address: coralArea.area.address
+      id: coralArea.coral?.id,
+      name: coralArea.coral?.name,
+      colour: coralArea.coral?.colour,
+      coralTypeId: coralArea.coral?.coralTypeId,
+      exhibitSocial: coralArea.coral?.exhibitSocial,
+      longevity: coralArea.coral?.longevity,
+      scientificName: coralArea.coral?.scientificName,
+      sexualBehaviors: coralArea.coral?.sexualBehaviors,
+      nutrition: coralArea.coral?.nutrition,
+      areas: coralArea.area
     };
     return axios
-      .put('/api/v1/admin/coral-areas/corals', data)
+      .put('/api/v1/admin/coral-areas/areas', data)
       .then((res) => res)
       .catch((err) => err);
   };
@@ -375,9 +380,7 @@ export class Coral {
   updateCoralHealth = (coralHealth: CoralHealth) => {
     const data = {
       id: coralHealth.id,
-      name: coralHealth.name,
-      parentId: coralHealth.parentId,
-      levelType: coralHealth.levelType
+      name: coralHealth.name
     };
     return axios
       .put('/api/v1/admin/coral-health', data)

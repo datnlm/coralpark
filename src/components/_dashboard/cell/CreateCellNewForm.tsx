@@ -39,27 +39,27 @@ export default function CreateCellNewForm({
   const { enqueueSnackbar } = useSnackbar();
   const cellTypeList = useSelector((state: RootState) => state.cell.cellTypeList);
 
-  const NewAddressSchema = Yup.object().shape({
-    type: Yup.object().required(translate('message.form.cell')),
-    acreage: Yup.string()
-      .required()
-      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
-      .min(10, translate('message.form.cell_length'))
-      .max(10, translate('message.form.cell_length'))
-      .required(translate('message.form.cell')),
-    maxItem: Yup.string()
-      .required()
-      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
-      .min(10, translate('message.form.cell_length'))
-      .max(10, translate('message.form.cell_length'))
-      .required(translate('message.form.cell')),
-    quantity: Yup.string()
-      .required()
-      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
-      .min(10, translate('message.form.cell_length'))
-      .max(10, translate('message.form.cell_length'))
-      .required(translate('message.form.cell'))
-  });
+  // const NewAddressSchema = Yup.object().shape({
+  //   type: Yup.object().required(translate('message.form.cell')),
+  //   acreage: Yup.string()
+  //     .required()
+  //     .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+  //     .min(10, translate('message.form.cell_length'))
+  //     .max(10, translate('message.form.cell_length'))
+  //     .required(translate('message.form.cell')),
+  //   maxItem: Yup.string()
+  //     .required()
+  //     .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+  //     .min(10, translate('message.form.cell_length'))
+  //     .max(10, translate('message.form.cell_length'))
+  //     .required(translate('message.form.cell')),
+  //   quantity: Yup.string()
+  //     .required()
+  //     .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+  //     .min(10, translate('message.form.cell_length'))
+  //     .max(10, translate('message.form.cell_length'))
+  //     .required(translate('message.form.cell'))
+  // });
 
   const formik = useFormik({
     initialValues: {
@@ -73,7 +73,7 @@ export default function CreateCellNewForm({
       quantity: currentCell?.quantity || '',
       status: currentCell?.status || ''
     },
-    validationSchema: NewAddressSchema,
+    // validationSchema: NewAddressSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         let flag = false;
@@ -132,6 +132,11 @@ export default function CreateCellNewForm({
   useEffect(() => {
     if (isEdit) {
       fetchData();
+    } else {
+      setFieldValue('type', '');
+      setFieldValue('acreage', '');
+      setFieldValue('maxItem', '');
+      setFieldValue('quantity', '');
     }
   }, [currentCell]);
 
@@ -160,35 +165,27 @@ export default function CreateCellNewForm({
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="{translate('page.garden.form.cell-type')}"
+                          label={translate('page.cell.form.type')}
                           error={Boolean(touched.type && errors.type)}
                           helperText={touched.type && errors.type}
                         />
                       )}
                     />
-                    {/* <TextField
-                      fullWidth
-                      label="Cell Type"
-                      // label="{translate('page.garden.form.cell-type')}"
-                      {...getFieldProps('typeId')}
-                    /> */}
+
                     <TextField
                       fullWidth
-                      label="Dien tich"
-                      // label="{translate('page.coral-habitat.form.temperature')}"
+                      label={translate('page.cell.form.acreage')}
                       {...getFieldProps('acreage')}
                     />
                     <TextField
                       fullWidth
-                      label="max item"
-                      // label="{translate('page.coral-habitat.form.temperature')}"
+                      label={translate('page.cell.form.items')}
                       {...getFieldProps('maxItem')}
                     />
                     <TextField
                       disabled={isEdit}
                       fullWidth
-                      label="quantity"
-                      // label="{translate('page.garden.form.quantity')}"
+                      label={translate('page.cell.form.quantity')}
                       {...getFieldProps('quantity')}
 
                       // }}

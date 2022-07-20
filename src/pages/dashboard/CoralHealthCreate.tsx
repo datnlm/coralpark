@@ -5,7 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { manageCoral } from '_apis_/coral';
 import CoralHealthNewFrom from 'components/_dashboard/coral/CoralHealthNewForm';
-import { CoralType } from '../../@types/coral';
+import { CoralHealth, CoralType } from '../../@types/coral';
 // redux
 import { useDispatch } from '../../redux/store';
 // routes
@@ -27,20 +27,16 @@ export default function CoralHealthCreate() {
   const { name } = useParams();
   const isEdit = pathname.includes('edit');
 
-  const [currentType, setCurrentType] = useState<CoralType | null>(null);
+  const [currentHealth, setCurrentHealth] = useState<CoralHealth | null>(null);
 
   const fetchData = async () => {
-    await manageCoral.getCoralTypeByID(paramCase(name)).then((response) => {
+    await manageCoral.getCoralHealthByID(paramCase(name)).then((response) => {
       if (response.status == 200) {
         const data = {
           id: response.data.id,
-          name: response.data.name,
-          parentId: response.data.parentId,
-          levelType: response.data.levelType,
-          description: response.data.description,
-          parents: response.data.parents
+          name: response.data.name
         };
-        setCurrentType(data);
+        setCurrentHealth(data);
       }
     });
   };
@@ -54,23 +50,28 @@ export default function CoralHealthCreate() {
   return (
     <Page
       title={
-        !isEdit ? translate('page.coral-type.title.create') : translate('page.site.title.update')
+        !isEdit
+          ? translate('page.coral-health.title.create')
+          : translate('page.coral-health.title.update')
       }
     >
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={
             !isEdit
-              ? translate('page.coral-type.heading1.create')
-              : translate('page.coral-type.heading1.update')
+              ? translate('page.coral-health.heading1.create')
+              : translate('page.coral-health.heading1.update')
           }
           links={[
-            { name: translate('page.coral-type.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.coral-type.heading3'), href: PATH_DASHBOARD.coral.listType },
-            { name: !isEdit ? translate('page.coral-type.heading4.new') : name }
+            { name: translate('page.coral-health.heading2'), href: PATH_DASHBOARD.root },
+            {
+              name: translate('page.coral-health.heading3'),
+              href: PATH_DASHBOARD.coral.listHealth
+            },
+            { name: !isEdit ? translate('page.coral-health.heading4.new') : name }
           ]}
         />
-        <CoralHealthNewFrom isEdit={isEdit} currentType={currentType} />
+        <CoralHealthNewFrom isEdit={isEdit} currentHealth={currentHealth} />
       </Container>
     </Page>
   );

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 // material
 import { Container } from '@material-ui/core';
-import TechnicianAreaNewForm from 'components/_dashboard/technician/TechnicianAreaTransferList';
+import DiverTeamNewForm from 'components/_dashboard/diver/DiverTeamNewForm';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getListArea } from '../../redux/slices/area';
@@ -16,7 +16,7 @@ import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // ----------------------------------------------------------------------
 
-export default function TechnicianCreate() {
+export default function DiverTeamCreate() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
@@ -24,22 +24,22 @@ export default function TechnicianCreate() {
   useEffect(() => {
     dispatch(getListDiverTeam(0, -1));
     dispatch(getListArea(0, -1));
-  }, [dispatch]);
+  }, []);
   return (
-    <Page title={translate('page.technician-area.title.create')}>
+    <Page title={translate('page.diver-team.title.create')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={translate('page.technician-area.heading1.create')}
+          heading={translate('page.diver-team.heading1.create')}
           links={[
-            { name: translate('page.technician-area.heading2'), href: PATH_DASHBOARD.root },
+            { name: translate('page.diver-team.heading2'), href: PATH_DASHBOARD.root },
             {
-              name: translate('page.technician-area.heading3'),
-              href: PATH_DASHBOARD.technician.new
+              name: translate('page.diver-team.heading3'),
+              href: PATH_DASHBOARD.diver.team
             },
-            { name: translate('page.technician-area.heading4.new') }
+            { name: translate('page.diver-team.heading4.new') }
           ]}
         />
-        {/* <TechnicianAreaNewForm /> */}
+        {/* <DiverTeamNewForm /> */}
       </Container>
     </Page>
   );

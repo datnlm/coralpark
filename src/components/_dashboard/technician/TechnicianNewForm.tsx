@@ -130,14 +130,12 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
   });
 
   useEffect(() => {
-    if (isEdit) {
-      if (currentTechnician?.technicianAreas != null) {
-        // currentTechnician.technicianAreas.map((v: any) => v.areaId == area.id)
-        const listAreaId: number[] = [];
-        currentTechnician?.technicianAreas.map((v: any) => listAreaId.push(v.areaId));
-        setAreaList(areaList2.filter((area) => listAreaId.includes(Number(area.id))));
-        setTotalCount(currentTechnician?.technicianAreas.length);
-      }
+    if (currentTechnician?.areas != null) {
+      // currentTechnician.technicianAreas.map((v: any) => v.areaId == area.id)
+      const listAreaId: number[] = [];
+      currentTechnician?.areas.map((v: any) => listAreaId.push(v.areaId));
+      setAreaList(areaList2.filter((area) => listAreaId.includes(Number(area.id))));
+      setTotalCount(currentTechnician?.areas.length);
     }
     setEnumStatus(statusOptions.find((e) => e.id == currentTechnician?.status) || null);
   }, [currentTechnician]);
@@ -151,7 +149,7 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
       email: currentTechnician?.email || '',
       address: currentTechnician?.address || '',
       imageUrl: currentTechnician?.imageUrl || null,
-      technicianAreas: currentTechnician?.technicianAreas || '',
+      areas: currentTechnician?.areas || '',
       status: currentTechnician?.status || 1
     },
     validationSchema: NewProductSchema,
@@ -246,8 +244,6 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
   };
 
   const handleClickOpen = () => {
-    // dispatch(getListCellType(0, -1));
-    // setIsEdit(false);
     setOpen(true);
   };
 
@@ -255,7 +251,11 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
     setOpen(false);
   };
   const emptyRows = !isLoading && !areaList;
-  const filteredArea = applySortFilter(areaList, getComparator(order, orderBy), filterName);
+  const filteredArea = applySortFilter(
+    currentTechnician?.areas ?? [],
+    getComparator(order, orderBy),
+    filterName
+  );
   const isAreaNotFound = filteredArea.length === 0 && !isLoading;
 
   const TABLE_HEAD = [
@@ -395,7 +395,7 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
                             onClick={handleClickOpen}
                             startIcon={<Icon icon={plusFill} />}
                           >
-                            {translate('button.save.add')}
+                            {translate('button.save.change')}
                           </Button>
                         }
                       />
@@ -407,7 +407,7 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
                             order={order}
                             orderBy={orderBy}
                             headLabel={TABLE_HEAD}
-                            rowCount={areaList.length}
+                            rowCount={currentTechnician?.areas.length ?? 0}
                             numSelected={selected.length}
                             onRequestSort={handleRequestSort}
                             onSelectAllClick={handleSelectAllClick}
@@ -464,7 +464,12 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
                     </Scrollbar>
 
                     <TablePagination
-                      rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                      rowsPerPageOptions={[
+                        5,
+                        10,
+                        25,
+                        { label: translate('message.all'), value: -1 }
+                      ]}
                       component="div"
                       count={totalCount}
                       rowsPerPage={rowsPerPage}

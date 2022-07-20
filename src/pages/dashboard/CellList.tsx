@@ -21,7 +21,8 @@ import {
   TableContainer,
   TablePagination,
   CircularProgress,
-  CardHeader
+  CardHeader,
+  Stack
 } from '@material-ui/core';
 import { statusOptions } from 'utils/constants';
 import CreateCellNewForm from 'components/_dashboard/cell/CreateCellNewForm';
@@ -254,7 +255,12 @@ export default function CellList({ gardenId }: CellProps) {
                             {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
-                            {id}
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              {/* <Avatar alt={name} src={imageUrl} /> */}
+                              <Typography variant="subtitle2" noWrap>
+                                {id}
+                              </Typography>
+                            </Stack>
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             {coralCellTypeName}
@@ -307,7 +313,7 @@ export default function CellList({ gardenId }: CellProps) {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+            rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
             component="div"
             count={totalCount}
             rowsPerPage={rowsPerPage}

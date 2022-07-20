@@ -157,7 +157,7 @@ export default function MegaMenuConfig() {
           ]
         },
         {
-          subheader: translate('menu.mega.subheader.health'),
+          subheader: translate('menu.mega.subheader.coral-health'),
           items: [
             { title: translate('menu.mega.coral.list'), path: PATH_DASHBOARD.coral.listHealth },
             { title: translate('menu.mega.coral.create'), path: PATH_DASHBOARD.coral.healthNew }

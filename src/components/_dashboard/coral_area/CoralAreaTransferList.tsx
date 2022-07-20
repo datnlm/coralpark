@@ -32,29 +32,29 @@ import {
   FormHelperText
 } from '@material-ui/core';
 import { PATH_DASHBOARD } from 'routes/paths';
-import { manageTechnican } from '_apis_/technician';
+import { manageCoral } from '_apis_/coral';
 import { getListDiverTeam } from 'redux/slices/diver';
-import { Technician } from '../../../@types/technicians';
+import { Coral } from '../../../@types/coral';
 import { Area } from '../../../@types/area';
 // utils
 import useLocales from '../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
-type TechnicianAreaTransferListProps = {
+type CoralAreaTransferListProps = {
   isEdit: boolean;
-  currentTechnician?: Technician;
+  currentCoral?: Coral;
   areaList: Area[];
   submitRef: any;
   onSubmitCallback: any;
 };
 
-export default function TechnicianAreaTransferList({
+export default function CoralAreaTransferList({
   isEdit,
-  currentTechnician,
+  currentCoral,
   areaList,
   submitRef,
   onSubmitCallback
-}: TechnicianAreaTransferListProps) {
+}: CoralAreaTransferListProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -126,8 +126,8 @@ export default function TechnicianAreaTransferList({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentTechnician?.id || '',
-      technicianId: currentTechnician?.id || '',
+      id: currentCoral?.id || '',
+      coral: currentCoral || null,
       area: [{}]
     },
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -136,10 +136,10 @@ export default function TechnicianAreaTransferList({
           id: v
         }));
 
-        await manageTechnican.updateTechnicanArea(values).then((response) => {
+        await manageCoral.updateCoralArea(values).then((response) => {
           if (response.status === 200) {
             onSubmitCallback(true);
-            navigate(PATH_DASHBOARD.technician.list);
+            navigate(PATH_DASHBOARD.coral.list);
             enqueueSnackbar(translate('message.update-success'), {
               variant: 'success'
             });
@@ -171,12 +171,12 @@ export default function TechnicianAreaTransferList({
       onSubmitCallback(false);
     }
   }, [isSubmitting]);
- 
+
   useEffect(() => {
     let listSelectAreaId: number[] = [];
     const listSelectedAreaId: number[] = [];
     // if (currentTechnician?.areas.length != 0) {
-    currentTechnician?.areas.map((v: Area) => listSelectedAreaId.push(Number(v.id)));
+    currentCoral?.areas.map((v: Area) => listSelectedAreaId.push(Number(v.id)));
     const mapId: number[] = [];
     areaListAll.map((v: Area) => mapId.push(Number(v.id)));
     listSelectAreaId = mapId.filter((i) => !listSelectedAreaId.includes(i));
@@ -185,7 +185,7 @@ export default function TechnicianAreaTransferList({
     // }
     setRight(listSelectedAreaId);
     setLeft(listSelectAreaId);
-  }, [currentTechnician]);
+  }, [currentCoral]);
 
   // define
   const customList = (title: React.ReactNode, items: number[]) => (

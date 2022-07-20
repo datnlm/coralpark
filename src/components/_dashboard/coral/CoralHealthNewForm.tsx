@@ -33,7 +33,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { CoralType } from '../../../@types/coral';
+import { CoralHealth } from '../../../@types/coral';
 //
 import { QuillEditor } from '../../editor';
 
@@ -49,10 +49,10 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 type CoralHealthNewFromProps = {
   isEdit: boolean;
-  currentType?: CoralType | null;
+  currentHealth?: CoralHealth | null;
 };
 
-export default function CoralHealthNewFrom({ isEdit, currentType }: CoralHealthNewFromProps) {
+export default function CoralHealthNewFrom({ isEdit, currentHealth }: CoralHealthNewFromProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -67,10 +67,8 @@ export default function CoralHealthNewFrom({ isEdit, currentType }: CoralHealthN
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentType?.id || '',
-      name: currentType?.name || '',
-      parentId: currentType?.parentId || '',
-      levelType: currentType?.levelType || ''
+      id: currentHealth?.id || '',
+      name: currentHealth?.name || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {

@@ -229,6 +229,10 @@
       },
       "search": "Search garden",
       "form": {
+        "label": {
+          "information": "Information",
+          "cell": "Cell"
+        },
         "name": "Name",
         "address": "Address",
         "longitude": "Longitude",
@@ -238,6 +242,19 @@
         "area": "Area",
         "garden-type": "Garden Type",
         "site": "Site",
+        "status": "Status"
+      }
+    },
+    "cell": {
+      "title": {
+        "list": "Garden: Cell List"
+      },
+      "form": {
+        "id": "Id",
+        "type": "Type",
+        "acreage": "Acreage",
+        "quantity": "Quantity",
+        "items": "Items",
         "status": "Status"
       }
     },
@@ -285,7 +302,9 @@
       "form": {
         "label": {
           "coral": "Coral",
-          "habitat": "Habitat"
+          "habitat": "Habitat",
+          "phases": "Phases",
+          "area": "Area"
         },
         "name": "Name",
         "scientific": "Scientific Name",
@@ -439,7 +458,9 @@
         "address": "Address",
         "province": "Province",
         "district": "District",
-        "ward": "Ward" 
+        "ward": "Ward" ,
+        "choices": "Area: Select" ,
+        "chosen": "Area: Selected" 
       }
     },
     "group-mode": {
@@ -647,6 +668,29 @@
         "name": "Name",
         "description": "Description"
       }
+    },
+    "coral-health": {
+      "title": {
+        "list": "Coral Health: Coral Health List",
+        "create": "Coral Health: Create coral health",
+        "update": "Coral Health: Update coral health"
+      },
+      "heading1": {
+        "list": "Coral Health",
+        "create": "Create new coral health",
+        "update": "Update coral health"
+      },
+      "heading2": "Dashboard",
+      "heading3": "Coral Health",
+      "heading4": {
+        "list": "List",
+        "new": "New coral health"
+      },
+      "search": "Search coral health",
+      "form": {
+        "name": "Name",
+        "description": "Description"
+      }
     }
   }, 
   "button": {
@@ -654,6 +698,7 @@
     "logout": "Logout",
     "save": {
       "add": "Create",
+      "change": "Update",
       "update": "Save change",
       "next": "Next",
       "confirm": "Confirm",
@@ -671,6 +716,7 @@
     "title": {
       "confirm-delete": "Confirm delete"
     },
+    "all": "All",
     "allow-type-image": "Allowed *.jpeg, *.jpg, *.png, *.gif",
     "confirm-delete": "Are you sure to delete this?",
     "update-photo": "Update photo",
@@ -837,6 +883,7 @@
         "garden": "Garden",
         "type": "Type",
         "coral-type": "Type",
+        "coral-health": "Health",
         "coral": "Coral",
         "phase": "Phase",
         "phase-type": "Phase type",

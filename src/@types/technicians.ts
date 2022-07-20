@@ -1,3 +1,5 @@
+import { Area } from './area';
+
 export type Technician = {
   id: string;
   name: string;
@@ -6,10 +8,10 @@ export type Technician = {
   address: string;
   imageUrl: string;
   status: any;
-  technicianAreas: any;
+  areas: Area[];
 };
 
 export type TechnicianArea = {
   area: any;
-  technicians: Technician[];
+  technicianId: string;
 };
