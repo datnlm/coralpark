@@ -84,14 +84,9 @@ export default function DiverTeamNewForm({ id, open, onClose, isEdit }: DiverTea
         <Grid container spacing={3} direction="column">
           <Grid item>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <DiverTeamTransferList
-                  isEdit={isEdit}
-                  currentDiverTeam={currentDiverTeam}
-                  submitRef={submitRef}
-                  onSubmitCallback={callback}
-                />
-              </Grid>
+              {/* <Grid item xs={12} sm={12}>
+                <DiverTeamTransferList isEdit={isEdit} currentDiverTeam={currentDiverTeam} />
+              </Grid> */}
             </Grid>
           </Grid>
         </Grid>
