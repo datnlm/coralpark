@@ -1,11 +1,14 @@
 import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
+import { filter } from 'lodash';
 import { useCallback, useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
+import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { RootState, useSelector, dispatch } from 'redux/store';
 import searchFill from '@iconify/icons-eva/search-fill';
+import plusFill from '@iconify/icons-eva/plus-fill';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
 import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
@@ -30,18 +33,70 @@ import {
   Avatar,
   Radio,
   Box,
-  FormHelperText
+  FormHelperText,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  TableContainer,
+  Table,
+  TableBody,
+  TableCell,
+  CircularProgress,
+  TableRow,
+  TablePagination
 } from '@material-ui/core';
 import { PATH_DASHBOARD } from 'routes/paths';
 import { manageDiver } from '_apis_/diver';
 import { getListDiverTeam } from 'redux/slices/diver';
+import Scrollbar from 'components/Scrollbar';
+import SearchNotFound from 'components/SearchNotFound';
+import { Area } from '../../../@types/area';
 import { Diver, DiverTeam } from '../../../@types/diver';
 // utils
 import useLocales from '../../../hooks/useLocales';
+import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../area/list';
+import DiverTeamAreaNewForm from './DiverTeamAreaNewForm';
 
 // ----------------------------------------------------------------------
+type DiverTeamNewFormProps = {
+  isEdit: boolean;
+  currentDiverTeam?: DiverTeam;
+};
 
-export default function DiverTeaTransferList() {
+type Anonymous = Record<string | number, string>;
+
+function descendingComparator(a: Anonymous, b: Anonymous, orderBy: string) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+function getComparator(order: string, orderBy: string) {
+  return order === 'desc'
+    ? (a: Anonymous, b: Anonymous) => descendingComparator(a, b, orderBy)
+    : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
+}
+
+function applySortFilter(array: Area[], comparator: (a: any, b: any) => number, query: string) {
+  const stabilizedThis = array.map((el, index) => [el, index] as const);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(
+      array,
+      (_garden) => _garden.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
+  }
+  return stabilizedThis.map((el) => el[0]);
+}
+
+export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: DiverTeamNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -50,10 +105,19 @@ export default function DiverTeaTransferList() {
   const [checked, setChecked] = useState<number[]>([]);
   const [left, setLeft] = useState<number[] | any>([]);
   const [right, setRight] = useState<number[]>([]);
+  const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState('name');
+  const [selected, setSelected] = useState<string[]>([]);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filterName, setFilterName] = useState('');
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [areaList, setAreaList] = useState<Area[]>([]);
+  const areaList2 = useSelector((state: RootState) => state.area.areaList);
+  const isLoading = useSelector((state: RootState) => state.area.isLoading);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
-  const [isEdit, setIsEdit] = useState<Boolean>(false);
-  const [currentDiverTeam, setCurrentDiverTeam] = useState<any>(null);
   // -------------------
 
   function not(a: number[], b: number[]) {
@@ -126,6 +190,7 @@ export default function DiverTeaTransferList() {
       name: currentDiverTeam?.name || '',
       number: Number(currentDiverTeam?.number) || 0,
       divers: currentDiverTeam?.divers || [{}],
+      areas: currentDiverTeam?.areas || [],
       status: currentDiverTeam?.status || 1
     },
     validationSchema: NewProductSchema,
@@ -150,7 +215,7 @@ export default function DiverTeaTransferList() {
 
         if (flag) {
           // setCurrentArea(null);
-          dispatch(getListDiverTeam(0, 5));
+          navigate(PATH_DASHBOARD.diver.team);
           enqueueSnackbar(
             !isEdit ? translate('message.create-success') : translate('message.update-success'),
             {
@@ -256,6 +321,51 @@ export default function DiverTeaTransferList() {
     </Card>
   );
 
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const handleFilterByName = (filterName: string) => {
+    setFilterName(filterName);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleSelectAllClick = (checked: boolean) => {
+    if (checked) {
+      const newSelecteds = areaList.map((n) => n.name);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const emptyRows = !isLoading && !areaList;
+  const filteredArea = applySortFilter(
+    currentDiverTeam?.areas ?? [],
+    getComparator(order, orderBy),
+    filterName
+  );
+  const isAreaNotFound = filteredArea.length === 0 && !isLoading;
+
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('page.area.form.name'), alignRight: false },
+    { id: 'address', label: translate('page.area.form.address'), alignRight: false },
+    { id: '' }
+  ];
+
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -360,7 +470,125 @@ export default function DiverTeaTransferList() {
             {!isEdit ? translate('button.save.add') : translate('button.save.update')}
           </LoadingButton>
         </Box>
+
+        <Grid item xs={12} md={12}>
+          <Card>
+            <Accordion key="1" disabled={!isEdit}>
+              <AccordionSummary
+                expandIcon={<Icon icon={arrowIosDownwardFill} width={20} height={20} />}
+              >
+                <Typography variant="subtitle1">{translate('page.area.heading1.list')}</Typography>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                <Card>
+                  <Stack
+                    direction={{ xs: 'row', sm: 'row' }}
+                    spacing={{ xs: 3, sm: 2 }}
+                    justifyContent="space-between"
+                  >
+                    <AreaListToolbar
+                      numSelected={selected.length}
+                      filterName={filterName}
+                      onFilterName={handleFilterByName}
+                    />
+                    <CardHeader
+                      sx={{ mb: 2 }}
+                      action={
+                        <Button
+                          size="small"
+                          onClick={handleClickOpen}
+                          startIcon={<Icon icon={plusFill} />}
+                        >
+                          {translate('button.save.change')}
+                        </Button>
+                      }
+                    />
+                  </Stack>
+                  <Scrollbar>
+                    <TableContainer sx={{ minWidth: 800 }}>
+                      <Table>
+                        <AreaListHead
+                          order={order}
+                          orderBy={orderBy}
+                          headLabel={TABLE_HEAD}
+                          rowCount={currentDiverTeam?.areas.length ?? 0}
+                          numSelected={selected.length}
+                          onRequestSort={handleRequestSort}
+                          onSelectAllClick={handleSelectAllClick}
+                        />
+                        <TableBody>
+                          {isLoading ? (
+                            <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                              <CircularProgress />
+                            </TableCell>
+                          ) : (
+                            filteredArea
+                              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                              .map((row, index) => {
+                                const { id, name, address } = row;
+
+                                const isItemSelected = selected.indexOf(id) !== -1;
+
+                                return (
+                                  <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                                    <TableCell padding="checkbox">
+                                      {/* <Checkbox checked={isItemSelected} /> */}
+                                    </TableCell>
+                                    <TableCell align="left">{name}</TableCell>
+                                    <TableCell align="left">{address}</TableCell>
+                                    <TableCell align="right">
+                                      <AreaMoreMenu onDelete={() => {}} areaId={id.toString()} />
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              })
+                          )}
+                          {emptyRows && (
+                            <TableRow style={{ height: 53 * emptyRows }}>
+                              <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                                <Typography gutterBottom align="center" variant="subtitle1">
+                                  {translate('message.not-found')}
+                                </Typography>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </TableBody>
+                        {isAreaNotFound && (
+                          <TableBody>
+                            <TableRow>
+                              <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                                <SearchNotFound searchQuery={filterName} />
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        )}
+                      </Table>
+                    </TableContainer>
+                  </Scrollbar>
+
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
+                    component="div"
+                    count={totalCount}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={(e, page) => setPage(page)}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </Card>
+              </AccordionDetails>
+            </Accordion>
+          </Card>
+        </Grid>
       </Form>
+      <DiverTeamAreaNewForm
+        currentDiverTeam={currentDiverTeam}
+        areaList={areaList}
+        open={open}
+        onClose={handleClose}
+        isEdit={isEdit}
+      />
     </FormikProvider>
   );
 }

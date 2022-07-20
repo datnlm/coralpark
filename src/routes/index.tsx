@@ -235,8 +235,7 @@ export default function Router() {
             { path: '/:name/edit', element: <DiverCreate /> },
             { path: 'team', element: <DiverTeamList /> },
             { path: 'team/new', element: <DiverTeamCreate /> },
-            { path: 'team/:name/edit', element: <DiverTeamCreate /> },
-            { path: 'area', element: <DiverTeamAreaCreate /> }
+            { path: 'team/:name/edit', element: <DiverTeamCreate /> }
           ]
         }
       ]
@@ -360,8 +359,7 @@ export default function Router() {
             { path: '/:name/edit', element: <DiverCreate /> },
             { path: 'team', element: <DiverTeamList /> },
             { path: 'team/new', element: <DiverTeamCreate /> },
-            { path: 'team/:name/edit', element: <DiverTeamCreate /> },
-            { path: 'area', element: <DiverTeamAreaCreate /> }
+            { path: 'team/:name/edit', element: <DiverTeamCreate /> }
           ]
         }
       ]
@@ -425,7 +423,6 @@ const DiverList = Loadable(lazy(() => import('../pages/dashboard/DiverList')));
 const DiverCreate = Loadable(lazy(() => import('../pages/dashboard/DiverCreate')));
 const DiverTeamCreate = Loadable(lazy(() => import('../pages/dashboard/DiverTeamCreate')));
 const DiverTeamList = Loadable(lazy(() => import('../pages/dashboard/DiverTeamList')));
-const DiverTeamAreaCreate = Loadable(lazy(() => import('../pages/dashboard/DiverTeamAreaCreate')));
 const TechinicianList = Loadable(lazy(() => import('../pages/dashboard/TechnicianList')));
 const TechinicianCreate = Loadable(lazy(() => import('../pages/dashboard/TechnicianCreate')));
 const TechnicianAreaCreate = Loadable(

@@ -106,30 +106,15 @@ export class DiverManager {
       .catch((err) => err);
   };
 
-  createDiverTeamArea = (diverTeamArea: DiverTeamArea) => {
-    const data = {
-      diverTeams: diverTeamArea.diverTeams,
-      id: diverTeamArea.area.id,
-      name: diverTeamArea.area.name,
-      wellKnownText: diverTeamArea.area.wellKnownText,
-      address: diverTeamArea.area.address
-    };
-    return axios
-      .post('/api/v1/admin/diver-team-areas/divers', data)
-      .then((res) => res)
-      .catch((err) => err);
-  };
-
   updateDiverTeamArea = (diverTeamArea: DiverTeamArea) => {
     const data = {
-      diverTeams: diverTeamArea.diverTeams,
-      id: diverTeamArea.area.id,
-      name: diverTeamArea.area.name,
-      wellKnownText: diverTeamArea.area.wellKnownText,
-      address: diverTeamArea.area.address
+      id: diverTeamArea.diverTeam?.id,
+      name: diverTeamArea.diverTeam?.name,
+      number: diverTeamArea.diverTeam?.number,
+      areas: diverTeamArea.area
     };
     return axios
-      .put('/api/v1/admin/diver-team-areas/divers', data)
+      .put('/api/v1/admin/diver-team-areas/areas', data)
       .then((res) => res)
       .catch((err) => err);
   };

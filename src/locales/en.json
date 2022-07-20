@@ -857,7 +857,8 @@
         "area": "Area"
       },
       "partner": {
-        "list": "List"
+        "list": "List",
+        "create": "Create"
       }
     },
     "mega": {

@@ -34,7 +34,6 @@ import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
 import { statusOptions } from 'utils/constants';
 import DiverTeamNewForm from 'components/_dashboard/diver/DiverTeamNewForm';
-import DataGridBasic from 'components/_dashboard/diver/DataGridBasic';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListDiverTeam } from '../../redux/slices/diver';
@@ -57,7 +56,6 @@ import {
   DiverTeamListToolbar,
   DiverTeamMoreMenu
 } from '../../components/_dashboard/diver/list_diver_team';
-import DiverTeamAreaCreate from './DiverTeamAreaCreate';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -288,7 +286,7 @@ export default function UserList() {
                           <TableCell align="right">
                             <DiverTeamMoreMenu
                               onDelete={() => handleDeleteDiverTeam(id.toString())}
-                              onEdit={() => handleClickEditOpen(id.toString())}
+                              userName={id.toString()}
                               status={status}
                             />
                           </TableCell>

@@ -858,7 +858,8 @@
         "area": "Địa điểm"
       },
       "partner": {
-        "list": "Danh sách"
+        "list": "Danh sách",
+        "create": "Thêm mới"
       }
     },
     "mega": {

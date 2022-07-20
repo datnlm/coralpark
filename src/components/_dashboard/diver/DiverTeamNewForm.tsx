@@ -43,6 +43,7 @@ export default function DiverTeamNewForm({ id, open, onClose, isEdit }: DiverTea
             name: response.data.name,
             number: response.data.number,
             divers: response.data.divers,
+            areas: response.data.areas,
             status: response.data.status
           };
           setCurrentDiverTeam(data);

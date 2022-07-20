@@ -1,6 +1,8 @@
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
+import { paramCase } from 'change-case';
 import editFill from '@iconify/icons-eva/edit-fill';
+import { Link as RouterLink } from 'react-router-dom';
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
@@ -17,16 +19,18 @@ import {
   DialogContent,
   DialogContentText
 } from '@material-ui/core';
+import { PATH_DASHBOARD } from '../../../../routes/paths';
 import useLocales from '../../../../hooks/useLocales';
+
 // ----------------------------------------------------------------------
 
 type DiverTeamMoreMenuProps = {
   onDelete: VoidFunction;
-  onEdit: VoidFunction;
+  userName: string;
   status: any;
 };
 
-export default function DiverTeamMoreMenu({ onDelete, onEdit, status }: DiverTeamMoreMenuProps) {
+export default function DiverTeamMoreMenu({ onDelete, userName, status }: DiverTeamMoreMenuProps) {
   const { translate } = useLocales();
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -94,10 +98,8 @@ export default function DiverTeamMoreMenu({ onDelete, onEdit, status }: DiverTea
         </div>
 
         <MenuItem
-          onClick={() => {
-            onEdit();
-            handleClose();
-          }}
+          component={RouterLink}
+          to={`${PATH_DASHBOARD.diver.root}/team/${paramCase(userName)}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>
