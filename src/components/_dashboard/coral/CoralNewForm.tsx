@@ -38,7 +38,7 @@ import { QuillEditor } from '../../editor';
 import { UploadMultiFile } from '../../upload';
 import LivePreview from '../../upload/LivePreview';
 import PhaseDetailNewForm from './PhaseDetailNewForm';
-import CoralAreaList from './CoralAreaList';
+import CoralAreaList from '../coral_area/CoralAreaList';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -132,7 +132,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       description: currentCoral?.description || '',
       coralTypeId: currentCoral?.coralTypeId || null,
       statusEnum: currentCoral?.statusEnum || '',
-      coralAreas: currentCoral?.coralAreas || '',
+      areas: currentCoral?.areas || '',
       habitatId: currentHabitat?.id || '',
       bathymetry: currentHabitat?.bathymetry || '',
       temperature: currentHabitat?.temperature || '',

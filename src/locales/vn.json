@@ -228,6 +228,10 @@
       },
       "search": "Tìm kiếm theo vườn",
       "form": {
+        "label": {
+          "information": "Thông tin",
+          "cell": "Cell"
+        },
         "name": "Tên",
         "address": "Địa chỉ",
         "longitude": "Kinh độ",
@@ -237,6 +241,19 @@
         "area": "Địa điểm",
         "garden-type": "Loại vườn",
         "site": "Khu vực ",
+        "status": "Trạng thái"
+      }
+    },
+    "cell": {
+      "title": {
+        "list": "Vườn: Danh sách cell"
+      },
+      "form": {
+        "id": "Id",
+        "type": "Loại",
+        "acreage": "Diện tích",
+        "quantity": "Số lượng",
+        "items": "Items",
         "status": "Trạng thái"
       }
     },
@@ -284,7 +301,9 @@
       "form": {
         "label": {
           "coral": "San hô",
-          "habitat": "Môi trường sống"
+          "habitat": "Môi trường sống",
+          "phases": "Giai đoạn",
+          "area": "Khu vực"
         },
         "name": "Tên",
         "scientific": "Tên khoa học",
@@ -438,7 +457,9 @@
         "address": "Địa chỉ",
         "province": "Tỉnh/Thành phố",
         "district": "Quận/Huyện",
-        "ward": "Phường/xã" 
+        "ward": "Phường/xã",
+        "choices": "Khu vực: Chưa chọn",
+        "chosen": "Khu vực: Đã chọn" 
       }
     },
     "group-mode": {
@@ -646,6 +667,29 @@
         "name": "Tên",
         "description": "Mô tả"
       }
+    },
+    "coral-health": {
+      "title": {
+        "list": "Bệnh: Bệnh Danh sách",
+        "create": "Bệnh: Thêm mới bệnh",
+        "update": "Bệnh: Cập nhật bệnh"
+      },
+      "heading1": {
+        "list": "Bệnh",
+        "create": "Thêm mới Bệnh",
+        "update": "Cập nhật Bệnh"
+      },
+      "heading2": "Bảng điều kiển",
+      "heading3": "Bệnh",
+      "heading4": {
+        "list": "Danh sách",
+        "new": "Thêm mới"
+      },
+      "search": "Tìm kiếm bệnh",
+      "form": {
+        "name": "Tên",
+        "description": "Mô tả"
+      }
     }
   },
   "button": {
@@ -653,6 +697,7 @@
     "logout": "Đăng xuất",
     "save": {
       "add": "Thêm mới",
+      "change": "Cập nhật",
       "update": "Lưu thay đổi",
       "next": "Bước tiếp theo",
       "confirm": "Xác nhận",
@@ -670,6 +715,7 @@
     "title": {
       "confirm-delete": "Xác nhận xoá"
     },
+    "all": "Tất cả",
     "allow-type-image": "Cho phép *.jpeg, *.jpg, *.png, *.gif",
     "confirm-delete": "Bạn có chắc chắn muốn xoá?",
     "update-photo": "Cập nhật ảnh",
@@ -837,6 +883,7 @@
         "garden": "Vườn",
         "type": "Loại",
         "coral-type": "Loài",
+        "coral-health": "Bệnh",
         "coral": "San hô",
         "phase": "Giai đoạn",
         "phase-type": "Từng giai đoạn",

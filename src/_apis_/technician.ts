@@ -52,30 +52,31 @@ export class TechnicanManager {
       .catch((err) => err);
   };
 
-  createTechnicanArea = (technicianArea: TechnicianArea) => {
-    const data = {
-      technicians: technicianArea.technicians,
-      id: technicianArea.area.id,
-      name: technicianArea.area.name,
-      wellKnownText: technicianArea.area.wellKnownText,
-      address: technicianArea.area.address
-    };
-    return axios
-      .post('/api/v1/admin/technician-areas/technicians', data)
-      .then((res) => res)
-      .catch((err) => err);
-  };
+  // createTechnicanArea = (technicianArea: TechnicianArea) => {
+  //   // createTechnicanArea = (technicianArea: TechnicianArea) => {
+  //   const data = {
+  //     technicianId: technicianArea.technicianId,
+  //     areas: technicianArea.area
+  //     // name: technicianArea.area.name,
+  //     // wellKnownText: technicianArea.area.wellKnownText,
+  //     // address: technicianArea.area.address
+  //   };
+  //   return axios
+  //     .post('/api/v1/admin/technician-areas/technicians', data)
+  //     .then((res) => res)
+  //     .catch((err) => err);
+  // };
 
   updateTechnicanArea = (technicianArea: TechnicianArea) => {
     const data = {
-      technicians: technicianArea.technicians,
-      id: technicianArea.area.id,
-      name: technicianArea.area.name,
-      wellKnownText: technicianArea.area.wellKnownText,
-      address: technicianArea.area.address
+      id: technicianArea.technicianId,
+      areas: technicianArea.area
+      // name: technicianArea.area.name,
+      // wellKnownText: technicianArea.area.wellKnownText,
+      // address: technicianArea.area.address
     };
     return axios
-      .put('/api/v1/admin/technician-areas/technicians', data)
+      .put('/api/v1/admin/technician-areas/areas', data)
       .then((res) => res)
       .catch((err) => err);
   };

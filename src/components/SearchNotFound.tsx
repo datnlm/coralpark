@@ -13,10 +13,12 @@ export default function SearchNotFound({ searchQuery = '', ...other }: SearchNot
       <Typography gutterBottom align="center" variant="subtitle1">
         {translate('message.not-found')}
       </Typography>
-      <Typography variant="body2" align="center">
-        {translate('message.not-found-result')} &nbsp;
-        <strong>&quot;{searchQuery}&quot;</strong>. {translate('message.try-check')}
-      </Typography>
+      {searchQuery != '' && (
+        <Typography variant="body2" align="center">
+          {translate('message.not-found-result')} &nbsp;
+          <strong>&quot;{searchQuery}&quot;</strong>. {translate('message.try-check')}
+        </Typography>
+      )}
     </Paper>
   );
 }

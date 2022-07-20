@@ -40,7 +40,7 @@ export default function TechinicianCreate() {
           address: response.data.address,
           imageUrl: response.data.imageUrl,
           status: response.data.status,
-          technicianAreas: response.data.technicianAreas
+          areas: response.data.areas
         };
         setCurrentTechnician(data);
       }

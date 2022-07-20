@@ -3,8 +3,7 @@ import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import plusFill from '@iconify/icons-eva/plus-fill';
 import { manageArea } from '_apis_/area';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
@@ -22,7 +21,9 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  CircularProgress
+  CircularProgress,
+  Stack,
+  CardHeader
 } from '@material-ui/core';
 import Page from 'components/Page';
 import useLocales from 'hooks/useLocales';
@@ -34,6 +35,7 @@ import useSettings from 'hooks/useSettings';
 import { AreaListHead, AreaListToolbar, AreaMoreMenu } from '../area/list';
 import { Area } from '../../../@types/area';
 import { Coral } from '../../../@types/coral';
+import CoralAreaNewForm from './CoralAreaNewForm';
 // ----------------------------------------------------------------------
 
 const ThumbImgStyle = styled('img')(({ theme }) => ({
@@ -93,6 +95,7 @@ export default function CoralAreaList({ isEdit, currentCoral }: CoralAreaListNew
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const [open, setOpen] = useState(false);
   const [areaList, setAreaList] = useState<Area[]>([]);
   const areaList2 = useSelector((state: RootState) => state.area.areaList);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -105,8 +108,8 @@ export default function CoralAreaList({ isEdit, currentCoral }: CoralAreaListNew
   const [orderBy, setOrderBy] = useState('createdAt');
 
   useEffect(() => {
-    dispatch(getListArea(page, rowsPerPage));
-  }, [dispatch, page, rowsPerPage]);
+    dispatch(getListArea(0, -1));
+  }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -168,7 +171,11 @@ export default function CoralAreaList({ isEdit, currentCoral }: CoralAreaListNew
 
   const emptyRows = !isLoading && !areaList;
 
-  const filteredArea = applySortFilter(areaList, getComparator(order, orderBy), filterName);
+  const filteredArea = applySortFilter(
+    currentCoral?.areas ?? [],
+    getComparator(order, orderBy),
+    filterName
+  );
 
   const isAreaNotFound = filteredArea.length === 0 && !isLoading;
 
@@ -179,24 +186,46 @@ export default function CoralAreaList({ isEdit, currentCoral }: CoralAreaListNew
   ];
 
   useEffect(() => {
-    if (isEdit) {
-      if (currentCoral?.coralAreas != null) {
-        const listAreaId: number[] = [];
-        currentCoral?.coralAreas.map((v: any) => listAreaId.push(v.areaId));
-        setAreaList(areaList2.filter((area) => listAreaId.includes(Number(area.id))));
-        setTotalCount(currentCoral.coralAreas.length);
-      }
+    if (currentCoral?.areas != null) {
+      const listAreaId: number[] = [];
+      currentCoral?.areas.map((v: any) => listAreaId.push(v.areaId));
+      setAreaList(areaList2.filter((area) => listAreaId.includes(Number(area.id))));
+      setTotalCount(currentCoral.areas.length);
     }
-  });
+  }, []);
+
+  const handleClickOpen = () => {
+    // dispatch(getListCellType(0, -1));
+    // setIsEdit(false);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Page title={translate('page.area.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <Card>
-          <AreaListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+          <Stack
+            direction={{ xs: 'row', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+            justifyContent="space-between"
+          >
+            <AreaListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
+            <CardHeader
+              sx={{ mb: 2 }}
+              action={
+                <Button size="small" onClick={handleClickOpen} startIcon={<Icon icon={plusFill} />}>
+                  {translate('button.save.add')}
+                </Button>
+              }
+            />
+          </Stack>
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -266,7 +295,7 @@ export default function CoralAreaList({ isEdit, currentCoral }: CoralAreaListNew
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+            rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
             component="div"
             count={totalCount}
             rowsPerPage={rowsPerPage}
@@ -275,6 +304,13 @@ export default function CoralAreaList({ isEdit, currentCoral }: CoralAreaListNew
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
+        <CoralAreaNewForm
+          currentCoral={currentCoral}
+          areaList={areaList}
+          open={open}
+          onClose={handleClose}
+          isEdit={isEdit}
+        />
       </Container>
     </Page>
   );

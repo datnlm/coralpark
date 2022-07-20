@@ -214,9 +214,15 @@ export default function UserList() {
           action={
             <Button
               variant="contained"
-              onClick={handleClickOpen}
+              component={RouterLink}
+              to={PATH_DASHBOARD.diver.teamNew}
               startIcon={<Icon icon={plusFill} />}
             >
+              {/* <Button
+              variant="contained"
+              onClick={handleClickOpen}
+              startIcon={<Icon icon={plusFill} />}
+            > */}
               {translate('button.save.add')}
             </Button>
           }
@@ -315,7 +321,7 @@ export default function UserList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+            rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
             component="div"
             count={totalCount}
             rowsPerPage={rowsPerPage}

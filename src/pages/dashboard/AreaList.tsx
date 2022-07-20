@@ -286,7 +286,7 @@ export default function EcommerceProductList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+            rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
             component="div"
             count={totalCount}
             rowsPerPage={rowsPerPage}
