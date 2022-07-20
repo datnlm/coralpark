@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 // material
 import { Container } from '@material-ui/core';
-import DiverTeamNewForm from 'components/_dashboard/diver/DiverTeamNewForm';
+import DiverTeaTransferList from 'components/_dashboard/diver/DiverTeamTransferList';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getListArea } from '../../redux/slices/area';
@@ -39,7 +39,7 @@ export default function DiverTeamCreate() {
             { name: translate('page.diver-team.heading4.new') }
           ]}
         />
-        {/* <DiverTeamNewForm /> */}
+        <DiverTeaTransferList />
       </Container>
     </Page>
   );

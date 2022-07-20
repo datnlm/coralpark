@@ -29,6 +29,7 @@ import {
   ListItemText,
   Avatar,
   Radio,
+  Box,
   FormHelperText
 } from '@material-ui/core';
 import { PATH_DASHBOARD } from 'routes/paths';
@@ -40,19 +41,7 @@ import useLocales from '../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
-type DiverTeaTransferListProps = {
-  isEdit: boolean;
-  currentDiverTeam?: DiverTeam | null;
-  submitRef: any;
-  onSubmitCallback: any;
-};
-
-export default function DiverTeaTransferList({
-  isEdit,
-  currentDiverTeam,
-  submitRef,
-  onSubmitCallback
-}: DiverTeaTransferListProps) {
+export default function DiverTeaTransferList() {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -63,6 +52,8 @@ export default function DiverTeaTransferList({
   const [right, setRight] = useState<number[]>([]);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
+  const [isEdit, setIsEdit] = useState<Boolean>(false);
+  const [currentDiverTeam, setCurrentDiverTeam] = useState<any>(null);
   // -------------------
 
   function not(a: number[], b: number[]) {
@@ -159,7 +150,6 @@ export default function DiverTeaTransferList({
 
         if (flag) {
           // setCurrentArea(null);
-          onSubmitCallback(true);
           dispatch(getListDiverTeam(0, 5));
           enqueueSnackbar(
             !isEdit ? translate('message.create-success') : translate('message.update-success'),
@@ -169,7 +159,6 @@ export default function DiverTeaTransferList({
           );
         } else {
           setSubmitting(false);
-          onSubmitCallback(false);
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),
             {
@@ -178,7 +167,6 @@ export default function DiverTeaTransferList({
           );
         }
       } catch (error) {
-        onSubmitCallback(false);
         console.error(error);
         setSubmitting(false);
       }
@@ -192,11 +180,11 @@ export default function DiverTeaTransferList({
     setFieldValue('number', right.length);
   }, [right, left]);
 
-  useEffect(() => {
-    if (right.length <= 2) {
-      onSubmitCallback(false);
-    }
-  }, [isSubmitting]);
+  // useEffect(() => {
+  //   if (right.length <= 2) {
+  //     onSubmitCallback(false);
+  //   }
+  // }, [isSubmitting]);
 
   useEffect(() => {
     let listSelectDiverTeamId: number[] = [];
@@ -367,7 +355,11 @@ export default function DiverTeaTransferList({
             </Grid>
           </Grid>
         </Grid>
-        <Button type="submit" ref={submitRef} disableRipple={true} />
+        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+            {!isEdit ? translate('button.save.add') : translate('button.save.update')}
+          </LoadingButton>
+        </Box>
       </Form>
     </FormikProvider>
   );
