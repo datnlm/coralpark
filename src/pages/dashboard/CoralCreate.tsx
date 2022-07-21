@@ -36,10 +36,6 @@ export default function UserCreate() {
       await manageCoral.getCoralByID(paramCase(name)).then((response) => {
         setCurrentCoral(response.data);
       });
-      await manageCoral.getHabitatByCoralId(paramCase(name)).then((response) => {
-        setCurrentHabitat(response.data);
-        console.log(response.data);
-      });
     }
   };
 
@@ -69,7 +65,8 @@ export default function UserCreate() {
           ]}
         />
 
-        <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} currentHabitat={currentHabitat} />
+        <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} />
+        {/* <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} currentHabitat={currentHabitat} /> */}
       </Container>
     </Page>
   );

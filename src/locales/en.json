@@ -373,6 +373,7 @@
         "list": "List",
         "new": "Phase"
       },
+      "search": "Search coral phase",
       "form": {
         "header": "Phase Type",
         "coral": "Coral",

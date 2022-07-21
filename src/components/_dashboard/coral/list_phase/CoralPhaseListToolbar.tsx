@@ -55,7 +55,7 @@ export default function CoralPhaseListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder={translate('page.coral-coral.search')}
+        placeholder={translate('page.coral-phase.search')}
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />
