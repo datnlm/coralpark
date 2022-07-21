@@ -35,8 +35,7 @@ export default function GardenCreate() {
         const data = {
           id: response.data.id,
           name: response.data.name,
-          latitude: response.data.latitude,
-          longitude: response.data.longitude,
+          wellKnownText: response.data.wellKnownText,
           address: response.data.address,
           acreage: response.data.acreage,
           quantityOfCells: response.data.quantityOfCells,

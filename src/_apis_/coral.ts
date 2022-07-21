@@ -207,6 +207,7 @@ export class Coral {
       data = {
         name: coralType.name,
         levelType: coralType.levelType,
+        parentId: '0',
         description: coralType.description
       };
     } else {
@@ -231,6 +232,7 @@ export class Coral {
         id: coralType.id,
         name: coralType.name,
         levelType: coralType.levelType,
+        parentId: '0',
         description: coralType.description
       };
     } else {

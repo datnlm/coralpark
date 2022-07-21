@@ -35,6 +35,10 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
+    endLoading(state) {
+      state.isLoading = false;
+    },
+
     // START LOADING
     startLoadingDiverTeam(state) {
       state.isLoadingDiverTeam = true;
@@ -79,6 +83,8 @@ export function getListEmployee(roleId: string, page: number, rowsPerPage: numbe
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListEmployee(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -96,6 +102,8 @@ export function getListEmployeePartner(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListEmployeePartner(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {

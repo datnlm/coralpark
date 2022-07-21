@@ -306,7 +306,7 @@ export default function UserList() {
 
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
                         <Typography gutterBottom align="center" variant="subtitle1">
                           {translate('message.not-found')}
                         </Typography>

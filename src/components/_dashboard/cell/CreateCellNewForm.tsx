@@ -25,6 +25,7 @@ import { Cell } from '../../../@types/cell';
 type CreateCellNewFormProps = {
   open: boolean;
   onClose: any;
+  gardenId: string;
   currentCell?: Cell;
   isEdit: boolean;
 };
@@ -32,6 +33,7 @@ type CreateCellNewFormProps = {
 export default function CreateCellNewForm({
   open,
   onClose,
+  gardenId,
   isEdit,
   currentCell
 }: CreateCellNewFormProps) {
@@ -76,23 +78,29 @@ export default function CreateCellNewForm({
     // validationSchema: NewAddressSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
+        console.log('submit');
+        console.log(currentCell?.gardenId);
         let flag = false;
-        if (currentCell?.gardenId != null && currentCell?.id != null) {
-          values.id = currentCell?.id;
-          values.gardenId = currentCell?.gardenId;
+
+        values.gardenId = gardenId;
+        if (currentCell?.gardenId != null) {
+          if (isEdit && currentCell?.id != null) {
+            values.id = currentCell?.id;
+          }
+
           values.status = currentCell?.status;
-          !isEdit
-            ? await manageCell.createCell(values).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              })
-            : await manageCell.updateCell(values).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              });
         }
+        !isEdit
+          ? await manageCell.createCell(values).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            })
+          : await manageCell.updateCell(values).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            });
         if (flag) {
           resetForm();
           setSubmitting(false);
