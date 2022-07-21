@@ -71,7 +71,7 @@ export default function TechinicianCreate() {
           }
           links={[
             { name: translate('page.technician.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.technician.heading3'), href: PATH_DASHBOARD.diver.root },
+            { name: translate('page.technician.heading3'), href: PATH_DASHBOARD.technician.root },
             { name: !isEdit ? translate('page.technician.heading4.new') : name }
           ]}
         />

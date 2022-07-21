@@ -97,7 +97,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       id: currentArea?.id || '',
       name: currentArea?.name || '',
       address: currentArea?.address || '',
-      wellKnownText: currentArea?.wellKnownText || ' '
+      wellKnownText: currentArea?.wellKnownText || ''
     },
     validationSchema: NewProductSchema,
 

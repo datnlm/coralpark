@@ -24,8 +24,7 @@ export class GardenManager {
   createGarden = (garden: Garden) => {
     const data = {
       name: garden.name,
-      latitude: garden.latitude,
-      longitude: garden.longitude,
+      wellKnownText: garden.wellKnownText,
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,
@@ -45,8 +44,7 @@ export class GardenManager {
     const data = {
       id: garden.id,
       name: garden.name,
-      latitude: garden.latitude,
-      longitude: garden.longitude,
+      wellKnownText: garden.wellKnownText,
       address: garden.address,
       acreage: garden.acreage,
       quantityOfCells: garden.quantityOfCells,

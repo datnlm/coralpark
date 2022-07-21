@@ -395,26 +395,28 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                     error={Boolean(touched.webUrl && errors.webUrl)}
                     helperText={touched.webUrl && errors.webUrl}
                   />
-                  <Autocomplete
-                    fullWidth
-                    disablePortal
-                    clearIcon
-                    id="status"
-                    {...getFieldProps('status')}
-                    options={statusOptions}
-                    getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
-                    onChange={(e, values: any) =>
-                      values ? { ...setFieldValue('status', values) } : null
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={translate('page.site.form.status')}
-                        error={Boolean(touched.status && errors.status)}
-                        helperText={touched.status && errors.status}
-                      />
-                    )}
-                  />
+                  {isEdit && (
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      clearIcon
+                      id="status"
+                      {...getFieldProps('status')}
+                      options={statusOptions}
+                      getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
+                      onChange={(e, values: any) =>
+                        values ? { ...setFieldValue('status', values) } : null
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={translate('page.site.form.status')}
+                          error={Boolean(touched.status && errors.status)}
+                          helperText={touched.status && errors.status}
+                        />
+                      )}
+                    />
+                  )}
                 </Stack>
                 <Grid item xs={12}>
                   <Card sx={{ mb: 3 }}>

@@ -37,6 +37,10 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
+    endLoading(state) {
+      state.isLoading = false;
+    },
+
     // START LOADING
     startLoadingDiverTeam(state) {
       state.isLoadingDiverTeam = true;
@@ -87,6 +91,8 @@ export function getListDiver(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListDiver(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -104,6 +110,8 @@ export function getListDiverTeam(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCountDiverTeam(response.data.metaData.totalCount));
           dispatch(slice.actions.getListDiverTeam(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {

@@ -101,7 +101,7 @@ export default function PhaseDetailNewForm({ coral }: PhaseDetailNewFormProps) {
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.phases.typeNew);
+          navigate(PATH_DASHBOARD.coral.list);
         } else {
           console.log('update error');
           enqueueSnackbar(

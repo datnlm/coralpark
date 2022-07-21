@@ -39,6 +39,10 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
+    endLoading(state) {
+      state.isLoading = false;
+    },
+
     // TOTOAL COUNT
     totalCount(state, action) {
       state.totalCount = action.payload;
@@ -99,6 +103,8 @@ export function getListCoral(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCoral(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -115,6 +121,8 @@ export function getListCoralType(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCoralType(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -131,6 +139,8 @@ export function getCoralType(coralType: string, page: number, rowsPerPage: numbe
       await manageCoral.getCoralType(coralType, 1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getCoralType(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -147,6 +157,8 @@ export function getListCoralPhase(page: number, rowsPerPage: number) {
       await manageCoral.getListCoralPhases(1 + page, rowsPerPage).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getListCoralPhase(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -163,6 +175,8 @@ export function getListCoralHealth(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCoralHealth(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {

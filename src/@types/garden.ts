@@ -7,8 +7,7 @@ import { Cell } from './cell';
 export type Garden = {
   id: string;
   name: string;
-  latitude: string;
-  longitude: string;
+  wellKnownText: string;
   address: string;
   acreage: number;
   quantityOfCells: number;

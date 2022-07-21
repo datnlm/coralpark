@@ -3326,6 +3326,14 @@
     "@mapbox/geojson-area" "^0.2.2"
     "@turf/meta" "^4.7.3"
 
+"@turf/area@^6.5.0":
+  "integrity" "sha512-xCZdiuojokLbQ+29qR6qoMD89hv+JAgWjLrwSEWL+3JV8IXKeNFl6XkEJz9HGkVpnXvQKJoRz4/liT+8ZZ5Jyg=="
+  "resolved" "https://registry.npmjs.org/@turf/area/-/area-6.5.0.tgz"
+  "version" "6.5.0"
+  dependencies:
+    "@turf/helpers" "^6.5.0"
+    "@turf/meta" "^6.5.0"
+
 "@turf/bbox-clip@^4.7.3":
   "integrity" "sha512-XFxZSYvb5U8V/BUyH4wBZM4ZfEJSy0R726DR7sfgzkH497hvcjrMQJsqIOrcYpuIV7mP0wCJ6Q9XWsq3B2MTIQ=="
   "resolved" "https://registry.npmjs.org/@turf/bbox-clip/-/bbox-clip-4.7.3.tgz"

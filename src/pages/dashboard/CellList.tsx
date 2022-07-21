@@ -325,6 +325,7 @@ export default function CellList({ gardenId }: CellProps) {
         <CreateCellNewForm
           open={open}
           onClose={handleClose}
+          gardenId={gardenId ?? ''}
           isEdit={isEdit}
           currentCell={currentCell}
         />

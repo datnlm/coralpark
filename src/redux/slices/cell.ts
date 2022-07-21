@@ -34,6 +34,10 @@ const slice = createSlice({
       state.isLoading = true;
     },
 
+    endLoading(state) {
+      state.isLoading = false;
+    },
+
     // TOTOAL COUNT
     totalCount(state, action) {
       state.totalCount = action.payload;
@@ -69,6 +73,8 @@ export function getListCell(gardenId: string, page: number, rowsPerPage: number)
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCell(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
@@ -85,6 +91,8 @@ export function getListCellType(page: number, rowsPerPage: number) {
         if (response.status == 200) {
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCellType(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
         }
       });
     } catch (error) {
