@@ -39,6 +39,7 @@ import { UploadMultiFile } from '../../upload';
 import LivePreview from '../../upload/LivePreview';
 import PhaseDetailNewForm from './PhaseDetailNewForm';
 import CoralAreaList from '../coral_area/CoralAreaList';
+import CoralHabitatNewForm from './CoralHabitatNewForm';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -50,71 +51,51 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 type UserNewFormProps = {
   isEdit: boolean;
   currentCoral?: Coral;
-  currentHabitat?: Habitat | null;
+  // currentHabitat?: Habitat | null;
 };
 
-export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: UserNewFormProps) {
+export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) {
+  // export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: UserNewFormProps) {
   const { translate } = useLocales();
   const [valueTab, setValueTab] = useState('coral');
-  const [optionsGenus, setOptionsGenus] = useState([]);
   const coralTypeSpecies = useSelector((state: RootState) => state.coral.coralType);
-  const [enumCoralStatus, setEnumCoralStatus] = useState<OptionStatus | null>(null);
+  const [currentHabitat, setCurrentHabitat] = useState<Habitat | null>(null);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [img, setImg] = useState<string[]>();
 
-  const NewProductSchema = Yup.object().shape(
-    valueTab === 'coral'
-      ? {
-          name: Yup.string()
-            .required(translate('message.form.name'))
-            .min(3, translate('message.form.name_length_200'))
-            .max(200, translate('message.form.name_length_200')),
-          scientificName: Yup.string()
-            .required(translate('message.form.scientfic'))
-            .min(3, translate('message.form.scientfic_length_200'))
-            .max(200, translate('message.form.scientfic_length_200')),
-          longevity: Yup.number()
-            .required(translate('message.form.longevity'))
-            .typeError(translate('message.form.longevity_typeError'))
-            .min(1, translate('message.form.longevity_min')),
-          exhibitSocial: Yup.string()
-            .required(translate('message.form.exhibit_social'))
-            .min(3, translate('message.form.exhibit_social_length_200'))
-            .max(200, translate('message.form.exhibit_social_length_200')),
-          sexualBehaviors: Yup.string()
-            .required(translate('message.form.sexual_behaviors'))
-            .min(3, translate('message.form.sexual_behaviors_length_200'))
-            .max(200, translate('message.form.sexual_behaviors_length_200')),
-          nutrition: Yup.string()
-            .required(translate('message.form.nutrition'))
-            .min(3, translate('message.form.nutrition_length_200'))
-            .max(200, translate('message.form.nutrition_length_200')),
-          colour: Yup.string()
-            .required(translate('message.form.colour'))
-            .min(3, translate('message.form.colour_length_200'))
-            .max(50, translate('message.form.colour_length_200')),
-          coralTypeId: Yup.object().required(translate('message.form.coral_type')).nullable(true),
-          statusEnum: Yup.object().required(translate('message.form.status_enum')).nullable(true)
-        }
-      : {
-          bathymetry: Yup.string()
-            .required(translate('message.form.bathymetry'))
-            .typeError(translate('message.form.bathymetry_typeError')),
-          temperature: Yup.number()
-            .required(translate('message.form.temperature'))
-            .typeError(translate('message.form.temperature_typeError')),
-          brightness: Yup.string()
-            .required(translate('message.form.brightness'))
-            .typeError(translate('message.form.brightness_typeError')),
-          tides: Yup.string()
-            .required(translate('message.form.tides'))
-            .typeError(translate('message.form.tides_typeError')),
-          current: Yup.string()
-            .required(translate('message.form.current'))
-            .typeError(translate('message.form.current_typeError'))
-        }
-  );
+  const NewProductSchema = Yup.object().shape({
+    name: Yup.string()
+      .required(translate('message.form.name'))
+      .min(3, translate('message.form.name_length_200'))
+      .max(200, translate('message.form.name_length_200')),
+    scientificName: Yup.string()
+      .required(translate('message.form.scientfic'))
+      .min(3, translate('message.form.scientfic_length_200'))
+      .max(200, translate('message.form.scientfic_length_200')),
+    longevity: Yup.number()
+      .required(translate('message.form.longevity'))
+      .typeError(translate('message.form.longevity_typeError'))
+      .min(1, translate('message.form.longevity_min')),
+    exhibitSocial: Yup.string()
+      .required(translate('message.form.exhibit_social'))
+      .min(3, translate('message.form.exhibit_social_length_200'))
+      .max(200, translate('message.form.exhibit_social_length_200')),
+    sexualBehaviors: Yup.string()
+      .required(translate('message.form.sexual_behaviors'))
+      .min(3, translate('message.form.sexual_behaviors_length_200'))
+      .max(200, translate('message.form.sexual_behaviors_length_200')),
+    nutrition: Yup.string()
+      .required(translate('message.form.nutrition'))
+      .min(3, translate('message.form.nutrition_length_200'))
+      .max(200, translate('message.form.nutrition_length_200')),
+    colour: Yup.string()
+      .required(translate('message.form.colour'))
+      .min(3, translate('message.form.colour_length_200'))
+      .max(50, translate('message.form.colour_length_200')),
+    coralTypeId: Yup.object().required(translate('message.form.coral_type')).nullable(true),
+    statusEnum: Yup.object().required(translate('message.form.status_enum')).nullable(true)
+  });
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -130,67 +111,49 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
       nutrition: currentCoral?.nutrition || '',
       colour: currentCoral?.colour || '',
       description: currentCoral?.description || '',
-      coralTypeId: currentCoral?.coralTypeId || null,
+      coralTypeId: currentCoral?.coralTypeId || '',
       statusEnum: currentCoral?.statusEnum || '',
-      areas: currentCoral?.areas || '',
-      habitatId: currentHabitat?.id || '',
-      bathymetry: currentHabitat?.bathymetry || '',
-      temperature: currentHabitat?.temperature || '',
-      brightness: currentHabitat?.brightness || '',
-      tides: currentHabitat?.tides || '',
-      current: currentHabitat?.current || ''
+      areas: currentCoral?.areas || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         let flag = false;
-        if (valueTab === 'coral') {
-          const bodyFormData = new FormData();
-          if (isEdit) {
-            bodyFormData.append('Id', values.coralId);
-          }
-          bodyFormData.append('Name', values.name);
-          bodyFormData.append('ScientificName', values.scientificName);
-          bodyFormData.append('Longevity', values.longevity.toString());
-          bodyFormData.append('ExhibitSocial', values.exhibitSocial);
-          bodyFormData.append('SexualBehaviors', values.sexualBehaviors);
-          bodyFormData.append('Nutrition', values.nutrition);
-          bodyFormData.append('Colour', values.colour);
-          bodyFormData.append('Description', values.description);
-          bodyFormData.append('CoralTypeId', values.coralTypeId.id);
-          bodyFormData.append('StatusEnum', values.statusEnum!.id);
-          if (img) {
-            img.map((file: any, index) => {
-              bodyFormData.append(`Images[${index}].Id`, file.id);
-              bodyFormData.append(`Images[${index}].ImageUrl`, file.imageUrl);
-            });
-            img.map((file: any, index) => console.log(`Images[${index}].Id`, file.id));
-          }
-          values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
-          !isEdit
-            ? await manageCoral.createCoral(bodyFormData).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              })
-            : await manageCoral.updateCoral(bodyFormData).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              });
-        } else {
-          currentHabitat?.id == null
-            ? await manageCoral.createHabitat(values).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              })
-            : await manageCoral.updateHabitat(values).then((response) => {
-                if (response.status == 200) {
-                  flag = true;
-                }
-              });
+
+        const bodyFormData = new FormData();
+        if (isEdit) {
+          bodyFormData.append('Id', values.coralId);
         }
+        bodyFormData.append('Name', values.name);
+        bodyFormData.append('ScientificName', values.scientificName);
+        bodyFormData.append('Longevity', values.longevity.toString());
+        bodyFormData.append('ExhibitSocial', values.exhibitSocial);
+        bodyFormData.append('SexualBehaviors', values.sexualBehaviors);
+        bodyFormData.append('Nutrition', values.nutrition);
+        bodyFormData.append('Colour', values.colour);
+        bodyFormData.append('Description', values.description);
+        bodyFormData.append('CoralTypeId', values.coralTypeId.id);
+        bodyFormData.append('StatusEnum', values.statusEnum!.id);
+        if (img) {
+          img.map((file: any, index) => {
+            bodyFormData.append(`Images[${index}].Id`, file.id);
+            bodyFormData.append(`Images[${index}].ImageUrl`, file.imageUrl);
+          });
+          img.map((file: any, index) => console.log(`Images[${index}].Id`, file.id));
+        }
+        values.imageUrl.map((file: File | string) => bodyFormData.append('imageFiles', file));
+        !isEdit
+          ? await manageCoral.createCoral(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            })
+          : await manageCoral.updateCoral(bodyFormData).then((response) => {
+              if (response.status == 200) {
+                flag = true;
+              }
+            });
+
         if (flag) {
           resetForm();
           setSubmitting(false);
@@ -260,6 +223,13 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
     }
   };
 
+  const fetchData = async () => {
+    if (currentCoral?.id != null) {
+      await manageCoral.getHabitatByCoralId(currentCoral?.id).then((response) => {
+        setCurrentHabitat(response.data);
+      });
+    }
+  };
   useEffect(() => {
     if (isEdit) {
       setFieldValue(
@@ -271,6 +241,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
         coralStatusOptions.find((e) => e.id == currentCoral?.statusEnum)
       );
       setImg(currentCoral?.images);
+      fetchData();
     }
   }, [currentCoral]);
 
@@ -454,72 +425,7 @@ export default function UserNewForm({ isEdit, currentCoral, currentHabitat }: Us
           </FormikProvider>
         </TabPanel>
         <TabPanel sx={{ p: 3 }} value="habitat">
-          <FormikProvider value={formik}>
-            <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={8}>
-                  <Card sx={{ p: 3 }}>
-                    <Stack spacing={3}>
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.bathymetry')}
-                          {...getFieldProps('bathymetry')}
-                          error={Boolean(touched.bathymetry && errors.bathymetry)}
-                          helperText={touched.bathymetry && errors.bathymetry}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.temperature')}
-                          {...getFieldProps('temperature')}
-                          error={Boolean(touched.temperature && errors.temperature)}
-                          helperText={touched.temperature && errors.temperature}
-                        />
-                      </Stack>
-
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.brightness')}
-                          {...getFieldProps('brightness')}
-                          error={Boolean(touched.brightness && errors.brightness)}
-                          helperText={touched.brightness && errors.brightness}
-                        />
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.current')}
-                          {...getFieldProps('current')}
-                          error={Boolean(touched.current && errors.current)}
-                          helperText={touched.current && errors.current}
-                        />
-                      </Stack>
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
-                          fullWidth
-                          label={translate('page.coral-habitat.form.tides')}
-                          {...getFieldProps('tides')}
-                          error={Boolean(touched.tides && errors.tides)}
-                          helperText={touched.tides && errors.tides}
-                        />
-                        {/* <TextField
-                          fullWidth
-                          label="Current"
-                          {...getFieldProps('current')}
-                          error={Boolean(touched.current && errors.current)}
-                          helperText={touched.current && errors.current}
-                        /> */}
-                      </Stack>
-                      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                          {!isEdit ? translate('button.save.add') : translate('button.save.update')}
-                        </LoadingButton>
-                      </Box>
-                    </Stack>
-                  </Card>
-                </Grid>
-              </Grid>
-            </Form>
-          </FormikProvider>
+          <CoralHabitatNewForm coralId={currentCoral?.id} currentHabitat={currentHabitat} />
         </TabPanel>
         <TabPanel sx={{ p: 3 }} value="phases">
           <PhaseDetailNewForm coral={currentCoral} />
