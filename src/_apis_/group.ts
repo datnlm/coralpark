@@ -75,7 +75,8 @@ export class GroupManager {
     const data = {
       name: groupRole.name,
       personalRate: groupRole.personalRate,
-      partnerRate: groupRole.partnerRate
+      partnerRate: groupRole.partnerRate,
+      groupModeId: groupRole.groupModeId
     };
     return axios
       .post('/api/v1/admin/group-roles', data)
@@ -89,7 +90,8 @@ export class GroupManager {
       id: groupRole.id,
       name: groupRole.name,
       personalRate: groupRole.personalRate,
-      partnerRate: groupRole.partnerRate
+      partnerRate: groupRole.partnerRate,
+      groupModeId: groupRole.groupModeId
     };
     return axios
       .put('/api/v1/admin/group-roles', data)

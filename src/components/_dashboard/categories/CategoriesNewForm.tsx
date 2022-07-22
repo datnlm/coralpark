@@ -2,8 +2,9 @@ import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { useEffect, useState } from 'react';
 import { LoadingButton } from '@material-ui/lab';
-import { Card, Box, Grid, Stack, TextField } from '@material-ui/core';
+import { Card, Box, Grid, Stack, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 import { manageCategories } from '_apis_/categories';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -12,7 +13,6 @@ import useLocales from '../../../hooks/useLocales';
 // @types
 
 import { Categories } from '../../../@types/categories';
-
 // ----------------------------------------------------------------------
 
 type CategoriesNewFormProps = {
@@ -23,6 +23,7 @@ type CategoriesNewFormProps = {
 export default function CategoriesNewForm({ isEdit, currentCategories }: CategoriesNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
@@ -36,19 +37,21 @@ export default function CategoriesNewForm({ isEdit, currentCategories }: Categor
     enableReinitialize: true,
     initialValues: {
       id: currentCategories?.id || '',
-      name: currentCategories?.name || ''
+      name: currentCategories?.name || '',
+      hasQuantity: currentCategories?.hasQuantity || false
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       let flag = false;
       try {
+        values.hasQuantity = checked;
         !isEdit
           ? await manageCategories.createCategories(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
             })
-          : await manageCategories.updateUpdateCategories(values).then((response) => {
+          : await manageCategories.updateCategories(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
               }
@@ -79,6 +82,14 @@ export default function CategoriesNewForm({ isEdit, currentCategories }: Categor
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
+  useEffect(() => {
+    setChecked(currentCategories?.hasQuantity ?? false);
+  }, [currentCategories]);
+
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -93,6 +104,16 @@ export default function CategoriesNewForm({ isEdit, currentCategories }: Categor
                     {...getFieldProps('name')}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checked}
+                        onChange={handleChange}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                      />
+                    }
+                    label={translate('page.categories.form.hasQuantity')}
                   />
                 </Stack>
 

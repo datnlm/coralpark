@@ -9,4 +9,5 @@ export type GroupRole = {
   name: string;
   personalRate: number;
   partnerRate: number;
+  groupModeId: any;
 };

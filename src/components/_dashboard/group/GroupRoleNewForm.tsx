@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
+import { RootState, useSelector, useDispatch } from 'redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
@@ -39,8 +40,7 @@ export default function GroupRoleNewForm({ isEdit, currentGroupRole }: GroupRole
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [imageFILE, setImageFILE] = useState('');
-  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
+  const groupModeList = useSelector((state: RootState) => state.groupMode.groupModeList);
   const NewProductSchema = Yup.object().shape({
     name: Yup.string()
       .required(translate('message.form.name'))
@@ -64,12 +64,14 @@ export default function GroupRoleNewForm({ isEdit, currentGroupRole }: GroupRole
       id: currentGroupRole?.id || '',
       name: currentGroupRole?.name || '',
       personalRate: currentGroupRole?.personalRate || 0,
-      partnerRate: currentGroupRole?.partnerRate || 0
+      partnerRate: currentGroupRole?.partnerRate || 0,
+      groupModeId: currentGroupRole?.groupModeId || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       let flag = false;
       try {
+        values.groupModeId = values.groupModeId.id;
         !isEdit
           ? await manageGroup.createGroupRole(values).then((response) => {
               if (response.status == 200) {
@@ -107,19 +109,14 @@ export default function GroupRoleNewForm({ isEdit, currentGroupRole }: GroupRole
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      setImageFILE(file);
-      if (file) {
-        setFieldValue('imageUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
+  useEffect(() => {
+    if (isEdit) {
+      setFieldValue(
+        'groupModeId',
+        groupModeList.find((v) => v.id == currentGroupRole?.groupModeId)
+      );
+    }
+  }, [currentGroupRole]);
 
   return (
     <FormikProvider value={formik}>
@@ -148,6 +145,26 @@ export default function GroupRoleNewForm({ isEdit, currentGroupRole }: GroupRole
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <Autocomplete
+                    fullWidth
+                    disablePortal
+                    clearIcon
+                    id="groupModeId"
+                    {...getFieldProps('groupModeId')}
+                    options={groupModeList}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('groupModeId', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={translate('page.group-role.form.groupModeId')}
+                        error={Boolean(touched.groupModeId && errors.groupModeId)}
+                        helperText={touched.groupModeId && errors.groupModeId}
+                      />
+                    )}
+                  />
                   <TextField
                     fullWidth
                     label={translate('page.group-role.form.personalRate')}
