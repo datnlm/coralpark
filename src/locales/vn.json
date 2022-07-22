@@ -618,9 +618,9 @@
         "name": "Tên đầy đủ",
         "phone": "Số điện thoại",
         "email": "Địa chỉ email",
-        "parnter": "Đối tác",
         "address": "Địa chỉ",
-        "status": "Trạng thái"
+        "status": "Trạng thái",
+        "partner": "Đối tác"
       }
     },
     "site-manager": {
