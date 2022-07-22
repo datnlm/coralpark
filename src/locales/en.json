@@ -508,7 +508,8 @@
       "form": {
         "name": "Name",
         "personalRate": "Personal Rate",
-        "partnerRate": "Partner Rate"
+        "partnerRate": "Partner Rate",
+        "groupModeId": "Group Mode"
       }
     },
     "categories": {
@@ -530,7 +531,8 @@
       },
       "search": "Search categories product",
       "form": {
-        "name": "Name"
+        "name": "Name",
+        "hasQuantity": "Has Quantity"
       }
     },
     "login": {
@@ -618,6 +620,7 @@
         "phone": "Phone",
         "email": "Email",
         "address": "Address",
+        "partner": "Partner",
         "status": "Status"
       }
     },

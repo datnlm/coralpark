@@ -26,6 +26,7 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import axiosInstance from 'utils/axios';
 import axios from 'axios';
 import { manageCategories } from '_apis_/categories';
+import Label from 'components/Label';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getListCategories } from '../../redux/slices/categories';
@@ -181,6 +182,7 @@ export default function CategoriesList() {
 
   const TABLE_HEAD = [
     { id: 'name', label: translate('page.categories.form.name'), alignRight: false },
+    { id: 'hasQuantity', label: translate('page.categories.form.hasQuantity'), alignRight: false },
     { id: '' }
   ];
 
@@ -193,7 +195,7 @@ export default function CategoriesList() {
             { name: translate('page.categories.heading2'), href: PATH_DASHBOARD.root },
             {
               name: translate('page.categories.heading3'),
-              href: PATH_DASHBOARD.group.root
+              href: PATH_DASHBOARD.categories.root
             },
             { name: translate('page.categories.heading4.list') }
           ]}
@@ -235,7 +237,7 @@ export default function CategoriesList() {
                     </TableCell>
                   ) : (
                     filteredGroupMode.map((row, index) => {
-                      const { id, name } = row;
+                      const { id, name, hasQuantity } = row;
 
                       const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -245,6 +247,15 @@ export default function CategoriesList() {
                             {/* <Checkbox checked={isItemSelected} /> */}
                           </TableCell>
                           <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={(hasQuantity == false && 'error') || 'success'}
+                            >
+                              {hasQuantity == false ? 'false' : 'true'}
+                            </Label>
+                          </TableCell>
+                          {/* <TableCell align="left">{hasQuantity}</TableCell> */}
                           <TableCell align="right">
                             <CategoriesMoreMenu
                               onDelete={() => handleDeleteCategories(id.toString())}

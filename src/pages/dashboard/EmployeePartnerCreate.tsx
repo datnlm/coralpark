@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageEmployee } from '_apis_/employee';
+import { getListPartner } from 'redux/slices/partner';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -15,7 +16,7 @@ import useLocales from '../../hooks/useLocales';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import EmployeePartnerNewForm from '../../components/_dashboard/account/EmployeePartnerNewForm';
-import { Staff } from '../../@types/staff';
+import { EmployePartner } from '../../@types/staff';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +27,7 @@ export default function EmployeeCreate() {
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const [currentStaff, setCurrentStaff] = useState<Staff>();
+  const [currentEmployeePartner, setCurrentEmployeePartner] = useState<EmployePartner>();
 
   const fetchData = async () => {
     await manageEmployee.getEmployeePartnerByID(name).then((response) => {
@@ -39,9 +40,10 @@ export default function EmployeeCreate() {
           address: response.data.address,
           password: response.data.password,
           imageUrl: response.data.imageUrl,
+          partnerId: response.data.partnerId,
           status: response.data.status
         };
-        setCurrentStaff(data);
+        setCurrentEmployeePartner(data);
       }
     });
   };
@@ -49,6 +51,7 @@ export default function EmployeeCreate() {
   useEffect(() => {
     if (isEdit) {
       fetchData();
+      dispatch(getListPartner(0, -1));
     }
   }, [dispatch]);
 
@@ -73,7 +76,7 @@ export default function EmployeeCreate() {
             { name: !isEdit ? translate('page.employee-partner.heading4.new') : name }
           ]}
         />
-        <EmployeePartnerNewForm isEdit={isEdit} currentStaff={currentStaff} />
+        <EmployeePartnerNewForm isEdit={isEdit} currentEmployeePartner={currentEmployeePartner} />
       </Container>
     </Page>
   );

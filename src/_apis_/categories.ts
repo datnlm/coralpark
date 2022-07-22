@@ -23,7 +23,8 @@ export class CategoriesManager {
   // create Categories
   createCategories = (categories: Categories) => {
     const data = {
-      name: categories.name
+      name: categories.name,
+      hasQuantity: categories.hasQuantity
     };
     return axios
       .post('/api/v1/admin/categories', data)
@@ -32,10 +33,11 @@ export class CategoriesManager {
   };
 
   // update Categories
-  updateUpdateCategories = (categories: Categories) => {
+  updateCategories = (categories: Categories) => {
     const data = {
       id: categories.id,
-      name: categories.name
+      name: categories.name,
+      hasQuantity: categories.hasQuantity
     };
     return axios
       .put('/api/v1/admin/categories', data)

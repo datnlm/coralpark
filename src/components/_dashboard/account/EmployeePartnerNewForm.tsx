@@ -19,29 +19,31 @@ import {
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
+import { RootState, useSelector, useDispatch } from 'redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Staff } from '../../../@types/staff';
+import { EmployePartner } from '../../../@types/staff';
 import { UploadAvatar } from '../../upload';
 
 // ----------------------------------------------------------------------
 
 type EmployeePartnerNewFormProps = {
   isEdit: boolean;
-  currentStaff?: Staff;
+  currentEmployeePartner?: EmployePartner;
 };
 
 export default function EmployeePartnerNewForm({
   isEdit,
-  currentStaff
+  currentEmployeePartner
 }: EmployeePartnerNewFormProps) {
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
+  const partnerList = useSelector((state: RootState) => state.partner.partnerList);
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const NewProductSchema = Yup.object().shape({
     name: Yup.string()
@@ -62,20 +64,17 @@ export default function EmployeePartnerNewForm({
     // imageUrl: Yup.array().min(1, 'Images is required')
   });
 
-  useEffect(() => {
-    setEnumStatus(statusOptions.find((e) => e.id == currentStaff?.status) || null);
-  }, [currentStaff]);
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: currentStaff?.id || '',
-      name: currentStaff?.name || '',
-      phone: currentStaff?.phone || '',
-      email: currentStaff?.email || '',
-      address: currentStaff?.address || '',
-      imageUrl: currentStaff?.imageUrl || null,
-      status: currentStaff?.status || 1
+      id: currentEmployeePartner?.id || '',
+      name: currentEmployeePartner?.name || '',
+      phone: currentEmployeePartner?.phone || '',
+      email: currentEmployeePartner?.email || '',
+      address: currentEmployeePartner?.address || '',
+      partnerId: currentEmployeePartner?.partnerId || '',
+      imageUrl: currentEmployeePartner?.imageUrl || null,
+      status: currentEmployeePartner?.status || 1
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -91,6 +90,7 @@ export default function EmployeePartnerNewForm({
         bodyFormData.append('Email', values.email);
         bodyFormData.append('Address', values.address);
         bodyFormData.append('Status', values.status);
+        bodyFormData.append('PartnerId', values.partnerId?.id);
         bodyFormData.append('imageFile', imageFILE);
 
         !isEdit
@@ -143,6 +143,16 @@ export default function EmployeePartnerNewForm({
     },
     [setFieldValue]
   );
+
+  useEffect(() => {
+    if (isEdit) {
+      setFieldValue(
+        'partnerId',
+        partnerList.find((v) => v.id == currentEmployeePartner?.partnerId || null)
+      );
+      setEnumStatus(statusOptions.find((e) => e.id == currentEmployeePartner?.status) || null);
+    }
+  }, [currentEmployeePartner]);
 
   return (
     <FormikProvider value={formik}>
@@ -214,8 +224,29 @@ export default function EmployeePartnerNewForm({
                     helperText={touched.address && errors.address}
                   />
                 </Stack>
-                {isEdit && (
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <Autocomplete
+                    fullWidth
+                    disablePortal
+                    clearIcon
+                    id="partnerId"
+                    {...getFieldProps('partnerId')}
+                    options={partnerList}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('partnerId', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={translate('page.employee-partner.form.partner')}
+                        error={Boolean(touched.partnerId && errors.partnerId)}
+                        helperText={touched.partnerId && errors.partnerId}
+                      />
+                    )}
+                  />
+                  {isEdit && (
                     <Autocomplete
                       fullWidth
                       disablePortal
@@ -235,8 +266,9 @@ export default function EmployeePartnerNewForm({
                         />
                       )}
                     />
-                  </Stack>
-                )}
+                  )}
+                </Stack>
+
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? translate('button.save.add') : translate('button.save.update')}

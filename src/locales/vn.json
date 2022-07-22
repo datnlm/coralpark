@@ -507,7 +507,8 @@
       "form": {
         "name": "Tên",
         "personalRate": "Tỷ lệ cá nhân",
-        "partnerRate": "Tỷ lệ đối tác"
+        "partnerRate": "Tỷ lệ đối tác",
+        "groupModeId": "Group Mode"
       }
     },
     "categories": {
@@ -529,7 +530,8 @@
       },
       "search": "Tìm kiếm theo tên loại sản phẩm",
       "form": {
-        "name": "Tên"
+        "name": "Tên",
+        "hasQuantity": "Có số lượng"
       }
     },
     "login": {
@@ -616,6 +618,7 @@
         "name": "Tên đầy đủ",
         "phone": "Số điện thoại",
         "email": "Địa chỉ email",
+        "parnter": "Đối tác",
         "address": "Địa chỉ",
         "status": "Trạng thái"
       }

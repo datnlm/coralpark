@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { manageGroup } from '_apis_/group';
 // material
 import { Container } from '@material-ui/core';
+import { getListGroupMode } from 'redux/slices/groupMode';
 import { GroupMode, GroupRole } from '../../@types/group';
 // redux
 import { useDispatch } from '../../redux/store';
@@ -37,6 +38,7 @@ export default function GroupRoleCreate() {
   useEffect(() => {
     if (isEdit) {
       fetchData();
+      dispatch(getListGroupMode(0, -1));
     }
   }, [dispatch]);
 
