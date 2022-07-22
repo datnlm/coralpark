@@ -194,7 +194,7 @@ export default function EmployeePartnerList() {
             { name: translate('page.employee-partner.heading2'), href: PATH_DASHBOARD.root },
             {
               name: translate('page.employee-partner.heading3'),
-              href: PATH_DASHBOARD.employee.root
+              href: PATH_DASHBOARD.staff.listEmployeePartner
             },
             { name: translate('page.employee-partner.heading4.list') }
           ]}
