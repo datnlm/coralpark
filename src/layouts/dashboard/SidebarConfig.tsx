@@ -27,40 +27,137 @@ const ICONS = {
   ecommerce: getIcon('ic_ecommerce'),
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
-  kanban: getIcon('ic_kanban')
+  kanban: getIcon('ic_kanban'),
+  site: getIcon('ic_site')
 };
 
 export default function SidebarConfig() {
   const { translate } = useLocales();
   const sidebarConfig = [
-    // MANAGEMENT
+    // GENERAL
     // ----------------------------------------------------------------------
     {
-      subheader: translate('menu.sidebarConfig.subheader.management'),
+      subheader: '',
       items: [
         {
-          title: translate('menu.sidebarConfig.title.diver'),
-          path: PATH_DASHBOARD.diver.root,
-          icon: ICONS.diver,
+          title: 'Dashboard',
+          path: PATH_DASHBOARD.general.app,
+          icon: ICONS.dashboard
+        },
+        {
+          title: 'Bán hàng',
+          path: PATH_DASHBOARD.group.list,
+          icon: ICONS.ecommerce,
           children: [
-            { title: translate('menu.sidebarConfig.diver.list'), path: PATH_DASHBOARD.diver.list },
-            { title: translate('menu.sidebarConfig.diver.team'), path: PATH_DASHBOARD.diver.team }
+            {
+              title: translate('menu.sidebarConfig.title.group-mode'),
+              icon: ICONS.analytics,
+              path: PATH_DASHBOARD.group.list
+            },
+            {
+              title: translate('menu.sidebarConfig.title.group-role'),
+              path: PATH_DASHBOARD.group.listRole
+            },
+            {
+              title: translate('menu.sidebarConfig.title.categories'),
+              path: PATH_DASHBOARD.categories.list
+            }
           ]
         },
         {
-          title: translate('menu.sidebarConfig.title.partner'),
+          title: translate('menu.sidebarConfig.subheader.partner'),
           path: PATH_DASHBOARD.partner.root,
           icon: ICONS.partner,
           children: [
             {
-              title: translate('menu.sidebarConfig.partner.list'),
+              title: translate('menu.sidebarConfig.title.partner'),
               path: PATH_DASHBOARD.partner.list
             },
             {
-              title: translate('menu.sidebarConfig.partner.create'),
-              path: PATH_DASHBOARD.partner.new
+              title: translate('menu.sidebarConfig.title.partner-type'),
+              path: PATH_DASHBOARD.partner.typeList
             }
           ]
+        },
+        {
+          title: translate('menu.sidebarConfig.subheader.user'),
+          path: PATH_DASHBOARD.diver.root,
+          icon: ICONS.user,
+          children: [
+            { title: translate('menu.sidebarConfig.title.diver'), path: PATH_DASHBOARD.diver.list },
+            {
+              title: translate('menu.sidebarConfig.title.diver-team'),
+              path: PATH_DASHBOARD.diver.team
+            },
+            {
+              title: translate('menu.sidebarConfig.title.technician'),
+              path: PATH_DASHBOARD.technician.list
+            },
+            {
+              title: translate('menu.sidebarConfig.title.site-manager'),
+              path: PATH_DASHBOARD.staff.listSite
+            },
+            {
+              title: translate('menu.sidebarConfig.title.employee-partner'),
+              path: PATH_DASHBOARD.staff.listEmployeePartner
+            },
+            {
+              title: translate('menu.sidebarConfig.title.employee'),
+              path: PATH_DASHBOARD.staff.listEmployee
+            },
+            {
+              title: translate('menu.sidebarConfig.title.all'),
+              path: PATH_DASHBOARD.account.list
+            }
+          ]
+        },
+        {
+          title: translate('menu.sidebarConfig.subheader.site'),
+          path: PATH_DASHBOARD.site.root,
+          icon: ICONS.site,
+          children: [
+            {
+              title: translate('menu.sidebarConfig.title.site'),
+              path: PATH_DASHBOARD.site.list
+            },
+            {
+              title: translate('menu.sidebarConfig.title.garden'),
+              path: PATH_DASHBOARD.garden.list
+            },
+            {
+              title: translate('menu.sidebarConfig.title.garden-type'),
+              path: PATH_DASHBOARD.garden.typesList
+            },
+            {
+              title: translate('menu.sidebarConfig.title.cell-type'),
+              path: PATH_DASHBOARD.cell.typesList
+            }
+          ]
+        },
+        {
+          title: translate('menu.sidebarConfig.subheader.coral'),
+          path: PATH_DASHBOARD.coral.root,
+          icon: ICONS.coral,
+          children: [
+            { title: translate('menu.sidebarConfig.title.coral'), path: PATH_DASHBOARD.coral.list },
+            {
+              title: translate('menu.sidebarConfig.title.coral-type'),
+              path: PATH_DASHBOARD.coral.listType
+            },
+            {
+              title: translate('menu.sidebarConfig.title.coral-phase'),
+              path: PATH_DASHBOARD.phases.list
+            },
+            {
+              title: translate('menu.sidebarConfig.title.coral-health'),
+              path: PATH_DASHBOARD.coral.listHealth
+            }
+          ]
+        },
+        {
+          title: translate('menu.sidebarConfig.subheader.area'),
+          path: PATH_DASHBOARD.area.list,
+          icon: ICONS.area
         }
       ]
     }

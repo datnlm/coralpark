@@ -84,7 +84,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     address: Yup.string().required(translate('message.form.address')),
     acreage: Yup.string()
       .required()
-      .matches(/^[0-9]+$/, translate('message.form.acreage_typeError'))
+      .matches(/^[0-9.]+$/, translate('message.form.acreage_typeError'))
       .required(translate('message.form.acreage')),
     quantityOfCells: Yup.string()
       .required()
@@ -291,8 +291,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     map.on('draw.update', updateArea);
 
     function updateArea(e: any) {
-      const area = turf.area(draw.getAll());
-      const rounded_area = Math.round(area * 100) / 100;
+      const rounded_area = Math.round(turf.area(draw.getAll()) * 100) / 100;
       setFieldValue('acreage', rounded_area);
       if (draw.getAll().features[0] != null) {
         const data = draw.getAll().features![0]!.geometry;
