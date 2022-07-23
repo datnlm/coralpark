@@ -74,7 +74,8 @@ export function getListCell(gardenId: string, page: number, rowsPerPage: number)
           dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
           dispatch(slice.actions.getListCell(response.data.items));
         } else {
-          dispatch(slice.actions.endLoading());
+          dispatch(slice.actions.totalCount(0));
+          dispatch(slice.actions.getListCell([]));
         }
       });
     } catch (error) {

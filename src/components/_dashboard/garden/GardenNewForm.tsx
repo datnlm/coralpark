@@ -290,10 +290,10 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
     map.on('draw.delete', updateArea);
     map.on('draw.update', updateArea);
 
-    async function updateArea(e: any) {
+    function updateArea(e: any) {
       if (draw.getAll().features[0] != null) {
-        const polygon_area = await draw.getAll();
-        const rounded_area = Math.round(turf.area(polygon_area) * 100) / 100;
+        const polygon_area = draw.getAll;
+        const rounded_area = Math.round(turf.area(draw.getAll().features[0]) * 100) / 100;
         // const rounded_area = Math.round(turf.area(draw.getAll()) * 100) / 100;
         setFieldValue('acreage', rounded_area);
         const data = draw.getAll().features![0]!.geometry;
