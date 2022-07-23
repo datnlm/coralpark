@@ -2,20 +2,20 @@
   "page": {
     "site": {
       "title": {
-        "list": "Khu vực: Danh sách khu vực",
-        "create": "Khu vực: Thêm mới khu vực",
-        "update": "Khu vực: Cập nhật khu vực"
+        "list": "Địa điểm: Danh sách địa điểm",
+        "create": "Địa điểm: Thêm mới địa điểm",
+        "update": "Địa điểm: Cập nhật địa điểm"
       },
       "heading1": {
-        "list": "Danh sách khu vực",
-        "create": "Thêm mới khu vực",
-        "update": "Chỉnh sửa khu vực"
+        "list": "Danh sách địa điểm",
+        "create": "Thêm mới địa điểm",
+        "update": "Chỉnh sửa địa điểm"
       },
       "heading2": "Bảng điều khiển",
-      "heading3": "Khu vực",
+      "heading3": "địa điểm",
       "heading4": {
         "list": "Danh sách",
-        "new": "Khu vực mới"
+        "new": "địa điểm mới"
       },
       "search": "Tìm kiếm theo địa điểm",
       "form": {
@@ -238,9 +238,9 @@
         "latitude": "Vĩ độ",
         "acreage": "Diện tích",
         "quantity-of-cells": "Số cell",
-        "area": "Địa điểm",
+        "area": "Khu vực",
         "garden-type": "Loại vườn",
-        "site": "Khu vực ",
+        "site": "Địa điểm",
         "status": "Trạng thái"
       }
     },
@@ -625,22 +625,22 @@
     },
     "site-manager": {
       "title": {
-        "list": "Quản lý Site: Danh sách quản lý Site",
-        "create": "Quản lý Site: Thêm mới thông tin quản lý Site",
-        "update": "Quản lý Site: Cập nhật thông tin quản lý Site"
+        "list": "Quản lý địa điểm: Danh sách quản lý địa điểm",
+        "create": "Quản lý địa điểm: Thêm mới thông tin quản lý địa điểm",
+        "update": "Quản lý địa điểm: Cập nhật thông tin quản lý địa điểm"
       },
       "heading1": {
-        "list": "Danh sách quản lý Site",
-        "create": "Thêm mới thông tin quản lý Site",
-        "update": "Chỉnh sửa thông tin quản lý Site"
+        "list": "Danh sách quản lý địa điểm",
+        "create": "Thêm mới thông tin quản lý địa điểm",
+        "update": "Chỉnh sửa thông tin quản lý địa điểm"
       },
       "heading2": "Bảng điều khiển",
-      "heading3": "Quản lý Site",
+      "heading3": "Quản lý địa điểm",
       "heading4": {
         "list": "Danh sách",
-        "new": "Quản lý Site mới"
+        "new": "Quản lý địa điểm mới"
       },
-      "search": "Tìm kiếm theo tên quản lý Site",
+      "search": "Tìm kiếm theo tên quản lý địa điểm",
       "form": {
         "name": "Tên đầy đủ",
         "phone": "Số điện thoại",
@@ -850,20 +850,35 @@
   "menu": {
     "sidebarConfig": {
       "subheader": {
-        "management": "ban quản trị"
+        "management": "ban quản trị",
+        "partner": "Đối tác",
+        "user": "Tài khoản",
+        "sell": "Bán hàng",
+        "coral": "San hô",
+        "site": "Địa điểm",
+        "area": "Khu vực"
       },
       "title": {
+        "partner": "Đối tác",
+        "partner-type": "Loại đối tác",
+        "group-mode": "Group Mode",
+        "group-role": "Group Role",
+        "categories": "Loại sản phẩm",
         "diver": "Thợ lặn",
-        "partner": "Đối tác"
-      },
-      "diver": {
-        "list": "Danh sách",
-        "team": "Đội",
-        "area": "Địa điểm"
-      },
-      "partner": {
-        "list": "Danh sách",
-        "create": "Thêm mới"
+        "diver-team": "Đội thợ lặn",
+        "technician": "Kỹ thuật viên",
+        "site-manager": "Quản lí địa điểm",
+        "employee-partner": "Nhân viên đối tác",
+        "employee": "Nhân viên",
+        "all": "Tất cả",
+        "coral": "Danh sách san hô",
+        "coral-type": "Loài",
+        "coral-phase": " Giai đoạn",
+        "coral-health": "Bệnh",
+        "site": "Danh sách địa điểm",
+        "garden": "Vườn",
+        "garden-type": "Loại vườn",
+        "cell-type": "Loại Cell"
       }
     },
     "mega": {
@@ -899,7 +914,7 @@
         "group-role": "Role",
         "categories": "Loại sản phẩm",
         "technician": "Kỹ thuật viên",
-        "site-manager": "Quản lí Site",
+        "site-manager": "Quản lí địa điểm",
         "employee": "Nhân viên",
         "employee-partner": "Nhân viên đối tác"
       },
