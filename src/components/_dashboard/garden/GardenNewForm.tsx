@@ -302,7 +302,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
         // setFieldValue('acreage', rounded_area);
         let string = '';
         if (data.type === 'Polygon') {
-          const poly = turf.polygon(data.coordinates);
+          const poly: any = turf.polygon(data.coordinates);
           const area2 = turf.area(poly);
           const rounded_area1 = Math.round((area2 * 100) / 100);
           setFieldValue('acreage', rounded_area1);
