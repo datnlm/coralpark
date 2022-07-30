@@ -292,8 +292,8 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
 
     function updateArea(e: any) {
       if (draw.getAll().features[0] != null) {
-        const polygon_area = draw.getAll;
-        const rounded_area = Math.round(turf.area(draw.getAll().features[0]) * 100) / 100;
+        const polygon_area = draw.getAll();
+        const rounded_area = Math.round(turf.area(polygon_area.features[0]) * 100) / 100;
         // const rounded_area = Math.round(turf.area(draw.getAll()) * 100) / 100;
         setFieldValue('acreage', rounded_area);
         const data = draw.getAll().features![0]!.geometry;
