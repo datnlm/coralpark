@@ -31,7 +31,8 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import './Map.css';
-import * as turf from '@turf/turf';
+// import * as turf from '@turf/turf';
+import area from '@turf/area';
 import { mapConfig } from 'config';
 import { Feature } from 'geojson';
 // routes
@@ -297,19 +298,10 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
         // const rounded_area = Math.round(turf.area(polygon_area) * 100) / 100;
         // first version 299
         // const rounded_area = Math.round(turf.area(draw.getAll()) * 100) / 100;
-        const polygon = turf.polygon([
-          [
-            [125, -15],
-            [113, -22],
-            [154, -27],
-            [144, -15],
-            [125, -15]
-          ]
-        ]);
 
-        const area = turf.area(polygon);
+        const rounded_area = area(draw.getAll());
 
-        setFieldValue('acreage', area);
+        setFieldValue('acreage', rounded_area);
         // setFieldValue('acreage', rounded_area);
         const data = draw.getAll().features![0]!.geometry;
 
