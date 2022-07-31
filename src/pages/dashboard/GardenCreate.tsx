@@ -74,7 +74,7 @@ export default function GardenCreate() {
           }
           links={[
             { name: translate('page.garden.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.garden.heading3'), href: PATH_DASHBOARD.garden.root },
+            { name: translate('page.garden.heading3'), href: PATH_DASHBOARD.site.garden },
             { name: !isEdit ? translate('page.garden.heading4.new') : name }
           ]}
         />

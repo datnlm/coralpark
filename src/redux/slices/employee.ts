@@ -5,6 +5,7 @@ import { manageEmployee } from '_apis_/employee';
 import { dispatch } from '../store';
 // utils
 import { Employee } from '../../@types/employee';
+import { EmployeePartner } from '../../@types/staff';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ type EmployeeState = {
   error: boolean;
   totalCount: number;
   employeeList: Employee[];
-  employeePartnerList: Employee[];
+  employeePartnerList: EmployeePartner[];
 };
 
 const initialState: EmployeeState = {

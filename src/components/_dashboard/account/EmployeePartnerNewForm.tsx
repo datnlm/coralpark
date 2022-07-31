@@ -25,14 +25,14 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { EmployePartner } from '../../../@types/staff';
+import { EmployeePartner } from '../../../@types/staff';
 import { UploadAvatar } from '../../upload';
 
 // ----------------------------------------------------------------------
 
 type EmployeePartnerNewFormProps = {
   isEdit: boolean;
-  currentEmployeePartner?: EmployePartner;
+  currentEmployeePartner?: EmployeePartner;
 };
 
 export default function EmployeePartnerNewForm({

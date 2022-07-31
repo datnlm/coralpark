@@ -196,14 +196,14 @@ export default function UserList() {
           heading={translate('page.garden-type.heading1.list')}
           links={[
             { name: translate('page.garden-type.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.garden-type.heading3'), href: PATH_DASHBOARD.garden.typesList },
+            { name: translate('page.garden-type.heading3'), href: PATH_DASHBOARD.site.typesList },
             { name: translate('page.garden-type.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.garden.newGardenType}
+              to={PATH_DASHBOARD.site.newGardenType}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}

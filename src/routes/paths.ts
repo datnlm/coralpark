@@ -72,8 +72,32 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/site'),
     list: path(ROOTS_DASHBOARD, '/site/list'),
     newSite: path(ROOTS_DASHBOARD, '/site/new'),
-    editByIdSite: path(ROOTS_DASHBOARD, '/site/:name/edit')
+    garden: path(ROOTS_DASHBOARD, '/site/garden/list'), 
+    typesList: path(ROOTS_DASHBOARD, '/site/garden/types'),
+    newGarden: path(ROOTS_DASHBOARD, '/site/garden/new'),
+    newGardenType: path(ROOTS_DASHBOARD, '/site/garden/type-new'),
+    editByIdGarden: path(ROOTS_DASHBOARD, '/site/garden/:name/edit'),
+    editByIdGardenType: path(ROOTS_DASHBOARD, '/site/garden/types/:name/edit'),
+    editByIdSite: path(ROOTS_DASHBOARD, '/site/:name/edit'),
+    cellTypesList: path(ROOTS_DASHBOARD, '/site/cell/types'),
+    newCellType: path(ROOTS_DASHBOARD, '/site/cell/type-new'),
+    editCellTypeById: path(ROOTS_DASHBOARD, '/site/cell/types/:name/edit')
   },
+  // cell: {
+  //   root: path(ROOTS_DASHBOARD, '/cell'),
+  //   typesList: path(ROOTS_DASHBOARD, '/cell/types'),
+  //   newCellType: path(ROOTS_DASHBOARD, '/cell/type-new'),
+  //   editCellTypeById: path(ROOTS_DASHBOARD, '/cell/types/:name/edit')
+  // },
+  // garden: {
+  //   root: path(ROOTS_DASHBOARD, '/garden'),
+  //   list: path(ROOTS_DASHBOARD, '/garden/list'),
+  //   typesList: path(ROOTS_DASHBOARD, '/garden/types'),
+  //   newGarden: path(ROOTS_DASHBOARD, '/garden/new'),
+  //   newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
+  //   editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
+  //   editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
+  // },
   staff: {
     root: path(ROOTS_DASHBOARD, '/staff'),
     listEmployee: path(ROOTS_DASHBOARD, '/staff/employee/list'),
@@ -97,21 +121,6 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/technician/list'),
     new: path(ROOTS_DASHBOARD, '/technician/new'),
     area: path(ROOTS_DASHBOARD, '/technician/area')
-  },
-  garden: {
-    root: path(ROOTS_DASHBOARD, '/garden'),
-    list: path(ROOTS_DASHBOARD, '/garden/list'),
-    typesList: path(ROOTS_DASHBOARD, '/garden/types'),
-    newGarden: path(ROOTS_DASHBOARD, '/garden/new'),
-    newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
-    editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
-    editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
-  },
-  cell: {
-    root: path(ROOTS_DASHBOARD, '/cell'),
-    typesList: path(ROOTS_DASHBOARD, '/cell/types'),
-    newCellType: path(ROOTS_DASHBOARD, '/cell/type-new'),
-    editCellTypeById: path(ROOTS_DASHBOARD, '/cell/types/:name/edit')
   },
   group: {
     root: path(ROOTS_DASHBOARD, '/group-mode'),
