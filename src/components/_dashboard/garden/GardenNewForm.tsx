@@ -297,7 +297,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
         // const rounded_area = Math.round(turf.area(polygon_area) * 100) / 100;
         // first version 299
         // const rounded_area = Math.round(turf.area(draw.getAll()) * 100) / 100;
-        var polygon = turf.polygon([
+        const polygon = turf.polygon([
           [
             [125, -15],
             [113, -22],
@@ -307,7 +307,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
           ]
         ]);
 
-        var area = turf.area(polygon);
+        const area = turf.area(polygon);
 
         setFieldValue('acreage', area);
         // setFieldValue('acreage', rounded_area);
