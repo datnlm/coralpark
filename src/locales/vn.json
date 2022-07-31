@@ -178,13 +178,17 @@
       },
       "search": "Tìm kiếm theo tên đối tác",
       "form": {
+        "label": {
+          "information":"Thông tin",
+          "employee":"Nhân viên"
+        },
         "name": "Tên đối tác",
         "phone": "Số điện thoại",
         "email": "Địa chỉ Email",
         "address": "Địa chỉ",
         "website": "Địa chỉ Website",
         "partner-type": "Loại đối tác",
-        "status": "Trạng thái"
+        "status": "Trạng thái" 
       }
     },
     "partner-type": {

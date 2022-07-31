@@ -98,7 +98,7 @@ export default function GardenMoreMenu({ onDelete, userName }: GardenMoreMenuPro
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.cell.root}/types/${paramCase(userName)}/edit`}
+          to={`${PATH_DASHBOARD.site.root}/cell/types/${paramCase(userName)}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

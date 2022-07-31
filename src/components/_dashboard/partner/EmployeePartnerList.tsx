@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { useSnackbar } from 'notistack5';
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { manageEmployee } from '_apis_/employee';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -22,31 +23,26 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  CircularProgress
+  CircularProgress,
+  CardHeader
 } from '@material-ui/core';
-import { manageGarden } from '_apis_/garden';
-import { QuillEditor } from 'components/editor';
-// redux
-import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListCellType } from '../../redux/slices/cell';
-// routes
-import { PATH_DASHBOARD } from '../../routes/paths';
-// hooks
-import useSettings from '../../hooks/useSettings';
-import useLocales from '../../hooks/useLocales';
-// @types
-import { CellType } from '../../@types/cell-type';
-// components
-import Page from '../../components/Page';
-import Label from '../../components/Label';
-import Scrollbar from '../../components/Scrollbar';
-import SearchNotFound from '../../components/SearchNotFound';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import { statusOptions } from 'utils/constants';
+import { getListEmployeePartner } from 'redux/slices/employee';
+import Page from 'components/Page';
+import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
+import { PATH_DASHBOARD } from 'routes/paths';
+import Scrollbar from 'components/Scrollbar';
+import Label from 'components/Label';
+import SearchNotFound from 'components/SearchNotFound';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import useLocales from 'hooks/useLocales';
+import useSettings from 'hooks/useSettings';
 import {
-  CellTypesListHead,
-  CellTypesListToolbar,
-  CellTypesMoreMenu
-} from '../../components/_dashboard/cell/typesList';
+  EmployeePartnerListHead,
+  EmployeePartnerListToolbar,
+  EmployeePartnerMoreMenu
+} from '../account/list_employee_partner';
+import { EmployeePartner } from '../../../@types/staff';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -67,7 +63,11 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: CellType[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(
+  array: EmployeePartner[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -75,23 +75,20 @@ function applySortFilter(array: CellType[], comparator: (a: any, b: any) => numb
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_cellType) => _cellType.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_staff) => _staff.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function EmployeePartnerList() {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const cellTypeList = useSelector((state: RootState) => state.cell.cellTypeList);
-  const totalCount = useSelector((state: RootState) => state.cell.totalCount);
-  const isLoading = useSelector((state: RootState) => state.cell.isLoading);
+  const employeePartnerList = useSelector((state: RootState) => state.employee.employeePartnerList);
+  const totalCount = useSelector((state: RootState) => state.employee.totalCount);
+  const isLoading = useSelector((state: RootState) => state.employee.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -107,7 +104,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = cellTypeList.map((n) => n.name);
+      const newSelecteds = employeePartnerList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -141,12 +138,12 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteGardenType = async (gardenTypeID: string) => {
+  const handleDeleteEmployee = async (id: string) => {
     try {
-      await manageGarden.deleteGardenType(gardenTypeID).then((respone) => {
-        if (respone.status === 200) {
+      await manageEmployee.deleteEmployeePartner(id).then((respone) => {
+        if (respone.status == 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListCellType(page, rowsPerPage));
+          dispatch(getListEmployeePartner(page, rowsPerPage));
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
@@ -158,18 +155,18 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(getListCellType(page, rowsPerPage));
+    dispatch(getListEmployeePartner(page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !cellTypeList!;
+  const emptyRows = !isLoading && !employeePartnerList;
 
-  const filteredCellTypes = applySortFilter(
-    cellTypeList,
+  const filteredEmployee = applySortFilter(
+    employeePartnerList,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isCellTypesNotFound = filteredCellTypes.length === 0 && !isLoading;
+  const isEmployeeNotFound = filteredEmployee.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -179,48 +176,51 @@ export default function UserList() {
   //     );
   //   });
   // }
-
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.cell-type.form.name'), alignRight: false },
-    { id: 'description', label: translate('page.cell-type.form.description'), alignRight: false },
+    { id: 'name', label: translate('page.employee-partner.form.name'), alignRight: false },
+    { id: 'phone', label: translate('page.employee-partner.form.phone'), alignRight: false },
+    { id: 'email', label: translate('page.employee-partner.form.email'), alignRight: false },
+    { id: 'address', label: translate('page.employee-partner.form.address'), alignRight: false },
+    { id: 'status', label: translate('page.employee-partner.form.status'), alignRight: false },
     { id: '' }
   ];
   return (
-    <Page title={translate('page.cell-type.title.list')}>
+    <Page title={translate('page.employee-partner.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={translate('page.cell-type.heading1.list')}
-          links={[
-            { name: translate('page.cell-type.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.cell-type.heading3'), href: PATH_DASHBOARD.site.cellTypesList },
-            { name: translate('page.cell-type.heading4.list') }
-          ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.site.newCellType}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              {translate('button.save.add')}
-            </Button>
-          }
-        />
         <Card>
-          <CellTypesListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+            justifyContent="space-between"
+          >
+            <EmployeePartnerListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
+            <CardHeader
+              sx={{ mb: 2 }}
+              action={
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.staff.newEmployeePartner}
+                  startIcon={<Icon icon={plusFill} />}
+                >
+                  {translate('button.save.add')}
+                </Button>
+              }
+            />
+          </Stack>
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <CellTypesListHead
+                <EmployeePartnerListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={cellTypeList.length}
+                  rowCount={employeePartnerList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -231,8 +231,8 @@ export default function UserList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredCellTypes.map((row) => {
-                      const { id, name, description } = row;
+                    filteredEmployee.map((row) => {
+                      const { id, name, phone, status, email, address, imageUrl } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -248,21 +248,30 @@ export default function UserList() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              {/* <Avatar alt={name} src={imageUrl} /> */}
+                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
+                          <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">
-                            {description && (
-                              <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
-                            )}
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={(status === 0 && 'error') || 'success'}
+                            >
+                              {translate(
+                                `status.${statusOptions.find((v: any) => v.id == status)?.label}`
+                              )}
+                            </Label>
                           </TableCell>
                           <TableCell align="right">
-                            <CellTypesMoreMenu
-                              onDelete={() => handleDeleteGardenType(id.toString())}
-                              userName={id.toString()}
+                            <EmployeePartnerMoreMenu
+                              onDelete={() => handleDeleteEmployee(id.toString())}
+                              id={id.toString()}
+                              status={status}
                             />
                           </TableCell>
                         </TableRow>
@@ -272,7 +281,7 @@ export default function UserList() {
 
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
                         <Typography gutterBottom align="center" variant="subtitle1">
                           {translate('message.not-found')}
                         </Typography>
@@ -280,7 +289,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isCellTypesNotFound && (
+                {isEmployeeNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>

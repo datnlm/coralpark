@@ -8,7 +8,7 @@ export type Staff = {
   status: any;
 };
 
-export type EmployePartner = {
+export type EmployeePartner = {
   id: string;
   imageUrl: any;
   name: string;

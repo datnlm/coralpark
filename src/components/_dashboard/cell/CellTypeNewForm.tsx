@@ -82,7 +82,7 @@ export default function CellTypeNewForm({ isEdit, currentCellType }: CellTypeNew
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.cell.typesList);
+          navigate(PATH_DASHBOARD.site.cellTypesList);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),

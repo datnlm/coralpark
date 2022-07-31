@@ -79,6 +79,30 @@ export default function SidebarConfig() {
             }
           ]
         },
+
+        {
+          title: translate('menu.sidebarConfig.subheader.site'),
+          path: PATH_DASHBOARD.site.root,
+          icon: ICONS.site,
+          children: [
+            {
+              title: translate('menu.sidebarConfig.title.site'),
+              path: PATH_DASHBOARD.site.list
+            },
+            {
+              title: translate('menu.sidebarConfig.title.garden'),
+              path: PATH_DASHBOARD.site.garden
+            },
+            {
+              title: translate('menu.sidebarConfig.title.garden-type'),
+              path: PATH_DASHBOARD.site.typesList
+            },
+            {
+              title: translate('menu.sidebarConfig.title.cell-type'),
+              path: PATH_DASHBOARD.site.cellTypesList
+            }
+          ]
+        },
         {
           title: translate('menu.sidebarConfig.subheader.user'),
           path: PATH_DASHBOARD.diver.root,
@@ -108,29 +132,6 @@ export default function SidebarConfig() {
             {
               title: translate('menu.sidebarConfig.title.all'),
               path: PATH_DASHBOARD.account.list
-            }
-          ]
-        },
-        {
-          title: translate('menu.sidebarConfig.subheader.site'),
-          path: PATH_DASHBOARD.site.root,
-          icon: ICONS.site,
-          children: [
-            {
-              title: translate('menu.sidebarConfig.title.site'),
-              path: PATH_DASHBOARD.site.list
-            },
-            {
-              title: translate('menu.sidebarConfig.title.garden'),
-              path: PATH_DASHBOARD.garden.list
-            },
-            {
-              title: translate('menu.sidebarConfig.title.garden-type'),
-              path: PATH_DASHBOARD.garden.typesList
-            },
-            {
-              title: translate('menu.sidebarConfig.title.cell-type'),
-              path: PATH_DASHBOARD.cell.typesList
             }
           ]
         },

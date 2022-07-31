@@ -146,7 +146,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.garden.list);
+          navigate(PATH_DASHBOARD.site.garden);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),
@@ -294,15 +294,9 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
 
     function updateArea(e: any) {
       if (draw.getAll().features[0] != null) {
-        // const polygon_area = draw.getAll();
-        // const rounded_area = Math.round(turf.area(polygon_area) * 100) / 100;
-        // first version 299
-        // const rounded_area = Math.round(turf.area(draw.getAll()) * 100) / 100;
-
-        const rounded_area = area(draw.getAll());
-
+        const rounded_area = Math.round(area(draw.getAll()) * 100) / 100;
         setFieldValue('acreage', rounded_area);
-        // setFieldValue('acreage', rounded_area);
+
         const data = draw.getAll().features![0]!.geometry;
 
         let string = '';

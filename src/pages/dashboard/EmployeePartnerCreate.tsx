@@ -16,7 +16,7 @@ import useLocales from '../../hooks/useLocales';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import EmployeePartnerNewForm from '../../components/_dashboard/account/EmployeePartnerNewForm';
-import { EmployePartner } from '../../@types/staff';
+import { EmployeePartner } from '../../@types/staff';
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ export default function EmployeeCreate() {
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const [currentEmployeePartner, setCurrentEmployeePartner] = useState<EmployePartner>();
+  const [currentEmployeePartner, setCurrentEmployeePartner] = useState<EmployeePartner>();
 
   const fetchData = async () => {
     await manageEmployee.getEmployeePartnerByID(name).then((response) => {

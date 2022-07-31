@@ -43,21 +43,6 @@ export default function MegaMenuConfig() {
   const { translate } = useLocales();
   const menuConfig: MegaMenuItemProps[] = [
     {
-      title: translate('menu.mega.title.site'),
-      path: PATH_DASHBOARD.garden.root,
-      icon: ICONS.site,
-      children: [
-        {
-          subheader: translate('menu.mega.subheader.site'),
-          items: [
-            { title: translate('menu.mega.site.list'), path: PATH_DASHBOARD.site.list },
-            { title: translate('menu.mega.site.create'), path: PATH_DASHBOARD.site.newSite }
-            // { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
-          ]
-        }
-      ]
-    },
-    {
       title: translate('menu.mega.title.technician'),
       path: PATH_DASHBOARD.technician.root,
       icon: ICONS.site,
@@ -71,47 +56,6 @@ export default function MegaMenuConfig() {
               path: PATH_DASHBOARD.technician.new
             }
             // { title: translate('menu.sidebarConfig.site.list'), path: PATH_DASHBOARD.site.list }
-          ]
-        }
-      ]
-    },
-    {
-      title: translate('menu.mega.title.garden'),
-      path: PATH_DASHBOARD.garden.root,
-      icon: ICONS.garden,
-      children: [
-        {
-          subheader: translate('menu.mega.subheader.garden'),
-          items: [
-            { title: translate('menu.mega.garden.list'), path: PATH_DASHBOARD.garden.list },
-            { title: translate('menu.mega.garden.create'), path: PATH_DASHBOARD.garden.newGarden }
-          ]
-        },
-        {
-          subheader: translate('menu.mega.subheader.type'),
-          items: [
-            { title: translate('menu.mega.garden.list'), path: PATH_DASHBOARD.garden.typesList },
-            {
-              title: translate('menu.mega.garden.create'),
-              path: PATH_DASHBOARD.garden.newGardenType
-            }
-          ]
-        }
-      ]
-    },
-    {
-      title: translate('menu.mega.title.cell'),
-      path: PATH_DASHBOARD.cell.root,
-      icon: ICONS.garden,
-      children: [
-        {
-          subheader: translate('menu.mega.subheader.type'),
-          items: [
-            { title: translate('menu.mega.cell-type.list'), path: PATH_DASHBOARD.cell.typesList },
-            {
-              title: translate('menu.mega.cell-type.create'),
-              path: PATH_DASHBOARD.cell.newCellType
-            }
           ]
         }
       ]
