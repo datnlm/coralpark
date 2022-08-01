@@ -72,7 +72,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/site'),
     list: path(ROOTS_DASHBOARD, '/site/list'),
     newSite: path(ROOTS_DASHBOARD, '/site/new'),
-    garden: path(ROOTS_DASHBOARD, '/site/garden/list'), 
+    garden: path(ROOTS_DASHBOARD, '/site/garden/list'),
     typesList: path(ROOTS_DASHBOARD, '/site/garden/types'),
     newGarden: path(ROOTS_DASHBOARD, '/site/garden/new'),
     newGardenType: path(ROOTS_DASHBOARD, '/site/garden/type-new'),
