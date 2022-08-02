@@ -72,6 +72,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   const gardenTypesList = useSelector((state: RootState) => state.garden.gardenTypesList);
   const siteList = useSelector((state: RootState) => state.garden.siteList);
   const areaList = useSelector((state: RootState) => state.area.areaList);
+  const [isView, setIsView] = useState<Boolean>(false);
   const [lng, setLng] = useState(111.202);
   const [lat, setLat] = useState(11.305);
   const mapContainerRef = useRef(null);
@@ -204,6 +205,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
   }, [currentGarden]);
 
   useEffect(() => {
+    setIsView(false);
     const map = new mapboxgl.Map({
       // accessToken: mapboxgl.accessToken,
       container: mapContainerRef.current || '',
@@ -324,6 +326,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
 
     // Add navigation control (the +/- zoom buttons)
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    setIsView(true);
   }, [polygonCoordinates]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -331,7 +334,11 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
             <Tab label={translate('page.garden.form.label.information')} value="0" />
-            <Tab label={translate('page.garden.form.label.cell')} value="1" disabled={!isEdit} />
+            <Tab
+              label={translate('page.garden.form.label.cell')}
+              value="1"
+              disabled={!isEdit && isView == false}
+            />
           </TabList>
         </Box>
         <TabPanel sx={{ p: 3 }} value="0">

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Employee } from '../@types/employee';
 
 export class EmployeeManager {
   getListEmployee = (roleId: string, page_number: number, page_size: number) => {
