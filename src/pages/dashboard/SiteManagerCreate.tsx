@@ -4,7 +4,8 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageEmployee } from '_apis_/employee';
-import { Employee } from '../../@types/employee';
+import { getListSites } from 'redux/slices/garden';
+import { SiteManager } from '../../@types/staff';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -26,7 +27,7 @@ export default function EmployeeCreate() {
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const [currentEmployee, setCurrentEmployee] = useState<Employee>();
+  const [currentEmployee, setCurrentEmployee] = useState<SiteManager>();
 
   const fetchData = async () => {
     await manageEmployee.getEmployeeByID(name).then((response) => {
@@ -38,6 +39,7 @@ export default function EmployeeCreate() {
           email: response.data.email,
           address: response.data.address,
           password: response.data.password,
+          siteId: response.data.siteId,
           imageUrl: response.data.imageUrl,
           status: response.data.status
         };
@@ -49,6 +51,7 @@ export default function EmployeeCreate() {
   useEffect(() => {
     if (isEdit) {
       fetchData();
+      dispatch(getListSites(0, -1));
     }
   }, [dispatch]);
 
