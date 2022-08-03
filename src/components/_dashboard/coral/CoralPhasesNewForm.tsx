@@ -50,8 +50,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
     name: Yup.string()
       .required(translate('message.form.name'))
       .min(3, translate('message.form.name_length_100'))
-      .max(100, translate('message.form.name_length_100')),
-    imageUrl: Yup.array().min(1, translate('message.form.image'))
+      .max(100, translate('message.form.name_length_100'))
   });
 
   const formik = useFormik({
