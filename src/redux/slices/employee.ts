@@ -94,6 +94,31 @@ export function getListEmployee(roleId: string, page: number, rowsPerPage: numbe
   };
 }
 
+export function getListSiteManagerById(
+  siteId: string,
+  roleId: string,
+  page: number,
+  rowsPerPage: number
+) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await manageEmployee
+        .getListSiteManagerById(siteId, roleId, 1 + page, rowsPerPage)
+        .then((response) => {
+          if (response.status == 200) {
+            dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
+            dispatch(slice.actions.getListEmployee(response.data.items));
+          } else {
+            dispatch(slice.actions.endLoading());
+          }
+        });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 // get employee partner
 export function getListEmployeePartner(page: number, rowsPerPage: number) {
   return async () => {
@@ -107,6 +132,26 @@ export function getListEmployeePartner(page: number, rowsPerPage: number) {
           dispatch(slice.actions.endLoading());
         }
       });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getListEmployeePartnerById(partnerId: string, page: number, rowsPerPage: number) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await manageEmployee
+        .getListEmployeePartnerById(partnerId, 1 + page, rowsPerPage)
+        .then((response) => {
+          if (response.status == 200) {
+            dispatch(slice.actions.totalCount(response.data.metaData.totalCount));
+            dispatch(slice.actions.getListEmployeePartner(response.data.items));
+          } else {
+            dispatch(slice.actions.endLoading());
+          }
+        });
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

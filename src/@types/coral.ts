@@ -170,7 +170,6 @@ export type AreaProvice = {
 export type Coral = {
   id: string;
   name: string;
-  // images: object[];
   images: string[];
   imageUrl: string[];
   scientificName: string;
@@ -210,7 +209,7 @@ export type PhasesType = {
 export type Phases = {
   id: string;
   name: string;
-  imageUrl: string[];
+  imageUrl: string;
   description: string;
 };
 

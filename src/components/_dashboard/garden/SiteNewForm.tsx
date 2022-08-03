@@ -2,13 +2,13 @@ import * as Yup from 'yup';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack5';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton, TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { styled as styled, useTheme } from '@material-ui/core/styles';
 import {
   Card,
@@ -30,7 +30,10 @@ import {
   TablePagination,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
+  Tab,
+  CardHeader,
+  Button
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -52,6 +55,8 @@ import { Garden, Site } from '../../../@types/garden';
 import { UploadAvatar } from '../../upload';
 import { GardenListHead, GardenListToolbar, GardenMoreMenu } from './list';
 import GardenSiteNewForm from './GardenSiteNewForm';
+import SiteManagerList from './SiteManagerList';
+import EmployeeSiteList from './EmployeeSiteList';
 
 // ----------------------------------------------------------------------
 
@@ -120,6 +125,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState('name');
+  const [valueTab, setValueTab] = useState('0');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [imageFILE, setImageFILE] = useState('');
@@ -316,158 +322,181 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     { id: 'status', label: translate('page.garden.form.status'), alignRight: false },
     { id: '' }
   ];
-  return (
-    <FormikProvider value={formik}>
-      <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <Card sx={{ py: 10, px: 3 }}>
-              <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.imageUrl}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.imageUrl && errors.imageUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      {translate('message.allow-type-image')}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.imageUrl && errors.imageUrl}
-                </FormHelperText>
-              </Box>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3 }}>
-              <Stack spacing={3}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label={translate('page.site.form.name')}
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
-                  />
-                  <TextField
-                    fullWidth
-                    label={translate('page.site.form.phone')}
-                    {...getFieldProps('phone')}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
-                </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label={translate('page.site.form.email')}
-                    type="email"
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                  <TextField
-                    fullWidth
-                    label={translate('page.site.form.address')}
-                    {...getFieldProps('address')}
-                    error={Boolean(touched.address && errors.address)}
-                    helperText={touched.address && errors.address}
-                  />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label={translate('page.site.form.website')}
-                    {...getFieldProps('webUrl')}
-                    error={Boolean(touched.webUrl && errors.webUrl)}
-                    helperText={touched.webUrl && errors.webUrl}
-                  />
-                  {isEdit && (
-                    <Autocomplete
-                      fullWidth
-                      disablePortal
-                      clearIcon
-                      id="status"
-                      {...getFieldProps('status')}
-                      options={statusOptions}
-                      getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
-                      onChange={(e, values: any) =>
-                        values ? { ...setFieldValue('status', values) } : null
-                      }
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={translate('page.site.form.status')}
-                          error={Boolean(touched.status && errors.status)}
-                          helperText={touched.status && errors.status}
-                        />
-                      )}
-                    />
-                  )}
-                </Stack>
-                <Grid item xs={12}>
-                  <Card sx={{ mb: 3 }}>
-                    <CardContent>
-                      <MapWrapperStyle>
-                        <div>
-                          <div className="map-container" ref={mapContainerRef} />
-                        </div>
-                      </MapWrapperStyle>
-                    </CardContent>
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setValueTab(newValue);
+  };
+
+  return (
+    <Box sx={{ width: '100%', typography: 'body1' }}>
+      <TabContext value={valueTab}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
+            <Tab label={translate('page.partner.form.label.information')} value="0" />
+            <Tab label={translate('page.partner.form.label.garden')} value="1" disabled={!isEdit} />
+            <Tab
+              label={translate('page.partner.form.label.site-manager')}
+              value="2"
+              disabled={!isEdit}
+            />
+            <Tab
+              label={translate('page.partner.form.label.employee')}
+              value="3"
+              disabled={!isEdit}
+            />
+          </TabList>
+        </Box>
+        <TabPanel sx={{ p: 3 }} value="0">
+          <FormikProvider value={formik}>
+            <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                  <Card sx={{ py: 10, px: 3 }}>
+                    <Box sx={{ mb: 5 }}>
+                      <UploadAvatar
+                        accept="image/*"
+                        file={values.imageUrl}
+                        maxSize={3145728}
+                        onDrop={handleDrop}
+                        error={Boolean(touched.imageUrl && errors.imageUrl)}
+                        caption={
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              mt: 2,
+                              mx: 'auto',
+                              display: 'block',
+                              textAlign: 'center',
+                              color: 'text.secondary'
+                            }}
+                          >
+                            {translate('message.allow-type-image')}
+                          </Typography>
+                        }
+                      />
+                      <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
+                        {touched.imageUrl && errors.imageUrl}
+                      </FormHelperText>
+                    </Box>
                   </Card>
                 </Grid>
+                <Grid item xs={12} md={8}>
+                  <Card sx={{ p: 3 }}>
+                    <Stack spacing={3}>
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField
+                          fullWidth
+                          label={translate('page.site.form.name')}
+                          {...getFieldProps('name')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                        <TextField
+                          fullWidth
+                          label={translate('page.site.form.phone')}
+                          {...getFieldProps('phone')}
+                          error={Boolean(touched.phone && errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    disabled={true}
-                    label={translate('page.site.form.longitude')}
-                    {...getFieldProps('longitude')}
-                    error={Boolean(touched.longitude && errors.longitude)}
-                    helperText={touched.longitude && errors.longitude}
-                  />
-                  <TextField
-                    fullWidth
-                    disabled={true}
-                    label={translate('page.site.form.latitude')}
-                    {...getFieldProps('latitude')}
-                    error={Boolean(touched.latitude && errors.latitude)}
-                    helperText={touched.latitude && errors.latitude}
-                  />
-                </Stack>
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
-                  </LoadingButton>
-                </Box>
-              </Stack>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={12}>
-            <Card>
-              <Accordion key="1" disabled={!isEdit}>
-                <AccordionSummary
-                  expandIcon={<Icon icon={arrowIosDownwardFill} width={20} height={20} />}
-                >
-                  <Typography variant="subtitle1">
-                    {translate('page.garden.heading1.list')}
-                  </Typography>
-                </AccordionSummary>
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField
+                          fullWidth
+                          label={translate('page.site.form.email')}
+                          type="email"
+                          {...getFieldProps('email')}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                        <TextField
+                          fullWidth
+                          label={translate('page.site.form.address')}
+                          {...getFieldProps('address')}
+                          error={Boolean(touched.address && errors.address)}
+                          helperText={touched.address && errors.address}
+                        />
+                      </Stack>
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField
+                          fullWidth
+                          label={translate('page.site.form.website')}
+                          {...getFieldProps('webUrl')}
+                          error={Boolean(touched.webUrl && errors.webUrl)}
+                          helperText={touched.webUrl && errors.webUrl}
+                        />
+                        {isEdit && (
+                          <Autocomplete
+                            fullWidth
+                            disablePortal
+                            clearIcon
+                            id="status"
+                            {...getFieldProps('status')}
+                            options={statusOptions}
+                            getOptionLabel={(option: OptionStatus) =>
+                              translate(`status.${option.label}`)
+                            }
+                            onChange={(e, values: any) =>
+                              values ? { ...setFieldValue('status', values) } : null
+                            }
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={translate('page.site.form.status')}
+                                error={Boolean(touched.status && errors.status)}
+                                helperText={touched.status && errors.status}
+                              />
+                            )}
+                          />
+                        )}
+                      </Stack>
+                      <Grid item xs={12}>
+                        <Card sx={{ mb: 3 }}>
+                          <CardContent>
+                            <MapWrapperStyle>
+                              <div>
+                                <div className="map-container" ref={mapContainerRef} />
+                              </div>
+                            </MapWrapperStyle>
+                          </CardContent>
+                        </Card>
+                      </Grid>
 
-                <AccordionDetails>
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField
+                          fullWidth
+                          disabled={true}
+                          label={translate('page.site.form.longitude')}
+                          {...getFieldProps('longitude')}
+                          error={Boolean(touched.longitude && errors.longitude)}
+                          helperText={touched.longitude && errors.longitude}
+                        />
+                        <TextField
+                          fullWidth
+                          disabled={true}
+                          label={translate('page.site.form.latitude')}
+                          {...getFieldProps('latitude')}
+                          error={Boolean(touched.latitude && errors.latitude)}
+                          helperText={touched.latitude && errors.latitude}
+                        />
+                      </Stack>
+                      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                          {!isEdit ? translate('button.save.add') : translate('button.save.update')}
+                        </LoadingButton>
+                      </Box>
+                    </Stack>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Form>
+          </FormikProvider>
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="1">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={12}>
+                <Stack spacing={5}>
                   <Card>
                     <Stack
                       direction={{ xs: 'row', sm: 'row' }}
@@ -478,6 +507,19 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                         numSelected={selected.length}
                         filterName={filterName}
                         onFilterName={handleFilterByName}
+                      />
+                      <CardHeader
+                        sx={{ mb: 2 }}
+                        action={
+                          <Button
+                            variant="contained"
+                            component={RouterLink}
+                            to={PATH_DASHBOARD.site.newGarden}
+                            startIcon={<Icon icon={plusFill} />}
+                          >
+                            {translate('button.save.add')}
+                          </Button>
+                        }
                       />
                     </Stack>
                     <Scrollbar>
@@ -592,12 +634,34 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                       onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                   </Card>
-                </AccordionDetails>
-              </Accordion>
-            </Card>
+                </Stack>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-      </Form>
-    </FormikProvider>
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="2">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={12}>
+                <Stack spacing={5}>
+                  {currentSite?.id != null && <SiteManagerList siteId={currentSite.id} />}
+                </Stack>
+              </Grid>
+            </Grid>
+          </Grid>
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="3">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={12}>
+                <Stack spacing={5}>
+                  {currentSite?.id != null && <EmployeeSiteList siteId={currentSite.id} />}
+                </Stack>
+              </Grid>
+            </Grid>
+          </Grid>
+        </TabPanel>
+      </TabContext>
+    </Box>
   );
 }

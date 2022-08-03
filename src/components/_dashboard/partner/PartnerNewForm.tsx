@@ -284,7 +284,9 @@ export default function PartnerNewForm({ isEdit, currentPartner }: PartnerNewFor
             <Grid item xs={12} md={12}>
               <Grid item xs={12} md={12}>
                 <Stack spacing={5}>
-                  <EmployeePartnerList />
+                  {currentPartner?.id != null && (
+                    <EmployeePartnerList partnerId={currentPartner.id} />
+                  )}
                 </Stack>
               </Grid>
             </Grid>

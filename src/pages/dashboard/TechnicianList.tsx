@@ -198,14 +198,17 @@ export default function TechinicianList() {
           heading={translate('page.technician.heading1.list')}
           links={[
             { name: translate('page.technician.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.technician.heading3'), href: PATH_DASHBOARD.technician.root },
+            {
+              name: translate('page.technician.heading3'),
+              href: PATH_DASHBOARD.staff.listTechnician
+            },
             { name: translate('page.technician.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.technician.new}
+              to={PATH_DASHBOARD.staff.technicianNew}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}

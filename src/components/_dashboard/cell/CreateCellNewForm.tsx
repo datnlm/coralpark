@@ -41,27 +41,24 @@ export default function CreateCellNewForm({
   const { enqueueSnackbar } = useSnackbar();
   const cellTypeList = useSelector((state: RootState) => state.cell.cellTypeList);
 
-  // const NewAddressSchema = Yup.object().shape({
-  //   type: Yup.object().required(translate('message.form.cell')),
-  //   acreage: Yup.string()
-  //     .required()
-  //     .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
-  //     .min(10, translate('message.form.cell_length'))
-  //     .max(10, translate('message.form.cell_length'))
-  //     .required(translate('message.form.cell')),
-  //   maxItem: Yup.string()
-  //     .required()
-  //     .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
-  //     .min(10, translate('message.form.cell_length'))
-  //     .max(10, translate('message.form.cell_length'))
-  //     .required(translate('message.form.cell')),
-  //   quantity: Yup.string()
-  //     .required()
-  //     .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
-  //     .min(10, translate('message.form.cell_length'))
-  //     .max(10, translate('message.form.cell_length'))
-  //     .required(translate('message.form.cell'))
-  // });
+  const NewAddressSchema = Yup.object().shape({
+    type: Yup.object().required(translate('message.form.cell')),
+    acreage: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+      .min(1, translate('message.form.cell-length'))
+      .required(translate('message.form.cell-acreage')),
+    maxItem: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+      .min(1, translate('message.form.cell-item-length'))
+      .required(translate('message.form.cell-item')),
+    quantity: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, translate('message.form.cell_typeError'))
+      .min(1, translate('message.form.cell-quantity-length'))
+      .required(translate('message.form.cell-quantity'))
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -75,7 +72,7 @@ export default function CreateCellNewForm({
       quantity: currentCell?.quantity || '',
       status: currentCell?.status || ''
     },
-    // validationSchema: NewAddressSchema,
+    validationSchema: NewAddressSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         console.log('submit');
@@ -184,18 +181,23 @@ export default function CreateCellNewForm({
                       fullWidth
                       label={translate('page.cell.form.acreage')}
                       {...getFieldProps('acreage')}
+                      error={Boolean(touched.acreage && errors.acreage)}
+                      helperText={touched.acreage && errors.acreage}
                     />
                     <TextField
                       fullWidth
                       label={translate('page.cell.form.items')}
                       {...getFieldProps('maxItem')}
+                      error={Boolean(touched.maxItem && errors.maxItem)}
+                      helperText={touched.maxItem && errors.maxItem}
                     />
                     <TextField
                       disabled={isEdit}
                       fullWidth
                       label={translate('page.cell.form.quantity')}
                       {...getFieldProps('quantity')}
-
+                      error={Boolean(touched.quantity && errors.quantity)}
+                      helperText={touched.quantity && errors.quantity}
                       // }}
                     />
                   </Stack>

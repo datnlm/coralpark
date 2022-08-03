@@ -110,7 +110,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.diver.list);
+          navigate(PATH_DASHBOARD.staff.diverList);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),

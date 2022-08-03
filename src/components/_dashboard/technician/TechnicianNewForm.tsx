@@ -188,7 +188,7 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.technician.list);
+          navigate(PATH_DASHBOARD.staff.listTechnician);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.create-error'),

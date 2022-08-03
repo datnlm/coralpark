@@ -12,8 +12,6 @@ import {
   Typography,
   CardActionArea
 } from '@material-ui/core';
-import menuConfig from './MenuConfig';
-import MegaMenuMobile from './MegaMenuMobile';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';

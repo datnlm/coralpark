@@ -237,7 +237,7 @@ export default function StaffNewForm({ isEdit, currentEmployee }: SiteMannagerNe
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label={translate('page.employee-site.form.siteList')}
+                        label={translate('page.employee.form.site')}
                         error={Boolean(touched.siteId && errors.siteId)}
                         helperText={touched.siteId && errors.siteId}
                       />

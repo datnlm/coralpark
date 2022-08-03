@@ -188,7 +188,10 @@ export default function CoralHealthList() {
           heading={translate('page.coral-health.heading1.list')}
           links={[
             { name: translate('page.coral-health.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.coral-health.heading3'), href: PATH_DASHBOARD.diver.root },
+            {
+              name: translate('page.coral-health.heading3'),
+              href: PATH_DASHBOARD.coral.listHealth
+            },
             { name: translate('page.coral-health.heading4.list') }
           ]}
           action={

@@ -19,19 +19,20 @@ import {
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
+import { RootState, useSelector, useDispatch } from 'redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
 import useLocales from '../../../hooks/useLocales';
 // @types
-import { Employee } from '../../../@types/employee';
+import { SiteManager } from '../../../@types/staff';
 import { UploadAvatar } from '../../upload';
 
 // ----------------------------------------------------------------------
 
 type EmployeeNewFormProps = {
   isEdit: boolean;
-  currentEmployee?: Employee;
+  currentEmployee?: SiteManager;
 };
 
 export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNewFormProps) {
@@ -39,6 +40,7 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
+  const siteList = useSelector((state: RootState) => state.garden.siteList);
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const NewProductSchema = Yup.object().shape({
     name: Yup.string()
@@ -71,6 +73,7 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
       phone: currentEmployee?.phone || '',
       email: currentEmployee?.email || '',
       address: currentEmployee?.address || '',
+      siteId: currentEmployee?.siteId || '',
       imageUrl: currentEmployee?.imageUrl || null,
       status: currentEmployee?.status || 1
     },
@@ -88,6 +91,7 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
         bodyFormData.append('Email', values.email);
         bodyFormData.append('Address', values.address);
         bodyFormData.append('Status', values.status);
+        bodyFormData.append('SiteId', values.siteId?.id);
         bodyFormData.append('RoleId', 'EM');
         bodyFormData.append('imageFile', imageFILE);
 
@@ -141,6 +145,16 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
     },
     [setFieldValue]
   );
+
+  useEffect(() => {
+    if (isEdit) {
+      setFieldValue(
+        'siteId',
+        siteList.find((v) => v.id == currentEmployee?.siteId || null)
+      );
+      setEnumStatus(statusOptions.find((e) => e.id == currentEmployee?.status) || null);
+    }
+  }, [currentEmployee]);
 
   return (
     <FormikProvider value={formik}>
@@ -212,8 +226,29 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
                     helperText={touched.address && errors.address}
                   />
                 </Stack>
-                {isEdit && (
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <Autocomplete
+                    fullWidth
+                    disablePortal
+                    clearIcon
+                    id="siteId"
+                    {...getFieldProps('siteId')}
+                    options={siteList}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('siteId', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={translate('page.employee.form.site')}
+                        error={Boolean(touched.siteId && errors.siteId)}
+                        helperText={touched.siteId && errors.siteId}
+                      />
+                    )}
+                  />
+                  {isEdit && (
                     <Autocomplete
                       fullWidth
                       disablePortal
@@ -233,8 +268,9 @@ export default function EmployeeNewForm({ isEdit, currentEmployee }: EmployeeNew
                         />
                       )}
                     />
-                  </Stack>
-                )}
+                  )}
+                </Stack>
+
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? translate('button.save.add') : translate('button.save.update')}

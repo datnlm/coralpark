@@ -99,7 +99,7 @@ export default function DiverMoreMenu({ onDelete, diverID, status }: DiverMoreMe
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.diver.root}/${paramCase(diverID)}/edit`}
+          to={`${PATH_DASHBOARD.staff.root}/diver/${paramCase(diverID)}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

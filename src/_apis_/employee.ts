@@ -10,6 +10,20 @@ export class EmployeeManager {
       .catch((err) => err);
   };
 
+  getListSiteManagerById = (
+    siteId: string,
+    roleId: string,
+    page_number: number,
+    page_size: number
+  ) => {
+    return axios
+      .get('/api/v1/admin/staffs', {
+        params: { roleId, siteId, page_number, page_size }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
   // get emp by id
   getEmployeeByID = (id: string) => {
     return axios
@@ -55,6 +69,15 @@ export class EmployeeManager {
     return axios
       .get('/api/v1/admin/employee-partners', {
         params: { page_number, page_size }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  getListEmployeePartnerById = (PartnerId: String, page_number: number, page_size: number) => {
+    return axios
+      .get('/api/v1/admin/employee-partners', {
+        params: { PartnerId, page_number, page_size }
       })
       .then((res) => res)
       .catch((err) => err);

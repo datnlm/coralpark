@@ -40,20 +40,17 @@ export const PATH_DASHBOARD = {
     type: path(ROOTS_DASHBOARD, '/coral/type'),
     listType: path(ROOTS_DASHBOARD, '/coral/coral-type-list'),
     listHealth: path(ROOTS_DASHBOARD, '/coral/health'),
-    healthNew: path(ROOTS_DASHBOARD, '/coral/health/new')
+    healthNew: path(ROOTS_DASHBOARD, '/coral/health/new'),
+    coralPhaselist: path(ROOTS_DASHBOARD, '/coral/phases/list'),
+    coralPhaseNew: path(ROOTS_DASHBOARD, '/coral/phases/new'),
+    typeNew: path(ROOTS_DASHBOARD, '/coral/phases/type/new'),
+    editById: path(ROOTS_DASHBOARD, '/coral/phases/:name/edit')
   },
   account: {
     root: path(ROOTS_DASHBOARD, '/account'),
     list: path(ROOTS_DASHBOARD, '/account/list'),
     newUser: path(ROOTS_DASHBOARD, '/account/new'),
     editById: path(ROOTS_DASHBOARD, '/account/:name/edit')
-  },
-  phases: {
-    root: path(ROOTS_DASHBOARD, '/phases'),
-    list: path(ROOTS_DASHBOARD, '/phases/list'),
-    new: path(ROOTS_DASHBOARD, '/phases/new'),
-    typeNew: path(ROOTS_DASHBOARD, '/phases/type/new'),
-    editById: path(ROOTS_DASHBOARD, '/phases/:name/edit')
   },
   area: {
     root: path(ROOTS_DASHBOARD, '/area'),
@@ -83,21 +80,6 @@ export const PATH_DASHBOARD = {
     newCellType: path(ROOTS_DASHBOARD, '/site/cell/type-new'),
     editCellTypeById: path(ROOTS_DASHBOARD, '/site/cell/types/:name/edit')
   },
-  // cell: {
-  //   root: path(ROOTS_DASHBOARD, '/cell'),
-  //   typesList: path(ROOTS_DASHBOARD, '/cell/types'),
-  //   newCellType: path(ROOTS_DASHBOARD, '/cell/type-new'),
-  //   editCellTypeById: path(ROOTS_DASHBOARD, '/cell/types/:name/edit')
-  // },
-  // garden: {
-  //   root: path(ROOTS_DASHBOARD, '/garden'),
-  //   list: path(ROOTS_DASHBOARD, '/garden/list'),
-  //   typesList: path(ROOTS_DASHBOARD, '/garden/types'),
-  //   newGarden: path(ROOTS_DASHBOARD, '/garden/new'),
-  //   newGardenType: path(ROOTS_DASHBOARD, '/garden/type-new'),
-  //   editByIdGarden: path(ROOTS_DASHBOARD, '/garden/:name/edit'),
-  //   editByIdGardenType: path(ROOTS_DASHBOARD, '/garden/types/:name/edit')
-  // },
   staff: {
     root: path(ROOTS_DASHBOARD, '/staff'),
     listEmployee: path(ROOTS_DASHBOARD, '/staff/employee/list'),
@@ -108,20 +90,24 @@ export const PATH_DASHBOARD = {
     newEmployee: path(ROOTS_DASHBOARD, '/staff/employee/new'),
     newSite: path(ROOTS_DASHBOARD, '/staff/site-manager/new'),
     editByEmployeeId: path(ROOTS_DASHBOARD, '/staff/employeee/:name/edit'),
-    editBySiteId: path(ROOTS_DASHBOARD, '/staff/site-manager/:name/edit')
+    editBySiteId: path(ROOTS_DASHBOARD, '/staff/site-manager/:name/edit'),
+    diverList: path(ROOTS_DASHBOARD, '/staff/diver/list'),
+    newDiver: path(ROOTS_DASHBOARD, '/staff/diver/new'),
+    team: path(ROOTS_DASHBOARD, '/staff/diver/team'),
+    teamNew: path(ROOTS_DASHBOARD, '/staff/diver/team/new'),
+    area: path(ROOTS_DASHBOARD, '/staff/diver/area'),
+    listTechnician: path(ROOTS_DASHBOARD, '/staff/technician/list'),
+    technicianNew: path(ROOTS_DASHBOARD, '/staff/technician/new'),
+    technicianArea: path(ROOTS_DASHBOARD, '/staff/technician/area')
   },
+
   employee: {
     root: path(ROOTS_DASHBOARD, '/employee'),
     list: path(ROOTS_DASHBOARD, '/employee/list'),
     new: path(ROOTS_DASHBOARD, '/employee/new'),
     editById: path(ROOTS_DASHBOARD, '/employee/:name/edit')
   },
-  technician: {
-    root: path(ROOTS_DASHBOARD, '/technician'),
-    list: path(ROOTS_DASHBOARD, '/technician/list'),
-    new: path(ROOTS_DASHBOARD, '/technician/new'),
-    area: path(ROOTS_DASHBOARD, '/technician/area')
-  },
+
   group: {
     root: path(ROOTS_DASHBOARD, '/group-mode'),
     list: path(ROOTS_DASHBOARD, '/group-mode/list'),
@@ -144,13 +130,5 @@ export const PATH_DASHBOARD = {
     editById: path(ROOTS_DASHBOARD, '/partner/:name/edit'),
     typeList: path(ROOTS_DASHBOARD, '/partner/types'),
     typeNew: path(ROOTS_DASHBOARD, '/partner/type-new')
-  },
-  diver: {
-    root: path(ROOTS_DASHBOARD, '/diver'),
-    list: path(ROOTS_DASHBOARD, '/diver/list'),
-    newDiver: path(ROOTS_DASHBOARD, '/diver/new'),
-    team: path(ROOTS_DASHBOARD, '/diver/team'),
-    teamNew: path(ROOTS_DASHBOARD, '/diver/team/new'),
-    area: path(ROOTS_DASHBOARD, '/diver/area')
   }
 };

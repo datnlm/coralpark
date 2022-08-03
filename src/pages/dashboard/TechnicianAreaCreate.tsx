@@ -34,7 +34,7 @@ export default function TechnicianCreate() {
             { name: translate('page.technician-area.heading2'), href: PATH_DASHBOARD.root },
             {
               name: translate('page.technician-area.heading3'),
-              href: PATH_DASHBOARD.technician.new
+              href: PATH_DASHBOARD.staff.technicianNew
             },
             { name: translate('page.technician-area.heading4.new') }
           ]}

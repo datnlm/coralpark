@@ -181,7 +181,9 @@
       "form": {
         "label": {
           "information":"Information",
-          "employee":"Employee"
+          "employee":"Employee",
+          "garden": "Garden",
+          "site-manager": "Site Manager"
         },
         "name": "Name",
         "phone": "Phone",
@@ -598,7 +600,8 @@
         "phone": "Phone",
         "email": "Email",
         "address": "Address",
-        "status": "Status"
+        "status": "Status",
+        "site": "Site"
       }
     },
     "employee-partner": {
@@ -823,7 +826,15 @@
       "email": "Email is required",
       "email_invalid": "Email must be a valid email address",
       "address": "Address is required",
-      "image": "Images is required"
+      "image": "Images is required",
+      "cell": "Choice cell type",
+      "cell-typeError": "Please input number",
+      "cell-length": "Acreage must be more than 1",
+      "cell-item-length": "Item must be more than 1",
+      "cell-quantity-item-length": "Quantity must be more than 1",
+      "cell-acreage": "Please input acreage",
+      "cell-item": "Please input item",
+      "cell-quantity": "Please input quantity"
     }
   },
   "status": {

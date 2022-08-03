@@ -180,7 +180,9 @@
       "form": {
         "label": {
           "information":"Thông tin",
-          "employee":"Nhân viên"
+          "employee":"Nhân viên",
+          "garden": "Danh sách vườn",
+          "site-manager": "Quản lý khu vực"
         },
         "name": "Tên đối tác",
         "phone": "Số điện thoại",
@@ -597,7 +599,8 @@
         "phone": "Số điện thoại",
         "email": "Địa chỉ email",
         "address": "Địa chỉ",
-        "status": "Trạng thái"
+        "status": "Trạng thái",
+        "site": "Địa điểm"
       }
     },
     "employee-partner": {
@@ -824,7 +827,15 @@
       "email_invalid": "Email phải là một địa chỉ email hợp lệ",
       "address": "Địa chỉ là bắt buộc",
       "province": "Tỉnh là bắt buộc",
-      "image": "Hình ảnh là bắt buộc"
+      "image": "Hình ảnh là bắt buộc",
+      "cell": "Chọn loại Cell",
+      "cell-typeError": "Vui lòng nhập số",
+      "cell-length": "Diện tích lớn hơn 1",
+      "cell-item-length": "Số item lớn hơn 1",
+      "cell-quantity-item-length": "Số lương lớn hơn 1",
+      "cell-acreage": "Vui lòng nhập diện tích",
+      "cell-item": "Vui lòng nhập số item",
+      "cell-quantity": "Vui lòng số lượng"
     }
   },
   "status": {

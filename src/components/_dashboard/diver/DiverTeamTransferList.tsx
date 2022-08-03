@@ -43,13 +43,15 @@ import {
   TableCell,
   CircularProgress,
   TableRow,
-  TablePagination
+  TablePagination,
+  Autocomplete
 } from '@material-ui/core';
 import { PATH_DASHBOARD } from 'routes/paths';
 import { manageDiver } from '_apis_/diver';
 import { getListDiverTeam } from 'redux/slices/diver';
 import Scrollbar from 'components/Scrollbar';
 import SearchNotFound from 'components/SearchNotFound';
+import { OptionStatus, statusOptions } from 'utils/constants';
 import { Area } from '../../../@types/area';
 import { Diver, DiverTeam } from '../../../@types/diver';
 // utils
@@ -109,6 +111,7 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
   const [open, setOpen] = useState(false);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState('name');
+  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filterName, setFilterName] = useState('');
@@ -200,7 +203,9 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
           id: v
         }));
         let flag = false;
-
+        if (isEdit) {
+          values.status = enumStatus!.id;
+        }
         !isEdit
           ? await manageDiver.createDiverTeam(values).then((response) => {
               if (response.status === 200) {
@@ -215,7 +220,7 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
 
         if (flag) {
           // setCurrentArea(null);
-          navigate(PATH_DASHBOARD.diver.team);
+          navigate(PATH_DASHBOARD.staff.team);
           enqueueSnackbar(
             !isEdit ? translate('message.create-success') : translate('message.update-success'),
             {
@@ -264,6 +269,7 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
     }
     setRight(listSelectedDiverId);
     setLeft(listSelectDiverTeamId);
+    setEnumStatus(statusOptions.find((v) => v.id == currentDiverTeam?.status) || null);
   }, [currentDiverTeam]);
 
   // define
@@ -372,14 +378,41 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
         <Grid container spacing={3} direction="column">
           <Grid item>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth
-                  label={translate('page.diver-team.form.name')}
-                  {...getFieldProps('name')}
-                  error={Boolean(touched.name && errors.name)}
-                  helperText={touched.name && errors.name}
-                />
+              <Grid item xs={12} md={12}>
+                <Stack spacing={3}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                    <TextField
+                      fullWidth
+                      label={translate('page.diver-team.form.name')}
+                      {...getFieldProps('name')}
+                      error={Boolean(touched.name && errors.name)}
+                      helperText={touched.name && errors.name}
+                    />
+                    {isEdit && (
+                      <Autocomplete
+                        fullWidth
+                        disablePortal
+                        clearIcon
+                        id="status"
+                        value={enumStatus}
+                        options={statusOptions}
+                        getOptionLabel={(option: OptionStatus) =>
+                          translate(`status.${option.label}`)
+                        }
+                        // getOptionLabel={(option: any) => (option ? option.name : '')}
+                        onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label={translate('page.garden.form.status')}
+                            error={Boolean(touched.status && errors.status)}
+                            helperText={touched.status && errors.status}
+                          />
+                        )}
+                      />
+                    )}
+                  </Stack>
+                </Stack>
               </Grid>
             </Grid>
           </Grid>
@@ -465,13 +498,13 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
             </Grid>
           </Grid>
         </Grid>
-        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+        <Box sx={{ mt: 3, mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
             {!isEdit ? translate('button.save.add') : translate('button.save.update')}
           </LoadingButton>
         </Box>
 
-        <Grid item xs={12} md={12}>
+        <Grid item xs={12} md={12} spacing={3} padding={{ t: 3 }}>
           <Card>
             <Accordion key="1" disabled={!isEdit}>
               <AccordionSummary
