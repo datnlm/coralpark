@@ -27,7 +27,7 @@ import {
   CardHeader
 } from '@material-ui/core';
 import { statusOptions } from 'utils/constants';
-import { getListEmployeePartner } from 'redux/slices/employee';
+import { getListEmployeePartner, getListEmployeePartnerById } from 'redux/slices/employee';
 import Page from 'components/Page';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 import { PATH_DASHBOARD } from 'routes/paths';
@@ -80,7 +80,10 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function EmployeePartnerList() {
+type EmployeePartnerListProps = {
+  partnerId: string;
+};
+export default function EmployeePartnerList({ partnerId }: EmployeePartnerListProps) {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -155,7 +158,7 @@ export default function EmployeePartnerList() {
   };
 
   useEffect(() => {
-    dispatch(getListEmployeePartner(page, rowsPerPage));
+    dispatch(getListEmployeePartnerById(partnerId, page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
   const emptyRows = !isLoading && !employeePartnerList;

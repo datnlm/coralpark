@@ -66,7 +66,7 @@ export default function DiverCreate() {
           }
           links={[
             { name: translate('page.diver.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.diver.heading3'), href: PATH_DASHBOARD.diver.root },
+            { name: translate('page.diver.heading3'), href: PATH_DASHBOARD.staff.diverList },
             { name: !isEdit ? translate('page.diver.heading4.new') : name }
           ]}
         />

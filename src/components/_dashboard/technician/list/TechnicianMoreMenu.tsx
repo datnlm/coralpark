@@ -99,7 +99,7 @@ export default function TechnicianMoreMenu({ onDelete, id, status }: TechnicianM
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.technician.root}/${paramCase(id)}/edit`}
+          to={`${PATH_DASHBOARD.staff.root}/technician/${paramCase(id)}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>

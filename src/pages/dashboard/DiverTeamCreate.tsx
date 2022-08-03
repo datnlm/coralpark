@@ -61,7 +61,7 @@ export default function DiverTeamCreate() {
             { name: translate('page.diver-team.heading2'), href: PATH_DASHBOARD.root },
             {
               name: translate('page.diver-team.heading3'),
-              href: PATH_DASHBOARD.diver.team
+              href: PATH_DASHBOARD.staff.team
             },
             { name: translate('page.diver-team.heading4.new') }
           ]}

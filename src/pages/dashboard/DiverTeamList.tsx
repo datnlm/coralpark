@@ -206,14 +206,14 @@ export default function UserList() {
           heading={translate('page.diver-team.heading1.list')}
           links={[
             { name: translate('page.diver-team.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.diver-team.heading3'), href: PATH_DASHBOARD.diver.team },
+            { name: translate('page.diver-team.heading3'), href: PATH_DASHBOARD.staff.team },
             { name: translate('page.diver-team.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.diver.teamNew}
+              to={PATH_DASHBOARD.staff.teamNew}
               startIcon={<Icon icon={plusFill} />}
             >
               {/* <Button

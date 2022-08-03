@@ -5,7 +5,8 @@ import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { manageEmployee } from '_apis_/employee';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -22,36 +23,26 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  Link,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  CircularProgress
+  CircularProgress,
+  CardHeader
 } from '@material-ui/core';
-import { managePartner } from '_apis_/partner';
 import { statusOptions } from 'utils/constants';
-// @types
-import { Partner } from '../../@types/partner';
-// redux
-import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListPartner } from '../../redux/slices/partner';
-// routes
-import { PATH_DASHBOARD } from '../../routes/paths';
-// hooks
-import useSettings from '../../hooks/useSettings';
-import useLocales from '../../hooks/useLocales';
-// components
-import Page from '../../components/Page';
-import Label from '../../components/Label';
-import Scrollbar from '../../components/Scrollbar';
-import SearchNotFound from '../../components/SearchNotFound';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
-  PartnerListHead,
-  PartnerListToolbar,
-  PartnerMoreMenu
-} from '../../components/_dashboard/partner/list';
-
+  getListEmployeePartner,
+  getListEmployeePartnerById,
+  getListSiteManagerById
+} from 'redux/slices/employee';
+import Page from 'components/Page';
+import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
+import { PATH_DASHBOARD } from 'routes/paths';
+import Scrollbar from 'components/Scrollbar';
+import Label from 'components/Label';
+import SearchNotFound from 'components/SearchNotFound';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import useLocales from 'hooks/useLocales';
+import useSettings from 'hooks/useSettings';
+import { EmployeeListHead, EmployeeListToolbar, EmployeeMoreMenu } from '../account/list_employee';
+import { Employee } from '../../../@types/employee';
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -72,7 +63,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Partner[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(array: Employee[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -80,38 +71,23 @@ function applySortFilter(array: Partner[], comparator: (a: any, b: any) => numbe
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_staff) => _staff.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-function applySortFilterCoral(
-  array: Partner[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
-  const stabilizedThis = array.map((el, index) => [el, index] as const);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_coral) => _coral.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
-export default function UserList() {
+type EmployeeSiteListProps = {
+  siteId: string;
+};
+export default function EmployeeSiteList({ siteId }: EmployeeSiteListProps) {
   const { translate } = useLocales();
-  const navigate = useNavigate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const partnerList = useSelector((state: RootState) => state.partner.partnerList);
-  const totalCount = useSelector((state: RootState) => state.partner.totalCount);
-  const isLoading = useSelector((state: RootState) => state.partner.isLoading);
+  const employeeList = useSelector((state: RootState) => state.employee.employeeList);
+  const totalCount = useSelector((state: RootState) => state.employee.totalCount);
+  const isLoading = useSelector((state: RootState) => state.employee.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -127,7 +103,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = partnerList.map((n) => n.name);
+      const newSelecteds = employeeList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -161,12 +137,14 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeletePartner = async (id: string) => {
+  const handleDeleteEmployee = async (id: string) => {
     try {
-      await managePartner.deletePartner(id).then((respone) => {
-        if (respone.status === 200) {
+      await manageEmployee.deleteEmployeePartner(id).then((respone) => {
+        if (respone.status == 200) {
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListPartner(page, rowsPerPage));
+          dispatch(getListEmployeePartner(page, rowsPerPage));
+        } else {
+          enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
@@ -176,14 +154,14 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(getListPartner(page, rowsPerPage));
+    dispatch(getListSiteManagerById(siteId, 'EM', page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !partnerList;
+  const emptyRows = !isLoading && !employeeList;
 
-  const filteredPartner = applySortFilter(partnerList, getComparator(order, orderBy), filterName);
+  const filteredEmployee = applySortFilter(employeeList, getComparator(order, orderBy), filterName);
 
-  const isPartnerListNotFound = filteredPartner.length === 0 && !isLoading;
+  const isEmployeeNotFound = filteredEmployee.length === 0 && !isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -193,53 +171,51 @@ export default function UserList() {
   //     );
   //   });
   // }
-
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.partner.form.name'), alignRight: false },
-    { id: 'webUrl', label: translate('page.partner.form.website'), alignRight: false },
-    { id: 'phone', label: translate('page.partner.form.phone'), alignRight: false },
-    { id: 'address', label: translate('page.partner.form.email'), alignRight: false },
-    { id: 'email', label: translate('page.partner.form.address'), alignRight: false },
-    { id: 'status', label: translate('page.partner.form.status'), alignRight: false },
+    { id: 'name', label: translate('page.employee-partner.form.name'), alignRight: false },
+    { id: 'phone', label: translate('page.employee-partner.form.phone'), alignRight: false },
+    { id: 'email', label: translate('page.employee-partner.form.email'), alignRight: false },
+    { id: 'address', label: translate('page.employee-partner.form.address'), alignRight: false },
+    { id: 'status', label: translate('page.employee-partner.form.status'), alignRight: false },
     { id: '' }
   ];
-
   return (
-    <Page title={translate('page.partner.title.list')}>
+    <Page title={translate('page.employee-partner.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={translate('page.partner.heading1.list')}
-          links={[
-            { name: translate('page.partner.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.partner.heading3'), href: PATH_DASHBOARD.site.root },
-            { name: translate('page.partner.heading4.list') }
-          ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.partner.new}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              {translate('button.save.add')}
-            </Button>
-          }
-        />
         <Card>
-          <PartnerListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+            justifyContent="space-between"
+          >
+            <EmployeeListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
+            <CardHeader
+              sx={{ mb: 2 }}
+              action={
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.staff.newEmployee}
+                  startIcon={<Icon icon={plusFill} />}
+                >
+                  {translate('button.save.add')}
+                </Button>
+              }
+            />
+          </Stack>
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <PartnerListHead
+                <EmployeeListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={partnerList.length}
+                  rowCount={employeeList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -250,8 +226,8 @@ export default function UserList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredPartner.map((row) => {
-                      const { id, name, phone, email, address, webUrl, status } = row;
+                    filteredEmployee.map((row) => {
+                      const { id, name, phone, status, email, address, imageUrl } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -266,34 +242,16 @@ export default function UserList() {
                             {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
-                            <Typography noWrap variant="subtitle2" sx={{ minWidth: 120 }}>
-                              {name}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="left">
-                            <Typography noWrap variant="subtitle2" sx={{ maxWidth: 120 }}>
-                              <Link
-                                href={webUrl}
-                                underline="hover"
-                                target="_blank"
-                                style={{ color: '#0000ff' }}
-                                sx={{ maxWidth: 120 }}
-                              >
-                                {webUrl}
-                              </Link>
-                            </Typography>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar alt={name} src={imageUrl} />
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Stack>
                           </TableCell>
                           <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">
-                            <Typography noWrap variant="subtitle2" sx={{ maxWidth: 120 }}>
-                              {email}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="left">
-                            <Typography noWrap variant="subtitle2" sx={{ maxWidth: 120 }}>
-                              {address}
-                            </Typography>
-                          </TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -304,11 +262,10 @@ export default function UserList() {
                               )}
                             </Label>
                           </TableCell>
-
                           <TableCell align="right">
-                            <PartnerMoreMenu
-                              onDelete={() => handleDeletePartner(id.toString())}
-                              partnerId={id.toString()}
+                            <EmployeeMoreMenu
+                              onDelete={() => handleDeleteEmployee(id.toString())}
+                              id={id.toString()}
                               status={status}
                             />
                           </TableCell>
@@ -327,8 +284,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-
-                {isPartnerListNotFound && (
+                {isEmployeeNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>

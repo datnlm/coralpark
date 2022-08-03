@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -26,8 +26,7 @@ import useLocales from '../../../hooks/useLocales';
 // @types
 import { Phases } from '../../../@types/coral';
 import { QuillEditor } from '../../editor';
-import { UploadMultiFile } from '../../upload';
-import LivePreview from '../../upload/LivePreview';
+import { UploadSingleFile } from '../../upload';
 // ----------------------------------------------------------------------
 
 type CoralPhasesNewFormProps = {
@@ -45,6 +44,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
   const { translate } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [imageFILE, setImageFILE] = useState('');
 
   const NewUserSchema = Yup.object().shape({
     name: Yup.string()
@@ -60,7 +60,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
       id: currentPhases?.id || '',
       name: currentPhases?.name || '',
       description: currentPhases?.description || '',
-      imageUrl: currentPhases?.imageUrl || []
+      imageUrl: currentPhases?.imageUrl || ''
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -72,7 +72,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
         }
         bodyFormData.append('name', values.name);
         bodyFormData.append('description', values.description);
-        values.imageUrl.map((file: File | string) => bodyFormData.append('imageFile', file));
+        bodyFormData.append('imageFile', imageFILE);
         !isEdit
           ? await manageCoral.createCoralPhases(bodyFormData).then((response) => {
               if (response.status == 200) {
@@ -93,7 +93,7 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.phases.list);
+          navigate(PATH_DASHBOARD.coral.coralPhaselist);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.update-error'),
@@ -111,33 +111,19 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
 
-  const handleDrop = useCallback(
+  const handleDropSingleFile = useCallback(
     (acceptedFiles) => {
-      setFieldValue(
-        'imageUrl',
-        acceptedFiles.map((file: File | string) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
+      const file = acceptedFiles[0];
+      setImageFILE(file);
+      if (file) {
+        setFieldValue('imageUrl', {
+          ...file,
+          preview: URL.createObjectURL(file)
+        });
+      }
     },
     [setFieldValue]
   );
-  const handleRemoveAll = () => {
-    setFieldValue('imageUrl', []);
-  };
-
-  const handleRemove = (file: File | string) => {
-    const filteredItems = values.imageUrl.filter((_file) => _file !== file);
-    setFieldValue('imageUrl', filteredItems);
-  };
-
-  const handleRemoveImage = (imageId: string) => {
-    if (values.imageUrl) {
-      setFieldValue('imageUrl', '');
-    }
-  };
 
   return (
     <FormikProvider value={formik}>
@@ -171,21 +157,13 @@ export default function CoralPhasesNewForm({ isEdit, currentPhases }: CoralPhase
                     </FormHelperText>
                   )}
                 </div>
-                {/* {values.imageUrl && (
-                  <>
-                    <LivePreview files={values.imageUrl} onRemove={handleRemoveImage} />
-                  </>
-                )} */}
                 <div>
                   <LabelStyle>{translate('page.phase.form.image')}</LabelStyle>
-                  <UploadMultiFile
-                    showPreview
+                  <UploadSingleFile
                     maxSize={3145728}
                     accept="image/*"
-                    files={values.imageUrl}
-                    onDrop={handleDrop}
-                    onRemove={handleRemove}
-                    onRemoveAll={handleRemoveAll}
+                    file={values.imageUrl}
+                    onDrop={handleDropSingleFile}
                     error={Boolean(touched.imageUrl && errors.imageUrl)}
                   />
                   {touched.imageUrl && errors.imageUrl && (

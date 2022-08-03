@@ -15,7 +15,7 @@ import useLocales from '../../hooks/useLocales';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import EmployeeNewForm from '../../components/_dashboard/account/EmployeeNewForm';
-import { Employee } from '../../@types/employee';
+import { SiteManager } from '../../@types/staff';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ export default function EmployeeCreate() {
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-  const [currentEmployee, setCurrentEmployee] = useState<Employee>();
+  const [currentEmployee, setCurrentEmployee] = useState<SiteManager>();
 
   const fetchData = async () => {
     await manageEmployee.getEmployeeByID(name).then((response) => {
@@ -39,6 +39,7 @@ export default function EmployeeCreate() {
           address: response.data.address,
           password: response.data.password,
           imageUrl: response.data.imageUrl,
+          siteId: response.data.siteId,
           status: response.data.status
         };
         setCurrentEmployee(data);

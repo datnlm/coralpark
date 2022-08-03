@@ -137,7 +137,7 @@ export default function DiverTeamAreaTransferList({
         await manageDiver.updateDiverTeamArea(values).then((response) => {
           if (response.status === 200) {
             onSubmitCallback(true);
-            navigate(PATH_DASHBOARD.diver.team);
+            navigate(PATH_DASHBOARD.staff.team);
             enqueueSnackbar(translate('message.update-success'), {
               variant: 'success'
             });

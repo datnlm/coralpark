@@ -105,17 +105,20 @@ export default function SidebarConfig() {
         },
         {
           title: translate('menu.sidebarConfig.subheader.user'),
-          path: PATH_DASHBOARD.diver.root,
+          path: PATH_DASHBOARD.staff.root,
           icon: ICONS.user,
           children: [
-            { title: translate('menu.sidebarConfig.title.diver'), path: PATH_DASHBOARD.diver.list },
+            {
+              title: translate('menu.sidebarConfig.title.diver'),
+              path: PATH_DASHBOARD.staff.diverList
+            },
             {
               title: translate('menu.sidebarConfig.title.diver-team'),
-              path: PATH_DASHBOARD.diver.team
+              path: PATH_DASHBOARD.staff.team
             },
             {
               title: translate('menu.sidebarConfig.title.technician'),
-              path: PATH_DASHBOARD.technician.list
+              path: PATH_DASHBOARD.staff.listTechnician
             },
             {
               title: translate('menu.sidebarConfig.title.site-manager'),
@@ -135,6 +138,38 @@ export default function SidebarConfig() {
             }
           ]
         },
+        // {
+        //   title: translate('menu.sidebarConfig.subheader.user'),
+        //   path: PATH_DASHBOARD.diver.root,
+        //   icon: ICONS.user,
+        //   children: [
+        //     { title: translate('menu.sidebarConfig.title.diver'), path: PATH_DASHBOARD.diver.list },
+        //     {
+        //       title: translate('menu.sidebarConfig.title.diver-team'),
+        //       path: PATH_DASHBOARD.diver.team
+        //     },
+        //     {
+        //       title: translate('menu.sidebarConfig.title.technician'),
+        //       path: PATH_DASHBOARD.technician.list
+        //     },
+        //     {
+        //       title: translate('menu.sidebarConfig.title.site-manager'),
+        //       path: PATH_DASHBOARD.staff.listSite
+        //     },
+        //     {
+        //       title: translate('menu.sidebarConfig.title.employee-partner'),
+        //       path: PATH_DASHBOARD.staff.listEmployeePartner
+        //     },
+        //     {
+        //       title: translate('menu.sidebarConfig.title.employee'),
+        //       path: PATH_DASHBOARD.staff.listEmployee
+        //     },
+        //     {
+        //       title: translate('menu.sidebarConfig.title.all'),
+        //       path: PATH_DASHBOARD.account.list
+        //     }
+        //   ]
+        // },
         {
           title: translate('menu.sidebarConfig.subheader.coral'),
           path: PATH_DASHBOARD.coral.root,
@@ -147,7 +182,7 @@ export default function SidebarConfig() {
             },
             {
               title: translate('menu.sidebarConfig.title.coral-phase'),
-              path: PATH_DASHBOARD.phases.list
+              path: PATH_DASHBOARD.coral.coralPhaselist
             },
             {
               title: translate('menu.sidebarConfig.title.coral-health'),

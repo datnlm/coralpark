@@ -194,7 +194,6 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      console.log(1);
       setFieldValue(
         'imageUrl',
         acceptedFiles.map((file: File | string) =>

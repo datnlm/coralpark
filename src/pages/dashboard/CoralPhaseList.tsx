@@ -189,14 +189,17 @@ export default function UserList() {
           heading={translate('page.coral-phase.heading1.list')}
           links={[
             { name: translate('page.coral-phase.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.coral-phase.heading3'), href: PATH_DASHBOARD.phases.list },
+            {
+              name: translate('page.coral-phase.heading3'),
+              href: PATH_DASHBOARD.coral.coralPhaselist
+            },
             { name: translate('page.coral-phase.heading4.list') }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.phases.new}
+              to={PATH_DASHBOARD.coral.coralPhaseNew}
               startIcon={<Icon icon={plusFill} />}
             >
               {translate('button.save.add')}

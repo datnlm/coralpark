@@ -139,7 +139,7 @@ export default function TechnicianAreaTransferList({
         await manageTechnican.updateTechnicanArea(values).then((response) => {
           if (response.status === 200) {
             onSubmitCallback(true);
-            navigate(PATH_DASHBOARD.technician.list);
+            navigate(PATH_DASHBOARD.staff.listTechnician);
             enqueueSnackbar(translate('message.update-success'), {
               variant: 'success'
             });
