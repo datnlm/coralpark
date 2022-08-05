@@ -9,5 +9,5 @@ export type Cell = {
   acreage: string;
   maxItem: string;
   quantity: string;
-  status: string;
+  status: any;
 };

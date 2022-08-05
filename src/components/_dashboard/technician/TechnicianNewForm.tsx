@@ -9,11 +9,10 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import { manageTechnican } from '_apis_/technician';
 // material
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton, TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
-  Box,
   Grid,
   Stack,
   TextField,
@@ -33,7 +32,8 @@ import {
   TableRow,
   Avatar,
   TablePagination,
-  Button
+  Button,
+  Box
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -106,6 +106,7 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filterName, setFilterName] = useState('');
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [valueTab, setValueTab] = useState('0');
   const areaList2 = useSelector((state: RootState) => state.area.areaList);
   const isLoading = useSelector((state: RootState) => state.area.isLoading);
   const [imageFILE, setImageFILE] = useState('');
@@ -263,234 +264,235 @@ export default function TechnicianNewForm({ isEdit, currentTechnician }: Technic
     { id: 'address', label: translate('page.area.form.address'), alignRight: false },
     { id: '' }
   ];
+
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setValueTab(newValue);
+  };
   return (
-    <FormikProvider value={formik}>
-      <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <Card sx={{ py: 10, px: 3 }}>
-              <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.imageUrl}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.imageUrl && errors.imageUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      {translate('message.allow-type-image')}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.imageUrl && errors.imageUrl}
-                </FormHelperText>
-              </Box>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3 }}>
-              <Stack spacing={3}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label={translate('page.technician.form.name')}
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
-                  />
-                  <TextField
-                    fullWidth
-                    label={translate('page.technician.form.phone')}
-                    {...getFieldProps('phone')}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label={translate('page.technician.form.email')}
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                  <TextField
-                    fullWidth
-                    label={translate('page.technician.form.address')}
-                    {...getFieldProps('address')}
-                    error={Boolean(touched.address && errors.address)}
-                    helperText={touched.address && errors.address}
-                  />
-                </Stack>
-                {isEdit && (
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <Autocomplete
-                      fullWidth
-                      disablePortal
-                      clearIcon
-                      id="status"
-                      value={enumStatus}
-                      options={statusOptions}
-                      getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
-                      // getOptionLabel={(option: any) => (option ? option.name : '')}
-                      onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={translate('page.technician.form.status')}
-                          error={Boolean(touched.status && errors.status)}
-                          helperText={touched.status && errors.status}
-                        />
-                      )}
-                    />
-                  </Stack>
-                )}
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
-                  </LoadingButton>
-                </Box>
-              </Stack>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={12}>
-            <Card>
-              <Accordion key="1" disabled={!isEdit}>
-                <AccordionSummary
-                  expandIcon={<Icon icon={arrowIosDownwardFill} width={20} height={20} />}
-                >
-                  <Typography variant="subtitle1">
-                    {translate('page.area.heading1.list')}
-                  </Typography>
-                </AccordionSummary>
-
-                <AccordionDetails>
-                  <Card>
-                    <Stack
-                      direction={{ xs: 'row', sm: 'row' }}
-                      spacing={{ xs: 3, sm: 2 }}
-                      justifyContent="space-between"
-                    >
-                      <AreaListToolbar
-                        numSelected={selected.length}
-                        filterName={filterName}
-                        onFilterName={handleFilterByName}
-                      />
-                      <CardHeader
-                        sx={{ mb: 2 }}
-                        action={
-                          <Button
-                            size="small"
-                            onClick={handleClickOpen}
-                            startIcon={<Icon icon={plusFill} />}
+    <Box sx={{ width: '100%', typography: 'body1' }}>
+      <TabContext value={valueTab}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
+            <Tab label={translate('page.partner.form.label.information')} value="0" />
+            <Tab label={translate('page.area.heading1.list')} value="1" disabled={!isEdit} />
+          </TabList>
+        </Box>
+        <TabPanel sx={{ p: 3 }} value="0">
+          <FormikProvider value={formik}>
+            <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                  <Card sx={{ py: 10, px: 3 }}>
+                    <Box sx={{ mb: 5 }}>
+                      <UploadAvatar
+                        accept="image/*"
+                        file={values.imageUrl}
+                        maxSize={3145728}
+                        onDrop={handleDrop}
+                        error={Boolean(touched.imageUrl && errors.imageUrl)}
+                        caption={
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              mt: 2,
+                              mx: 'auto',
+                              display: 'block',
+                              textAlign: 'center',
+                              color: 'text.secondary'
+                            }}
                           >
-                            {translate('button.save.change')}
-                          </Button>
+                            {translate('message.allow-type-image')}
+                          </Typography>
                         }
                       />
-                    </Stack>
-                    <Scrollbar>
-                      <TableContainer sx={{ minWidth: 800 }}>
-                        <Table>
-                          <AreaListHead
-                            order={order}
-                            orderBy={orderBy}
-                            headLabel={TABLE_HEAD}
-                            rowCount={currentTechnician?.areas.length ?? 0}
-                            numSelected={selected.length}
-                            onRequestSort={handleRequestSort}
-                            onSelectAllClick={handleSelectAllClick}
-                          />
-                          <TableBody>
-                            {isLoading ? (
-                              <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                                <CircularProgress />
-                              </TableCell>
-                            ) : (
-                              filteredArea
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                  const { id, name, address } = row;
-
-                                  const isItemSelected = selected.indexOf(id) !== -1;
-
-                                  return (
-                                    <TableRow hover key={id} tabIndex={-1} role="checkbox">
-                                      <TableCell padding="checkbox">
-                                        {/* <Checkbox checked={isItemSelected} /> */}
-                                      </TableCell>
-                                      <TableCell align="left">{name}</TableCell>
-                                      <TableCell align="left">{address}</TableCell>
-                                      <TableCell align="right">
-                                        <AreaMoreMenu onDelete={() => {}} areaId={id.toString()} />
-                                      </TableCell>
-                                    </TableRow>
-                                  );
-                                })
-                            )}
-
-                            {emptyRows && (
-                              <TableRow style={{ height: 53 * emptyRows }}>
-                                <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                  <Typography gutterBottom align="center" variant="subtitle1">
-                                    {translate('message.not-found')}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            )}
-                          </TableBody>
-                          {isAreaNotFound && (
-                            <TableBody>
-                              <TableRow>
-                                <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                  <SearchNotFound searchQuery={filterName} />
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          )}
-                        </Table>
-                      </TableContainer>
-                    </Scrollbar>
-
-                    <TablePagination
-                      rowsPerPageOptions={[
-                        5,
-                        10,
-                        25,
-                        { label: translate('message.all'), value: -1 }
-                      ]}
-                      component="div"
-                      count={totalCount}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      onPageChange={(e, page) => setPage(page)}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                      <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
+                        {touched.imageUrl && errors.imageUrl}
+                      </FormHelperText>
+                    </Box>
                   </Card>
-                </AccordionDetails>
-              </Accordion>
+                </Grid>
+                <Grid item xs={12} md={8}>
+                  <Card sx={{ p: 3 }}>
+                    <Stack spacing={3}>
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField
+                          fullWidth
+                          label={translate('page.technician.form.name')}
+                          {...getFieldProps('name')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                        <TextField
+                          fullWidth
+                          label={translate('page.technician.form.phone')}
+                          {...getFieldProps('phone')}
+                          error={Boolean(touched.phone && errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
+
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField
+                          fullWidth
+                          label={translate('page.technician.form.email')}
+                          {...getFieldProps('email')}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                        <TextField
+                          fullWidth
+                          label={translate('page.technician.form.address')}
+                          {...getFieldProps('address')}
+                          error={Boolean(touched.address && errors.address)}
+                          helperText={touched.address && errors.address}
+                        />
+                      </Stack>
+                      {isEdit && (
+                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                          <Autocomplete
+                            fullWidth
+                            disablePortal
+                            clearIcon
+                            id="status"
+                            value={enumStatus}
+                            options={statusOptions}
+                            getOptionLabel={(option: OptionStatus) =>
+                              translate(`status.${option.label}`)
+                            }
+                            // getOptionLabel={(option: any) => (option ? option.name : '')}
+                            onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={translate('page.technician.form.status')}
+                                error={Boolean(touched.status && errors.status)}
+                                helperText={touched.status && errors.status}
+                              />
+                            )}
+                          />
+                        </Stack>
+                      )}
+                      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                          {!isEdit ? translate('button.save.add') : translate('button.save.update')}
+                        </LoadingButton>
+                      </Box>
+                    </Stack>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Form>
+          </FormikProvider>
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="1">
+          <Grid item xs={12} md={12}>
+            <Card>
+              <Stack
+                direction={{ xs: 'row', sm: 'row' }}
+                spacing={{ xs: 3, sm: 2 }}
+                justifyContent="space-between"
+              >
+                <AreaListToolbar
+                  numSelected={selected.length}
+                  filterName={filterName}
+                  onFilterName={handleFilterByName}
+                />
+                <CardHeader
+                  sx={{ mb: 2 }}
+                  action={
+                    <Button
+                      size="small"
+                      onClick={handleClickOpen}
+                      startIcon={<Icon icon={plusFill} />}
+                    >
+                      {translate('button.save.change')}
+                    </Button>
+                  }
+                />
+              </Stack>
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <AreaListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={currentTechnician?.areas.length ?? 0}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
+                    />
+                    <TableBody>
+                      {isLoading ? (
+                        <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                          <CircularProgress />
+                        </TableCell>
+                      ) : (
+                        filteredArea
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map((row, index) => {
+                            const { id, name, address } = row;
+
+                            const isItemSelected = selected.indexOf(id) !== -1;
+
+                            return (
+                              <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                                <TableCell padding="checkbox">
+                                  {/* <Checkbox checked={isItemSelected} /> */}
+                                </TableCell>
+                                <TableCell align="left">{name}</TableCell>
+                                <TableCell align="left">{address}</TableCell>
+                                <TableCell align="right">
+                                  <AreaMoreMenu onDelete={() => {}} areaId={id.toString()} />
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })
+                      )}
+
+                      {emptyRows && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <Typography gutterBottom align="center" variant="subtitle1">
+                              {translate('message.not-found')}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                    {isAreaNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
+                component="div"
+                count={totalCount}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(e, page) => setPage(page)}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </Card>
           </Grid>
-        </Grid>
-      </Form>
-      <TechnicianAreaNewForm
-        currentTechnician={currentTechnician}
-        areaList={areaList}
-        open={open}
-        onClose={handleClose}
-        isEdit={isEdit}
-      />
-    </FormikProvider>
+          <TechnicianAreaNewForm
+            currentTechnician={currentTechnician}
+            areaList={areaList}
+            open={open}
+            onClose={handleClose}
+            isEdit={isEdit}
+          />
+        </TabPanel>
+      </TabContext>
+    </Box>
   );
 }

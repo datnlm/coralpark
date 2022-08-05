@@ -65,7 +65,7 @@ export default function StaffListToolbar({
       <SearchStyle
         value={filterName}
         onChange={(e) => onFilterName(e.target.value)}
-        placeholder={translate('page.staff.search')}
+        placeholder={translate('page.employee.search')}
         startAdornment={
           <InputAdornment position="start">
             <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

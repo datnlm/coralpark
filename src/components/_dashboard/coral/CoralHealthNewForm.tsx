@@ -68,7 +68,8 @@ export default function CoralHealthNewFrom({ isEdit, currentHealth }: CoralHealt
     enableReinitialize: true,
     initialValues: {
       id: currentHealth?.id || '',
-      name: currentHealth?.name || ''
+      name: currentHealth?.name || '',
+      description: currentHealth?.description || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -119,80 +120,6 @@ export default function CoralHealthNewFrom({ isEdit, currentHealth }: CoralHealt
           <Grid item xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
-                {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <Autocomplete
-                    fullWidth
-                    disableClearable
-                    disablePortal
-                    getOptionDisabled={(option: OptionStatus) => option.id == 0}
-                    clearIcon
-                    id="levelType"
-                    disabled={isEdit}
-                    value={currentLevel}
-                    options={coralLevelHealthOptions}
-                    getOptionLabel={
-                      (option: OptionStatus) => translate(`status.coral_level_type.${option.id}`)
-                      // translate(`status.coral_level_type.${option.id}`)
-                    }
-                    onChange={(e, values: OptionStatus | null) => setCurrentLevel(values)}
-                    renderInput={(params) => (
-                      <TextField {...params} label={translate('page.coral-type.form.level')} />
-                    )}
-                  />
-                </Stack>
-                {currentLevel!.id > 1 && (
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <Autocomplete
-                      fullWidth
-                      disablePortal
-                      clearIcon
-                      disabled={isEdit}
-                      id="class"
-                      loading={isLoading}
-                      value={currentClass}
-                      options={optionsClass}
-                      getOptionLabel={(option: any) => option.name}
-                      onChange={(e, value: any) => {
-                        setCurrentClass(value);
-                        setFieldValue('class', value);
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={translate('page.coral-type.form.class')}
-                          error={Boolean(touched.class && errors.class)}
-                          helperText={touched.class && errors.class}
-                        />
-                      )}
-                    />
-                    {currentLevel!.id > 2 && (
-                      <Autocomplete
-                        fullWidth
-                        disablePortal
-                        clearIcon
-                        disabled={isEdit}
-                        id="order"
-                        loading={isLoading}
-                        value={currentOrder}
-                        options={optionsOrder}
-                        getOptionLabel={(option: any) => option.name}
-                        onChange={(e, value: any) => {
-                          setCurrentOrder(value);
-                          setFieldValue('order', value);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label={translate('page.coral-type.form.order')}
-                            error={Boolean(touched.order && errors.order)}
-                            helperText={touched.order && errors.order}
-                          />
-                        )}
-                      />
-                    )}
-                  </Stack>
-                )} */}
-                {/* {currentLevel!.id >= 1 && ( */}
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
@@ -202,8 +129,8 @@ export default function CoralHealthNewFrom({ isEdit, currentHealth }: CoralHealt
                     helperText={touched.name && errors.name}
                   />
                 </Stack>
-                {/* )} */}
-                {/* <div>
+
+                <div>
                   <LabelStyle>{translate('page.coral-type.form.description')}</LabelStyle>
                   <QuillEditor
                     simple
@@ -217,7 +144,7 @@ export default function CoralHealthNewFrom({ isEdit, currentHealth }: CoralHealt
                       {touched.description && errors.description}
                     </FormHelperText>
                   )}
-                </div> */}
+                </div>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     {!isEdit ? translate('button.save.add') : translate('button.save.update')}

@@ -179,6 +179,7 @@ export default function CoralHealthList() {
   // }
   const TABLE_HEAD = [
     { id: 'name', label: translate('page.coral-health.form.name'), alignRight: false },
+    { id: 'description', label: translate('page.cell-type.form.description'), alignRight: false },
     { id: '' }
   ];
   return (
@@ -231,7 +232,7 @@ export default function CoralHealthList() {
                     </TableCell>
                   ) : (
                     filteredCoralHealth.map((row) => {
-                      const { id, name } = row;
+                      const { id, name, description } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -252,7 +253,11 @@ export default function CoralHealthList() {
                               </Typography>
                             </Stack>
                           </TableCell>
-
+                          <TableCell align="left">
+                            {description && (
+                              <div dangerouslySetInnerHTML={{ __html: description.toString() }} />
+                            )}
+                          </TableCell>
                           <TableCell align="right">
                             <CoralHealthMoreMenu
                               onDelete={() => handleDeleteCoralHealth(id.toString())}

@@ -12,12 +12,14 @@ import {
   Stack,
   DialogContent,
   DialogActions,
-  Autocomplete
+  Autocomplete,
+  InputAdornment
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { RootState, useSelector } from 'redux/store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { manageCell } from '_apis_/cell';
+import { OptionStatus, statusOptions } from 'utils/constants';
 import useLocales from '../../../hooks/useLocales';
 import { Cell } from '../../../@types/cell';
 // ----------------------------------------------------------------------
@@ -40,7 +42,7 @@ export default function CreateCellNewForm({
   const { translate } = useLocales();
   const { enqueueSnackbar } = useSnackbar();
   const cellTypeList = useSelector((state: RootState) => state.cell.cellTypeList);
-
+  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const NewAddressSchema = Yup.object().shape({
     type: Yup.object().required(translate('message.form.cell')),
     acreage: Yup.string()
@@ -131,6 +133,7 @@ export default function CreateCellNewForm({
       setFieldValue('acreage', currentCell?.acreage);
       setFieldValue('maxItem', currentCell?.maxItem);
       setFieldValue('quantity', '1');
+      setEnumStatus(statusOptions.find((v) => v.id == currentCell?.status) || null);
     }
   };
 
@@ -183,6 +186,13 @@ export default function CreateCellNewForm({
                       {...getFieldProps('acreage')}
                       error={Boolean(touched.acreage && errors.acreage)}
                       helperText={touched.acreage && errors.acreage}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            m<sup>2</sup>
+                          </InputAdornment>
+                        )
+                      }}
                     />
                     <TextField
                       fullWidth
@@ -200,6 +210,29 @@ export default function CreateCellNewForm({
                       helperText={touched.quantity && errors.quantity}
                       // }}
                     />
+                    {isEdit && (
+                      <Autocomplete
+                        fullWidth
+                        disablePortal
+                        clearIcon
+                        id="status"
+                        value={enumStatus}
+                        options={statusOptions}
+                        getOptionLabel={(option: OptionStatus) =>
+                          translate(`status.${option.label}`)
+                        }
+                        // getOptionLabel={(option: any) => (option ? option.name : '')}
+                        onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label={translate('page.garden.form.status')}
+                            error={Boolean(touched.status && errors.status)}
+                            helperText={touched.status && errors.status}
+                          />
+                        )}
+                      />
+                    )}
                   </Stack>
                 </Grid>
               </Grid>

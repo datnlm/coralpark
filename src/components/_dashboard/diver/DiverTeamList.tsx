@@ -6,6 +6,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { manageDiver } from '_apis_/diver';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -22,32 +23,30 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  CircularProgress
+  CircularProgress,
+  Box,
+  Tab,
+  Grid,
+  CardHeader
 } from '@material-ui/core';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
 import { statusOptions } from 'utils/constants';
-import { manageGarden } from '_apis_/garden';
-import { Garden } from '../../@types/garden';
-// redux
-import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getListGarden } from '../../redux/slices/garden';
-// routes
-import { PATH_DASHBOARD } from '../../routes/paths';
-// hooks
-import useSettings from '../../hooks/useSettings';
-import useLocales from '../../hooks/useLocales';
-// @types
-import { UserManager, Coral } from '../../@types/coral';
-// components
-import Page from '../../components/Page';
-import Label from '../../components/Label';
-import Scrollbar from '../../components/Scrollbar';
-import SearchNotFound from '../../components/SearchNotFound';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import {
-  GardenListHead,
-  GardenListToolbar,
-  GardenMoreMenu
-} from '../../components/_dashboard/garden/list';
+import DiverTeamNewForm from 'components/_dashboard/diver/DiverTeamNewForm';
+import useLocales from 'hooks/useLocales';
+import useSettings from 'hooks/useSettings';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import { getListDiverTeam, getListDiverTeamById } from 'redux/slices/diver';
+import Page from 'components/Page';
+import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
+import { PATH_DASHBOARD } from 'routes/paths';
+import Scrollbar from 'components/Scrollbar';
+import SearchNotFound from 'components/SearchNotFound';
+import Label from 'components/Label';
+import { DiverTeam } from '../../../@types/diver';
+import { DiverTeamListHead, DiverTeamListToolbar, DiverTeamMoreMenu } from './list_diver_team';
+
 // ----------------------------------------------------------------------
 
 type Anonymous = Record<string | number, string>;
@@ -68,7 +67,11 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Garden[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(
+  array: DiverTeam[],
+  comparator: (a: any, b: any) => number,
+  query: string
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -76,30 +79,34 @@ function applySortFilter(array: Garden[], comparator: (a: any, b: any) => number
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_garden) => _garden.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_diver) => _diver.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+type DiverTeamListProps = {
+  diverId?: string;
+};
+
+export default function DiverTeamList({ diverId }: DiverTeamListProps) {
   const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const gardenList = useSelector((state: RootState) => state.garden.gardenList);
-  const totalCount = useSelector((state: RootState) => state.garden.totalCount);
-  const isLoading = useSelector((state: RootState) => state.garden.isLoading);
+  const diverTeamList = useSelector((state: RootState) => state.diver.diverTeamList);
+  const totalCount = useSelector((state: RootState) => state.diver.totalCountDiverTeam);
+  const isLoading = useSelector((state: RootState) => state.diver.isLoadingDiverTeam);
   const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
+  const [valueTab, setValueTab] = useState('0');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  const [currentDiverTeamId, setCurrentDiverTeamId] = useState<string | null>(null);
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -108,7 +115,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = gardenList.map((n) => n.name);
+      const newSelecteds = diverTeamList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -124,88 +131,100 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteGarden = async (gardenId: string) => {
+  const handleDeleteDiverTeam = async (id: string) => {
     try {
-      await manageGarden.deleteGarden(gardenId).then((respone) => {
-        if (respone.status === 200) {
+      await manageDiver.deleteDiverTeam(id).then((respone) => {
+        if (respone.status == 200) {
+          dispatch(getListDiverTeam(page, rowsPerPage));
           enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
-          dispatch(getListGarden(page, rowsPerPage));
         } else {
           enqueueSnackbar(translate('message.delete-error'), { variant: 'error' });
         }
       });
     } catch (error) {
+      enqueueSnackbar(translate('message.delete-success'), { variant: 'success' });
       console.log(error);
     }
   };
 
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setValueTab(newValue);
+  };
+
+  const handleClickEditOpen = async (id: string) => {
+    setOpen(true);
+    setCurrentDiverTeamId(id);
+    setIsEdit(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleClickOpen = () => {
+    setCurrentDiverTeamId(null);
+    setOpen(true);
+    setIsEdit(false);
+  };
+
   useEffect(() => {
-    dispatch(getListGarden(page, rowsPerPage));
+    if (diverId != '' && diverId != null) {
+      dispatch(getListDiverTeamById(diverId, page, rowsPerPage));
+    }
   }, [dispatch, page, rowsPerPage]);
 
-  const emptyRows = !isLoading && !gardenList;
+  const emptyRows = !isLoading && !diverTeamList;
 
-  const filteredGarden = applySortFilter(gardenList, getComparator(order, orderBy), filterName);
+  const filteredDiverTeam = applySortFilter(
+    diverTeamList,
+    getComparator(order, orderBy),
+    filterName
+  );
 
-  const isGardenNotFound = filteredGarden.length === 0 && !isLoading;
-  // if (companiesList !== null) {
-  //   companiesList.map((item, index) => {
-  //     return (
-  //       <div key={index}>
-  //         <h1>{item[index]}</h1>
-  //       </div>
-  //     );
-  //   });
-  // }
+  const isDiverTeamNotFound = filteredDiverTeam.length === 0 && !isLoading;
 
   const TABLE_HEAD = [
-    { id: 'name', label: translate('page.garden.form.name'), alignRight: false },
-    { id: 'address', label: translate('page.garden.form.address'), alignRight: false },
-    {
-      id: 'acreage',
-      label: translate('page.garden.form.acreage'),
-      alignRight: false
-    },
-    { id: 'quantity', label: translate('page.garden.form.quantity-of-cells'), alignRight: false },
-    { id: 'status', label: translate('page.garden.form.status'), alignRight: false },
+    { id: 'name', label: translate('page.diver-team.form.name'), alignRight: false },
+    { id: 'quantity', label: translate('page.diver-team.form.quantity'), alignRight: false },
+    { id: 'status', label: translate('page.diver-team.form.status'), alignRight: false },
     { id: '' }
   ];
   return (
-    <Page title={translate('page.garden.title.list')}>
+    <Page title={translate('page.diver-team.title.list')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={translate('page.garden.heading1.list')}
-          links={[
-            { name: translate('page.garden.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.garden.heading3'), href: PATH_DASHBOARD.site.garden },
-            { name: translate('page.garden.heading4.list') }
-          ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.site.newGarden}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              {translate('button.save.add')}
-            </Button>
-          }
-        />
         <Card>
-          <GardenListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+            justifyContent="space-between"
+          >
+            <DiverTeamListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
+            <CardHeader
+              sx={{ mb: 2 }}
+              action={
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.staff.teamNew}
+                  startIcon={<Icon icon={plusFill} />}
+                >
+                  {translate('button.save.add')}
+                </Button>
+              }
+            />
+          </Stack>
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <GardenListHead
+                <DiverTeamListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={gardenList.length}
+                  rowCount={diverTeamList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -216,32 +235,29 @@ export default function UserList() {
                       <CircularProgress />
                     </TableCell>
                   ) : (
-                    filteredGarden.map((row) => {
-                      const { id, name, address, acreage, quantityOfCells, status } = row;
-
+                    filteredDiverTeam.map((row) => {
+                      const { id, name, number, status } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
                           hover
                           key={id}
                           tabIndex={-1}
                           role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
                             {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              {/* <Avatar alt={name} src={imageUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{address}</TableCell>
-                          <TableCell align="left">{acreage}</TableCell>
-                          <TableCell align="left">{quantityOfCells}</TableCell>
+                          <TableCell align="left">{number}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -252,10 +268,9 @@ export default function UserList() {
                               )}
                             </Label>
                           </TableCell>
-
                           <TableCell align="right">
-                            <GardenMoreMenu
-                              onDelete={() => handleDeleteGarden(id.toString())}
+                            <DiverTeamMoreMenu
+                              onDelete={() => handleDeleteDiverTeam(id.toString())}
                               userName={id.toString()}
                               status={status}
                             />
@@ -267,7 +282,7 @@ export default function UserList() {
 
                   {emptyRows && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
                         <Typography gutterBottom align="center" variant="subtitle1">
                           {translate('message.not-found')}
                         </Typography>
@@ -275,7 +290,7 @@ export default function UserList() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isGardenNotFound && (
+                {isDiverTeamNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -298,6 +313,13 @@ export default function UserList() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
+
+        <DiverTeamNewForm
+          id={currentDiverTeamId}
+          open={open}
+          onClose={handleClose}
+          isEdit={isEdit}
+        />
       </Container>
     </Page>
   );
