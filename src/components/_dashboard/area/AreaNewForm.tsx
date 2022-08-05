@@ -238,6 +238,10 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       setDisctrict(district);
       setWard(ward);
       setCurrentProvince(optionsProvince.find((e: ProvinceAPI) => e.name == province));
+      setFieldValue(
+        'address',
+        optionsProvince.find((e: ProvinceAPI) => e.name == province)
+      );
     }
   }, [currentArea]);
 
@@ -295,13 +299,23 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
       });
     });
 
-    // const geocoder = new MapboxGeocoder({
-    //   accessToken: mapboxgl.accessToken,
-    //   placeholder: ''
-    // });
-    // geocoder.setLanguage(currentLang.value);
-    // // Add the control to the map.
-    // map.addControl(geocoder);
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      placeholder: ''
+    });
+
+    // Add the control to the map.
+    map.addControl(geocoder);
+    geocoder.setLanguage(currentLang.value);
+
+    if (currentProvince != null) {
+      let result = currentProvince.name;
+
+      if (currentDistrict != null) {
+        result = currentDistrict.name.concat(', ', result);
+      }
+      geocoder.query(result);
+    }
 
     const draw = new MapboxDraw({
       displayControlsDefault: false,
@@ -358,7 +372,7 @@ export default function AreaNewForm({ isEdit, currentArea }: AreaNewFormProps) {
 
     // Add navigation control (the +/- zoom buttons)
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-  }, [polygonCoordinates]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [polygonCoordinates, currentProvince, currentDistrict]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>

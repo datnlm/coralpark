@@ -155,7 +155,9 @@ export default function CoralPhasesTypeNewForm({
                     helperText={touched.coralPhaseId && errors.coralPhaseId}
                   />
                 )}
-                noOptionsText={<Button onMouseDown={handleClickOpen}>No results! Click me</Button>}
+                noOptionsText={
+                  <Button onMouseDown={handleClickOpen}> {translate('button.save.add')}</Button>
+                }
               />
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>

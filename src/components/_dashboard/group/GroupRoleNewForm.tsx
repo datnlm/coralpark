@@ -133,18 +133,6 @@ export default function GroupRoleNewForm({ isEdit, currentGroupRole }: GroupRole
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
-                  <TextField
-                    fullWidth
-                    label={translate('page.group-role.form.personalRate')}
-                    {...getFieldProps('personalRate')}
-                    InputProps={{
-                      endAdornment: <InputAdornment position="end">%</InputAdornment>
-                    }}
-                    error={Boolean(touched.personalRate && errors.personalRate)}
-                    helperText={touched.personalRate && errors.personalRate}
-                  />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <Autocomplete
                     fullWidth
                     disablePortal
@@ -165,9 +153,21 @@ export default function GroupRoleNewForm({ isEdit, currentGroupRole }: GroupRole
                       />
                     )}
                   />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label={translate('page.group-role.form.personalRate')}
+                    {...getFieldProps('personalRate')}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">%</InputAdornment>
+                    }}
+                    error={Boolean(touched.personalRate && errors.personalRate)}
+                    helperText={touched.personalRate && errors.personalRate}
+                  />
+                  <TextField
+                    fullWidth
+                    label={translate('page.group-role.form.partnerRate')}
                     {...getFieldProps('partnerRate')}
                     InputProps={{
                       endAdornment: <InputAdornment position="end">%</InputAdornment>

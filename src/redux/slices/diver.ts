@@ -119,3 +119,22 @@ export function getListDiverTeam(page: number, rowsPerPage: number) {
     }
   };
 }
+
+// get Diver team
+export function getListDiverTeamById(diverId: string, page: number, rowsPerPage: number) {
+  return async () => {
+    dispatch(slice.actions.startLoadingDiverTeam());
+    try {
+      await manageDiver.getListDiverTeamById(diverId, 1 + page, rowsPerPage).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.totalCountDiverTeam(response.data.metaData.totalCount));
+          dispatch(slice.actions.getListDiverTeam(response.data.items));
+        } else {
+          dispatch(slice.actions.endLoading());
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}

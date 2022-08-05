@@ -13,9 +13,15 @@ import {
   IconButton,
   Stack,
   TextField,
-  Autocomplete
+  Autocomplete,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 import CoralPhasesTypeNewForm from 'components/_dashboard/coral/CoralPhasesTypeNewForm';
 import { manageCoral } from '_apis_/coral';
 import { RootState, useSelector } from 'redux/store';
@@ -50,10 +56,9 @@ type PhaseDetailNewFormProps = {
 export default function PhaseDetailNewForm({ coral }: PhaseDetailNewFormProps) {
   const { translate } = useLocales();
   const [isEdit, setIsEdit] = useState<Boolean>(false);
-  const listCoral = useSelector((state: RootState) => state.coral.coralList);
   const listPhase = useSelector((state: RootState) => state.coral.coralPhaseList);
   const isLoading = useSelector((state: RootState) => state.coral.isLoading);
-
+  const [open, setOpen] = useState(false);
   const callback = async (params: PhasesType) => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
@@ -147,6 +152,21 @@ export default function PhaseDetailNewForm({ coral }: PhaseDetailNewFormProps) {
     setData([phase]);
   };
 
+  const handleDelete = () => {
+    console.log(activeStep);
+    const dataTmp = data;
+    const stepTmp = steps;
+
+    dataTmp.splice(activeStep, 1);
+    stepTmp.splice(activeStep, 1);
+    setData(dataTmp);
+    setSteps(stepTmp);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
   const handleAddMore = () => {
     const s = steps;
     const dt = data;
@@ -160,7 +180,13 @@ export default function PhaseDetailNewForm({ coral }: PhaseDetailNewFormProps) {
       return newSkipped;
     });
   };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
   useEffect(() => {
     if (coral != null) {
       manageCoral.getCoralByID(coral.id).then((response) => {
@@ -208,47 +234,23 @@ export default function PhaseDetailNewForm({ coral }: PhaseDetailNewFormProps) {
             </Step>
           );
         })}
+
         <IconButton aria-label="add" onClick={handleAddMore}>
           <AddIcon />
         </IconButton>
       </Stepper>
-      {/* {activeStep === steps.length ? (
-        <>
-          <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-            <Typography sx={{ my: 1 }}>All steps completed - you&apos;re finished</Typography>
-          </Paper>
-
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ flexGrow: 1 }} />
-            <Button onClick={handleReset}>Add more</Button>
-          </Box>
-        </>
-      ) : ( */}
       <>
         <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-          {/* <Stack spacing={3}>
-              <Autocomplete
-                fullWidth
-                disablePortal
-                clearIcon
-                loading={isLoading}
-                id="coral"
-                value={coral}
-                options={listCoral}
-                getOptionLabel={(option: any) => (option ? option.name : '')}
-                onChange={(e, value: any) => setCoral(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={translate('page.coral-phase.form.coral')}
-                    // error={Boolean(touched.phaseID && errors.phaseID)}
-                    // helperText={touched.phaseID && errors.phaseID}
-                  />
-                )}
-              />
-            </Stack> */}
-
-          <Typography sx={{ my: 1 }}> {translate('page.coral-phase.form.header')} </Typography>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+            justifyContent="space-between"
+          >
+            <Typography sx={{ my: 1 }}> {translate('page.coral-phase.form.header')} </Typography>
+            <IconButton aria-label="delete" onClick={handleClickOpen}>
+              <DeleteIcon />
+            </IconButton>
+          </Stack>
 
           <CoralPhasesTypeNewForm
             key={activeStep}
@@ -270,7 +272,27 @@ export default function PhaseDetailNewForm({ coral }: PhaseDetailNewFormProps) {
           </Button>
         </Box>
       </>
-      {/* )} */}
+      <Dialog open={open} onClose={handleClose} aria-labelledby="draggable-dialog-title">
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          {translate('message.title.confirm-delete')}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>{translate('message.confirm-delete')}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            {translate('button.save.cancel')}
+          </Button>
+          <Button
+            onClick={(event) => {
+              handleDelete();
+              handleClose();
+            }}
+          >
+            {translate('button.save.confirm')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

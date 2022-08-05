@@ -5,7 +5,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { manageDiver } from '_apis_/diver';
 // material
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton, TabContext, TabList, TabPanel } from '@material-ui/lab';
 import {
   Card,
   Box,
@@ -14,7 +14,8 @@ import {
   TextField,
   Typography,
   Autocomplete,
-  FormHelperText
+  FormHelperText,
+  Tab
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
@@ -25,6 +26,7 @@ import useLocales from '../../../hooks/useLocales';
 // @types
 import { Diver } from '../../../@types/diver';
 import { UploadAvatar } from '../../upload';
+import DiverTeamList from './DiverTeamList';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +41,7 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
+  const [valueTab, setValueTab] = useState('0');
   const NewProductSchema = Yup.object().shape({
     name: Yup.string()
       .required(translate('message.form.name'))
@@ -140,110 +143,138 @@ export default function DiverNewForm({ isEdit, currentDiver }: DiverNewFormProps
     },
     [setFieldValue]
   );
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setValueTab(newValue);
+  };
 
   return (
-    <FormikProvider value={formik}>
-      <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <Card sx={{ py: 10, px: 3 }}>
-              <Box sx={{ mb: 5 }}>
-                <UploadAvatar
-                  accept="image/*"
-                  file={values.imageUrl}
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  error={Boolean(touched.imageUrl && errors.imageUrl)}
-                  caption={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        mt: 2,
-                        mx: 'auto',
-                        display: 'block',
-                        textAlign: 'center',
-                        color: 'text.secondary'
-                      }}
-                    >
-                      {translate('message.allow-type-image')}
-                    </Typography>
-                  }
-                />
-                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.imageUrl && errors.imageUrl}
-                </FormHelperText>
-              </Box>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3 }}>
-              <Stack spacing={3}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label={translate('page.diver.form.name')}
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
-                  />
-                  <TextField
-                    fullWidth
-                    label={translate('page.diver.form.phone')}
-                    {...getFieldProps('phone')}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label={translate('page.diver.form.email')}
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                  <TextField
-                    fullWidth
-                    label={translate('page.diver.form.address')}
-                    {...getFieldProps('address')}
-                    error={Boolean(touched.address && errors.address)}
-                    helperText={touched.address && errors.address}
-                  />
-                </Stack>
-                {isEdit && (
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <Autocomplete
-                      fullWidth
-                      disablePortal
-                      clearIcon
-                      id="status"
-                      value={enumStatus}
-                      options={statusOptions}
-                      getOptionLabel={(option: OptionStatus) => translate(`status.${option.label}`)}
-                      // getOptionLabel={(option: any) => (option ? option.name : '')}
-                      onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
-                      renderInput={(params) => (
+    <Box sx={{ width: '100%', typography: 'body1' }}>
+      <TabContext value={valueTab}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
+            <Tab label={translate('page.garden.form.label.information')} value="0" />
+            <Tab label={translate('page.diver-team.heading3')} value="1" disabled={!isEdit} />
+          </TabList>
+        </Box>
+        <TabPanel sx={{ p: 3 }} value="0">
+          <FormikProvider value={formik}>
+            <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                  <Card sx={{ py: 10, px: 3 }}>
+                    <Box sx={{ mb: 5 }}>
+                      <UploadAvatar
+                        accept="image/*"
+                        file={values.imageUrl}
+                        maxSize={3145728}
+                        onDrop={handleDrop}
+                        error={Boolean(touched.imageUrl && errors.imageUrl)}
+                        caption={
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              mt: 2,
+                              mx: 'auto',
+                              display: 'block',
+                              textAlign: 'center',
+                              color: 'text.secondary'
+                            }}
+                          >
+                            {translate('message.allow-type-image')}
+                          </Typography>
+                        }
+                      />
+                      <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
+                        {touched.imageUrl && errors.imageUrl}
+                      </FormHelperText>
+                    </Box>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={8}>
+                  <Card sx={{ p: 3 }}>
+                    <Stack spacing={3}>
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField
-                          {...params}
-                          label={translate('page.diver.form.status')}
-                          error={Boolean(touched.status && errors.status)}
-                          helperText={touched.status && errors.status}
+                          fullWidth
+                          label={translate('page.diver.form.name')}
+                          {...getFieldProps('name')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
                         />
+                        <TextField
+                          fullWidth
+                          label={translate('page.diver.form.phone')}
+                          {...getFieldProps('phone')}
+                          error={Boolean(touched.phone && errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
+
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField
+                          fullWidth
+                          label={translate('page.diver.form.email')}
+                          {...getFieldProps('email')}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                        <TextField
+                          fullWidth
+                          label={translate('page.diver.form.address')}
+                          {...getFieldProps('address')}
+                          error={Boolean(touched.address && errors.address)}
+                          helperText={touched.address && errors.address}
+                        />
+                      </Stack>
+                      {isEdit && (
+                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                          <Autocomplete
+                            fullWidth
+                            disablePortal
+                            clearIcon
+                            id="status"
+                            value={enumStatus}
+                            options={statusOptions}
+                            getOptionLabel={(option: OptionStatus) =>
+                              translate(`status.${option.label}`)
+                            }
+                            // getOptionLabel={(option: any) => (option ? option.name : '')}
+                            onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={translate('page.diver.form.status')}
+                                error={Boolean(touched.status && errors.status)}
+                                helperText={touched.status && errors.status}
+                              />
+                            )}
+                          />
+                        </Stack>
                       )}
-                    />
-                  </Stack>
-                )}
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    {!isEdit ? translate('button.save.add') : translate('button.save.update')}
-                  </LoadingButton>
-                </Box>
-              </Stack>
-            </Card>
+                      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                          {!isEdit ? translate('button.save.add') : translate('button.save.update')}
+                        </LoadingButton>
+                      </Box>
+                    </Stack>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Form>
+          </FormikProvider>
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="1">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={12}>
+                <Stack spacing={5}>
+                  <DiverTeamList diverId={currentDiver?.id} />
+                </Stack>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-      </Form>
-    </FormikProvider>
+        </TabPanel>
+      </TabContext>
+    </Box>
   );
 }

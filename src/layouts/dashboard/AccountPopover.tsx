@@ -57,11 +57,6 @@ export default function AccountPopover() {
       label: translate('menu.menu-option.home'),
       icon: homeFill,
       linkTo: '/'
-    },
-    {
-      label: translate('menu.menu-option.account'),
-      icon: personFill,
-      linkTo: PATH_DASHBOARD.account.editById
     }
   ];
 

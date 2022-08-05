@@ -34,7 +34,8 @@ export default function CoralHealthCreate() {
       if (response.status == 200) {
         const data = {
           id: response.data.id,
-          name: response.data.name
+          name: response.data.name,
+          description: response.data.description
         };
         setCurrentHealth(data);
       }

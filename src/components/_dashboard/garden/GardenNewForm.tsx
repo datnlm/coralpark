@@ -18,7 +18,8 @@ import {
   Tab,
   CardHeader,
   CardContent,
-  FormHelperText
+  FormHelperText,
+  InputAdornment
 } from '@material-ui/core';
 // utils
 import { manageGarden } from '_apis_/garden';
@@ -27,6 +28,7 @@ import { OptionStatus, statusOptions } from 'utils/constants';
 import { RootState, useSelector, useDispatch } from 'redux/store';
 import { Icon } from '@iconify/react';
 import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -63,22 +65,24 @@ type GardenNewFormProps = {
 mapboxgl.accessToken = mapConfig || '';
 
 export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormProps) {
-  const { translate } = useLocales();
+  const { translate, currentLang } = useLocales();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const dispatch = useDispatch();
   const [valueTab, setValueTab] = useState('0');
+  const [viewCell, setViewCell] = useState<boolean>(true);
   const gardenTypesList = useSelector((state: RootState) => state.garden.gardenTypesList);
   const siteList = useSelector((state: RootState) => state.garden.siteList);
   const areaList = useSelector((state: RootState) => state.area.areaList);
-  const [isView, setIsView] = useState<Boolean>(false);
   const [lng, setLng] = useState(111.202);
   const [lat, setLat] = useState(11.305);
   const mapContainerRef = useRef(null);
   const [polygonStr, setPolygonStr] = useState('');
   const [polygonCoordinates, setPolygonCoordinates] = useState([]);
+  const [queryData, setQueryData] = useState('');
   const [zoomMap, setZoomMap] = useState(4.5);
+
   const NewGardenSchema = Yup.object().shape({
     name: Yup.string()
       .required(translate('message.form.name'))
@@ -184,9 +188,6 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
       );
       setEnumStatus(statusOptions.find((v) => v.id == currentGarden?.status) || null);
     }
-  }, [currentGarden]);
-
-  useEffect(() => {
     if (isEdit && currentGarden) {
       setFieldValue('wellKnownText', currentGarden?.wellKnownText);
       const mapPoly = currentGarden?.wellKnownText
@@ -200,12 +201,12 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
         v.split(' ').map((lnglat) => tmp.push(lnglat));
         coordinatesTmp.push(tmp);
       });
+
       setPolygonCoordinates(coordinatesTmp);
     }
   }, [currentGarden]);
 
-  useEffect(() => {
-    setIsView(false);
+  const fetechMap = async () => {
     const map = new mapboxgl.Map({
       // accessToken: mapboxgl.accessToken,
       container: mapContainerRef.current || '',
@@ -234,6 +235,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
           ]
         }
       });
+      map.setCenter(polygonCoordinates[0]);
 
       // Add a new layer to visualize the polygon.
       map.addLayer({
@@ -258,14 +260,24 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
         }
       });
     });
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      placeholder: ''
+    });
+    map.addControl(geocoder);
 
-    // const geocoder = new MapboxGeocoder({
-    //   accessToken: mapboxgl.accessToken,
-    //   placeholder: ''
-    // });
-    // geocoder.setLanguage(currentLang.value);
-    // // Add the control to the map.
-    // map.addControl(geocoder);
+    let queryAddress = '';
+    if (queryAddress != '' || getFieldProps('address').value != '') {
+      queryAddress = getFieldProps('address').value;
+      // if (isEdit) {
+      //   if (currentGarden?.address != null) {
+      //     queryAddress = currentGarden?.address;
+      //   }
+      // }
+      geocoder.query(queryAddress);
+    }
+
+    geocoder.setLanguage(currentLang.value);
 
     const draw = new MapboxDraw({
       displayControlsDefault: false,
@@ -326,8 +338,18 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
 
     // Add navigation control (the +/- zoom buttons)
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    setIsView(true);
-  }, [polygonCoordinates]); // eslint-disable-line react-hooks/exhaustive-deps
+    setViewCell(true);
+  };
+
+  useEffect(() => {
+    if (valueTab == '0') {
+      fetechMap();
+    }
+  }, [polygonCoordinates, queryData, valueTab]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const queryDataHandle = () => {
+    setQueryData(getFieldProps('address').value);
+  };
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={valueTab}>
@@ -337,7 +359,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
             <Tab
               label={translate('page.garden.form.label.cell')}
               value="1"
-              disabled={!isEdit && isView == false}
+              disabled={!isEdit && !viewCell}
             />
           </TabList>
         </Box>
@@ -360,6 +382,7 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                           fullWidth
                           label={translate('page.garden.form.address')}
                           {...getFieldProps('address')}
+                          onBlur={queryDataHandle}
                           error={Boolean(touched.address && errors.address)}
                           helperText={touched.address && errors.address}
                         />
@@ -369,6 +392,13 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                           fullWidth
                           label={translate('page.garden.form.acreage')}
                           {...getFieldProps('acreage')}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                m<sup>2</sup>
+                              </InputAdornment>
+                            )
+                          }}
                           error={Boolean(touched.acreage && errors.acreage)}
                           helperText={touched.acreage && errors.acreage}
                         />
@@ -377,16 +407,6 @@ export default function GardenNewForm({ isEdit, currentGarden }: GardenNewFormPr
                           disabled
                           label={translate('page.garden.form.quantity-of-cells')}
                           {...getFieldProps('quantityOfCells')}
-                          // InputProps={{
-                          //   endAdornment: (
-                          //     <InputAdornment position="end">
-                          //       <IconButton edge="end">
-                          //         {/* <IconButton onClick={handleClickOpen} edge="end"> */}
-                          //         <Icon icon={plusFill} />
-                          //       </IconButton>
-                          //     </InputAdornment>
-                          //   )
-                          // }}
                           error={Boolean(touched.quantityOfCells && errors.quantityOfCells)}
                           helperText={touched.quantityOfCells && errors.quantityOfCells}
                         />

@@ -222,4 +222,5 @@ export type PhaseForm = {
 export type CoralHealth = {
   id: string;
   name: string;
+  description: string;
 };

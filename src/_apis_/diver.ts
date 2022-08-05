@@ -62,6 +62,15 @@ export class DiverManager {
       .catch((err) => err);
   };
 
+  getListDiverTeamById = (diverId: string, page_number: number, page_size: number) => {
+    return axios
+      .get('/api/v1/admin/diver-teams', {
+        params: { diverId, page_number, page_size }
+      })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
   // create diver team
   createDiverTeam = (diverTeam: any) => {
     const data = {

@@ -43,6 +43,7 @@ import './Map.css';
 import { RootState, useSelector } from 'redux/store';
 import Scrollbar from 'components/Scrollbar';
 import SearchNotFound from 'components/SearchNotFound';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import Label from 'components/Label';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -113,7 +114,7 @@ function applySortFilter(array: Garden[], comparator: (a: any, b: any) => number
 }
 
 export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
-  const { translate } = useLocales();
+  const { translate, currentLang } = useLocales();
   const navigate = useNavigate();
   const { themeStretch } = useSettings();
   const theme = useTheme();
@@ -132,6 +133,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
   const mapContainerRef = useRef(null);
   const [lng, setLng] = useState(111.202);
   const [lat, setLat] = useState(11.305);
+  const [queryData, setQueryData] = useState('');
   const [zoomMap, setZoomMap] = useState(4.5);
 
   const NewGardenSchema = Yup.object().shape({
@@ -245,6 +247,10 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
 
   useEffect(() => {
     if (isEdit) {
+      if (currentSite?.longitude && currentSite?.latitude) {
+        setLat(Number(currentSite?.latitude));
+        setLng(Number(currentSite?.longitude));
+      }
       setFieldValue('listGarden', currentSite?.listGarden);
       if (currentSite?.listGarden != null) {
         setGardenList(currentSite?.listGarden);
@@ -257,7 +263,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     }
   }, [currentSite]);
 
-  useEffect(() => {
+  const fetchMap = () => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current || '',
       style: 'mapbox://styles/mapbox/satellite-v9',
@@ -265,6 +271,24 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
       zoom: zoomMap
     });
 
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      placeholder: ''
+    });
+    map.addControl(geocoder);
+
+    let queryAddress = '';
+    if (queryAddress != '' || getFieldProps('address').value != '') {
+      queryAddress = getFieldProps('address').value;
+      // if (isEdit) {
+      //   if (currentSite?.address != null) {
+      //     queryAddress = currentSite?.address;
+      //   }
+      // }
+      geocoder.query(queryAddress);
+    }
+
+    geocoder.setLanguage(currentLang.value);
     // add mapbox fullscreen
     map.addControl(new mapboxgl.FullscreenControl());
     // Add navigation control (the +/- zoom buttons)
@@ -284,7 +308,12 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
       setFieldValue('longitude', e.lngLat.lng);
       setFieldValue('latitude', e.lngLat.lat);
     });
-  }, [currentSite]); // eslint-disable-line react-hooks/exhaustive-deps
+  };
+  useEffect(() => {
+    if (valueTab == '0') {
+      fetchMap();
+    }
+  }, [currentSite, queryData, valueTab, lat, lng]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -325,6 +354,10 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
+  };
+
+  const queryDataHandle = () => {
+    setQueryData(getFieldProps('address').value);
   };
 
   return (
@@ -413,6 +446,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
                           fullWidth
                           label={translate('page.site.form.address')}
                           {...getFieldProps('address')}
+                          onBlur={queryDataHandle}
                           error={Boolean(touched.address && errors.address)}
                           helperText={touched.address && errors.address}
                         />

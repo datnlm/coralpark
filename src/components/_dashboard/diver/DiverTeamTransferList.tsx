@@ -14,7 +14,7 @@ import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
 import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton, TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import {
   Card,
@@ -25,6 +25,7 @@ import {
   CardHeader,
   Checkbox,
   Divider,
+  Tab,
   List,
   ListItemButton,
   ListItemIcon,
@@ -103,6 +104,7 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   // -------------------
+  const [valueTab, setValueTab] = useState('0');
   const diverList = useSelector((state: RootState) => state.diver.diverList);
   const [checked, setChecked] = useState<number[]>([]);
   const [left, setLeft] = useState<number[] | any>([]);
@@ -371,257 +373,265 @@ export default function DiverTeaTransferList({ isEdit, currentDiverTeam }: Diver
     { id: 'address', label: translate('page.area.form.address'), alignRight: false },
     { id: '' }
   ];
-
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setValueTab(newValue);
+  };
   return (
-    <FormikProvider value={formik}>
-      <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3} direction="column">
-          <Grid item>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
-                <Stack spacing={3}>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                    <TextField
-                      fullWidth
-                      label={translate('page.diver-team.form.name')}
-                      {...getFieldProps('name')}
-                      error={Boolean(touched.name && errors.name)}
-                      helperText={touched.name && errors.name}
-                    />
-                    {isEdit && (
-                      <Autocomplete
-                        fullWidth
-                        disablePortal
-                        clearIcon
-                        id="status"
-                        value={enumStatus}
-                        options={statusOptions}
-                        getOptionLabel={(option: OptionStatus) =>
-                          translate(`status.${option.label}`)
-                        }
-                        // getOptionLabel={(option: any) => (option ? option.name : '')}
-                        onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label={translate('page.garden.form.status')}
-                            error={Boolean(touched.status && errors.status)}
-                            helperText={touched.status && errors.status}
-                          />
-                        )}
-                      />
-                    )}
-                  </Stack>
-                </Stack>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Card sx={{ p: 3, minWidth: 600 }}>
-                  <Stack spacing={3}>
-                    <Stack
-                      direction={{ xs: 'row', sm: 'row' }}
-                      spacing={{ xs: 3, sm: 2 }}
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <Grid
-                        container
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{ width: 'auto', py: 3 }}
-                      >
-                        <Grid item>
-                          {customList(translate('page.diver-team.form.choices'), left)}
-                        </Grid>
-                        <Grid item>
-                          <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
-                            <Button
-                              color="inherit"
-                              variant="outlined"
-                              size="small"
-                              onClick={handleAllRight}
-                              disabled={left.length === 0}
-                              aria-label="move all right"
-                              sx={{ my: 1 }}
-                            >
-                              <Icon icon={arrowheadRightFill} width={18} height={18} />
-                            </Button>
-                            <Button
-                              color="inherit"
-                              variant="outlined"
-                              size="small"
-                              onClick={handleCheckedRight}
-                              disabled={leftChecked.length === 0}
-                              aria-label="move selected right"
-                              sx={{ my: 1 }}
-                            >
-                              <Icon icon={arrowIosForwardFill} width={18} height={18} />
-                            </Button>
-                            <Button
-                              color="inherit"
-                              variant="outlined"
-                              size="small"
-                              onClick={handleCheckedLeft}
-                              disabled={rightChecked.length === 0}
-                              aria-label="move selected left"
-                              sx={{ my: 1 }}
-                            >
-                              <Icon icon={arrowIosBackFill} width={18} height={18} />
-                            </Button>
-                            <Button
-                              color="inherit"
-                              variant="outlined"
-                              size="small"
-                              onClick={handleAllLeft}
-                              disabled={right.length === 0}
-                              aria-label="move all left"
-                              sx={{ my: 1 }}
-                            >
-                              <Icon icon={arrowheadLeftFill} width={18} height={18} />
-                            </Button>
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          {customList(translate('page.diver-team.form.chosen'), right)}
-                          <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                            {touched.number && errors.number}
-                          </FormHelperText>
-                        </Grid>
-                      </Grid>
-                    </Stack>
-                  </Stack>
-                </Card>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Box sx={{ mt: 3, mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
-          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            {!isEdit ? translate('button.save.add') : translate('button.save.update')}
-          </LoadingButton>
+    <Box sx={{ width: '100%', typography: 'body1' }}>
+      <TabContext value={valueTab}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
+            <Tab label={translate('page.partner.form.label.information')} value="0" />
+            <Tab label={translate('page.area.heading1.list')} value="1" disabled={!isEdit} />
+          </TabList>
         </Box>
-
-        <Grid item xs={12} md={12} spacing={3} padding={{ t: 3 }}>
-          <Card>
-            <Accordion key="1" disabled={!isEdit}>
-              <AccordionSummary
-                expandIcon={<Icon icon={arrowIosDownwardFill} width={20} height={20} />}
+        <TabPanel sx={{ p: 3 }} value="0">
+          <FormikProvider value={formik}>
+            <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <Grid container spacing={3} direction="column">
+                <Grid item>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={12}>
+                      <Stack spacing={3}>
+                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                          <TextField
+                            fullWidth
+                            label={translate('page.diver-team.form.name')}
+                            {...getFieldProps('name')}
+                            error={Boolean(touched.name && errors.name)}
+                            helperText={touched.name && errors.name}
+                          />
+                          {isEdit && (
+                            <Autocomplete
+                              fullWidth
+                              disablePortal
+                              clearIcon
+                              id="status"
+                              value={enumStatus}
+                              options={statusOptions}
+                              getOptionLabel={(option: OptionStatus) =>
+                                translate(`status.${option.label}`)
+                              }
+                              // getOptionLabel={(option: any) => (option ? option.name : '')}
+                              onChange={(e, values: OptionStatus | null) => setEnumStatus(values)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label={translate('page.garden.form.status')}
+                                  error={Boolean(touched.status && errors.status)}
+                                  helperText={touched.status && errors.status}
+                                />
+                              )}
+                            />
+                          )}
+                        </Stack>
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Card sx={{ p: 3, minWidth: 600 }}>
+                        <Stack spacing={3}>
+                          <Stack
+                            direction={{ xs: 'row', sm: 'row' }}
+                            spacing={{ xs: 3, sm: 2 }}
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            <Grid
+                              container
+                              justifyContent="center"
+                              alignItems="center"
+                              sx={{ width: 'auto', py: 3 }}
+                            >
+                              <Grid item>
+                                {customList(translate('page.diver-team.form.choices'), left)}
+                              </Grid>
+                              <Grid item>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  alignItems="center"
+                                  sx={{ p: 3 }}
+                                >
+                                  <Button
+                                    color="inherit"
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={handleAllRight}
+                                    disabled={left.length === 0}
+                                    aria-label="move all right"
+                                    sx={{ my: 1 }}
+                                  >
+                                    <Icon icon={arrowheadRightFill} width={18} height={18} />
+                                  </Button>
+                                  <Button
+                                    color="inherit"
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={handleCheckedRight}
+                                    disabled={leftChecked.length === 0}
+                                    aria-label="move selected right"
+                                    sx={{ my: 1 }}
+                                  >
+                                    <Icon icon={arrowIosForwardFill} width={18} height={18} />
+                                  </Button>
+                                  <Button
+                                    color="inherit"
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={handleCheckedLeft}
+                                    disabled={rightChecked.length === 0}
+                                    aria-label="move selected left"
+                                    sx={{ my: 1 }}
+                                  >
+                                    <Icon icon={arrowIosBackFill} width={18} height={18} />
+                                  </Button>
+                                  <Button
+                                    color="inherit"
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={handleAllLeft}
+                                    disabled={right.length === 0}
+                                    aria-label="move all left"
+                                    sx={{ my: 1 }}
+                                  >
+                                    <Icon icon={arrowheadLeftFill} width={18} height={18} />
+                                  </Button>
+                                </Grid>
+                              </Grid>
+                              <Grid item>
+                                {customList(translate('page.diver-team.form.chosen'), right)}
+                                <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
+                                  {touched.number && errors.number}
+                                </FormHelperText>
+                              </Grid>
+                            </Grid>
+                          </Stack>
+                        </Stack>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Box sx={{ mt: 3, mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                  {!isEdit ? translate('button.save.add') : translate('button.save.update')}
+                </LoadingButton>
+              </Box>
+            </Form>
+          </FormikProvider>
+        </TabPanel>
+        <TabPanel sx={{ p: 3 }} value="1">
+          <Grid item xs={12} md={12} spacing={3} padding={{ t: 3 }}>
+            <Card>
+              <Stack
+                direction={{ xs: 'row', sm: 'row' }}
+                spacing={{ xs: 3, sm: 2 }}
+                justifyContent="space-between"
               >
-                <Typography variant="subtitle1">{translate('page.area.heading1.list')}</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Card>
-                  <Stack
-                    direction={{ xs: 'row', sm: 'row' }}
-                    spacing={{ xs: 3, sm: 2 }}
-                    justifyContent="space-between"
-                  >
-                    <AreaListToolbar
+                <AreaListToolbar
+                  numSelected={selected.length}
+                  filterName={filterName}
+                  onFilterName={handleFilterByName}
+                />
+                <CardHeader
+                  sx={{ mb: 2 }}
+                  action={
+                    <Button
+                      size="small"
+                      onClick={handleClickOpen}
+                      startIcon={<Icon icon={plusFill} />}
+                    >
+                      {translate('button.save.change')}
+                    </Button>
+                  }
+                />
+              </Stack>
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <AreaListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={currentDiverTeam?.areas.length ?? 0}
                       numSelected={selected.length}
-                      filterName={filterName}
-                      onFilterName={handleFilterByName}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
                     />
-                    <CardHeader
-                      sx={{ mb: 2 }}
-                      action={
-                        <Button
-                          size="small"
-                          onClick={handleClickOpen}
-                          startIcon={<Icon icon={plusFill} />}
-                        >
-                          {translate('button.save.change')}
-                        </Button>
-                      }
-                    />
-                  </Stack>
-                  <Scrollbar>
-                    <TableContainer sx={{ minWidth: 800 }}>
-                      <Table>
-                        <AreaListHead
-                          order={order}
-                          orderBy={orderBy}
-                          headLabel={TABLE_HEAD}
-                          rowCount={currentDiverTeam?.areas.length ?? 0}
-                          numSelected={selected.length}
-                          onRequestSort={handleRequestSort}
-                          onSelectAllClick={handleSelectAllClick}
-                        />
-                        <TableBody>
-                          {isLoading ? (
-                            <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                              <CircularProgress />
-                            </TableCell>
-                          ) : (
-                            filteredArea
-                              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                              .map((row, index) => {
-                                const { id, name, address } = row;
+                    <TableBody>
+                      {isLoading ? (
+                        <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                          <CircularProgress />
+                        </TableCell>
+                      ) : (
+                        filteredArea
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map((row, index) => {
+                            const { id, name, address } = row;
 
-                                const isItemSelected = selected.indexOf(id) !== -1;
+                            const isItemSelected = selected.indexOf(id) !== -1;
 
-                                return (
-                                  <TableRow hover key={id} tabIndex={-1} role="checkbox">
-                                    <TableCell padding="checkbox">
-                                      {/* <Checkbox checked={isItemSelected} /> */}
-                                    </TableCell>
-                                    <TableCell align="left">{name}</TableCell>
-                                    <TableCell align="left">{address}</TableCell>
-                                    <TableCell align="right">
-                                      <AreaMoreMenu onDelete={() => {}} areaId={id.toString()} />
-                                    </TableCell>
-                                  </TableRow>
-                                );
-                              })
-                          )}
-                          {emptyRows && (
-                            <TableRow style={{ height: 53 * emptyRows }}>
-                              <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                <Typography gutterBottom align="center" variant="subtitle1">
-                                  {translate('message.not-found')}
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          )}
-                        </TableBody>
-                        {isAreaNotFound && (
-                          <TableBody>
-                            <TableRow>
-                              <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                <SearchNotFound searchQuery={filterName} />
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        )}
-                      </Table>
-                    </TableContainer>
-                  </Scrollbar>
+                            return (
+                              <TableRow hover key={id} tabIndex={-1} role="checkbox">
+                                <TableCell padding="checkbox">
+                                  {/* <Checkbox checked={isItemSelected} /> */}
+                                </TableCell>
+                                <TableCell align="left">{name}</TableCell>
+                                <TableCell align="left">{address}</TableCell>
+                                <TableCell align="right">
+                                  <AreaMoreMenu onDelete={() => {}} areaId={id.toString()} />
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })
+                      )}
+                      {emptyRows && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <Typography gutterBottom align="center" variant="subtitle1">
+                              {translate('message.not-found')}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                    {isAreaNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
 
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
-                    component="div"
-                    count={totalCount}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={(e, page) => setPage(page)}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </Card>
-              </AccordionDetails>
-            </Accordion>
-          </Card>
-        </Grid>
-      </Form>
-      <DiverTeamAreaNewForm
-        currentDiverTeam={currentDiverTeam}
-        areaList={areaList}
-        open={open}
-        onClose={handleClose}
-        isEdit={isEdit}
-      />
-    </FormikProvider>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: translate('message.all'), value: -1 }]}
+                component="div"
+                count={totalCount}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(e, page) => setPage(page)}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          </Grid>
+          <DiverTeamAreaNewForm
+            currentDiverTeam={currentDiverTeam}
+            areaList={areaList}
+            open={open}
+            onClose={handleClose}
+            isEdit={isEdit}
+          />
+        </TabPanel>
+      </TabContext>
+    </Box>
   );
 }

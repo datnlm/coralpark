@@ -489,7 +489,7 @@
       "search": "Tìm kiếm group mode",
       "form": {
         "name": "Tên",
-        "contribution": "Đóng góp"
+        "contribution": "Đóng góp(%)"
       }
     },
     "group-role": {
@@ -512,8 +512,8 @@
       "search": "Tìm kiếm group role",
       "form": {
         "name": "Tên",
-        "personalRate": "Tỷ lệ cá nhân",
-        "partnerRate": "Tỷ lệ đối tác",
+        "personalRate": "Tỷ lệ cá nhân(%)",
+        "partnerRate": "Tỷ lệ đối tác(%)",
         "groupModeId": "Group Mode"
       }
     },
@@ -718,8 +718,8 @@
     "back": "Trở lại",
     "remove-all": "Xoá tất cả",
     "menu": {
-      "edit": "Chỉnh sửa thông",
-      "delete": "Xoá thông tin"
+      "edit": "Chỉnh sửa",
+      "delete": "Xoá"
     }
   },
   "message": {
@@ -865,7 +865,8 @@
   "menu": {
     "sidebarConfig": {
       "subheader": {
-        "management": "ban quản trị",
+        "dashboard": "Chung",
+        "management": "Ban quản trị",
         "partner": "Đối tác",
         "user": "Tài khoản",
         "sell": "Bán hàng",

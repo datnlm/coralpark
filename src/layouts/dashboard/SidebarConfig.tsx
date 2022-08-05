@@ -40,12 +40,12 @@ export default function SidebarConfig() {
       subheader: '',
       items: [
         {
-          title: 'Dashboard',
+          title: translate('menu.sidebarConfig.subheader.dashboard'),
           path: PATH_DASHBOARD.general.app,
           icon: ICONS.dashboard
         },
         {
-          title: 'Bán hàng',
+          title: translate('menu.sidebarConfig.subheader.sell'),
           path: PATH_DASHBOARD.group.list,
           icon: ICONS.ecommerce,
           children: [

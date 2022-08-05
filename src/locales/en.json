@@ -490,7 +490,7 @@
       "search": "Search group mode",
       "form": {
         "name": "Name",
-        "contribution": "Contribution"
+        "contribution": "Contribution(%)"
       }
     },
     "group-role": {
@@ -504,7 +504,7 @@
         "create": "Thêm mới group role",
         "update": "Cập nhật group role"
       },
-      "heading2": "Bảng điều kiển",
+      "heading2": "Dashboard",
       "heading3": "Group Role",
       "heading4": {
         "list": "List",
@@ -513,8 +513,8 @@
       "search": "Search group role",
       "form": {
         "name": "Name",
-        "personalRate": "Personal Rate",
-        "partnerRate": "Partner Rate",
+        "personalRate": "Personal Rate(%)",
+        "partnerRate": "Partner Rate(%)",
         "groupModeId": "Group Mode"
       }
     },
@@ -864,11 +864,36 @@
   "menu": {
     "sidebarConfig": {
       "subheader": {
-        "management": "management"
+        "dashboard": "Dashboard",
+        "management": "Management",
+        "partner": "Partner",
+        "user": "Account",
+        "sell": "Sell",
+        "coral": "Coral",
+        "site": "Site",
+        "area": "Area"
       },
       "title": {
-        "diver": "diver",
-        "partner": "partner"
+        "partner": "Partner",
+        "partner-type": "Partner Type",
+        "group-mode": "Group Mode",
+        "group-role": "Group Role",
+        "categories": "Categories",
+        "diver": "Diver",
+        "diver-team": "Diver Team",
+        "technician": "Technician",
+        "site-manager": "Site Manager",
+        "employee-partner": "Employee Partner",
+        "employee": "Employee",
+        "all": "All",
+        "coral": "Coral",
+        "coral-type": "Type",
+        "coral-phase": " Phase",
+        "coral-health": "Health",
+        "site": "Site",
+        "garden": "Garden",
+        "garden-type": "Garden Type",
+        "cell-type": "Cell Type"
       },
       "diver": {
         "list": "List",

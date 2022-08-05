@@ -371,7 +371,8 @@ export class Coral {
 
   createCoralHealth = (coralHealth: CoralHealth) => {
     const data = {
-      name: coralHealth.name
+      name: coralHealth.name,
+      description: coralHealth.description
     };
     return axios
       .post('/api/v1/admin/coral-health', data)
@@ -382,7 +383,8 @@ export class Coral {
   updateCoralHealth = (coralHealth: CoralHealth) => {
     const data = {
       id: coralHealth.id,
-      name: coralHealth.name
+      name: coralHealth.name,
+      description: coralHealth.description
     };
     return axios
       .put('/api/v1/admin/coral-health', data)
