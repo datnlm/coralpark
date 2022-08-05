@@ -1,8 +1,12 @@
 import { Icon } from '@iconify/react';
-import androidFilled from '@iconify/icons-ant-design/android-filled';
+import coralIcon from '@iconify/icons-openmoji/coral';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
+import { useEffect } from 'react';
 import { Card, Typography } from '@material-ui/core';
+import { getListCoral } from 'redux/slices/coral';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import useLocales from 'hooks/useLocales';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
 
@@ -12,8 +16,8 @@ const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: 'none',
   textAlign: 'center',
   padding: theme.spacing(5, 0),
-  color: theme.palette.primary.darker,
-  backgroundColor: theme.palette.primary.lighter
+  color: theme.palette.error.darker,
+  backgroundColor: theme.palette.error.lighter
 }));
 
 const IconWrapperStyle = styled('div')(({ theme }) => ({
@@ -25,26 +29,34 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
   height: theme.spacing(8),
   justifyContent: 'center',
   marginBottom: theme.spacing(3),
-  color: theme.palette.primary.dark,
-  backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.primary.dark, 0)} 0%, ${alpha(
-    theme.palette.primary.dark,
+  color: theme.palette.secondary.dark,
+  backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.secondary.dark, 0)} 0%, ${alpha(
+    theme.palette.secondary.dark,
     0.24
   )} 100%)`
 }));
 
 // ----------------------------------------------------------------------
 
-const TOTAL = 714000;
+const TOTAL = 234;
 
-export default function AnalyticsWeeklySales() {
+export default function AnalyticsCorals() {
+  const dispatch = useDispatch();
+  const { translate } = useLocales();
+  const totalCount = useSelector((state: RootState) => state.coral.totalCount);
+
+  useEffect(() => {
+    dispatch(getListCoral(0, -1));
+  }, [dispatch]);
+
   return (
     <RootStyle>
       <IconWrapperStyle>
-        <Icon icon={androidFilled} width={24} height={24} />
+        <Icon icon={coralIcon} width={24} height={24} />
       </IconWrapperStyle>
-      <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
+      <Typography variant="h3">{fShortenNumber(totalCount)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Weekly Sales
+        {translate('menu.sidebarConfig.subheader.coral')}
       </Typography>
     </RootStyle>
   );
