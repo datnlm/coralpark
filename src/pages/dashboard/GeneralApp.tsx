@@ -1,5 +1,11 @@
 // material
 import { Container, Grid } from '@material-ui/core';
+import {
+  AnalyticsCorals,
+  AnalyticsDivers,
+  AnalyticsGardens,
+  AnalyticsPartners
+} from 'components/_dashboard/general-analytics';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -39,16 +45,20 @@ export default function GeneralApp() {
             <AppFeatured />
           </Grid> */}
 
-          <Grid item xs={12} md={4}>
-            <AppTotalActiveUsers />
+          <Grid item xs={12} sm={6} md={3}>
+            <AnalyticsPartners />
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <AppTotalInstalled />
+          <Grid item xs={12} sm={6} md={3}>
+            <AnalyticsGardens />
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <AppTotalDownloads />
+          <Grid item xs={12} sm={6} md={3}>
+            <AnalyticsDivers />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <AnalyticsCorals />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
