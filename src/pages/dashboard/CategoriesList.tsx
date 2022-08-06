@@ -252,7 +252,7 @@ export default function CategoriesList() {
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(hasQuantity == false && 'error') || 'success'}
                             >
-                              {hasQuantity == false ? 'false' : 'true'}
+                              {translate(`categories.${hasQuantity}`)}
                             </Label>
                           </TableCell>
                           {/* <TableCell align="left">{hasQuantity}</TableCell> */}
