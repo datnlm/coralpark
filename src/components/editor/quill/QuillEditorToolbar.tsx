@@ -1,5 +1,5 @@
 import { Quill } from 'react-quill';
-import { Icon } from '@iconify/react';
+import { Icon, IconifyIcon } from '@iconify/react';
 import ReactDOMServer from 'react-dom/server';
 import codeFill from '@iconify/icons-eva/code-fill';
 import roundUndo from '@iconify/icons-ic/round-undo';
@@ -61,7 +61,7 @@ Font.whitelist = FONT_FAMILY;
 Quill.register(Font, true);
 
 const Icons = Quill.import('ui/icons');
-function renderIcon(icon: object) {
+function renderIcon(icon: string | IconifyIcon) {
   return ReactDOMServer.renderToString(<Icon icon={icon} width={18} height={18} />);
 }
 

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon } from '@iconify/react';
+import { Icon, IconifyIcon } from '@iconify/react';
 import { SnackbarProvider } from 'notistack5';
 import infoFill from '@iconify/icons-eva/info-fill';
 import alertCircleFill from '@iconify/icons-eva/alert-circle-fill';
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) => {
 // ----------------------------------------------------------------------
 
 type SnackbarIconProps = {
-  icon: Object;
+  icon: string | IconifyIcon;
   color: ColorSchema;
 };
 

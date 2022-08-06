@@ -837,6 +837,10 @@
       "cell-quantity": "Please input quantity"
     }
   },
+  "categories": {
+    "false": "No",
+    "true": "Yes"
+  },
   "status": {
     "coral": {
       "EX": "Extinct",

@@ -838,6 +838,10 @@
       "cell-quantity": "Vui lòng số lượng"
     }
   },
+  "categories": {
+    "false": "Không có",
+    "true": "Có"
+  },
   "status": {
     "coral": {
       "EX": "Tuyệt chủng",
