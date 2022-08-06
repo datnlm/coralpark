@@ -22,7 +22,7 @@ import {
   AppAreaInstalled,
   AppTotalDownloads,
   AppTotalInstalled,
-  AppCurrentDownload,
+  AppMap,
   AppTotalActiveUsers,
   AppTopInstalledCountries
 } from '../../components/_dashboard/general-app';
@@ -61,15 +61,11 @@ export default function GeneralApp() {
             <AnalyticsCorals />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentDownload />
+          <Grid item xs={12} md={12} lg={12}>
+            <AppMap />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
-            <AppAreaInstalled />
-          </Grid>
-
-          <Grid item xs={12} lg={8}>
+          {/* <Grid item xs={12} lg={8}>
             <AppNewInvoice />
           </Grid>
 
@@ -94,7 +90,7 @@ export default function GeneralApp() {
                 <AppWidgets2 />
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>
