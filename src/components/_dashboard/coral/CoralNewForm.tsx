@@ -18,7 +18,8 @@ import {
   FormHelperText,
   Tab,
   ListItem,
-  Paper
+  Paper,
+  InputAdornment
 } from '@material-ui/core';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
@@ -293,6 +294,13 @@ export default function UserNewForm({ isEdit, currentCoral }: UserNewFormProps) 
                           fullWidth
                           label={translate('page.coral.form.longevity')}
                           {...getFieldProps('longevity')}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                {translate('page.coral-phase.form.year')}
+                              </InputAdornment>
+                            )
+                          }}
                           error={Boolean(touched.longevity && errors.longevity)}
                           helperText={touched.longevity && errors.longevity}
                         />

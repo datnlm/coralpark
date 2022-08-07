@@ -15,7 +15,8 @@ import {
   Autocomplete,
   Paper,
   Container,
-  Button
+  Button,
+  InputAdornment
 } from '@material-ui/core';
 // routes
 import { RootState, useSelector } from 'redux/store';
@@ -165,6 +166,9 @@ export default function CoralPhasesTypeNewForm({
                 fullWidth
                 label={translate('page.coral-phase.form.min-weight')}
                 {...getFieldProps('minWeight')}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">gram</InputAdornment>
+                }}
                 error={Boolean(touched.minWeight && errors.minWeight)}
                 helperText={touched.minWeight && errors.minWeight}
               />
@@ -172,6 +176,9 @@ export default function CoralPhasesTypeNewForm({
                 fullWidth
                 label={translate('page.coral-phase.form.max-weight')}
                 {...getFieldProps('maxWeight')}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">gram</InputAdornment>
+                }}
                 error={Boolean(touched.maxWeight && errors.maxWeight)}
                 helperText={touched.maxWeight && errors.maxWeight}
               />
@@ -181,6 +188,9 @@ export default function CoralPhasesTypeNewForm({
                 fullWidth
                 label={translate('page.coral-phase.form.min-high')}
                 {...getFieldProps('minHigh')}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">cm</InputAdornment>
+                }}
                 error={Boolean(touched.minHigh && errors.minHigh)}
                 helperText={touched.minHigh && errors.minHigh}
               />
@@ -188,6 +198,9 @@ export default function CoralPhasesTypeNewForm({
                 fullWidth
                 label={translate('page.coral-phase.form.max-high')}
                 {...getFieldProps('maxHigh')}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">cm</InputAdornment>
+                }}
                 error={Boolean(touched.maxHigh && errors.maxHigh)}
                 helperText={touched.maxHigh && errors.maxHigh}
               />
@@ -197,6 +210,13 @@ export default function CoralPhasesTypeNewForm({
                 fullWidth
                 label={translate('page.coral-phase.form.time-from')}
                 {...getFieldProps('timeFrom')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {translate('page.coral-phase.form.year')}
+                    </InputAdornment>
+                  )
+                }}
                 error={Boolean(touched.timeFrom && errors.timeFrom)}
                 helperText={touched.timeFrom && errors.timeFrom}
               />
@@ -204,6 +224,13 @@ export default function CoralPhasesTypeNewForm({
                 fullWidth
                 label={translate('page.coral-phase.form.time-to')}
                 {...getFieldProps('timeTo')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {translate('page.coral-phase.form.year')}
+                    </InputAdornment>
+                  )
+                }}
                 error={Boolean(touched.timeTo && errors.timeTo)}
                 helperText={touched.timeTo && errors.timeTo}
               />

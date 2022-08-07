@@ -243,7 +243,7 @@
         "address": "Address",
         "longitude": "Longitude",
         "latitude": "Latitude",
-        "acreage": "Acreage",
+        "acreage": "Acreage(㎡)",
         "quantity-of-cells": "Quantity of cells",
         "area": "Area",
         "garden-type": "Garden Type",
@@ -258,7 +258,7 @@
       "form": {
         "id": "Id",
         "type": "Type",
-        "acreage": "Acreage",
+        "acreage": "Acreage(㎡)",
         "quantity": "Quantity",
         "items": "Items",
         "status": "Status"
@@ -393,7 +393,8 @@
         "colour": "Colour",
         "name": "Phase name",
         "description": "Description",
-        "image": "Add new image"
+        "image": "Add new image",
+        "year": "year"
       }
     },
     "phase": {

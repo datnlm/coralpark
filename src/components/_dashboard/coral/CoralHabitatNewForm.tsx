@@ -5,7 +5,7 @@ import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
-import { Card, Box, Grid, Stack, TextField, Typography } from '@material-ui/core';
+import { Card, Box, Grid, Stack, TextField, Typography, InputAdornment } from '@material-ui/core';
 // utils
 import { manageCoral } from '_apis_/coral';
 // routes
@@ -114,6 +114,9 @@ export default function CoralHabitatNewForm({ coralId, currentHabitat }: CoralHa
                     fullWidth
                     label={translate('page.coral-habitat.form.bathymetry')}
                     {...getFieldProps('bathymetry')}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">m</InputAdornment>
+                    }}
                     error={Boolean(touched.bathymetry && errors.bathymetry)}
                     helperText={touched.bathymetry && errors.bathymetry}
                   />
@@ -121,6 +124,9 @@ export default function CoralHabitatNewForm({ coralId, currentHabitat }: CoralHa
                     fullWidth
                     label={translate('page.coral-habitat.form.temperature')}
                     {...getFieldProps('temperature')}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">°C</InputAdornment>
+                    }}
                     error={Boolean(touched.temperature && errors.temperature)}
                     helperText={touched.temperature && errors.temperature}
                   />
@@ -131,6 +137,9 @@ export default function CoralHabitatNewForm({ coralId, currentHabitat }: CoralHa
                     fullWidth
                     label={translate('page.coral-habitat.form.brightness')}
                     {...getFieldProps('brightness')}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">cd</InputAdornment>
+                    }}
                     error={Boolean(touched.brightness && errors.brightness)}
                     helperText={touched.brightness && errors.brightness}
                   />
@@ -138,6 +147,9 @@ export default function CoralHabitatNewForm({ coralId, currentHabitat }: CoralHa
                     fullWidth
                     label={translate('page.coral-habitat.form.current')}
                     {...getFieldProps('current')}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end"> m³/s</InputAdornment>
+                    }}
                     error={Boolean(touched.current && errors.current)}
                     helperText={touched.current && errors.current}
                   />
@@ -147,16 +159,12 @@ export default function CoralHabitatNewForm({ coralId, currentHabitat }: CoralHa
                     fullWidth
                     label={translate('page.coral-habitat.form.tides')}
                     {...getFieldProps('tides')}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end"> m</InputAdornment>
+                    }}
                     error={Boolean(touched.tides && errors.tides)}
                     helperText={touched.tides && errors.tides}
                   />
-                  {/* <TextField
-                          fullWidth
-                          label="Current"
-                          {...getFieldProps('current')}
-                          error={Boolean(touched.current && errors.current)}
-                          helperText={touched.current && errors.current}
-                        /> */}
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
