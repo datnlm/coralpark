@@ -66,7 +66,6 @@ export default function UserCreate() {
         />
 
         <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} />
-        {/* <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} currentHabitat={currentHabitat} /> */}
       </Container>
     </Page>
   );

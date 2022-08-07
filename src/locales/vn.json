@@ -242,7 +242,7 @@
         "address": "Địa chỉ",
         "longitude": "Kinh độ",
         "latitude": "Vĩ độ",
-        "acreage": "Diện tích",
+        "acreage": "Diện tích(㎡)",
         "quantity-of-cells": "Số cell",
         "area": "Khu vực",
         "garden-type": "Loại vườn",
@@ -257,7 +257,7 @@
       "form": {
         "id": "Id",
         "type": "Loại",
-        "acreage": "Diện tích",
+        "acreage": "Diện tích(㎡)",
         "quantity": "Số lượng",
         "items": "Items",
         "status": "Trạng thái"
@@ -392,7 +392,8 @@
         "colour": "Màu sắc",
         "name": "Tên giai đoạn",
         "description": "Mô tả",
-        "image": "Thêm mới hình ảnh"
+        "image": "Thêm mới hình ảnh",
+        "year": "năm"
       }
     },
     "phase": {
