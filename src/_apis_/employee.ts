@@ -59,7 +59,7 @@ export class EmployeeManager {
   // delete emp
   deleteEmployee = (id: string) => {
     return axios
-      .delete(`/api/v1/admin/staffs'${id}`)
+      .delete(`/api/v1/admin/staffs/${id}`)
       .then((res) => res)
       .catch((err) => err);
   };

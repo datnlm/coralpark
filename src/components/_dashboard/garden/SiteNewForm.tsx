@@ -250,6 +250,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
       if (currentSite?.longitude && currentSite?.latitude) {
         setLat(Number(currentSite?.latitude));
         setLng(Number(currentSite?.longitude));
+        setZoomMap(15);
       }
       setFieldValue('listGarden', currentSite?.listGarden);
       if (currentSite?.listGarden != null) {
@@ -278,8 +279,8 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     map.addControl(geocoder);
 
     let queryAddress = '';
-    if (queryAddress != '' || getFieldProps('address').value != '') {
-      queryAddress = getFieldProps('address').value;
+    if (queryData != '') {
+      queryAddress = queryData;
       // if (isEdit) {
       //   if (currentSite?.address != null) {
       //     queryAddress = currentSite?.address;
@@ -303,8 +304,8 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
       setZoomMap(Number(map.getZoom().toFixed(2)));
       marker.setLngLat(e.lngLat).addTo(map);
 
-      setLng(e.lngLat.lng);
-      setLat(e.lngLat.lat);
+      // setLng(e.lngLat.lng);
+      // setLat(e.lngLat.lat);
       setFieldValue('longitude', e.lngLat.lng);
       setFieldValue('latitude', e.lngLat.lat);
     });
@@ -313,6 +314,7 @@ export default function SiteNewForm({ isEdit, currentSite }: SiteNewFormProps) {
     if (valueTab == '0') {
       fetchMap();
     }
+    // }, [currentSite, queryData, valueTab]); // eslint-disable-line react-hooks/exhaustive-deps
   }, [currentSite, queryData, valueTab, lat, lng]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleRequestSort = (property: string) => {

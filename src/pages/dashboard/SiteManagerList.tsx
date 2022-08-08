@@ -188,7 +188,7 @@ export default function SiteManagerList() {
           heading={translate('page.site-manager.heading1.list')}
           links={[
             { name: translate('page.site-manager.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.site-manager.heading3'), href: PATH_DASHBOARD.employee.root },
+            { name: translate('page.site-manager.heading3'), href: PATH_DASHBOARD.staff.listSite },
             { name: translate('page.site-manager.heading4.list') }
           ]}
           action={
