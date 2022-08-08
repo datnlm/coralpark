@@ -68,7 +68,7 @@ export default function EmployeeCreate() {
           }
           links={[
             { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.staff.root },
+            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.staff.listEmployee },
             { name: !isEdit ? translate('page.employee.heading4.new') : name }
           ]}
         />

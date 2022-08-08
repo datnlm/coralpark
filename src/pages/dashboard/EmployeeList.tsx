@@ -188,7 +188,7 @@ export default function EmployeeList() {
           heading={translate('page.employee.heading1.list')}
           links={[
             { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.employee.root },
+            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.staff.listEmployee },
             { name: translate('page.employee.heading4.list') }
           ]}
           action={

@@ -72,7 +72,7 @@ export default function EmployeeCreate() {
           }
           links={[
             { name: translate('page.site-manager.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.site-manager.heading3'), href: PATH_DASHBOARD.staff.root },
+            { name: translate('page.site-manager.heading3'), href: PATH_DASHBOARD.staff.listSite },
             { name: !isEdit ? translate('page.site-manager.heading4.new') : name }
           ]}
         />
