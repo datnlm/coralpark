@@ -6,6 +6,7 @@ import { manageCoral } from '_apis_/coral';
 // material
 import { Container } from '@material-ui/core';
 import { getListArea } from 'redux/slices/area';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getCoralType, getListCoralPhase } from '../../redux/slices/coral';
@@ -19,6 +20,7 @@ import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import CoralNewForm from '../../components/_dashboard/coral/CoralNewForm';
 import { Coral, Habitat } from '../../@types/coral';
+
 // ----------------------------------------------------------------------
 
 export default function UserCreate() {
@@ -30,11 +32,14 @@ export default function UserCreate() {
   const { name } = useParams();
   const [currentCoral, setCurrentCoral] = useState<Coral>();
   const [currentHabitat, setCurrentHabitat] = useState<Habitat | null>(null);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     if (isEdit) {
       await manageCoral.getCoralByID(paramCase(name)).then((response) => {
         setCurrentCoral(response.data);
+        setIsLoading(false);
       });
     }
   };
@@ -48,25 +53,33 @@ export default function UserCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={!isEdit ? translate('page.coral.title.create') : translate('page.site.title.update')}
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
-            !isEdit
-              ? translate('page.coral.heading1.create')
-              : translate('page.coral.heading1.update')
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
+            !isEdit ? translate('page.coral.title.create') : translate('page.site.title.update')
           }
-          links={[
-            { name: translate('page.coral.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.coral.heading3'), href: PATH_DASHBOARD.coral.root },
-            { name: !isEdit ? translate('page.coral.heading4.new') : name }
-          ]}
-        />
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.coral.heading1.create')
+                  : translate('page.coral.heading1.update')
+              }
+              links={[
+                { name: translate('page.coral.heading2'), href: PATH_DASHBOARD.root },
+                { name: translate('page.coral.heading3'), href: PATH_DASHBOARD.coral.root },
+                { name: !isEdit ? translate('page.coral.heading4.new') : name }
+              ]}
+            />
 
-        <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} />
-      </Container>
-    </Page>
+            <CoralNewForm isEdit={isEdit} currentCoral={currentCoral} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

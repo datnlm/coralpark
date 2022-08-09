@@ -5,6 +5,7 @@ import { manageGroup } from '_apis_/group';
 // material
 import { Container } from '@material-ui/core';
 import { getListGroupMode } from 'redux/slices/groupMode';
+import LoadingScreen from 'components/LoadingScreen';
 import { GroupMode, GroupRole } from '../../@types/group';
 // redux
 import { useDispatch } from '../../redux/store';
@@ -28,10 +29,13 @@ export default function GroupRoleCreate() {
   const { name } = useParams();
   const isEdit = pathname.includes('edit');
   const [currentGroupRole, setCurrentGroupRole] = useState<GroupRole>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageGroup.getGroupRoleByID(paramCase(name)).then((response) => {
       setCurrentGroupRole(response.data);
+      setIsLoading(false);
     });
   };
 
@@ -43,31 +47,37 @@ export default function GroupRoleCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit
-          ? translate('page.group-role.title.create')
-          : translate('page.group-role.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.group-role.heading1.create')
-              : translate('page.group-role.heading1.update')
+              ? translate('page.group-role.title.create')
+              : translate('page.group-role.title.update')
           }
-          links={[
-            { name: translate('page.group-role.heading2'), href: PATH_DASHBOARD.root },
-            {
-              name: translate('page.group-role.heading3'),
-              href: PATH_DASHBOARD.group.listRole
-            },
-            { name: !isEdit ? translate('page.group-role.heading4.new') : name }
-          ]}
-        />
-        <GroupRoleNewForm isEdit={isEdit} currentGroupRole={currentGroupRole} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.group-role.heading1.create')
+                  : translate('page.group-role.heading1.update')
+              }
+              links={[
+                { name: translate('page.group-role.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.group-role.heading3'),
+                  href: PATH_DASHBOARD.group.listRole
+                },
+                { name: !isEdit ? translate('page.group-role.heading4.new') : name }
+              ]}
+            />
+            <GroupRoleNewForm isEdit={isEdit} currentGroupRole={currentGroupRole} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

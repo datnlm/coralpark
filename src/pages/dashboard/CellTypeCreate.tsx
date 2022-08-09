@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageCell } from '_apis_/cell';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -26,12 +27,13 @@ export default function GardenCreate() {
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
-
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [currentCellType, setCurrentCellType] = useState<CellType>();
 
-  useEffect(() => {
+  const fetchData = async () => {
+    setIsLoading(true);
     if (isEdit) {
-      manageCell.getCellTypeById(paramCase(name)).then((response) => {
+      await manageCell.getCellTypeById(paramCase(name)).then((response) => {
         if (response.status == 200) {
           const data = {
             id: response.data.id,
@@ -40,35 +42,51 @@ export default function GardenCreate() {
             description: response.data.description
           };
           setCurrentCellType(data);
+          setIsLoading(false);
         }
       });
+    }
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      fetchData();
     }
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit
-          ? translate('page.cell-type.title.create')
-          : translate('page.cell-type.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.cell-type.heading1.create')
-              : translate('page.cell-type.heading1.update')
+              ? translate('page.cell-type.title.create')
+              : translate('page.cell-type.title.update')
           }
-          links={[
-            { name: translate('page.cell-type.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.cell-type.heading3'), href: PATH_DASHBOARD.site.cellTypesList },
-            { name: !isEdit ? translate('page.cell-type.heading4.new') : name }
-          ]}
-        />
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.cell-type.heading1.create')
+                  : translate('page.cell-type.heading1.update')
+              }
+              links={[
+                { name: translate('page.cell-type.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.cell-type.heading3'),
+                  href: PATH_DASHBOARD.site.cellTypesList
+                },
+                { name: !isEdit ? translate('page.cell-type.heading4.new') : name }
+              ]}
+            />
 
-        <CellTypeNewForm isEdit={isEdit} currentCellType={currentCellType} />
-      </Container>
-    </Page>
+            <CellTypeNewForm isEdit={isEdit} currentCellType={currentCellType} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

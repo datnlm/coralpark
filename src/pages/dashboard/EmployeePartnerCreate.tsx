@@ -5,6 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { manageEmployee } from '_apis_/employee';
 import { getListPartner } from 'redux/slices/partner';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -28,8 +29,10 @@ export default function EmployeeCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentEmployeePartner, setCurrentEmployeePartner] = useState<EmployeePartner>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageEmployee.getEmployeePartnerByID(name).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -44,6 +47,7 @@ export default function EmployeeCreate() {
           status: response.data.status
         };
         setCurrentEmployeePartner(data);
+        setIsLoading(false);
       }
     });
   };
@@ -56,31 +60,40 @@ export default function EmployeeCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit
-          ? translate('page.employee-partner.title.create')
-          : translate('page.employee-partner.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.employee-partner.heading1.create')
-              : translate('page.employee-partner.heading1.update')
+              ? translate('page.employee-partner.title.create')
+              : translate('page.employee-partner.title.update')
           }
-          links={[
-            { name: translate('page.employee-partner.heading2'), href: PATH_DASHBOARD.root },
-            {
-              name: translate('page.employee-partner.heading3'),
-              href: PATH_DASHBOARD.staff.listEmployeePartner
-            },
-            { name: !isEdit ? translate('page.employee-partner.heading4.new') : name }
-          ]}
-        />
-        <EmployeePartnerNewForm isEdit={isEdit} currentEmployeePartner={currentEmployeePartner} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.employee-partner.heading1.create')
+                  : translate('page.employee-partner.heading1.update')
+              }
+              links={[
+                { name: translate('page.employee-partner.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.employee-partner.heading3'),
+                  href: PATH_DASHBOARD.staff.listEmployeePartner
+                },
+                { name: !isEdit ? translate('page.employee-partner.heading4.new') : name }
+              ]}
+            />
+            <EmployeePartnerNewForm
+              isEdit={isEdit}
+              currentEmployeePartner={currentEmployeePartner}
+            />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

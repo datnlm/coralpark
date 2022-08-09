@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageDiver } from '_apis_/diver';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -27,8 +28,10 @@ export default function DiverCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentDiver, setCurrentDiver] = useState<Diver>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageDiver.getDiverByID(paramCase(name)).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -43,6 +46,7 @@ export default function DiverCreate() {
           status: response.data.status
         };
         setCurrentDiver(data);
+        setIsLoading(false);
       }
     });
   };
@@ -54,24 +58,32 @@ export default function DiverCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={!isEdit ? translate('page.diver.title.create') : translate('page.diver.title.update')}
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
-            !isEdit
-              ? translate('page.diver.heading1.create')
-              : translate('page.diver.heading1.update')
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
+            !isEdit ? translate('page.diver.title.create') : translate('page.diver.title.update')
           }
-          links={[
-            { name: translate('page.diver.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.diver.heading3'), href: PATH_DASHBOARD.staff.diverList },
-            { name: !isEdit ? translate('page.diver.heading4.new') : name }
-          ]}
-        />
-        <DiverNewForm isEdit={isEdit} currentDiver={currentDiver} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.diver.heading1.create')
+                  : translate('page.diver.heading1.update')
+              }
+              links={[
+                { name: translate('page.diver.heading2'), href: PATH_DASHBOARD.root },
+                { name: translate('page.diver.heading3'), href: PATH_DASHBOARD.staff.diverList },
+                { name: !isEdit ? translate('page.diver.heading4.new') : name }
+              ]}
+            />
+            <DiverNewForm isEdit={isEdit} currentDiver={currentDiver} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }
