@@ -5,6 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { manageEmployee } from '_apis_/employee';
 import { getListSites } from 'redux/slices/garden';
+import LoadingScreen from 'components/LoadingScreen';
 import { SiteManager } from '../../@types/staff';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
@@ -28,8 +29,10 @@ export default function EmployeeCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentEmployee, setCurrentEmployee] = useState<SiteManager>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageEmployee.getEmployeeByID(name).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -44,6 +47,7 @@ export default function EmployeeCreate() {
           status: response.data.status
         };
         setCurrentEmployee(data);
+        setIsLoading(false);
       }
     });
   };
@@ -56,28 +60,37 @@ export default function EmployeeCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit
-          ? translate('page.site-manager.title.create')
-          : translate('page.site-manager.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.site-manager.heading1.create')
-              : translate('page.site-manager.heading1.update')
+              ? translate('page.site-manager.title.create')
+              : translate('page.site-manager.title.update')
           }
-          links={[
-            { name: translate('page.site-manager.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.site-manager.heading3'), href: PATH_DASHBOARD.staff.listSite },
-            { name: !isEdit ? translate('page.site-manager.heading4.new') : name }
-          ]}
-        />
-        <SiteManagerNewForm isEdit={isEdit} currentEmployee={currentEmployee} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.site-manager.heading1.create')
+                  : translate('page.site-manager.heading1.update')
+              }
+              links={[
+                { name: translate('page.site-manager.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.site-manager.heading3'),
+                  href: PATH_DASHBOARD.staff.listSite
+                },
+                { name: !isEdit ? translate('page.site-manager.heading4.new') : name }
+              ]}
+            />
+            <SiteManagerNewForm isEdit={isEdit} currentEmployee={currentEmployee} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

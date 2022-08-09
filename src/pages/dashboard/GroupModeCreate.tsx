@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { manageGroup } from '_apis_/group';
 // material
 import { Container } from '@material-ui/core';
+import LoadingScreen from 'components/LoadingScreen';
 import { GroupMode } from '../../@types/group';
 // redux
 import { useDispatch } from '../../redux/store';
@@ -27,10 +28,13 @@ export default function GroupModeCreate() {
   const { name } = useParams();
   const isEdit = pathname.includes('edit');
   const [currentGroupMode, setCurrentGroupMode] = useState<GroupMode>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageGroup.getGroupModeByID(paramCase(name)).then((response) => {
       setCurrentGroupMode(response.data);
+      setIsLoading(false);
     });
   };
 
@@ -41,31 +45,37 @@ export default function GroupModeCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit
-          ? translate('page.group-mode.title.create')
-          : translate('page.group-mode.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.group-mode.heading1.create')
-              : translate('page.group-mode.heading1.update')
+              ? translate('page.group-mode.title.create')
+              : translate('page.group-mode.title.update')
           }
-          links={[
-            { name: translate('page.group-mode.heading2'), href: PATH_DASHBOARD.root },
-            {
-              name: translate('page.group-mode.heading3'),
-              href: PATH_DASHBOARD.group.root
-            },
-            { name: !isEdit ? translate('page.group-mode.heading4.new') : name }
-          ]}
-        />
-        <GroupModeNewForm isEdit={isEdit} currentGroupMode={currentGroupMode} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.group-mode.heading1.create')
+                  : translate('page.group-mode.heading1.update')
+              }
+              links={[
+                { name: translate('page.group-mode.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.group-mode.heading3'),
+                  href: PATH_DASHBOARD.group.root
+                },
+                { name: !isEdit ? translate('page.group-mode.heading4.new') : name }
+              ]}
+            />
+            <GroupModeNewForm isEdit={isEdit} currentGroupMode={currentGroupMode} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

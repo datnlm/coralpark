@@ -5,6 +5,7 @@ import { Container } from '@material-ui/core';
 import { useParams, useLocation } from 'react-router-dom';
 import DiverTeaTransferList from 'components/_dashboard/diver/DiverTeamTransferList';
 import { manageDiver } from '_apis_/diver';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getListArea } from '../../redux/slices/area';
@@ -28,8 +29,10 @@ export default function DiverTeamCreate() {
   const { name } = useParams();
   const dispatch = useDispatch();
   const [currentDiverTeam, setCurrentDiverTeam] = useState<DiverTeam>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageDiver.getDiverTeamByID(paramCase(name)).then((response) => {
       if (response.status === 200) {
         const data = {
@@ -41,6 +44,7 @@ export default function DiverTeamCreate() {
           status: response.data.status
         };
         setCurrentDiverTeam(data);
+        setIsLoading(false);
       }
     });
   };
@@ -53,21 +57,27 @@ export default function DiverTeamCreate() {
     dispatch(getListArea(0, -1));
   }, []);
   return (
-    <Page title={translate('page.diver-team.title.create')}>
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={translate('page.diver-team.heading1.create')}
-          links={[
-            { name: translate('page.diver-team.heading2'), href: PATH_DASHBOARD.root },
-            {
-              name: translate('page.diver-team.heading3'),
-              href: PATH_DASHBOARD.staff.team
-            },
-            { name: translate('page.diver-team.heading4.new') }
-          ]}
-        />
-        <DiverTeaTransferList isEdit={isEdit} currentDiverTeam={currentDiverTeam} />
-      </Container>
-    </Page>
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page title={translate('page.diver-team.title.create')}>
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={translate('page.diver-team.heading1.create')}
+              links={[
+                { name: translate('page.diver-team.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.diver-team.heading3'),
+                  href: PATH_DASHBOARD.staff.team
+                },
+                { name: translate('page.diver-team.heading4.new') }
+              ]}
+            />
+            <DiverTeaTransferList isEdit={isEdit} currentDiverTeam={currentDiverTeam} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

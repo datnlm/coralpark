@@ -5,6 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { managePartner } from '_apis_/partner';
 import PartnerNewForm from 'components/_dashboard/partner/PartnerNewForm';
+import LoadingScreen from 'components/LoadingScreen';
 import { Partner } from '../../@types/partner';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
@@ -27,8 +28,10 @@ export default function ParterTypeCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentPartner, setCurrentPartner] = useState<Partner | null>(null);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await managePartner.getPartnerByID(paramCase(name)).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -41,6 +44,7 @@ export default function ParterTypeCreate() {
           partnerTypeId: response.data.partnerTypeId,
           status: response.data.status
         };
+        setIsLoading(false);
         setCurrentPartner(data);
       }
     });
@@ -54,26 +58,34 @@ export default function ParterTypeCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit ? translate('page.partner.title.create') : translate('page.partner.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.partner.heading1.create')
-              : translate('page.partner.heading1.update')
+              ? translate('page.partner.title.create')
+              : translate('page.partner.title.update')
           }
-          links={[
-            { name: translate('page.partner.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.partner.heading3'), href: PATH_DASHBOARD.partner.root },
-            { name: !isEdit ? translate('page.partner.heading4.new') : name }
-          ]}
-        />
-        <PartnerNewForm isEdit={isEdit} currentPartner={currentPartner} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.partner.heading1.create')
+                  : translate('page.partner.heading1.update')
+              }
+              links={[
+                { name: translate('page.partner.heading2'), href: PATH_DASHBOARD.root },
+                { name: translate('page.partner.heading3'), href: PATH_DASHBOARD.partner.root },
+                { name: !isEdit ? translate('page.partner.heading4.new') : name }
+              ]}
+            />
+            <PartnerNewForm isEdit={isEdit} currentPartner={currentPartner} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

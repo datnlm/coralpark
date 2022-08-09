@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getListGarden } from '../../redux/slices/garden';
@@ -27,8 +28,10 @@ export default function GardenCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentSite, setCurrentSite] = useState<Site>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageGarden.getSiteByID(paramCase(name)).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -46,6 +49,7 @@ export default function GardenCreate() {
           listGarden: response.data.listGarden
         };
         setCurrentSite(data);
+        setIsLoading(false);
       }
     });
   };
@@ -58,24 +62,32 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={!isEdit ? translate('page.site.title.create') : translate('page.site.title.update')}
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
-            !isEdit
-              ? translate('page.site.heading1.create')
-              : translate('page.site.heading1.update')
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
+            !isEdit ? translate('page.site.title.create') : translate('page.site.title.update')
           }
-          links={[
-            { name: translate('page.site.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.site.heading3'), href: PATH_DASHBOARD.site.root },
-            { name: !isEdit ? translate('page.site.heading4.new') : name }
-          ]}
-        />
-        <SiteNewForm isEdit={isEdit} currentSite={currentSite} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.site.heading1.create')
+                  : translate('page.site.heading1.update')
+              }
+              links={[
+                { name: translate('page.site.heading2'), href: PATH_DASHBOARD.root },
+                { name: translate('page.site.heading3'), href: PATH_DASHBOARD.site.root },
+                { name: !isEdit ? translate('page.site.heading4.new') : name }
+              ]}
+            />
+            <SiteNewForm isEdit={isEdit} currentSite={currentSite} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

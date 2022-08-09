@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageGarden } from '_apis_/garden';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { getListGardenTypes, getListSites } from '../../redux/slices/garden';
 import { getListArea } from '../../redux/slices/area';
@@ -28,8 +29,10 @@ export default function GardenCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentGarden, setCurrentGarden] = useState<Garden>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageGarden.getGardenByID(paramCase(name)).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -46,6 +49,7 @@ export default function GardenCreate() {
           coralCells: response.data.coralCells
         };
         setCurrentGarden(data);
+        setIsLoading(false);
       }
     });
   };
@@ -60,27 +64,33 @@ export default function GardenCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit ? translate('page.garden.title.create') : translate('page.garden.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
-            !isEdit
-              ? translate('page.garden.heading1.create')
-              : translate('page.garden.heading1.update')
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
+            !isEdit ? translate('page.garden.title.create') : translate('page.garden.title.update')
           }
-          links={[
-            { name: translate('page.garden.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.garden.heading3'), href: PATH_DASHBOARD.site.garden },
-            { name: !isEdit ? translate('page.garden.heading4.new') : name }
-          ]}
-        />
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.garden.heading1.create')
+                  : translate('page.garden.heading1.update')
+              }
+              links={[
+                { name: translate('page.garden.heading2'), href: PATH_DASHBOARD.root },
+                { name: translate('page.garden.heading3'), href: PATH_DASHBOARD.site.garden },
+                { name: !isEdit ? translate('page.garden.heading4.new') : name }
+              ]}
+            />
 
-        <GardenNewForm isEdit={isEdit} currentGarden={currentGarden} />
-      </Container>
-    </Page>
+            <GardenNewForm isEdit={isEdit} currentGarden={currentGarden} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

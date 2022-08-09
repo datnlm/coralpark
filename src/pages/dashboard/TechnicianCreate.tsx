@@ -5,6 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Box, Card, CardHeader, Container, Stack } from '@material-ui/core';
 import { manageTechnican } from '_apis_/technician';
 import { getListArea } from 'redux/slices/area';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -28,8 +29,10 @@ export default function TechinicianCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentTechnician, setCurrentTechnician] = useState<Technician>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageTechnican.getTechnicanByID(paramCase(name)).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -43,6 +46,7 @@ export default function TechinicianCreate() {
           areas: response.data.areas
         };
         setCurrentTechnician(data);
+        setIsLoading(false);
       }
     });
   };
@@ -55,31 +59,37 @@ export default function TechinicianCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit
-          ? translate('page.technician.title.create')
-          : translate('page.technician.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.technician.heading1.create')
-              : translate('page.technician.heading1.update')
+              ? translate('page.technician.title.create')
+              : translate('page.technician.title.update')
           }
-          links={[
-            { name: translate('page.technician.heading2'), href: PATH_DASHBOARD.root },
-            {
-              name: translate('page.technician.heading3'),
-              href: PATH_DASHBOARD.staff.listTechnician
-            },
-            { name: !isEdit ? translate('page.technician.heading4.new') : name }
-          ]}
-        />
-        <TechnicianNewForm isEdit={isEdit} currentTechnician={currentTechnician} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.technician.heading1.create')
+                  : translate('page.technician.heading1.update')
+              }
+              links={[
+                { name: translate('page.technician.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.technician.heading3'),
+                  href: PATH_DASHBOARD.staff.listTechnician
+                },
+                { name: !isEdit ? translate('page.technician.heading4.new') : name }
+              ]}
+            />
+            <TechnicianNewForm isEdit={isEdit} currentTechnician={currentTechnician} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

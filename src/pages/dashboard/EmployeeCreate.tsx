@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';
 import { manageEmployee } from '_apis_/employee';
+import LoadingScreen from 'components/LoadingScreen';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
@@ -27,8 +28,10 @@ export default function EmployeeCreate() {
   const isEdit = pathname.includes('edit');
   const { name } = useParams();
   const [currentEmployee, setCurrentEmployee] = useState<SiteManager>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await manageEmployee.getEmployeeByID(name).then((response) => {
       if (response.status == 200) {
         const data = {
@@ -43,6 +46,7 @@ export default function EmployeeCreate() {
           status: response.data.status
         };
         setCurrentEmployee(data);
+        setIsLoading(false);
       }
     });
   };
@@ -54,26 +58,37 @@ export default function EmployeeCreate() {
   }, [dispatch]);
 
   return (
-    <Page
-      title={
-        !isEdit ? translate('page.employee.title.create') : translate('page.employee.title.update')
-      }
-    >
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading={
+    <>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <Page
+          title={
             !isEdit
-              ? translate('page.employee.heading1.create')
-              : translate('page.employee.heading1.update')
+              ? translate('page.employee.title.create')
+              : translate('page.employee.title.update')
           }
-          links={[
-            { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
-            { name: translate('page.employee.heading3'), href: PATH_DASHBOARD.staff.listEmployee },
-            { name: !isEdit ? translate('page.employee.heading4.new') : name }
-          ]}
-        />
-        <EmployeeNewForm isEdit={isEdit} currentEmployee={currentEmployee} />
-      </Container>
-    </Page>
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+              heading={
+                !isEdit
+                  ? translate('page.employee.heading1.create')
+                  : translate('page.employee.heading1.update')
+              }
+              links={[
+                { name: translate('page.employee.heading2'), href: PATH_DASHBOARD.root },
+                {
+                  name: translate('page.employee.heading3'),
+                  href: PATH_DASHBOARD.staff.listEmployee
+                },
+                { name: !isEdit ? translate('page.employee.heading4.new') : name }
+              ]}
+            />
+            <EmployeeNewForm isEdit={isEdit} currentEmployee={currentEmployee} />
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }
