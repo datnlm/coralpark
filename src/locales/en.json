@@ -835,7 +835,8 @@
       "cell-quantity-item-length": "Quantity must be more than 1",
       "cell-acreage": "Please input acreage",
       "cell-item": "Please input item",
-      "cell-quantity": "Please input quantity"
+      "cell-quantity": "Please input quantity",
+      "number_2": "The number of members is more than 2"
     }
   },
   "categories": {

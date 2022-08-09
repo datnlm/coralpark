@@ -836,7 +836,8 @@
       "cell-quantity-item-length": "Số lương lớn hơn 1",
       "cell-acreage": "Vui lòng nhập diện tích",
       "cell-item": "Vui lòng nhập số item",
-      "cell-quantity": "Vui lòng số lượng"
+      "cell-quantity": "Vui lòng số lượng",
+      "number_2": "Số thành viên lớn hơn 2"
     }
   },
   "categories": {
