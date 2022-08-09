@@ -221,11 +221,13 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
           ? await manageCoral.createCoralType(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
+                navigate(PATH_DASHBOARD.coral.listType);
               }
             })
           : await manageCoral.updateCoralType(values).then((response) => {
               if (response.status == 200) {
                 flag = true;
+                navigate(PATH_DASHBOARD.coral.listType);
               }
             });
         if (flag) {
@@ -237,7 +239,6 @@ export default function CoralTypeNewFrom({ isEdit, currentType }: CoralTypeNewFr
               variant: 'success'
             }
           );
-          navigate(PATH_DASHBOARD.coral.listType);
         } else {
           enqueueSnackbar(
             !isEdit ? translate('message.create-error') : translate('message.update-error'),

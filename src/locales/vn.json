@@ -236,14 +236,14 @@
       "form": {
         "label": {
           "information": "Thông tin",
-          "cell": "Cell"
+          "cell": "Lồng"
         },
         "name": "Tên",
         "address": "Địa chỉ",
         "longitude": "Kinh độ",
         "latitude": "Vĩ độ",
         "acreage": "Diện tích(㎡)",
-        "quantity-of-cells": "Số cell",
+        "quantity-of-cells": "Số lồng",
         "area": "Khu vực",
         "garden-type": "Loại vườn",
         "site": "Địa điểm",
@@ -252,14 +252,14 @@
     },
     "cell": {
       "title": {
-        "list": "Vườn: Danh sách cell"
+        "list": "Vườn: Danh sách lồng"
       },
       "form": {
         "id": "Id",
         "type": "Loại",
         "acreage": "Diện tích(㎡)",
         "quantity": "Số lượng",
-        "items": "Items",
+        "items": "Ô",
         "status": "Trạng thái"
       }
     },
@@ -659,22 +659,22 @@
     },
     "cell-type": {
       "title": {
-        "list": "Loại Cell: Danh sách loại cell",
-        "create": "Loại Cell: Thêm mới loại cell",
-        "update": "Loại Cell: Cập nhật loại cell"
+        "list": "Loại lồng: Danh sách loại lồng",
+        "create": "Loại lồng: Thêm mới loại lồng",
+        "update": "Loại lồng: Cập nhật loại lồng"
       },
       "heading1": {
-        "list": "Loại Cell",
-        "create": "Thêm mới loại cell",
-        "update": "Cập nhật loại cell"
+        "list": "Loại lồng",
+        "create": "Thêm mới loại lồng",
+        "update": "Cập nhật loại lồng"
       },
       "heading2": "Bảng điều kiển",
-      "heading3": "Loại cell",
+      "heading3": "Loại lồng",
       "heading4": {
         "list": "Danh sách",
-        "new": "Loại cell mới"
+        "new": "Loại lồng mới"
       },
-      "search": "Tìm kiếm loại cell",
+      "search": "Tìm kiếm loại lồng",
       "form": {
         "name": "Tên",
         "description": "Mô tả"
@@ -727,6 +727,8 @@
     "title": {
       "confirm-delete": "Xác nhận xoá"
     },
+    "username": "Vui lòng nhập tài khoản",
+    "password": "Vui lòng nhập mật khẩu",
     "all": "Tất cả",
     "allow-type-image": "Cho phép *.jpeg, *.jpg, *.png, *.gif",
     "confirm-delete": "Bạn có chắc chắn muốn xoá?",
@@ -805,8 +807,8 @@
       "coral_phase": "Giai đoạn là bắt buộc",
       "acreage": "Diện tích là bắt buộc",
       "acreage_typeError": "Diện tích là số",
-      "quantity_of_cells": "Số cell là bắt buộc",
-      "quantity_of_cells_typeError": "Số cell là số",
+      "quantity_of_cells": "Số lồng là bắt buộc",
+      "quantity_of_cells_typeError": "Số lồng là số",
       "area": "Khu vực là bắt buộc",
       "garden_type": "Loạn vườn là bắt buộc",
       "site": "Địa điểm là bắt buộc",
@@ -829,13 +831,13 @@
       "address": "Địa chỉ là bắt buộc",
       "province": "Tỉnh là bắt buộc",
       "image": "Hình ảnh là bắt buộc",
-      "cell": "Chọn loại Cell",
+      "cell": "Chọn loại lồng",
       "cell-typeError": "Vui lòng nhập số",
       "cell-length": "Diện tích lớn hơn 1",
-      "cell-item-length": "Số item lớn hơn 1",
+      "cell-item-length": "Số ô lớn hơn 1",
       "cell-quantity-item-length": "Số lương lớn hơn 1",
       "cell-acreage": "Vui lòng nhập diện tích",
-      "cell-item": "Vui lòng nhập số item",
+      "cell-item": "Vui lòng nhập số ô",
       "cell-quantity": "Vui lòng số lượng",
       "number_2": "Số thành viên lớn hơn 2"
     }
@@ -900,7 +902,7 @@
         "site": "Danh sách địa điểm",
         "garden": "Vườn",
         "garden-type": "Loại vườn",
-        "cell-type": "Loại Cell"
+        "cell-type": "Loại lồng"
       }
     },
     "mega": {
@@ -914,7 +916,7 @@
         "partner": "Đối tác",
         "coral": "San hô",
         "area": "Khu vực",
-        "cell": "Cell",
+        "cell": "Lồng",
         "group-mode": "Group",
         "account": "Tài khoản",
         "categories": "Loại sản phẩm",
@@ -930,7 +932,7 @@
         "phase": "Giai đoạn",
         "phase-type": "Từng giai đoạn",
         "area": "Khu vực",
-        "cell-type": "Loại Cell",
+        "cell-type": "Loại lồng",
         "account": "Tài khoản",
         "group-mode": "Mode",
         "group-role": "Role",

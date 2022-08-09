@@ -47,8 +47,8 @@ export default function LoginForm() {
 
   const LoginSchema = Yup.object().shape({
     // email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    email: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required')
+    email: Yup.string().required(translate('message.username')),
+    password: Yup.string().required(translate('message.password'))
   });
 
   const formik = useFormik<InitialValues>({
@@ -100,7 +100,7 @@ export default function LoginForm() {
 
             // set login 5 failed
             // failedLoginAttempts
-            const failedLoginAttempts = localStorage.getItem('failedLoginAttempts');
+            const failedLoginAttempts = localStorage.getItem('invalid');
             if (failedLoginAttempts == null) {
               localStorage.setItem('failedLoginAttempts', '1');
             } else {

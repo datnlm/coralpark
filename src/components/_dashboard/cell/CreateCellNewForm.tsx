@@ -150,7 +150,7 @@ export default function CreateCellNewForm({
 
   return (
     <Dialog fullWidth maxWidth="md" open={open} onClose={onClose}>
-      <DialogTitle>Thêm mới Cell</DialogTitle>
+      <DialogTitle>Thêm mới Lồng</DialogTitle>
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <DialogContent>
