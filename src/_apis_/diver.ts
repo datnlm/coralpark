@@ -90,6 +90,7 @@ export class DiverManager {
       id: diverTeam.id,
       name: diverTeam.name,
       number: diverTeam.divers.length,
+      createTime: new Date(),
       status: diverTeam.status,
       divers: diverTeam.divers
     };
