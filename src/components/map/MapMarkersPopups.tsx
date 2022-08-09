@@ -38,7 +38,7 @@ interface MapMarkersPopupsProps extends InteractiveMapProps {
 export default function MapMarkersPopups({ data, ...other }: MapMarkersPopupsProps) {
   const [tooltip, setTooltip] = useState<CountryData2 | null>(null);
   const [viewport, setViewport] = useState({
-    zoom: 2
+    zoom: 1
   });
 
   return (
