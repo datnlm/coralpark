@@ -548,7 +548,7 @@
         "signed": "Signed in as"
       },
       "form": {
-        "user": "User name",
+        "user": "Username",
         "password": "Password",
         "remember": "Remember me"
       }
@@ -728,6 +728,8 @@
     "title": {
       "confirm-delete": "Confirm delete"
     },
+    "username": "Username is required",
+    "password": "Password is required",
     "all": "All",
     "allow-type-image": "Allowed *.jpeg, *.jpg, *.png, *.gif",
     "confirm-delete": "Are you sure to delete this?",

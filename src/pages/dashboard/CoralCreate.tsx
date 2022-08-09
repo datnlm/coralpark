@@ -35,8 +35,8 @@ export default function UserCreate() {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const fetchData = async () => {
-    setIsLoading(true);
     if (isEdit) {
+      setIsLoading(true);
       await manageCoral.getCoralByID(paramCase(name)).then((response) => {
         setCurrentCoral(response.data);
         setIsLoading(false);
