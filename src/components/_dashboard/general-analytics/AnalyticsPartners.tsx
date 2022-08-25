@@ -43,7 +43,7 @@ const TOTAL = 714000;
 export default function AnalyticsPartners() {
   const dispatch = useDispatch();
   const { translate } = useLocales();
-  const totalCount = useSelector((state: RootState) => state.partner.totalCount);
+  const totalCount = useSelector((state: RootState) => state.partner.partnerList);
 
   useEffect(() => {
     dispatch(getListPartner(0, -1));
@@ -54,7 +54,7 @@ export default function AnalyticsPartners() {
       <IconWrapperStyle>
         <Icon icon={handshakeIcon} width={24} height={24} />
       </IconWrapperStyle>
-      <Typography variant="h3">{fShortenNumber(totalCount)}</Typography>
+      <Typography variant="h3">{fShortenNumber(totalCount.length)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {translate('menu.sidebarConfig.title.partner')}
       </Typography>
