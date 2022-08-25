@@ -8,6 +8,7 @@ import {
 } from 'components/_dashboard/general-analytics';
 // hooks
 import useAuth from '../../hooks/useAuth';
+import useLocales from '../../hooks/useLocales';
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
@@ -30,11 +31,12 @@ import {
 // ----------------------------------------------------------------------
 
 export default function GeneralApp() {
+  const { translate } = useLocales();
   const { themeStretch } = useSettings();
   const { user } = useAuth();
 
   return (
-    <Page title="Dashboard: App | CPMS">
+    <Page title={translate('page.dashboard.title.list')}>
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
           {/* <Grid item xs={12} md={8}>

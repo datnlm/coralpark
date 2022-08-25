@@ -148,7 +148,7 @@ export default function CoralHabitatNewForm({ coralId, currentHabitat }: CoralHa
                     label={translate('page.coral-habitat.form.current')}
                     {...getFieldProps('current')}
                     InputProps={{
-                      endAdornment: <InputAdornment position="end"> m³/s</InputAdornment>
+                      endAdornment: <InputAdornment position="end">m³/s</InputAdornment>
                     }}
                     error={Boolean(touched.current && errors.current)}
                     helperText={touched.current && errors.current}
@@ -160,7 +160,7 @@ export default function CoralHabitatNewForm({ coralId, currentHabitat }: CoralHa
                     label={translate('page.coral-habitat.form.tides')}
                     {...getFieldProps('tides')}
                     InputProps={{
-                      endAdornment: <InputAdornment position="end"> m</InputAdornment>
+                      endAdornment: <InputAdornment position="end">m</InputAdornment>
                     }}
                     error={Boolean(touched.tides && errors.tides)}
                     helperText={touched.tides && errors.tides}
