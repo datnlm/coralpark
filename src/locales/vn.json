@@ -1,5 +1,10 @@
 {
   "page": {
+    "dashboard": {
+      "title": {
+        "list": "Trang chủ"
+      }
+    },
     "site": {
       "title": {
         "list": "Địa điểm: Danh sách địa điểm",
@@ -472,22 +477,22 @@
     },
     "group-mode": {
       "title": {
-        "list": "Group Mode: Group Mode List",
-        "create": "Group Mode: Thêm mới group mode",
-        "update": "Group Mode: Cập nhật group mode"
+        "list": "Loại nhóm: Danh sách loại nhóm",
+        "create": "Loại nhóm: Thêm mới loại nhóm",
+        "update": "Loại nhóm: Cập nhật loại nhóm"
       },
       "heading1": {
-        "list": "Group Mode",
-        "create": "Thêm mới group mode",
-        "update": "Cập nhật group mode"
+        "list": "Loại nhóm",
+        "create": "Thêm mới loại nhóm",
+        "update": "Cập nhật loại nhóm"
       },
       "heading2": "Bảng điều kiển",
-      "heading3": "Group Mode",
+      "heading3": "Loại nhóm",
       "heading4": {
         "list": "Danh sách",
-        "new": "Group Mode mới"
+        "new": "Loại nhóm mới"
       },
-      "search": "Tìm kiếm group mode",
+      "search": "Tìm kiếm loại nhóm",
       "form": {
         "name": "Tên",
         "contribution": "Đóng góp(%)"
@@ -495,22 +500,22 @@
     },
     "group-role": {
       "title": {
-        "list": "Group Role: Group Role List",
-        "create": "Group Role: Thêm mới group role",
-        "update": "Group Role: Cập nhật group role"
+        "list": "Tỉ lệ nhóm: Danh sách tỉ lệ nhóm",
+        "create": "Tỉ lệ nhóm: Thêm mới tỉ lệ nhóm",
+        "update": "Tỉ lệ nhóm: Cập nhật tỉ lệ nhóm"
       },
       "heading1": {
-        "list": "Group Role",
-        "create": "Thêm mới group role",
-        "update": "Cập nhật group role"
+        "list": "Tỉ lệ nhóm",
+        "create": "Thêm mới tỉ lệ nhóm",
+        "update": "Cập nhật tỉ lệ nhóm"
       },
       "heading2": "Bảng điều kiển",
-      "heading3": "Group Role",
+      "heading3": "Tỉ lệ nhóm",
       "heading4": {
         "list": "Danh sách",
-        "new": "Group Role mới"
+        "new": "Tỉ lệ nhóm mới"
       },
-      "search": "Tìm kiếm group role",
+      "search": "Tìm kiếm",
       "form": {
         "name": "Tên",
         "personalRate": "Tỷ lệ cá nhân(%)",
@@ -520,7 +525,7 @@
     },
     "categories": {
       "title": {
-        "list": "Loại sản phẩm: Loại sản phẩm List",
+        "list": "Loại sản phẩm: Danh sách loại sản phẩm ",
         "create": "Loại sản phẩmt: Thêm mới loại sản phẩm",
         "update": "Loại sản phẩm: Cập nhật loại sản phẩm"
       },
@@ -529,7 +534,7 @@
         "create": "Thêm mới loại sản phẩm",
         "update": "Cập nhật loại sản phẩm"
       },
-      "heading2": "Dashboard",
+      "heading2": "Bảng điều khiển",
       "heading3": "Loại sản phẩm",
       "heading4": {
         "list": "Danh sách",
@@ -885,8 +890,8 @@
       "title": {
         "partner": "Đối tác",
         "partner-type": "Loại đối tác",
-        "group-mode": "Group Mode",
-        "group-role": "Group Role",
+        "group-mode": "Loại nhóm",
+        "group-role": "Tỉ lệ nhóm",
         "categories": "Loại sản phẩm",
         "diver": "Thợ lặn",
         "diver-team": "Đội thợ lặn",
