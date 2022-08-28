@@ -111,6 +111,7 @@ export function getListSiteManagerById(
             dispatch(slice.actions.getListEmployee(response.data.items));
           } else {
             dispatch(slice.actions.endLoading());
+            dispatch(slice.actions.getListEmployee([]));
           }
         });
     } catch (error) {
@@ -130,6 +131,7 @@ export function getListEmployeePartner(page: number, rowsPerPage: number) {
           dispatch(slice.actions.getListEmployeePartner(response.data.items));
         } else {
           dispatch(slice.actions.endLoading());
+          dispatch(slice.actions.getListEmployeePartner([]));
         }
       });
     } catch (error) {
