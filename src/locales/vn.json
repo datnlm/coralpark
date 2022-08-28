@@ -520,7 +520,7 @@
         "name": "Tên",
         "personalRate": "Tỷ lệ cá nhân(%)",
         "partnerRate": "Tỷ lệ đối tác(%)",
-        "groupModeId": "Group Mode"
+        "groupModeId": "Loại nhóm"
       }
     },
     "categories": {
@@ -922,7 +922,7 @@
         "coral": "San hô",
         "area": "Khu vực",
         "cell": "Lồng",
-        "group-mode": "Group",
+        "group-mode": "Loại nhóm",
         "account": "Tài khoản",
         "categories": "Loại sản phẩm",
         "technician": "Kỹ thuật viên"
