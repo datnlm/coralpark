@@ -234,12 +234,16 @@ export default function UserList() {
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               {/* <Avatar alt={name} src={imageUrl} /> */}
-                              <Typography variant="subtitle2" noWrap>
+                              <Typography noWrap variant="subtitle2" sx={{ maxWidth: 120 }}>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">
+                            <Typography noWrap variant="subtitle2" sx={{ maxWidth: 120 }}>
+                              {address}
+                            </Typography>
+                          </TableCell>
                           <TableCell align="left">{acreage}</TableCell>
                           <TableCell align="left">{quantityOfCells}</TableCell>
                           <TableCell align="left">

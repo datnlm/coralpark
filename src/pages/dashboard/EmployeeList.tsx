@@ -251,8 +251,16 @@ export default function EmployeeList() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">
+                            <Typography noWrap variant="subtitle2" sx={{ maxWidth: 120 }}>
+                              {email}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Typography noWrap variant="subtitle2" sx={{ maxWidth: 120 }}>
+                              {address}
+                            </Typography>
+                          </TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
