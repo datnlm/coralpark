@@ -53,9 +53,9 @@ export default function EmployeeCreate() {
   };
 
   useEffect(() => {
+    dispatch(getListPartner(0, -1));
     if (isEdit) {
       fetchData();
-      dispatch(getListPartner(0, -1));
     }
   }, [dispatch]);
 

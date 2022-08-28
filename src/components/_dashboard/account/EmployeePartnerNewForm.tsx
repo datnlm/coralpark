@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 // utils
 import { OptionStatus, statusOptions } from 'utils/constants';
-import { RootState, useSelector, useDispatch } from 'redux/store';
+import { RootState, useSelector, useDispatch, dispatch } from 'redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hook
