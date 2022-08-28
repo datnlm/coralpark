@@ -72,8 +72,8 @@ export default function CoralPhasesTypeNewForm({
       .min(0, translate('message.form.time_from_min'))
       .typeError(translate('message.form.time_from_typeError')),
     timeTo: Yup.number()
-      .required(translate('message.form.time_fo'))
-      .min(0, translate('message.form.time_fo_min'))
+      .required(translate('message.form.time_to'))
+      .min(0, translate('message.form.time_to_min'))
       .typeError(translate('message.form.time_to_typeError')),
     colour: Yup.string().required(translate('message.form.colour')),
     coralPhaseId: Yup.object().required(translate('message.form.coral_phase')).nullable(true)
