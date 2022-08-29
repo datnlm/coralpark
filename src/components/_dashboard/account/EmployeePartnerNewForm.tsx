@@ -189,7 +189,7 @@ export default function EmployeePartnerNewForm({
             </Card>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3 }}>
+            <Card sx={{ p: 3, minHeight: 450 }}>
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
@@ -199,12 +199,25 @@ export default function EmployeePartnerNewForm({
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                   />
-                  <TextField
+                  <Autocomplete
                     fullWidth
-                    label={translate('page.employee.form.phone')}
-                    {...getFieldProps('phone')}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={touched.phone && errors.phone}
+                    disablePortal
+                    clearIcon
+                    id="partnerId"
+                    {...getFieldProps('partnerId')}
+                    options={partnerList}
+                    getOptionLabel={(option: any) => (option ? option.name : '')}
+                    onChange={(e, value: any) =>
+                      value ? { ...setFieldValue('partnerId', value) } : ''
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={translate('page.employee-partner.form.partner')}
+                        error={Boolean(touched.partnerId && errors.partnerId)}
+                        helperText={touched.partnerId && errors.partnerId}
+                      />
+                    )}
                   />
                 </Stack>
 
@@ -226,25 +239,12 @@ export default function EmployeePartnerNewForm({
                 </Stack>
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <Autocomplete
+                  <TextField
                     fullWidth
-                    disablePortal
-                    clearIcon
-                    id="partnerId"
-                    {...getFieldProps('partnerId')}
-                    options={partnerList}
-                    getOptionLabel={(option: any) => (option ? option.name : '')}
-                    onChange={(e, value: any) =>
-                      value ? { ...setFieldValue('partnerId', value) } : ''
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={translate('page.employee-partner.form.partner')}
-                        error={Boolean(touched.partnerId && errors.partnerId)}
-                        helperText={touched.partnerId && errors.partnerId}
-                      />
-                    )}
+                    label={translate('page.employee.form.phone')}
+                    {...getFieldProps('phone')}
+                    error={Boolean(touched.phone && errors.phone)}
+                    helperText={touched.phone && errors.phone}
                   />
                   {isEdit && (
                     <Autocomplete
