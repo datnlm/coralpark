@@ -189,7 +189,7 @@ export default function EmployeePartnerNewForm({
             </Card>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3, minHeight: 450 }}>
+            <Card sx={{ p: 3, minHeight: 400 }}>
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
